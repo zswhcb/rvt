@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">打电话</string>
-    <string name="hello_world"><u>我的云桌面</u></string>
+    <string name="hello_world"><u>开始拨号</u></string>
     <string name="action_settings">Settings</string>
     <string name="splash_desc">splash</string>
     <!--  -->

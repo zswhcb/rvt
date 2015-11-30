@@ -1,5 +1,6 @@
 package tel.call;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -20,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private final static String TAG = "MainActivity";
 
-	private TextView _link_mydesk;
+	private TextView link_mydesk;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,29 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private boolean checkLogin() {
 		return false;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		findView();
+		bind();
+	}
+
+	private void findView() {
+		link_mydesk = (TextView) findViewById(R.id.link_mydesk);
+	}
+
+	private void bind() {
+		// click
+		link_mydesk.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(MainActivity.this,
+						DialActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -69,6 +94,7 @@ public class MainActivity extends ActionBarActivity {
 	public static class PlaceholderFragment extends Fragment {
 
 		public PlaceholderFragment() {
+			// TODO
 		}
 
 		@Override
@@ -77,6 +103,14 @@ public class MainActivity extends ActionBarActivity {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
 			return rootView;
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (0 == requestCode && RESULT_OK == resultCode) {
+			setResult(RESULT_OK);
+			finish();
 		}
 	}
 
