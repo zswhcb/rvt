@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".DialActivity" >
+
+    <EditText
+        android:id="@+id/text_tel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:layout_marginTop="15dip"
+        android:hint="@string/dial_main_placeholder_tel"
+        android:imeOptions="actionNext"
+        android:inputType="text" >
+    </EditText>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:layout_marginTop="5dip"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/text_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/dial_main_placeholder_hint"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:scrollHorizontally="true" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_dial"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:text="@string/dial_main_btn_dial" />
+
+</LinearLayout>

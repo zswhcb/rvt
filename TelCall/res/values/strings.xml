@@ -17,5 +17,9 @@
     <string name="login_main_label_2"><u>注册</u></string>
     <!--  -->
     <string name="valiate_userpass">密码不能为空,请重新输入</string>
+    <!--  -->
+    <string name="dial_main_btn_dial">立即拨打</string>
+    <string name="dial_main_placeholder_tel">电话号码</string>
+    <string name="dial_main_placeholder_hint">提示信息</string>
 
 </resources>
