@@ -1,20 +1,32 @@
 package tel.call;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.TextView;
 
+/**
+ * 
+ * @author huangxin (3203317@qq.com)
+ * 
+ */
 public class MainActivity extends ActionBarActivity {
+
+	private final static String TAG = "MainActivity";
+
+	private TextView _link_mydesk;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if (checkLogin())
+			return;
+		Log.d(TAG, "onCreate() starting.");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
@@ -22,6 +34,13 @@ public class MainActivity extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+	}
+
+	/**
+	 * 检测登陆状态，否则并跳转
+	 */
+	private boolean checkLogin() {
+		return false;
 	}
 
 	@Override
