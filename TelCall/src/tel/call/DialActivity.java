@@ -1,7 +1,9 @@
 package tel.call;
 
+import tel.call.broadcast.PhoneBroadcastReceiver;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,10 +25,21 @@ public class DialActivity extends Activity {
 	private EditText text_hint;
 	private Button btn_dial;
 
+	private PhoneBroadcastReceiver receiver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dial_main);
+		registerListener();
+	}
+
+	private void registerListener() {
+		receiver = new PhoneBroadcastReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+		filter.setPriority(Integer.MAX_VALUE);
+		registerReceiver(receiver, filter);
 	}
 
 	@Override
@@ -56,8 +69,14 @@ public class DialActivity extends Activity {
 				// 用intent启动拨打电话
 				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 						+ tel_num));
-				startActivity(intent);
+				DialActivity.this.startActivity(intent);
 			}
 		});
+	}
+
+	@Override
+	public void onDestroy() {
+		unregisterReceiver(receiver);
+		super.onDestroy();
 	}
 }
