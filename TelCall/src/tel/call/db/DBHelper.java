@@ -25,12 +25,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	private void create_task(SQLiteDatabase db) {
 		String sql = "CREATE TABLE [p_task] ("
-				+ "[id] VARCHAR(32), [TASK_NAME] VARCHAR(128), [TASK_CONTENT] VARCHAR(512), [ISSUED_TIME] VARCHAR(24), [STATUS] INT(2), [CREATE_TIME] VARCHAR(24))";
+				+ "[id] VARCHAR(32), [TASK_NAME] VARCHAR(128), [TASK_CONTENT] VARCHAR(512), [ISSUED_TIME] DATETIME, [STATUS] INT(2), [CREATE_TIME] DATETIME)";
 		db.execSQL(sql);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVer, int newVer) {
-		// TODO Auto-generated method stub
+		db.execSQL("DROP TABLE IF EXISTS 'p_task';");
+		onCreate(db);
 	}
 }

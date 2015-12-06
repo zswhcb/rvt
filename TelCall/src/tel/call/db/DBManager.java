@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import tel.call.model.Task;
+import tel.call.util.DateUtil;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -31,7 +32,7 @@ public class DBManager {
 	}
 
 	private void initData() {
-		boolean b = false;
+		boolean b = true;
 		if (b)
 			initData_task();
 	}
@@ -43,27 +44,27 @@ public class DBManager {
 		values.put("id", "b100323407df40b69d632aa8cdf8f876");
 		values.put("TASK_NAME", "1");
 		values.put("TASK_CONTENT", "2");
-		values.put("ISSUED_TIME", (new Date()).toString());
+		values.put("ISSUED_TIME", DateUtil.dateToStr(new Date()));
 		values.put("STATUS", "4");
-		values.put("CREATE_TIME", (new Date()).toString());
+		values.put("CREATE_TIME", DateUtil.dateToStr(new Date()));
 		db.insert("p_task", null, values);
 		// TODO
 		values = new ContentValues();
 		values.put("id", "e77741925ef241c09b68342f54b9f779");
 		values.put("TASK_NAME", "11");
 		values.put("TASK_CONTENT", "22");
-		values.put("ISSUED_TIME", (new Date()).toString());
+		values.put("ISSUED_TIME", DateUtil.dateToStr(new Date()));
 		values.put("STATUS", "44");
-		values.put("CREATE_TIME", (new Date()).toString());
+		values.put("CREATE_TIME", DateUtil.dateToStr(new Date()));
 		db.insert("p_task", null, values);
 		// TODO
 		values = new ContentValues();
 		values.put("id", "5e32a2c5ed634e7daf8f1049ce926e70");
 		values.put("TASK_NAME", "111");
 		values.put("TASK_CONTENT", "222");
-		values.put("ISSUED_TIME", (new Date()).toString());
+		values.put("ISSUED_TIME", DateUtil.dateToStr(new Date()));
 		values.put("STATUS", "444");
-		values.put("CREATE_TIME", (new Date()).toString());
+		values.put("CREATE_TIME", DateUtil.dateToStr(new Date()));
 		db.insert("p_task", null, values);
 	}
 
@@ -78,11 +79,11 @@ public class DBManager {
 					.getColumnIndex("TASK_NAME")));
 			task.setTask_content(cursor.getString(cursor
 					.getColumnIndex("TASK_CONTENT")));
-			task.setIssued_time(cursor.getString(cursor
-					.getColumnIndex("ISSUED_TIME")));
+			task.setIssued_time(DateUtil.strToDate(cursor.getString(cursor
+					.getColumnIndex("ISSUED_TIME"))));
 			task.setStatus(cursor.getInt(cursor.getColumnIndex("STATUS")));
-			task.setCreate_time(cursor.getString(cursor
-					.getColumnIndex("CREATE_TIME")));
+			task.setCreate_time(DateUtil.strToDate(cursor.getString(cursor
+					.getColumnIndex("CREATE_TIME"))));
 			// TODO
 			tasks.add(task);
 		}

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import tel.call.db.DBManager;
 import tel.call.model.Task;
+import tel.call.util.DateUtil;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -95,8 +96,9 @@ public class MainActivity extends ActionBarActivity {
 			HashMap<String, Object> item = new HashMap<String, Object>();
 			item.put(DATAGRID_TITLES_FROM[0], i + 1);
 			item.put(DATAGRID_TITLES_FROM[1], task.getTask_name());
-			item.put(DATAGRID_TITLES_FROM[2], task.getIssued_time());
-			item.put(DATAGRID_TITLES_FROM[3], "查看");
+			item.put(DATAGRID_TITLES_FROM[2],
+					DateUtil.dateToShortStr(task.getIssued_time()));
+			item.put(DATAGRID_TITLES_FROM[3], task.getStatus());
 			grid_data.add(item);
 		}
 		// TODO
@@ -217,8 +219,11 @@ public class MainActivity extends ActionBarActivity {
 						.get(DATAGRID_TITLES_FROM[1]).toString());
 				viewHolder.issued_time.setText(grid_data.get(position)
 						.get(DATAGRID_TITLES_FROM[2]).toString());
-				viewHolder.status.setText(grid_data.get(position)
+
+				// TODO
+				int status = Integer.valueOf(grid_data.get(position)
 						.get(DATAGRID_TITLES_FROM[3]).toString());
+				viewHolder.status.setText(4 == status ? "查看" : "同步");
 				// TODO
 				if (2 == position) {
 					viewHolder.task_name.setTextColor(Color.GREEN);

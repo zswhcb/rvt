@@ -1,5 +1,7 @@
 package tel.call.model;
 
+import java.util.Date;
+
 /**
  * 
  * @author huangxin (3203317@qq.com)
@@ -9,9 +11,9 @@ public class Task {
 	private String id;
 	private String task_name;
 	private String task_content;
-	private String issued_time;
+	private Date issued_time;
 	private Integer status;
-	private String create_time;
+	private Date create_time;
 
 	public String getId() {
 		return id;
@@ -37,11 +39,11 @@ public class Task {
 		this.task_content = task_content;
 	}
 
-	public String getIssued_time() {
+	public Date getIssued_time() {
 		return issued_time;
 	}
 
-	public void setIssued_time(String issued_time) {
+	public void setIssued_time(Date issued_time) {
 		this.issued_time = issued_time;
 	}
 
@@ -53,11 +55,11 @@ public class Task {
 		this.status = status;
 	}
 
-	public String getCreate_time() {
+	public Date getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(String create_time) {
+	public void setCreate_time(Date create_time) {
 		this.create_time = create_time;
 	}
 }
