@@ -1,6 +1,13 @@
 package tel.call;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 /**
@@ -22,7 +32,16 @@ public class MainActivity extends ActionBarActivity {
 
 	private final static String TAG = "MainActivity";
 
-	private TextView link_mydesk;
+	private static final String[] DATAGRID_TITLES_FROM = new String[] { "no",
+			"task_name", "issued_time", "status" };
+	private static final int[] DATAGRID_TITLES_TO = new int[] { R.id.no,
+			R.id.task_name, R.id.issued_time, R.id.status };
+
+	// TODO
+	private Button btn_sync;
+	private ListView grid_items;
+	// TODO
+	private List<HashMap<String, Object>> grid_data;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +69,39 @@ public class MainActivity extends ActionBarActivity {
 		super.onStart();
 		findView();
 		bind();
+		loadData();
+	}
+
+	private void loadData_grid() {
+		grid_data = new ArrayList<HashMap<String, Object>>();
+		for (int i = 1; i < 110; i++) {
+			HashMap<String, Object> item = new HashMap<String, Object>();
+			item.put(DATAGRID_TITLES_FROM[0], i);
+			item.put(DATAGRID_TITLES_FROM[1], "斯蒂 " + i);
+			item.put(DATAGRID_TITLES_FROM[2], "15/01/02");
+			item.put(DATAGRID_TITLES_FROM[3], "查看");
+			grid_data.add(item);
+		}
+		// TODO
+		SimpleAdapter adapter = new OneSimpleAdapter(this, grid_data,
+				R.layout.fragment_main_datagrid, DATAGRID_TITLES_FROM,
+				DATAGRID_TITLES_TO);
+		// 实现列表的显示
+		grid_items.setAdapter(adapter);
+	}
+
+	private void loadData() {
+		loadData_grid();
 	}
 
 	private void findView() {
-		link_mydesk = (TextView) findViewById(R.id.link_mydesk);
+		btn_sync = (Button) findViewById(R.id.btn_sync);
+		grid_items = (ListView) findViewById(R.id.grid_items);
 	}
 
 	private void bind() {
 		// click
-		link_mydesk.setOnClickListener(new OnClickListener() {
+		btn_sync.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(MainActivity.this,
@@ -114,4 +157,70 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 
+	/**
+	 * 
+	 * @author huangxin (3203317@qq.com)
+	 * 
+	 */
+	class OneSimpleAdapter extends SimpleAdapter {
+
+		public OneSimpleAdapter(Context context,
+				List<? extends Map<String, ?>> data, int resource,
+				String[] from, int[] to) {
+			super(context, data, resource, from, to);
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			// TODO
+			ViewHolder viewHolder = null;
+			if (null == convertView) {
+				viewHolder = new ViewHolder();
+				LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+				convertView = inflater.inflate(R.layout.fragment_main_datagrid,
+						null);
+				// TODO
+				viewHolder.no = (TextView) convertView.findViewById(R.id.no);
+				viewHolder.task_name = (TextView) convertView
+						.findViewById(R.id.task_name);
+				viewHolder.issued_time = (TextView) convertView
+						.findViewById(R.id.issued_time);
+				viewHolder.status = (TextView) convertView
+						.findViewById(R.id.status);
+				// TODO
+				convertView.setTag(viewHolder);
+			} else {
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
+
+			if (null != grid_data) {
+				// TODO
+				viewHolder.no.setText(grid_data.get(position)
+						.get(DATAGRID_TITLES_FROM[0]).toString());
+				viewHolder.task_name.setText(grid_data.get(position)
+						.get(DATAGRID_TITLES_FROM[1]).toString());
+				viewHolder.issued_time.setText(grid_data.get(position)
+						.get(DATAGRID_TITLES_FROM[2]).toString());
+				viewHolder.status.setText(grid_data.get(position)
+						.get(DATAGRID_TITLES_FROM[3]).toString());
+				// TODO
+				if (2 == position) {
+					viewHolder.task_name.setTextColor(Color.RED);
+				}
+			}
+			// TODO
+			return convertView;
+		}
+
+		/**
+		 * 
+		 * @author huangxin (3203317@qq.com)
+		 * 
+		 */
+		class ViewHolder {
+			public TextView no;
+			public TextView task_name;
+			public TextView issued_time;
+			public TextView status;
+		}
+	}
 }
