@@ -1,0 +1,12 @@
+{
+  "name": "hnzswh-rvt",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "speedt-utils": "0.1.38",
+    "eventproxy": "0.3.1"
+  }
+}

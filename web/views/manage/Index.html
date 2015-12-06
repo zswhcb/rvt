@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+	<head>
+		#parse('front/_pagelet/Common.IndexHeader.html')
+		<link rel='stylesheet' type='text/css' media='screen' href='$!{conf.html.external_res}manage/css/index.css?v3' />
+		<style>
+		#innerPage {
+			border: 0;
+			width: 100%;
+		}
+		</style>
+	</head>
+	<body>
+		#parse('manage/_pagelet/Side.TopBanner.html')
+		<header id='header'></header>
+		<div class='container'>
+			<div class='row'>
+				<div class='col-sm-12 col-md-2' id='sideNav'>
+					#parse('manage/_pagelet/Side.Nav.html')
+				</div>
+				<div class='col-sm-12 col-md-10'>
+					<iframe id='innerPage' src='' scrolling='no'></iframe>
+				</div>
+			</div>
+		</div>
+		#parse('front/_pagelet/Common.IndexJs.html')
+		<script type='text/javascript' src='$!{conf.html.cdn}backbone/1.0.0/backbone.min.js?v1.0.0'></script>
+		<script>
+		(function($){
+			var ifr_innerPage = $('#innerPage');
+			var Router = Backbone.Router.extend({
+				routes: {
+					'': '_showDefPage',
+					'page/*path': '_showPage'
+				},
+				initialize: function() {
+					//console.log('initialize');
+				},
+				_showDefPage: function(){
+					ifr_innerPage.attr('src', 'welcome/');
+				},
+				_showPage: function(url){
+					ifr_innerPage.attr('src', url);
+				}
+			});
+			new Router();
+			Backbone.history.start();
+		})($);
+
+		function resizeInnerPage(obj){
+			document.getElementById('innerPage').height = obj.height();
+		}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+<div class='panel-group' id='accordion'>
+	#foreach($!obj in $!data.childMenu)
+		#if(2 == $!obj.PATH.split(",").length)
+	<div class='panel panel-default'>
+		<div class='panel-heading'>
+			<h4 class='panel-title'>
+				<a data-toggle='collapse' data-parent='#accordion' href='#collapse$!obj.id'>$!obj.MENU_NAME</a>
+			</h4>
+		</div>
+		<div id='collapse$!obj.id' class='panel-collapse collapse#if(1 == $velocityCount) in#end'>
+			<div class='panel-body'>
+				#foreach($!obj2 in $!data.childMenu)
+					#if(3 == $!obj2.PATH.split(",").length && $!obj.id == $!obj2.PID)
+				<p><a href='#if($!obj2.MENU_URL == '')javascript:;#else#page/$!obj2.MENU_URL?name=$!obj2.MENU_NAME#end'>$!obj2.MENU_NAME</a></p>
+					#end
+				#end
+			</div>
+		</div>
+	</div>
+		#end
+	#end
+</div>
