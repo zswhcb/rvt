@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tel.call.db.DBManager;
+import tel.call.model.Task;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -32,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private final static String TAG = "MainActivity";
 
-	private static final String[] DATAGRID_TITLES_FROM = new String[] { "no",
+	public static final String[] DATAGRID_TITLES_FROM = new String[] { "no",
 			"task_name", "issued_time", "status" };
 	private static final int[] DATAGRID_TITLES_TO = new int[] { R.id.no,
 			R.id.task_name, R.id.issued_time, R.id.status };
@@ -42,6 +44,8 @@ public class MainActivity extends ActionBarActivity {
 	private ListView grid_items;
 	// TODO
 	private List<HashMap<String, Object>> grid_data;
+	// TODO
+	private DBManager dbMgr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,15 @@ public class MainActivity extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+		// TODO
+		dbMgr = new DBManager(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (null != dbMgr)
+			dbMgr.close();
+		super.onDestroy();
 	}
 
 	/**
@@ -73,12 +86,16 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void loadData_grid() {
+		List<Task> list = dbMgr.queryTasks();
+		// TODO
 		grid_data = new ArrayList<HashMap<String, Object>>();
-		for (int i = 1; i < 110; i++) {
+		for (int i = 0, j = list.size(); i < j; i++) {
+			Task task = list.get(i);
+			// TODO
 			HashMap<String, Object> item = new HashMap<String, Object>();
-			item.put(DATAGRID_TITLES_FROM[0], i);
-			item.put(DATAGRID_TITLES_FROM[1], "斯蒂 " + i);
-			item.put(DATAGRID_TITLES_FROM[2], "15/01/02");
+			item.put(DATAGRID_TITLES_FROM[0], i + 1);
+			item.put(DATAGRID_TITLES_FROM[1], task.getTask_name());
+			item.put(DATAGRID_TITLES_FROM[2], task.getIssued_time());
 			item.put(DATAGRID_TITLES_FROM[3], "查看");
 			grid_data.add(item);
 		}
@@ -204,7 +221,7 @@ public class MainActivity extends ActionBarActivity {
 						.get(DATAGRID_TITLES_FROM[3]).toString());
 				// TODO
 				if (2 == position) {
-					viewHolder.task_name.setTextColor(Color.RED);
+					viewHolder.task_name.setTextColor(Color.GREEN);
 				}
 			}
 			// TODO
