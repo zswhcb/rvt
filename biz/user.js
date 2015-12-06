@@ -35,6 +35,7 @@ exports.login = function(logInfo, cb){
 	this.findByName(logInfo.USER_NAME, function (err, doc){
 		if(err) return cb(err);
 		if(!doc) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
+		if(1 !== doc.STATUS) return cb(null, ['已被禁用', 'USER_NAME']);
 		if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
 			return cb(null, ['用户名或密码输入错误', 'USER_PASS'], doc);
 		cb(null, null, doc);
