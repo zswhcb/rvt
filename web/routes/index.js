@@ -13,6 +13,7 @@ var front = {
 };
 var back = {};
 var manage = {
+	role: require('../controllers/manage/role'),
 	site: require('../controllers/manage/site'),
 	user: require('../controllers/manage/user')
 };
@@ -52,10 +53,13 @@ function proc_back(app){
  * @return
  */
 function proc_manage(app){
+	// 角色管理
+	app.get('/manage/role/', manage.user.login_validate, manage.role.indexUI);
 	// 用户相关
 	app.get('/manage/user/logout$', manage.user.logoutUI);
 	app.get('/manage/user/login$', manage.user.loginUI);
 	app.post('/manage/user/login$', express.valiPostData, manage.user.login);
+	app.get('/manage/user/changePwd$', manage.user.login_validate, manage.user.changePwdUI);
 
 	// 管理框架
 	app.get('/manage/welcome', manage.user.login_validate, manage.site.welcomeUI);

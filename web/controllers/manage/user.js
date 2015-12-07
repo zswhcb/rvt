@@ -18,6 +18,20 @@ var biz = {
  * @params
  * @return
  */
+exports.changePwdUI = function(req, res, next){
+	res.render('manage/user/ChangePwd', {
+		conf: conf,
+		title: '修改密码 | '+ conf.corp.name,
+		description: '',
+		keywords: ',html5'
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.loginUI = function(req, res, next){
 	res.render('manage/user/Login', {
 		conf: conf,

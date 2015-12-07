@@ -3,7 +3,7 @@
 		<tr>
 			<th class='ta'><input type='checkbox' title='全选/取消'></th>
 			<th>角色名称</th>
-			<th>角色描述</th>
+			<th>创建时间</th>
 			<th>状态</th>
 		</tr>
 	</thead>
@@ -11,7 +11,7 @@
 		#foreach($!doc in $!data.roles)<tr>
 			<td class='ta'><input type='checkbox' value='$!doc.id'></td>
 			<td>$!doc.ROLE_NAME</td>
-			<td>$!doc.ROLE_DESC</td>
+			<td>#formatDate($!doc.CREATE_TIME)</td>
 			<td>#toStatus($!doc.STATUS)</td>
 		</tr>#end
 	</tbody>
