@@ -29,3 +29,6 @@ node_modules
 
 TelCall/bin
 TelCall/gen
+
+
+*.pdb

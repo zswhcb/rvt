@@ -9,12 +9,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="tel.call.MainActivity$PlaceholderFragment" >
 
-    <Button
-        android:id="@+id/btn_sync"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_main_btn_sync"
-        android:textColor="#00f" />
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/sel_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="date" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_sync"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/fragment_main_btn_sync"
+            android:textColor="#00f" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
