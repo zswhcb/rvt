@@ -61,3 +61,27 @@ exports.login = function(req, res, next){
 		res.send(result);
 	});
 };
+
+/**
+ * 用户退出
+ *
+ * @params
+ * @return
+ */
+exports.logoutUI = function(req, res, next){
+	req.session.destroy();
+	res.redirect('/manage/');
+};
+
+/**
+ * 用户会话验证
+ * 408 Request Timeout (Session)
+ *
+ * @params
+ * @return
+ */
+exports.login_validate = function(req, res, next){
+	if(1 === req.session.lv) return next();
+	if(req.xhr) return res.send({ success: false, status: 408 });
+	res.redirect('/manage/user/login');
+};
