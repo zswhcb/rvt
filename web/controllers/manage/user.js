@@ -18,6 +18,26 @@ var biz = {
  * @params
  * @return
  */
+exports.indexUI = function(req, res, next){
+	biz.user.findAll(function (err, docs){
+		// TODO
+		res.render('manage/user/Index', {
+			conf: conf,
+			title: req.query.name +' | '+ conf.corp.name,
+			description: '',
+			keywords: ',html5',
+			data: {
+				roles: docs
+			}
+		});
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.changePwdUI = function(req, res, next){
 	res.render('manage/user/ChangePwd', {
 		conf: conf,

@@ -61,6 +61,9 @@ function proc_manage(app){
 	app.post('/manage/user/login$', express.valiPostData, manage.user.login);
 	app.get('/manage/user/changePwd$', manage.user.login_validate, manage.user.changePwdUI);
 
+	// 用户管理
+	app.get('/manage/user/', manage.user.login_validate, manage.user.indexUI);
+
 	// 管理框架
 	app.get('/manage/welcome', manage.user.login_validate, manage.site.welcomeUI);
 	app.get('/manage/', manage.user.login_validate, manage.site.indexUI);

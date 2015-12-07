@@ -14,6 +14,7 @@ var exports = module.exports;
 
 // 查询用户 关联用户角色表
 var sql_1 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_user_role c WHERE a.STATUS=1 AND b.STATUS=1 AND a.id=c.USER_ID AND b.id=c.ROLE_ID';
+var sql_2 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_user_role c WHERE a.id=c.USER_ID AND b.id=c.ROLE_ID';
 
 /**
  *
@@ -21,7 +22,8 @@ var sql_1 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_us
  * @return
  */
 exports.findAll = function(cb){
-	mysql_util.find(null, 's_user', null, [['CREATE_TIME', 'DESC']], null, function (err, docs){
+	var sql = sql_2 +' ORDER BY a.CREATE_TIME DESC';
+	mysql.query(sql, null, function (err, docs){
 		if(err) return cb(err);
 		cb(null, docs);
 	});
