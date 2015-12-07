@@ -12,6 +12,9 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
+// 查询用户 关联用户角色表
+var sql_1 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_user_role c WHERE a.STATUS=1 AND b.STATUS=1 AND a.id=c.USER_ID AND b.id=c.ROLE_ID';
+
 /**
  *
  * @params
@@ -32,9 +35,15 @@ exports.findAll = function(cb){
  * @return
  */
 exports.login = function(logInfo, cb){
-	this.findByName(logInfo.USER_NAME, function (err, doc){
+	var sql = sql_1 +' AND a.USER_NAME=?';
+	// TODO
+	mysql.query(sql, [logInfo.USER_NAME], function (err, docs){
 		if(err) return cb(err);
-		if(!doc) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
+		// TODO
+		if(!mysql.checkOnly(docs)) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
+		// TODO
+		var doc = docs[0];
+		// TODO
 		if(1 !== doc.STATUS) return cb(null, ['已被禁用', 'USER_NAME']);
 		if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
 			return cb(null, ['用户名或密码输入错误', 'USER_PASS'], doc);

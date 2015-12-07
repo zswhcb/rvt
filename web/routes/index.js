@@ -13,7 +13,7 @@ var front = {
 };
 var back = {};
 var manage = {
-	manager: require('../controllers/manage/manager')
+	user: require('../controllers/manage/user')
 };
 
 /**
@@ -52,7 +52,8 @@ function proc_back(app){
  */
 function proc_manage(app){
 	// 用户相关
-	app.get('/manage/manager/login$', manage.manager.loginUI);
+	app.get('/manage/user/login$', manage.user.loginUI);
+	app.post('/manage/user/login$', express.valiPostData, manage.user.login);
 }
 
 var str1 = '参数异常';
