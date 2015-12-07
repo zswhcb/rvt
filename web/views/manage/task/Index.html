@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		#parse('front/_pagelet/Common.IndexHeader.html')
+		<link rel='stylesheet' type='text/css' href='/public/assets/css/manage/1.0.1/index.css' />
+		<link rel='stylesheet' type='text/css' href='/public/assets/css/manage/1.0.1/iframe.css' />
+	</head>
+	<body>
+		<div class='container'>
+			<div class='row'>
+				<div class='col-sm-12 col-md-12'>
+					<ol class='breadcrumb'>
+						<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
+						<li class='active'><a href='javascript:location.reload();'>任务管理</a></li>
+					</ol>
+					<div id='info_alert' class='alert alert-info'>
+						<button type='button' class='close' data-dismiss='alert'>&times;</button>
+						<strong>提示：</strong>查询设置任务信息。
+					</div>
+					<div class='panel panel-info'>
+						<div class='panel-heading'>
+							<h3 class='panel-title'><strong>查询条件</strong></h3>
+						</div>
+						<div class='panel-body'>
+							<form id='searchFrm' class='form-inline' role='form' onsubmit='return false;'>
+								<div class='form-group'>
+									<input type='text' class='form-control' placeholder='任务名称'>
+								</div>
+								<button type='button' class='btn btn-default glyphicon glyphicon-search' id='searchFrm_btn_search'>&#8201;查询</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class='col-sm-12 col-md-4'>
+					<div class='panel panel-default table-responsive'>
+						<div class='panel-heading'>
+							<div class='btn-group btn-group-sm'>
+								<button class='btn btn-primary glyphicon glyphicon-refresh' data-toggle='modal'>刷新</button>
+							</div>
+						</div>
+						#parse('manage/task/_pagelet/Side.List.Project.html')
+					</div>
+				</div>
+				<div class='col-sm-12 col-md-8'>
+					<div class='panel panel-default table-responsive'>
+						<div class='panel-heading'>
+							<div class='btn-group btn-group-sm'>
+								<button class='btn btn-primary glyphicon glyphicon-plus-sign' data-toggle='modal' data-target='#addModal'>新增</button>
+								<button id='btn_edit' class='btn btn-default glyphicon glyphicon-edit' data-toggle='modal' data-target='#editModal'>编辑</button>
+								<button id='btn_del' class='btn btn-danger glyphicon glyphicon-remove-sign'>删除</button>
+							</div>
+						</div>
+						#parse('manage/task/_pagelet/Side.List.Task.html')
+					</div>
+				</div>
+			</div>
+		</div>
+		#parse('front/_pagelet/Common.IndexJs.html')
+		#parse('manage/_pagelet/Common.Iframe.html')
+		<script>
+			$('#searchFrm_btn_search').click(function(){
+				var formObj = $('#searchFrm').serializeObjectForm();
+				console.log(formObj);
+			});
+		</script>
+	</body>
+</html>

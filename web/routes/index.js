@@ -13,6 +13,7 @@ var front = {
 };
 var back = {};
 var manage = {
+	task: require('../controllers/manage/task'),
 	project: require('../controllers/manage/project'),
 	role: require('../controllers/manage/role'),
 	site: require('../controllers/manage/site'),
@@ -54,6 +55,8 @@ function proc_back(app){
  * @return
  */
 function proc_manage(app){
+	// 任务管理
+	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);
 	// 项目管理
 	app.get('/manage/project/', manage.user.login_validate, manage.project.indexUI);
 	// 角色管理

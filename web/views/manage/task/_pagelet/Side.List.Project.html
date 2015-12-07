@@ -1,0 +1,20 @@
+<table data-olx-type='olx.grid' class='table table-bordered table-hover table-condensed table-striped' data-url='/role/list' data-current='1' data-pagesize='20' data-count='561'>
+	<thead>
+		<tr>
+			<th class='ta'>No.</th>
+			<th>发布人</th>
+			<th>真实姓名</th>
+			<th>项目名称</th>
+			<th>项目类型</th>
+		</tr>
+	</thead>
+	<tbody>#set($i=1)
+		#foreach($!doc in $!data.projects)<tr>
+			<td class='ta'>$i#set($i=$i+1)</td>
+			<td>$!doc.USER_NAME</td>
+			<td>$!doc.REAL_NAME</td>
+			<td>$!doc.PROJECT_NAME</td>
+			<td>$!doc.PROJECT_TYPE_NAME</td>
+		</tr>#end
+	</tbody>
+</table>

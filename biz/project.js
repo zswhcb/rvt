@@ -12,7 +12,7 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
-var sql_1 = 'SELECT c.USER_NAME, b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM p_project a, p_project_type b, s_user c WHERE a.PROJECT_TYPE_ID=b.id AND a.USER_ID=c.id';
+var sql_1 = 'SELECT c.USER_NAME, c.REAL_NAME, b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM p_project a, p_project_type b, s_user c WHERE a.PROJECT_TYPE_ID=b.id AND a.USER_ID=c.id';
 
 /**
  *

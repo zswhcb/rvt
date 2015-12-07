@@ -1,0 +1,22 @@
+<table id='table1' data-olx-type='olx.grid' class='table table-bordered table-hover table-condensed table-striped' data-url='/role/list' data-current='1' data-pagesize='20' data-count='561'>
+	<thead>
+		<tr>
+			<th class='ta'>No.</th>
+			<th>通话时间</th>
+			<th>通话时长</th>
+			<th>手机号</th>
+			<th>创建时间</th>
+			<th>状态</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($!doc in $!data.roles)<tr>
+			<td class='ta'>1</td>
+			<td>$!doc.USER_NAME</td>
+			<td>$!doc.USER_NAME</td>
+			<td>$!doc.USER_NAME</td>
+			<td>$!doc.PROJECT_NAME</td>
+			<td>$!doc.PROJECT_TYPE_NAME</td>
+		</tr>#end
+	</tbody>
+</table>
