@@ -56,6 +56,7 @@ function proc_back(app){
  */
 function proc_manage(app){
 	// 任务管理
+	app.get('/manage/task/add', manage.user.login_validate, manage.task.addUI);
 	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);
 	// 项目管理
 	app.get('/manage/project/', manage.user.login_validate, manage.project.indexUI);

@@ -32,3 +32,19 @@ exports.indexUI = function(req, res, next){
 		});
 	});
 };
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.addUI = function(req, res, next){
+	res.render('manage/task/Add', {
+		conf: conf,
+		title: '新增 | '+ req.query.name +' | '+ conf.corp.name,
+		description: '',
+		keywords: ',html5',
+		data: {
+		}
+	});
+};
