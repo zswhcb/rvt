@@ -1,4 +1,4 @@
-#set($doc=$data.corp)
+#set($doc=$data.user)
 <form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url=''>
 	<input type='hidden' name='id' id='addFrm_id' value='$!doc.id'>
 	<div class='form-group'>
@@ -47,6 +47,15 @@
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_AUTH_CODE_ID'>认证码</label>
 		<div class='col-sm-4'>
 			<input type='text' class='form-control' name='AUTH_CODE_ID' id='addFrm_AUTH_CODE_ID' placeholder='认证码' value='$!doc.AUTH_CODE_ID'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_ROLE_ID'>选择角色</label>
+		<div class='col-sm-4'>
+			<select class='form-control' name='ROLE_ID' id='addFrm_ROLE_ID'>
+			#foreach($!doc in $!data.roles)
+				<option value='$!doc.id'>$!doc.ROLE_NAME</option>#end
+			</select>
 		</div>
 	</div>
 	<div class='form-group'>

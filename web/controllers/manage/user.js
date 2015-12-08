@@ -10,6 +10,7 @@ var util = require('speedt-utils');
 var conf = require('../../settings');
 
 var biz = {
+	role: require('../../../biz/role'),
 	user: require('../../../biz/user')
 };
 
@@ -19,13 +20,18 @@ var biz = {
  * @return
  */
 exports.addUI = function(req, res, next){
-	res.render('manage/user/Add', {
-		conf: conf,
-		title: '新增 | '+ req.query.name +' | '+ conf.corp.name,
-		description: '',
-		keywords: ',html5',
-		data: {
-		}
+	biz.role.findAll(function (err, docs){
+		if(err) return next(err);
+		// TODO
+		res.render('manage/user/Add', {
+			conf: conf,
+			title: '新增 | '+ req.query.name +' | '+ conf.corp.name,
+			description: '',
+			keywords: ',html5',
+			data: {
+				roles: docs
+			}
+		});
 	});
 };
 

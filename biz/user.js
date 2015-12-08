@@ -13,8 +13,7 @@ var util = require('speedt-utils'),
 var exports = module.exports;
 
 // 查询用户 关联用户角色表
-var sql_1 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_user_role c WHERE a.STATUS=1 AND b.STATUS=1 AND a.id=c.USER_ID AND b.id=c.ROLE_ID';
-var sql_2 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_user_role c WHERE a.id=c.USER_ID AND b.id=c.ROLE_ID';
+var sql_1 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_user_role c WHERE a.id=c.USER_ID AND b.id=c.ROLE_ID';
 
 /**
  *
@@ -22,7 +21,7 @@ var sql_2 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_us
  * @return
  */
 exports.findAll = function(cb){
-	var sql = sql_2 +' ORDER BY a.CREATE_TIME DESC';
+	var sql = sql_1 +' ORDER BY a.CREATE_TIME DESC';
 	mysql.query(sql, null, function (err, docs){
 		if(err) return cb(err);
 		cb(null, docs);
@@ -37,7 +36,7 @@ exports.findAll = function(cb){
  * @return
  */
 exports.login = function(logInfo, cb){
-	var sql = sql_1 +' AND a.USER_NAME=?';
+	var sql = sql_1 +' AND a.STATUS=1 AND b.STATUS=1 AND a.USER_NAME=?';
 	// TODO
 	mysql.query(sql, [logInfo.USER_NAME], function (err, docs){
 		if(err) return cb(err);
@@ -46,7 +45,6 @@ exports.login = function(logInfo, cb){
 		// TODO
 		var doc = docs[0];
 		// TODO
-		if(1 !== doc.STATUS) return cb(null, ['已被禁用', 'USER_NAME']);
 		if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
 			return cb(null, ['用户名或密码输入错误', 'USER_PASS'], doc);
 		cb(null, null, doc);
@@ -59,7 +57,8 @@ exports.login = function(logInfo, cb){
  * @return
  */
 exports.getById = function(id, cb){
-	mysql_util.find(null, 's_user', [['id', '=', id]], null, null, function (err, docs){
+	var sql = sql_1 +' AND a.id=?';
+	mysql.query(sql, [id], function (err, docs){
 		if(err) return cb(err);
 		cb(null, mysql.checkOnly(docs) ? docs[0]: null);
 	});
@@ -77,3 +76,75 @@ exports.findByName = function(name, cb){
 		cb(null, mysql.checkOnly(docs) ? docs[0]: null);
 	});
 };
+
+
+/**
+ * 表单
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	function formVali(newInfo, cb){
+		cb(null);
+	}
+
+	var sql_add = 'INSERT INTO s_user (id, USER_NAME, USER_PASS, AVATAR_URL, EMAIL, MOBILE, REAL_NAME, ALIPAY_ACCOUNT, APIKEY, SECKEY, AUTH_CODE_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.saveNew = function(newInfo, cb){
+		formVali(newInfo, function (err){
+			if(err) return cb(err);
+			// CREATE
+			var postData = [
+				util.genObjectId(),
+				newInfo.USER_NAME.toLowerCase(),
+				md5.hex(newInfo.USER_PASS),
+				newInfo.AVATAR_URL,
+				newInfo.EMAIL,
+				newInfo.MOBILE,
+				newInfo.REAL_NAME,
+				newInfo.ALIPAY_ACCOUNT,
+				newInfo.APIKEY,
+				newInfo.SECKEY,
+				newInfo.AUTH_CODE_ID,
+				new Date(),
+				newInfo.STATUS || 1
+			];
+			mysql.query(sql_add, postData, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
+			});
+		});
+	};
+
+	var sql_edit = 'UPDATE s_user set EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, STATUS=? WHERE id=?';
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.editInfo = function(newInfo, cb){
+		formVali(newInfo, function (err){
+			if(err) return cb(err);
+			// CREATE
+			var postData = [
+				newInfo.EMAIL,
+				newInfo.MOBILE,
+				newInfo.REAL_NAME,
+				newInfo.ALIPAY_ACCOUNT,
+				newInfo.STATUS || 1,
+				newInfo.id
+			];
+			mysql.query(sql_edit, postData, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
+			});
+		});
+	};
+})(exports);
