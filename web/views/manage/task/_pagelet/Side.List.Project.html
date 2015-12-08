@@ -1,20 +1,18 @@
 <table data-olx-type='olx.grid' class='table table-bordered table-hover table-condensed table-striped' data-url='/role/list' data-current='1' data-pagesize='20' data-count='561'>
 	<thead>
 		<tr>
-			<th class='ta'><input type='checkbox' title='全选/取消'></th>
+			<th class='ta'>No.</th>
 			<th>发布人</th>
 			<th>真实姓名</th>
 			<th>项目名称</th>
-			<th>项目类型</th>
 		</tr>
 	</thead>
 	<tbody>
 		#foreach($!doc in $!data.projects)<tr>
-			<td class='ta'><input type='checkbox' value='$!doc.id'></td>
+			<td class='ta'><input type='radio' name='PROJECT_ID' value='$!doc.id'></td>
 			<td>$!doc.USER_NAME</td>
 			<td>$!doc.REAL_NAME</td>
 			<td>$!doc.PROJECT_NAME</td>
-			<td>$!doc.PROJECT_TYPE_NAME</td>
 		</tr>#end
 	</tbody>
 </table>

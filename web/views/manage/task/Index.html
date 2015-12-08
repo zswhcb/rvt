@@ -58,6 +58,9 @@
 		#parse('front/_pagelet/Common.IndexJs.html')
 		#parse('manage/_pagelet/Common.Iframe.html')
 		<script>
+			$(function(){
+				$('input:radio[name="PROJECT_ID"]').attr('checked', false);
+			});
 			$('#searchFrm_btn_search').click(function(){
 				var formObj = $('#searchFrm').serializeObjectForm();
 				console.log(formObj);
