@@ -13,6 +13,7 @@ var front = {
 };
 var back = {};
 var manage = {
+	authcode: require('../controllers/manage/authcode'),
 	task: require('../controllers/manage/task'),
 	project: require('../controllers/manage/project'),
 	role: require('../controllers/manage/role'),
@@ -55,6 +56,8 @@ function proc_back(app){
  * @return
  */
 function proc_manage(app){
+	// 认证码
+	app.get('/manage/authcode/', manage.user.login_validate, manage.authcode.indexUI);
 	// 任务管理
 	app.get('/manage/task/add', manage.user.login_validate, manage.task.addUI);
 	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);
