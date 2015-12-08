@@ -64,6 +64,7 @@ function proc_manage(app){
 	app.get('/manage/task/add', manage.user.login_validate, manage.task.addUI);
 	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);
 	// 项目管理
+	app.get('/manage/project/edit', manage.user.login_validate, manage.project.editUI);
 	app.get('/manage/project/add', manage.user.login_validate, manage.project.addUI);
 	app.get('/manage/project/', manage.user.login_validate, manage.project.indexUI);
 	// 角色管理

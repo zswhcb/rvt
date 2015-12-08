@@ -61,6 +61,12 @@
 				var formObj = $('#searchFrm').serializeObjectForm();
 				console.log(formObj);
 			});
+			$('#btn_edit').click(function(){
+				var vals = $('#table1').olxGrid('getCheckedRowsValue', 1);
+				if(1 !== vals.length) return;
+				var id = vals[0];
+				parent.location.href='/manage/#page/project/edit?id='+ id;
+			});
 		</script>
 	</body>
 </html>

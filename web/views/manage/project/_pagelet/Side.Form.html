@@ -1,4 +1,4 @@
-#set($doc=$data.user)
+#set($doc=$data.project)
 <form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url=''>
 	<input type='hidden' name='id' id='addFrm_id' value='$!doc.id'>
 	<div class='form-group'>
@@ -16,10 +16,11 @@
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_USER_ID'>发布人</label>
 		<div class='col-sm-4'>
-			<select class='form-control' name='USER_ID' id='addFrm_USER_ID'>
+			#if(null == $!doc.id)<select class='form-control' name='USER_ID' id='addFrm_USER_ID'>
 			#foreach($!doc in $!data.users)
 				<option value='$!doc.id'>$!doc.USER_NAME（$!doc.REAL_NAME）</option>#end
-			</select>
+			</select>#else
+			<input type='text' class='form-control' placeholder='发布人' value='$!doc.USER_NAME（$!doc.REAL_NAME）' readonly>#end
 		</div>
 	</div>
 	<div class='form-group'>

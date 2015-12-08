@@ -19,9 +19,22 @@ var sql_1 = 'SELECT c.USER_NAME, c.REAL_NAME, b.TYPE_NAME PROJECT_TYPE_NAME, a.*
  * @params
  * @return
  */
+exports.getById = function(id, cb){
+	var sql = sql_1 +' AND a.id=?';
+	mysql.query(sql, [id], function (err, docs){
+		if(err) return cb(err);
+		cb(null, mysql.checkOnly(docs) ? docs[0]: null);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.findAll = function(cb){
 	var sql = sql_1 +' ORDER BY a.CREATE_TIME DESC';
-	mysql.query(sql_1, null, function (err, docs){
+	mysql.query(sql, null, function (err, docs){
 		if(err) return cb(err);
 		cb(null, docs);
 	});
