@@ -11,6 +11,7 @@ var conf = require('../../settings'),
 	EventProxy = require('eventproxy');
 
 var biz = {
+	project_type: require('../../../biz/project_type'),
 	user: require('../../../biz/user'),
 	project: require('../../../biz/project')
 };
@@ -22,7 +23,7 @@ var biz = {
  */
 exports.addUI = function(req, res, next){
 	// TODO
-	var ep = EventProxy.create('users', function (users){
+	var ep = EventProxy.create('users', 'project_types', function (users, project_types){
 		// TODO
 		res.render('manage/project/Add', {
 			conf: conf,
@@ -30,6 +31,7 @@ exports.addUI = function(req, res, next){
 			description: '',
 			keywords: ',html5',
 			data: {
+				project_types: project_types,
 				users: users
 			}
 		});
@@ -39,9 +41,14 @@ exports.addUI = function(req, res, next){
 		next(err);
 	});
 
-	biz.user.findAll(function (err, docs){
+	biz.user.findByRoleId('566512b49012fb044691ace5', function (err, docs){
 		if(err) return ep.emit('error', err);
 		ep.emit('users', docs);
+	});
+
+	biz.project_type.findAll(function (err, docs){
+		if(err) return ep.emit('error', err);
+		ep.emit('project_types', docs);
 	});
 };
 

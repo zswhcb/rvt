@@ -34,9 +34,6 @@ exports.findByUserId = function(user_id, cb){
  * @return
  */
 exports.genAuthCode = function(user_id, sum, cb){
-	if(!user_id){
-		return cb(null, ['用户ID不能为空']);
-	}
 	// TODO
 	var sql = 'INSERT INTO s_auth_code (id, USER_ID, CREATE_TIME, STATUS) VALUES (?, ?, ?, ?)';
 	var postData = null;
