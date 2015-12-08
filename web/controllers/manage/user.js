@@ -18,6 +18,22 @@ var biz = {
  * @params
  * @return
  */
+exports.addUI = function(req, res, next){
+	res.render('manage/user/Add', {
+		conf: conf,
+		title: '新增 | '+ req.query.name +' | '+ conf.corp.name,
+		description: '',
+		keywords: ',html5',
+		data: {
+		}
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.indexUI = function(req, res, next){
 	biz.user.findAll(function (err, docs){
 		// TODO
@@ -27,7 +43,7 @@ exports.indexUI = function(req, res, next){
 			description: '',
 			keywords: ',html5',
 			data: {
-				roles: docs
+				users: docs
 			}
 		});
 	});
