@@ -58,7 +58,7 @@ exports.login = function(logInfo, cb){
  * @return
  */
 exports.getById = function(id, cb){
-	var sql = sql_1 +' AND e.id=?';
+	var sql = sql_1 +' WHERE e.id=?';
 	mysql.query(sql, [id], function (err, docs){
 		if(err) return cb(err);
 		cb(null, mysql.checkOnly(docs) ? docs[0]: null);

@@ -72,6 +72,7 @@ function proc_manage(app){
 	app.get('/manage/user/changePwd$', manage.user.login_validate, manage.user.changePwdUI);
 	app.post('/manage/user/add', express.valiPostData, manage.user.login_validate, manage.user.add);
 	app.get('/manage/user/add', manage.user.login_validate, manage.user.addUI);
+	app.get('/manage/user/edit', manage.user.login_validate, manage.user.editUI);
 
 	// 用户管理
 	app.get('/manage/user/', manage.user.login_validate, manage.user.indexUI);

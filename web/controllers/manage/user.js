@@ -10,8 +10,28 @@ var util = require('speedt-utils');
 var conf = require('../../settings');
 
 var biz = {
-	role: require('../../../biz/role'),
 	user: require('../../../biz/user')
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.editUI = function(req, res, next){
+	biz.user.getById(req.query.id, function (err, doc){
+		if(err) return next(err);
+		// TODO
+		res.render('manage/user/Edit', {
+			conf: conf,
+			title: '编辑 | '+ req.query.name +' | '+ conf.corp.name,
+			description: '',
+			keywords: ',html5',
+			data: {
+				user: doc
+			}
+		});
+	});
 };
 
 /**
@@ -43,18 +63,14 @@ exports.add = function(req, res, next){
  * @return
  */
 exports.addUI = function(req, res, next){
-	biz.role.findAll(function (err, docs){
-		if(err) return next(err);
-		// TODO
-		res.render('manage/user/Add', {
-			conf: conf,
-			title: '新增 | '+ req.query.name +' | '+ conf.corp.name,
-			description: '',
-			keywords: ',html5',
-			data: {
-				roles: docs
-			}
-		});
+	// TODO
+	res.render('manage/user/Add', {
+		conf: conf,
+		title: '新增 | '+ req.query.name +' | '+ conf.corp.name,
+		description: '',
+		keywords: ',html5',
+		data: {
+		}
 	});
 };
 
