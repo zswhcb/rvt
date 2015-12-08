@@ -76,6 +76,7 @@
 				// TODO
 				$('#btn_genAuthCode').click(function(){
 					var user_id = $('input:radio[name="USER_ID"]:checked').val();
+					if(!user_id) return;
 					// TODO
 					$.ajax({
 						url: './genAuthCode/'+ user_id,

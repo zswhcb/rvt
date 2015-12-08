@@ -1,0 +1,51 @@
+#set($doc=$data.user)
+<form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url=''>
+	<input type='hidden' name='id' id='addFrm_id' value='$!doc.id'>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_PROJECT_NAME'><span class='olx-form-required'>*</span>项目名称</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='PROJECT_NAME' id='addFrm_PROJECT_NAME' placeholder='项目名称' value='$!doc.PROJECT_NAME'#if(null != $!doc.id) readonly#end>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TEL_NUM'><span class='olx-form-required'>*</span>电话号码</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='TEL_NUM' id='addFrm_TEL_NUM' placeholder='电话号码' value='$!doc.TEL_NUM'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_USER_ID'>发布人</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='USER_ID' id='addFrm_USER_ID' placeholder='发布人' value='$!doc.USER_ID'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_PROJECT_INTRO'>项目简介</label>
+		<div class='col-sm-4'>
+			<textarea class='form-control' rows='3' name='PROJECT_INTRO' id='addFrm_PROJECT_INTRO' placeholder='项目简介' required='required'>$!doc.PROJECT_INTRO</textarea>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_PROJECT_TYPE_ID'>项目类型</label>
+		<div class='col-sm-4'>
+			<select class='form-control' name='PROJECT_TYPE_ID' id='addFrm_PROJECT_TYPE_ID'>
+				<option value='1'#if(1 == $!doc.STATUS) selected#end>启用</option>
+				<option value='2'#if(2 == $!doc.STATUS) selected#end>禁用</option>
+			</select>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_STATUS'>状态</label>
+		<div class='col-sm-4'>
+			<select class='form-control' name='STATUS' id='addFrm_STATUS'>
+				<option value='1'#if(1 == $!doc.STATUS) selected#end>启用</option>
+				<option value='2'#if(2 == $!doc.STATUS) selected#end>禁用</option>
+			</select>
+		</div>
+	</div>
+	<div class='form-group'>
+		<div class='col-sm-offset-2 col-sm-4'>
+			<button id='addFrm_btn_sub' type='button' class='btn btn-primary'>保存</button>
+		</div>
+	</div>
+</form>
