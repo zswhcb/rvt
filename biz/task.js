@@ -12,7 +12,7 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
-var sql_1 = 'SELECT c.USER_NAME, c.REAL_NAME, b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM p_project a, p_project_type b, s_user c WHERE a.PROJECT_TYPE_ID=b.id AND a.USER_ID=c.id';
+var sql_1 = 'SELECT b.PROJECT_NAME, b.TEL_NUM, a.* FROM p_task a, p_project b WHERE a.PROJECT_ID=b.id';
 
 /**
  *
@@ -21,7 +21,20 @@ var sql_1 = 'SELECT c.USER_NAME, c.REAL_NAME, b.TYPE_NAME PROJECT_TYPE_NAME, a.*
  */
 exports.findAll = function(cb){
 	var sql = sql_1 +' ORDER BY a.CREATE_TIME DESC';
-	mysql.query(sql_1, null, function (err, docs){
+	mysql.query(sql, null, function (err, docs){
+		if(err) return cb(err);
+		cb(null, docs);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.findByProjectId = function(project_id, cb){
+	var sql = sql_1 +' AND a.PROJECT_ID=? ORDER BY a.CREATE_TIME DESC';
+	mysql.query(sql, [project_id], function (err, docs){
 		if(err) return cb(err);
 		cb(null, docs);
 	});
@@ -38,7 +51,7 @@ exports.findAll = function(cb){
 		cb(null);
 	}
 
-	var sql_add = 'INSERT INTO s_user (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?)';
+	var sql_add = 'INSERT INTO p_task (id, TASK_NAME, TASK_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, START_TIME, END_TIME, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 	/**
 	 *
@@ -51,11 +64,13 @@ exports.findAll = function(cb){
 			// CREATE
 			var postData = [
 				util.genObjectId(),
-				newInfo.PROJECT_NAME,
-				newInfo.PROJECT_INTRO,
-				newInfo.PROJECT_TYPE_ID,
-				newInfo.TEL_NUM,
-				newInfo.USER_ID,
+				newInfo.TASK_NAME,
+				newInfo.TASK_INTRO,
+				newInfo.TASK_SUM,
+				newInfo.PROJECT_ID,
+				newInfo.TALK_TIME_LEN,
+				newInfo.START_TIME,
+				newInfo.END_TIME,
 				new Date(),
 				newInfo.STATUS || 1
 			];
@@ -66,7 +81,7 @@ exports.findAll = function(cb){
 		});
 	};
 
-	var sql_edit = 'UPDATE s_user set PROJECT_NAME=?, PROJECT_INTRO=?, TEL_NUM=?, STATUS=? WHERE id=?';
+	var sql_edit = 'UPDATE s_user set TASK_NAME=?, TASK_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
 
 	/**
 	 *
@@ -78,9 +93,12 @@ exports.findAll = function(cb){
 			if(err) return cb(err);
 			// CREATE
 			var postData = [
-				newInfo.PROJECT_NAME,
-				newInfo.PROJECT_INTRO,
-				newInfo.TEL_NUM,
+				newInfo.TASK_NAME,
+				newInfo.TASK_INTRO,
+				newInfo.TASK_SUM,
+				newInfo.TALK_TIME_LEN,
+				newInfo.START_TIME,
+				newInfo.END_TIME,
 				newInfo.STATUS || 1,
 				newInfo.id
 			];

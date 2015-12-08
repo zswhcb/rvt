@@ -13,7 +13,7 @@ var util = require('speedt-utils'),
 var exports = module.exports;
 
 // 查询用户 关联用户角色表
-var sql_1 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_user_role c WHERE a.id=c.USER_ID AND b.id=c.ROLE_ID';
+var sql_1 = 'SELECT d.ROLE_NAME, d.ROLE_ID, e.* FROM s_user e LEFT JOIN (SELECT b.id ROLE_ID, b.ROLE_NAME, a.id FROM s_user a, s_role b, s_user_role c WHERE a.id=c.USER_ID AND b.id=c.ROLE_ID) d ON (e.id=d.id)';
 
 /**
  *
@@ -21,7 +21,7 @@ var sql_1 = 'SELECT b.id ROLE_ID, b.ROLE_NAME, a.* FROM s_user a, s_role b, s_us
  * @return
  */
 exports.findAll = function(cb){
-	var sql = sql_1 +' ORDER BY a.CREATE_TIME DESC';
+	var sql = sql_1 +' ORDER BY e.CREATE_TIME DESC';
 	mysql.query(sql, null, function (err, docs){
 		if(err) return cb(err);
 		cb(null, docs);
@@ -36,7 +36,7 @@ exports.findAll = function(cb){
  * @return
  */
 exports.login = function(logInfo, cb){
-	var sql = sql_1 +' AND a.STATUS=1 AND b.STATUS=1 AND a.USER_NAME=?';
+	var sql = sql_1 +' WHERE e.STATUS=1 AND e.STATUS=1 AND e.USER_NAME=?';
 	// TODO
 	mysql.query(sql, [logInfo.USER_NAME], function (err, docs){
 		if(err) return cb(err);
@@ -44,6 +44,7 @@ exports.login = function(logInfo, cb){
 		if(!mysql.checkOnly(docs)) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
 		// TODO
 		var doc = docs[0];
+		if(!doc.ROLE_ID) return cb(null, ['无权登陆', 'USER_NAME']);
 		// TODO
 		if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
 			return cb(null, ['用户名或密码输入错误', 'USER_PASS'], doc);
@@ -57,7 +58,7 @@ exports.login = function(logInfo, cb){
  * @return
  */
 exports.getById = function(id, cb){
-	var sql = sql_1 +' AND a.id=?';
+	var sql = sql_1 +' AND e.id=?';
 	mysql.query(sql, [id], function (err, docs){
 		if(err) return cb(err);
 		cb(null, mysql.checkOnly(docs) ? docs[0]: null);

@@ -19,6 +19,29 @@ var biz = {
  * @params
  * @return
  */
+exports.add = function(req, res, next){
+	var result = { success: false },
+		data = req._data;
+	// TODO
+	data.USER_PASS = '123456';
+	// TODO
+	biz.user.saveNew(data, function (err, msg, status){
+		if(err) return next(err);
+		// TODO
+		if(!!msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+		result.success = true;
+		res.send(result);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.addUI = function(req, res, next){
 	biz.role.findAll(function (err, docs){
 		if(err) return next(err);

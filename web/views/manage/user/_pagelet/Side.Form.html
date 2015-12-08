@@ -50,15 +50,6 @@
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_ROLE_ID'>选择角色</label>
-		<div class='col-sm-4'>
-			<select class='form-control' name='ROLE_ID' id='addFrm_ROLE_ID'>
-			#foreach($!doc in $!data.roles)
-				<option value='$!doc.id'>$!doc.ROLE_NAME</option>#end
-			</select>
-		</div>
-	</div>
-	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_STATUS'>状态</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='STATUS' id='addFrm_STATUS'>
