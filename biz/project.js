@@ -51,7 +51,7 @@ exports.findAll = function(cb){
 		cb(null);
 	}
 
-	var sql_add = 'INSERT INTO s_user (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?)';
+	var sql_add = 'INSERT INTO p_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?)';
 
 	/**
 	 *
@@ -79,7 +79,7 @@ exports.findAll = function(cb){
 		});
 	};
 
-	var sql_edit = 'UPDATE s_user set PROJECT_NAME=?, PROJECT_INTRO=?, TEL_NUM=?, STATUS=? WHERE id=?';
+	var sql_edit = 'UPDATE p_project set PROJECT_NAME=?, PROJECT_INTRO=?, TEL_NUM=?, STATUS=? WHERE id=?';
 
 	/**
 	 *
