@@ -15,7 +15,7 @@ var exports = module.exports;
 // 查询用户 关联用户角色表
 var sql_1 = 'SELECT d.ROLE_NAME, d.ROLE_ID, e.* FROM s_user e LEFT JOIN (SELECT b.id ROLE_ID, b.ROLE_NAME, a.id FROM s_user a, s_role b, s_user_role c WHERE a.id=c.USER_ID AND b.id=c.ROLE_ID) d ON (e.id=d.id)';
 
-var sql_2 = 'SELECT a.* FROM s_user a, s_user_role b WHERE a.id=b.USER_ID AND b.ROLE_ID=? ORDER BY a.CREATE_TIME DESC';
+var sql_2 = 'SELECT a.* FROM s_user a, s_user_role b WHERE a.id=b.USER_ID AND b.ROLE_ID=? AND AUTH_CODE_ID="" ORDER BY a.CREATE_TIME DESC';
 
 /**
  *
