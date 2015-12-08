@@ -10,7 +10,7 @@ var util = require('speedt-utils');
 var conf = require('../../settings');
 
 var biz = {
-	role: require('../../../biz/role')
+	user: require('../../../biz/user')
 };
 
 /**
@@ -19,7 +19,7 @@ var biz = {
  * @return
  */
 exports.indexUI = function(req, res, next){
-	biz.role.findAll(function (err, docs){
+	biz.user.findByRoleId(null, function (err, docs){
 		// TODO
 		res.render('manage/authcode/Index', {
 			conf: conf,
@@ -27,7 +27,7 @@ exports.indexUI = function(req, res, next){
 			description: '',
 			keywords: ',html5',
 			data: {
-				roles: docs
+				users: docs
 			}
 		});
 	});

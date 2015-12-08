@@ -35,7 +35,7 @@
 					<div class='panel panel-default table-responsive'>
 						<div class='panel-heading'>
 							<div class='btn-group btn-group-xs'>
-								<button class='btn btn-primary glyphicon glyphicon-refresh' data-toggle='modal'>刷新</button>
+								<button class='btn btn-primary glyphicon glyphicon-refresh' onclick='location.reload();'>刷新</button>
 							</div>
 						</div>
 						#parse('manage/authcode/_pagelet/Side.List.User.html')
@@ -45,7 +45,7 @@
 					<div class='panel panel-default table-responsive'>
 						<div class='panel-heading'>
 							<div class='btn-group btn-group-xs'>
-								<button class='btn btn-primary glyphicon glyphicon-barcode' onclick='parent.location.href="/manage/#page/task/add?name="'>生成认证码</button>
+								<button class='btn btn-primary glyphicon glyphicon-barcode'>生成认证码</button>
 							</div>
 						</div>
 						#parse('manage/authcode/_pagelet/Side.List.AuthCode.html')
@@ -56,6 +56,9 @@
 		#parse('front/_pagelet/Common.IndexJs.html')
 		#parse('manage/_pagelet/Common.Iframe.html')
 		<script>
+			$(function(){
+				$('input:radio[name="USER_ID"]').attr('checked', false);
+			});
 			$('#searchFrm_btn_search').click(function(){
 				var formObj = $('#searchFrm').serializeObjectForm();
 				console.log(formObj);

@@ -9,7 +9,7 @@ module.exports = {
 	cookie: {
 		secret: 'hnzswh-rvt'
 	}, corp: {
-		name: '电话回访',
+		name: '打电话',
 		website: 'http://www.dolalive.com/'
 	}, mysql: {
 		database: 'rvt',

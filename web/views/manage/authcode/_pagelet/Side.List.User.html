@@ -1,4 +1,4 @@
-<table data-olx-type='olx.grid' class='table table-bordered table-hover table-condensed table-striped' data-url='/role/list' data-current='1' data-pagesize='20' data-count='561'>
+<table id='table1' data-olx-type='olx.grid' class='table table-bordered table-hover table-condensed table-striped' data-url='/role/list' data-current='1' data-pagesize='20' data-count='561'>
 	<thead>
 		<tr>
 			<th class='ta'>No.</th>
@@ -8,11 +8,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		#foreach($!doc in $!data.projects)<tr>
-			<td class='ta'><input type='checkbox' value='$!doc.id'></td>
+		#foreach($!doc in $!data.users)<tr>
+			<td class='ta'><input type='radio' name='USER_ID' value='$!doc.id'></td>
 			<td>$!doc.USER_NAME</td>
 			<td>$!doc.REAL_NAME</td>
-			<td>$!doc.PROJECT_NAME</td>
+			<td>$!doc.MOBILE</td>
 		</tr>#end
 	</tbody>
 </table>
