@@ -45,7 +45,7 @@
 					<div class='panel panel-default table-responsive'>
 						<div class='panel-heading'>
 							<div class='btn-group btn-group-xs'>
-								<button class='btn btn-primary glyphicon glyphicon-barcode'>生成认证码</button>
+								<button id='btn_genAuthCode' class='btn btn-primary glyphicon glyphicon-barcode'>生成认证码</button>
 							</div>
 						</div>
 						<table id='table2' data-olx-type='olx.grid' class='table table-bordered table-hover table-condensed table-striped' data-url='/role/list' data-current='1' data-pagesize='20' data-count='561'>
@@ -71,6 +71,22 @@
 					}).done(function (data){
 						if(!data.success) return $('#table2').html('');
 						$('#table2').html(data.data);
+					});
+				});
+				// TODO
+				$('#btn_genAuthCode').click(function(){
+					var user_id = $('input:radio[name="USER_ID"]:checked').val();
+					// TODO
+					$.ajax({
+						url: './genAuthCode/'+ user_id,
+						type: 'POST',
+						dataType: 'JSON'
+					}).done(function (data){
+						if(data.success) return location.reload();
+						if(data.status){
+							if(408 === data.status) return parent.location.href='/manage/';
+						}
+						if(data.msg) alert(data.msg[0]);
 					});
 				});
 			});

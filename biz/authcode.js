@@ -26,3 +26,27 @@ exports.findByUserId = function(user_id, cb){
 		cb(null, docs);
 	});
 };
+
+/**
+ * 生成认证码
+ *
+ * @params
+ * @return
+ */
+exports.genAuthCode = function(user_id, sum, cb){
+	var sql = 'INSERT INTO s_auth_code (id, USER_ID, CREATE_TIME, STATUS) VALUES (?, ?, ?, ?)';
+	var postData = null;
+	// TODO
+	for(var i=0; i<sum; i++){
+		postData = [
+			util.genObjectId(),
+			user_id,
+			new Date(),
+			1
+		];
+		mysql.query(sql, postData, function (err, status){
+			// TODO
+		});
+	}
+	cb(null, null, null);
+};

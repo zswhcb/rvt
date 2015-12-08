@@ -42,6 +42,28 @@ exports.indexUI = function(req, res, next){
 	});
 };
 
+/**
+ *
+ * @params
+ * @return
+ */
+exports.genAuthCode = function(req, res, next){
+	var result = { success: false };
+	var uid = req.params.uid;
+
+	biz.authcode.genAuthCode(uid, 10, function (err, msg, status){
+		if(err) return next(err);
+		// TODO
+		if(!!msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+		// TODO
+		result.success = true;
+		res.send(result);
+	});
+};
+
 (function (exports){
 	/**
 	 *
