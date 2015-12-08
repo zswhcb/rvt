@@ -48,7 +48,9 @@
 								<button class='btn btn-primary glyphicon glyphicon-barcode'>生成认证码</button>
 							</div>
 						</div>
+						<table id='table2' data-olx-type='olx.grid' class='table table-bordered table-hover table-condensed table-striped' data-url='/role/list' data-current='1' data-pagesize='20' data-count='561'>
 						#parse('manage/authcode/_pagelet/Side.List.AuthCode.html')
+						</table>
 					</div>
 				</div>
 			</div>
@@ -58,6 +60,19 @@
 		<script>
 			$(function(){
 				$('input:radio[name="USER_ID"]').attr('checked', false);
+				// TODO
+				$('input:radio[name="USER_ID"]').change(function (obj){
+					var user_id = obj.target.defaultValue;
+					// TODO
+					$.ajax({
+						url: './'+ user_id,
+						type: 'POST',
+						dataType: 'JSON'
+					}).done(function (data){
+						if(!data.success) return $('#table2').html('');
+						$('#table2').html(data.data);
+					});
+				});
 			});
 			$('#searchFrm_btn_search').click(function(){
 				var formObj = $('#searchFrm').serializeObjectForm();
