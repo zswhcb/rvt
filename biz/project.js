@@ -26,3 +26,67 @@ exports.findAll = function(cb){
 		cb(null, docs);
 	});
 };
+
+/**
+ * 表单
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	function formVali(newInfo, cb){
+		cb(null);
+	}
+
+	var sql_add = 'INSERT INTO s_user (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?)';
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.saveNew = function(newInfo, cb){
+		formVali(newInfo, function (err){
+			if(err) return cb(err);
+			// CREATE
+			var postData = [
+				util.genObjectId(),
+				newInfo.PROJECT_NAME,
+				newInfo.PROJECT_INTRO,
+				newInfo.PROJECT_TYPE_ID,
+				newInfo.TEL_NUM,
+				newInfo.USER_ID,
+				new Date(),
+				newInfo.STATUS || 1
+			];
+			mysql.query(sql_add, postData, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
+			});
+		});
+	};
+
+	var sql_edit = 'UPDATE s_user set PROJECT_INTRO=?, TEL_NUM=?, STATUS=? WHERE id=?';
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.editInfo = function(newInfo, cb){
+		formVali(newInfo, function (err){
+			if(err) return cb(err);
+			// CREATE
+			var postData = [
+				newInfo.PROJECT_INTRO,
+				newInfo.TEL_NUM,
+				newInfo.STATUS || 1,
+				newInfo.id
+			];
+			mysql.query(sql_edit, postData, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
+			});
+		});
+	};
+})(exports);
