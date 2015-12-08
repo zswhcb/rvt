@@ -1,67 +1,48 @@
-#set($doc=$data.corp)
+#set($doc=$data.task)
 <form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url=''>
-	<input type='hidden' name='id' id='addFrm_id' placeholder='用户名' value='$!doc.id'>
+	<input type='hidden' name='id' id='addFrm_id' value='$!doc.id'>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_CUSTOMER_ID'>所属客户</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TASK_NAME'><span class='olx-form-required'>*</span>任务名称</label>
 		<div class='col-sm-4'>
-			#if(null == $!doc.id)<select class='form-control' name='CUSTOMER_ID' id='addFrm_CUSTOMER_ID'>
-			#foreach($!doc in $!data.customers)
-				<option value='$!doc.id'>$!doc.USER_NAME（$!doc.REAL_NAME）</option>#end
-			</select>#else
-			<input type='text' class='form-control' placeholder='所属客户' value='$!doc.USER_NAME（$!doc.REAL_NAME）' readonly>#end
+			<input type='text' class='form-control' name='TASK_NAME' id='addFrm_TASK_NAME' placeholder='任务名称' value='$!doc.TASK_NAME'>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_CORP_NAME_CH'><span class='olx-form-required'>*</span>任务名称</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TASK_SUM'><span class='olx-form-required'>*</span>任务数量</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='CORP_NAME_CH' id='addFrm_CORP_NAME_CH' placeholder='企业名称' value='$!doc.CORP_NAME_CH'>
+			<input type='text' class='form-control' name='TASK_SUM' id='addFrm_TASK_SUM' placeholder='任务数量' value='$!doc.TASK_SUM'>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_CORP_NAME_EN'><span class='olx-form-required'>*</span>任务数量</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TALK_TIME_LEN'><span class='olx-form-required'>*</span>通话时长</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='CORP_NAME_EN' id='addFrm_CORP_NAME_EN' placeholder='企业名称' value='$!doc.CORP_NAME_EN'>
+			<input type='text' class='form-control' name='TALK_TIME_LEN' id='addFrm_TALK_TIME_LEN' placeholder='通话时长（秒）' value='$!doc.TALK_TIME_LEN'>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_CORP_TYPE_ID'>通话时长</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_START_TIME'>开始时间</label>
 		<div class='col-sm-4'>
-			<select class='form-control' name='CORP_TYPE_ID' id='addFrm_CORP_TYPE_ID'>
-			#foreach($!doc in $!data.corp_types)
-				<option value='$!doc.id'>$!doc.TYPE_NAME</option>#end
-			</select>
+			<input type='text' class='Wdate form-control' name='START_TIME' id='addFrm_START_TIME' placeholder='开始时间' value='$!doc.START_TIME' onClick="WdatePicker()">
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_CORP_TYPE_ID'>开始时间</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_END_TIME'>结束时间</label>
 		<div class='col-sm-4'>
-			<select class='form-control' name='CORP_TYPE_ID' id='addFrm_CORP_TYPE_ID'>
-			#foreach($!doc in $!data.corp_types)
-				<option value='$!doc.id'>$!doc.TYPE_NAME</option>#end
-			</select>
+			<input type='text' class='Wdate form-control' name='END_TIME' id='addFrm_END_TIME' placeholder='结束时间' value='$!doc.END_TIME' onClick="WdatePicker()">
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_CORP_TYPE_ID'>结束时间</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TASK_INTRO'><span class='olx-form-required'>*</span>任务简介</label>
 		<div class='col-sm-4'>
-			<select class='form-control' name='CORP_TYPE_ID' id='addFrm_CORP_TYPE_ID'>
-			#foreach($!doc in $!data.corp_types)
-				<option value='$!doc.id'>$!doc.TYPE_NAME</option>#end
-			</select>
-		</div>
-	</div>
-	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_INTRO'>任务简介</label>
-		<div class='col-sm-4'>
-			<textarea class='form-control' rows='3' name='INTRO' id='addFrm_INTRO' placeholder='简介' required='required'>$!doc.INTRO</textarea>
+			<textarea class='form-control' rows='3' name='TASK_INTRO' id='addFrm_TASK_INTRO' placeholder='任务简介' required='required'>$!doc.TASK_INTRO</textarea>
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_STATUS'>状态</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='STATUS' id='addFrm_STATUS'>
-				<option value='1'>启用</option>
-				<option value='2'>禁用</option>
+				<option value='1'#if(1 == $!doc.STATUS) selected#end>启用</option>
+				<option value='2'#if(2 == $!doc.STATUS) selected#end>禁用</option>
 			</select>
 		</div>
 	</div>
