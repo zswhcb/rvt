@@ -18,6 +18,27 @@ var biz = {
  * @params
  * @return
  */
+exports.edit = function(req, res, next){
+	var result = { success: false },
+		data = req._data;
+	// TODO
+	biz.user.editInfo(data, function (err, msg, status){
+		if(err) return next(err);
+		// TODO
+		if(!!msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+		result.success = true;
+		res.send(result);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.editUI = function(req, res, next){
 	biz.user.getById(req.query.id, function (err, doc){
 		if(err) return next(err);

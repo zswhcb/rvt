@@ -4,7 +4,7 @@
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_USER_NAME'><span class='olx-form-required'>*</span>用户名</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='USER_NAME' id='addFrm_USER_NAME' placeholder='用户名' value='$!doc.USER_NAME'>
+			<input type='text' class='form-control' name='USER_NAME' id='addFrm_USER_NAME' placeholder='用户名' value='$!doc.USER_NAME'#if(null != $!doc.id) readonly#end>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -53,8 +53,8 @@
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_STATUS'>状态</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='STATUS' id='addFrm_STATUS'>
-				<option value='1'>启用</option>
-				<option value='2'>禁用</option>
+				<option value='1'#if(1 == $!doc.STATUS) selected#end>启用</option>
+				<option value='2'#if(2 == $!doc.STATUS) selected#end>禁用</option>
 			</select>
 		</div>
 	</div>

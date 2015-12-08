@@ -70,8 +70,10 @@ function proc_manage(app){
 	app.get('/manage/user/login$', manage.user.loginUI);
 	app.post('/manage/user/login$', express.valiPostData, manage.user.login);
 	app.get('/manage/user/changePwd$', manage.user.login_validate, manage.user.changePwdUI);
+	// 添加 修改
 	app.post('/manage/user/add', express.valiPostData, manage.user.login_validate, manage.user.add);
 	app.get('/manage/user/add', manage.user.login_validate, manage.user.addUI);
+	app.post('/manage/user/edit', express.valiPostData, manage.user.login_validate, manage.user.edit);
 	app.get('/manage/user/edit', manage.user.login_validate, manage.user.editUI);
 
 	// 用户管理
