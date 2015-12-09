@@ -12,7 +12,8 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
-var sql_1 = 'SELECT b.MOBILE, a.* FROM p_handtask a, s_user b WHERE a.USER_ID=b.id AND a.TASK_ID=? ORDER BY a.CREATE_TIME DESC';
+var sql_1 = 'SELECT b.MOBILE, a.* FROM p_handtask a, s_user b WHERE a.USER_ID=b.id AND a.TASK_ID=?';
+var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
 
 /**
  *
@@ -20,7 +21,8 @@ var sql_1 = 'SELECT b.MOBILE, a.* FROM p_handtask a, s_user b WHERE a.USER_ID=b.
  * @return
  */
 exports.findByTaskId = function(task_id, cb){
-	var sql = sql_1;
+	task_id = task_id || '';
+	var sql = sql_1 + sql_orderby;
 	mysql.query(sql, [task_id], function (err, docs){
 		if(err) return cb(err);
 		cb(null, docs);

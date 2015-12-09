@@ -25,7 +25,7 @@ exports.register = function(newInfo, cb){
 	// TODO
 	newInfo.USER_NAME = newInfo.MOBILE;
 	newInfo.ROLE_ID = '566512b49012fb044691ace6';
-	exports.saveNew(newInfo, cb);
+	this.saveNew(newInfo, cb);
 };
 
 /**

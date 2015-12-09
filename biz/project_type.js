@@ -6,23 +6,25 @@
 'use strict';
 
 var util = require('speedt-utils'),
-	md5 = util.md5,
 	mysql_util = util.mysql_util,
 	mysql = util.mysql;
 
 var exports = module.exports;
 
-var sql_1 = 'SELECT * FROM p_project_type';
+(function (exports){
+	var sql_1 = 'SELECT * FROM p_project_type';
+	var sql_orderby = ' ORDER BY CREATE_TIME ASC';
 
-/**
- *
- * @params
- * @return
- */
-exports.findAll = function(cb){
-	var sql = sql_1;
-	mysql.query(sql_1, null, function (err, docs){
-		if(err) return cb(err);
-		cb(null, docs);
-	});
-};
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.findAll = function(cb){
+		var sql = sql_1 + sql_orderby;
+		mysql.query(sql, null, function (err, docs){
+			if(err) return cb(err);
+			cb(null, docs);
+		});
+	};
+})(exports);
