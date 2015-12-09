@@ -64,6 +64,7 @@ exports.add = function(req, res, next){
  * @return
  */
 exports.editUI = function(req, res, next){
+	var project_id = req.params.project_id;
 	// TODO
 	var ep = EventProxy.create('users', 'project_types', 'project', function (users, project_types, project){
 		// TODO
@@ -94,7 +95,7 @@ exports.editUI = function(req, res, next){
 		ep.emit('project_types', docs);
 	});
 
-	biz.project.getById(req.query.id, function (err, doc){
+	biz.project.getById(project_id, function (err, doc){
 		if(err) return ep.emit('error', err);
 		ep.emit('project', doc);
 	});

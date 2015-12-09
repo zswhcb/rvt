@@ -40,7 +40,9 @@ exports.edit = function(req, res, next){
  * @return
  */
 exports.editUI = function(req, res, next){
-	biz.user.getById(req.query.id, function (err, doc){
+	var user_id = req.params.user_id;
+	// TODO
+	biz.user.getById(user_id, function (err, doc){
 		if(err) return next(err);
 		// TODO
 		res.render('manage/user/Edit', {
