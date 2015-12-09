@@ -10,9 +10,6 @@
 		.olx-form-required {
 			color: red;
 		}
-		.control-label {
-			font-weight: bold;
-		}
 		</style>
 	</head>
 	<body>
@@ -25,7 +22,7 @@
 						<div class='panel-heading'><b>用户登陆</b></div>
 						<div class='panel-body'>
 							<div class='col-md-5 col-sm-6'>
-								<form class='form-horizontal' role='form' id='regFrm' onsubmit='return false;' data-url='login'>
+								<form class='form-horizontal' role='form' id='regFrm' onsubmit='return false;' data-url=''>
 									<div class='form-group'>
 										<label for='regFrm_USER_NAME' class='col-sm-3 control-label'><span class='olx-form-required'>*</span>手机号</label>
 										<div class='col-sm-9'>
@@ -70,7 +67,7 @@
 									</div>
 									<div class='form-group'>
 										<div class='col-sm-offset-3 col-sm-4'>
-											<button id='btn_log' type='button' class='btn btn-primary'>立即注册</button>
+											<button id='btn_reg' type='button' class='btn btn-primary'>立即注册</button>
 										</div>
 									</div>
 									<div class='form-group'>
@@ -102,6 +99,14 @@
 		#parse('front/_pagelet/Common.IndexJs.html')
 		<!-- Own -->
 		<script type='text/javascript'>
+		$('#btn_reg').click(function(){
+			$('#regFrm').olxForm('submit', [function(){
+			}, function (valiResu){
+			}, function (data){
+				if(data.success) return alert('注册成功');
+				if(data.msg) alert(data.msg[0]);
+			}]);
+		});
 		</script>
 		#parse('front/_pagelet/Common.LastJs.html')
 	</body>
