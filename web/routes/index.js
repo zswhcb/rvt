@@ -60,6 +60,8 @@ function proc_manage(app){
 	app.post('/manage/authcode/genAuthCode/:user_id', manage.user.login_validate, manage.authcode.genAuthCode);
 	app.post('/manage/authcode/getAuthCodes/:user_id', manage.user.login_validate, manage.authcode.getAuthCodes);
 	app.get('/manage/authcode/', manage.user.login_validate, manage.authcode.indexUI);
+	// 任务监控
+	app.get('/manage/task/monitor/', manage.user.login_validate, manage.task.monitorUI);
 	// 任务管理
 	app.post('/manage/task/getTasks/:project_id', manage.user.login_validate, manage.task.getTasks);
 	app.post('/manage/task/del/:task_id', manage.user.login_validate, manage.task.del);

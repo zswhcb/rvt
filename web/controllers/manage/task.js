@@ -25,6 +25,26 @@ var biz = {
  * @params
  * @return
  */
+exports.monitorUI = function(req, res, next){
+	biz.task.findAll(function (err, docs){
+		// TODO
+		res.render('manage/task/monitor/Index', {
+			conf: conf,
+			title: req.query.name +' | '+ conf.corp.name,
+			description: '',
+			keywords: ',html5',
+			data: {
+				tasks: docs
+			}
+		});
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.del = function(req, res, next){
 	var result = { success: false },
 		task_id = req.params.task_id;
