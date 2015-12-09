@@ -14,6 +14,20 @@ var exports = module.exports;
 
 var sql_1 = 'SELECT b.PROJECT_NAME, b.TEL_NUM, a.* FROM p_task a, p_project b WHERE a.PROJECT_ID=b.id';
 
+var sql_del = 'DELETE FROM p_task WHERE id=?';
+/**
+ *
+ * @params
+ * @return
+ */
+exports.remove = function(id, cb){
+	// CREATE
+	mysql.query(sql_del, [id], function (err, status){
+		if(err) return cb(err);
+		cb(null, null, status);
+	});
+};
+
 /**
  *
  * @params

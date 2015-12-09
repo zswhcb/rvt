@@ -62,6 +62,7 @@ function proc_manage(app){
 	app.get('/manage/authcode/', manage.user.login_validate, manage.authcode.indexUI);
 	// 任务管理
 	app.post('/manage/task/getTasks/:project_id', manage.user.login_validate, manage.task.getTasks);
+	app.post('/manage/task/del/:task_id', manage.user.login_validate, manage.task.del);
 	app.post('/manage/task/add', express.valiPostData, manage.user.login_validate, manage.task.add);
 	app.get('/manage/task/add', manage.user.login_validate, manage.task.addUI);
 	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);

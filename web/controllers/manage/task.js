@@ -25,6 +25,27 @@ var biz = {
  * @params
  * @return
  */
+exports.del = function(req, res, next){
+	var result = { success: false },
+		task_id = req.params.task_id;
+	// TODO
+	biz.task.remove(task_id, function (err, msg, status){
+		if(err) return next(err);
+		// TODO
+		if(!!msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+		result.success = true;
+		res.send(result);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.add = function(req, res, next){
 	var result = { success: false },
 		data = req._data;
