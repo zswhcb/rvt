@@ -32,22 +32,22 @@
 			<form id='regFrm' role='form' onsubmit='return false;' data-url=''>
 				<h3>用户注册</h3>
 				<div class='form-group'>
-					<input class='form-control' name='USER_NAME' id='regFrm_USER_NAME' type='text' placeholder='用户名'>
+					<input class='form-control' name='MOBILE' id='regFrm_MOBILE' type='text' placeholder='手机号：13837100000'>
 				</div>
 				<div class='form-group'>
-					<input class='form-control' name='USER_PASS' id='regFrm_USER_PASS' type='password' placeholder='密码'>
+					<input class='form-control' name='USER_PASS' id='regFrm_USER_PASS' type='text' placeholder='密码'>
 				</div>
 				<div class='form-group'>
 					<input class='form-control' name='AUTH_CODE_ID' id='regFrm_AUTH_CODE_ID' type='text' placeholder='认证码'>
 				</div>
 				<div class='form-group'>
-					<input class='form-control' name='REAL_NAME' id='regFrm_REAL_NAME' type='text' placeholder='真实姓名'>
-				</div>
-				<div class='form-group'>
-					<input class='form-control' name='MOBILE' id='regFrm_MOBILE' type='text' placeholder='手机号'>
-				</div>
-				<div class='form-group'>
 					<input class='form-control' name='ALIPAY_ACCOUNT' id='regFrm_ALIPAY_ACCOUNT' type='text' placeholder='支付宝帐号'>
+				</div>
+				<div class='form-group'>
+					<input class='form-control' name='REAL_NAME' id='regFrm_REAL_NAME' type='text' placeholder='真实姓名：支付认证时验证'>
+				</div>
+				<div class='form-group'>
+					<input class='form-control' name='EMAIL' id='regFrm_EMAIL' type='text' placeholder='电子邮箱：找回密码时使用'>
 				</div>
 				<button id='btn' type='button' class='btn btn-primary'>注册</button>
 			</form>
@@ -58,7 +58,9 @@
 			$('#regFrm').olxForm('submit', [function(){
 			}, function (valiResu){
 			}, function (data){
-				if(data.success) return alert('注册成功');
+				if(data.success){
+					return alert('注册成功');
+				}
 				if(data.msg) alert(data.msg[0]);
 			}]);
 		});

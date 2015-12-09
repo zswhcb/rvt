@@ -13,9 +13,21 @@ var util = require('speedt-utils'),
 var exports = module.exports;
 
 // 查询用户 关联用户角色表
-var sql_1 = 'SELECT d.ROLE_NAME, d.ROLE_ID, e.* FROM s_user e LEFT JOIN (SELECT b.id ROLE_ID, b.ROLE_NAME, a.id FROM s_user a, s_role b, s_user_role c WHERE a.id=c.USER_ID AND b.id=c.ROLE_ID) d ON (e.id=d.id)';
+var sql_1 = 'SELECT d.ROLE_NAME, d.ROLE_ID, e.* FROM s_user e LEFT JOIN (SELECT b.id ROLE_ID, b.ROLE_NAME, a.id FROM s_user a, s_role b WHERE b.id=a.ROLE_ID) d ON (e.id=d.id)';
 
-var sql_2 = 'SELECT a.* FROM s_user a, s_user_role b WHERE a.id=b.USER_ID AND b.ROLE_ID=? AND a.AUTH_CODE_ID="" ORDER BY a.CREATE_TIME DESC';
+var sql_2 = 'SELECT a.* FROM s_user a WHERE a.ROLE_ID=? AND a.AUTH_CODE_ID="" ORDER BY a.CREATE_TIME DESC';
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.register = function(newInfo, cb){
+	// TODO
+	newInfo.USER_NAME = newInfo.MOBILE;
+	newInfo.ROLE_ID = '566512b49012fb044691ace6';
+	exports.saveNew(newInfo, cb);
+};
 
 /**
  *
@@ -106,7 +118,7 @@ exports.findByName = function(name, cb){
 		cb(null);
 	}
 
-	var sql_add = 'INSERT INTO s_user (id, USER_NAME, USER_PASS, AVATAR_URL, EMAIL, MOBILE, REAL_NAME, ALIPAY_ACCOUNT, APIKEY, SECKEY, AUTH_CODE_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+	var sql_add = 'INSERT INTO s_user (id, ROLE_ID, USER_NAME, USER_PASS, AVATAR_URL, EMAIL, MOBILE, REAL_NAME, ALIPAY_ACCOUNT, APIKEY, SECKEY, AUTH_CODE_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 	/**
 	 *
@@ -116,25 +128,33 @@ exports.findByName = function(name, cb){
 	exports.saveNew = function(newInfo, cb){
 		formVali(newInfo, function (err){
 			if(err) return cb(err);
-			// CREATE
-			var postData = [
-				util.genObjectId(),
-				newInfo.USER_NAME.toLowerCase(),
-				md5.hex(newInfo.USER_PASS),
-				newInfo.AVATAR_URL,
-				newInfo.EMAIL,
-				newInfo.MOBILE,
-				newInfo.REAL_NAME,
-				newInfo.ALIPAY_ACCOUNT,
-				newInfo.APIKEY,
-				newInfo.SECKEY,
-				newInfo.AUTH_CODE_ID,
-				new Date(),
-				newInfo.STATUS || 1
-			];
-			mysql.query(sql_add, postData, function (err, status){
+			// TODO
+			exports.findByName(newInfo.USER_NAME, function (err, doc){
 				if(err) return cb(err);
-				cb(null, null, status);
+				// TODO
+				if(!!doc) return cb(null, ['用户名或手机号已经存在', 'USER_NAME']);
+				// TODO
+				// CREATE
+				var postData = [
+					util.genObjectId(),
+					newInfo.ROLE_ID,
+					newInfo.USER_NAME.toLowerCase(),
+					md5.hex(newInfo.USER_PASS),
+					newInfo.AVATAR_URL,
+					newInfo.EMAIL,
+					newInfo.MOBILE,
+					newInfo.REAL_NAME,
+					newInfo.ALIPAY_ACCOUNT,
+					newInfo.APIKEY,
+					newInfo.SECKEY,
+					newInfo.AUTH_CODE_ID,
+					new Date(),
+					newInfo.STATUS || 1
+				];
+				mysql.query(sql_add, postData, function (err, status){
+					if(err) return cb(err);
+					cb(null, null, status);
+				});
 			});
 		});
 	};
