@@ -23,7 +23,7 @@ exports.getById = function(id, cb){
 	var sql = sql_1 +' AND a.id=?';
 	mysql.query(sql, [id], function (err, docs){
 		if(err) return cb(err);
-		cb(null, mysql.checkOnly(docs) ? docs[0]: null);
+		cb(null, mysql.checkOnly(docs) ? docs[0] : null);
 	});
 };
 

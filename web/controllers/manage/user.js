@@ -66,8 +66,6 @@ exports.add = function(req, res, next){
 	var result = { success: false },
 		data = req._data;
 	// TODO
-	data.USER_PASS = '123456';
-	// TODO
 	biz.user.saveNew(data, function (err, msg, status){
 		if(err) return next(err);
 		// TODO
