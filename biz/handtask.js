@@ -6,25 +6,26 @@
 'use strict';
 
 var util = require('speedt-utils'),
-	md5 = util.md5,
 	mysql_util = util.mysql_util,
 	mysql = util.mysql;
 
 var exports = module.exports;
 
-var sql_1 = 'SELECT b.MOBILE, a.* FROM p_handtask a, s_user b WHERE a.USER_ID=b.id AND a.TASK_ID=?';
-var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
+(function (exports){
+	var sql_1 = 'SELECT b.MOBILE, a.* FROM p_handtask a, s_user b WHERE a.USER_ID=b.id AND a.TASK_ID=?';
+	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
 
-/**
- *
- * @params
- * @return
- */
-exports.findByTaskId = function(task_id, cb){
-	task_id = task_id || '';
-	var sql = sql_1 + sql_orderby;
-	mysql.query(sql, [task_id], function (err, docs){
-		if(err) return cb(err);
-		cb(null, docs);
-	});
-};
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.findByTaskId = function(task_id, cb){
+		task_id = task_id || '';
+		var sql = sql_1 + sql_orderby;
+		mysql.query(sql, [task_id], function (err, docs){
+			if(err) return cb(err);
+			cb(null, docs);
+		});
+	};
+})(exports);

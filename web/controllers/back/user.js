@@ -37,22 +37,14 @@ exports.register = function(req, res, next){
 	var result = { success: false },
 		data = req._data;
 	// TODO
-	biz.authcode.checkUsed(data.AUTH_CODE_ID, function (err, status){
+	biz.user.register(data, function (err, msg, doc){
 		if(err) return next(err);
-		if(!!status){
-			result.msg = ['认证码不存在或已经使用', 'AUTH_CODE_ID'];
+		if(!!msg){
+			result.msg = msg;
 			return res.send(result);
 		}
 		// TODO
-		biz.user.register(data, function (err, msg, doc){
-			if(err) return next(err);
-			if(!!msg){
-				result.msg = msg;
-				return res.send(result);
-			}
-			// TODO
-			result.success = true;
-			res.send(result);
-		});
+		result.success = true;
+		res.send(result);
 	});
 };
