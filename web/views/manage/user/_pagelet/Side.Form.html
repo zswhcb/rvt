@@ -1,5 +1,5 @@
 #set($doc=$data.user)
-<form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url=''>
+<form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url='#if(null != $!doc.id)../edit#end'>
 	<input type='hidden' name='id' id='addFrm_id' value='$!doc.id'>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_USER_NAME'><span class='olx-form-required'>*</span>用户名</label>
