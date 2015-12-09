@@ -2,68 +2,107 @@
 <html lang='zh-CN'>
 	<head>
 		#parse('front/_pagelet/Common.IndexHeader.html')
+		<link rel='stylesheet' type='text/css' href='$!{conf.html.external_res}user/css/login.css' />
 		<style>
-		body {
-			background-color: #F5F5F5;
-			padding-bottom: 40px;
-			padding-top: 40px;
+		body{
+			background: rgba(0, 0, 0, 0) url('$!{conf.html.external_res}assets/css/olx/images/bg.jpg') repeat scroll 0 0;
 		}
-		#regFrm {
-			background-color: #FFFFFF;
-			border: 1px solid #E5E5E5;
-			border-radius: 5px;
-			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-			margin: 0 auto 20px;
-			max-width: 450px;
-			padding: 19px 29px 29px;
+		.olx-form-required {
+			color: red;
 		}
-		#alert_info {
-			max-width: 450px;
-			margin: 0 auto 20px;
+		.control-label {
+			font-weight: bold;
 		}
 		</style>
 	</head>
 	<body>
-		<section class='container'>
-			<div id='alert_info' class='alert alert-warning'>
-				<button type='button' class='close' data-dismiss='alert'>&times;</button>
-				<strong>提示：</strong><span id='alert_msg'>请按要求输入正确的格式内容。</span>
+		#parse('back/_pagelet/Side.TopBanner.html')
+		<header id='header'></header>
+		<div class='container'>
+			<div class='row'>
+				<div class='col-md-12'>
+					<div class='panel panel-default'>
+						<div class='panel-heading'><b>用户登陆</b></div>
+						<div class='panel-body'>
+							<div class='col-md-5 col-sm-6'>
+								<form class='form-horizontal' role='form' id='regFrm' onsubmit='return false;' data-url='login'>
+									<div class='form-group'>
+										<label for='regFrm_USER_NAME' class='col-sm-3 control-label'><span class='olx-form-required'>*</span>手机号</label>
+										<div class='col-sm-9'>
+											<input type='text' class='form-control' name='USER_NAME' id='regFrm_USER_NAME' placeholder='手机号' required data-original-title='手机号不能为空。' value=''>
+										</div>
+									</div>
+									<div class='form-group wrong_tip'>
+										<label id='regFrm_USER_NAME_Vali' class='col-sm-offset-3 col-sm-9'></label>
+									</div>
+									<div class='form-group'>
+										<label for='regFrm_USER_PASS' class='col-sm-3 control-label'><span class='olx-form-required'>*</span>登陆密码</label>
+										<div class='col-sm-9'>
+											<input type='password' class='form-control' name='USER_PASS' id='regFrm_USER_PASS' placeholder='登陆密码' required data-original-title='登陆密码不能为空。' value=''>
+										</div>
+									</div>
+									<div class='form-group wrong_tip'>
+										<label id='regFrm_USER_PASS_Vali' class='col-sm-offset-3 col-sm-9'></label>
+									</div>
+									<div class='form-group'>
+										<label for='regFrm_AUTH_CODE_ID' class='col-sm-3 control-label'><span class='olx-form-required'>*</span>认证码</label>
+										<div class='col-sm-9'>
+											<input type='text' class='form-control' name='AUTH_CODE_ID' id='regFrm_AUTH_CODE_ID' placeholder='认证码' required data-original-title='认证码不能为空。' value=''>
+										</div>
+									</div>
+									<div class='form-group'>
+										<label for='regFrm_ALIPAY_ACCOUNT' class='col-sm-3 control-label'><span class='olx-form-required'>*</span>支付宝帐号</label>
+										<div class='col-sm-9'>
+											<input type='text' class='form-control' name='ALIPAY_ACCOUNT' id='regFrm_ALIPAY_ACCOUNT' placeholder='支付宝帐号' required data-original-title='认证码不能为空。' value=''>
+										</div>
+									</div>
+									<div class='form-group'>
+										<label for='regFrm_REAL_NAME' class='col-sm-3 control-label'><span class='olx-form-required'>*</span>真实姓名</label>
+										<div class='col-sm-9'>
+											<input type='text' class='form-control' name='REAL_NAME' id='regFrm_REAL_NAME' placeholder='真实姓名' required data-original-title='真实姓名不能为空。' value=''>
+										</div>
+									</div>
+									<div class='form-group'>
+										<label for='regFrm_EMAIL' class='col-sm-3 control-label'><span class='olx-form-required'>*</span>电子邮箱</label>
+										<div class='col-sm-9'>
+											<input type='text' class='form-control' name='EMAIL' id='regFrm_EMAIL' placeholder='电子邮箱' required data-original-title='电子邮箱不能为空。' value=''>
+										</div>
+									</div>
+									<div class='form-group'>
+										<div class='col-sm-offset-3 col-sm-4'>
+											<button id='btn_log' type='button' class='btn btn-primary'>立即注册</button>
+										</div>
+									</div>
+									<div class='form-group'>
+										<div class='col-sm-offset-3 col-sm-9'>
+											<div class='checkbox'>
+												<label>
+													<input type='checkbox' checked> 我已阅读并同意《<a href='javascript:;'>用户注册条款</a>》
+												</label>
+											</div>
+										</div>
+									</div>
+								</form>
+			                </div>
+							<div id='help_tip' class='col-md-offset-3 col-sm-offset-3 col-md-4 col-sm-3'>
+								<div>已有帐号？<a href='/user/login'>立即登陆</a></div>
+								<div>&nbsp;</div>
+								<div><b>为什么总提示登陆失败？</b></div>
+								<ol>
+									<li>首先请确定浏览器已经启用Cookie。</li>
+									<li>实在不行，请联系管理员。</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<form id='regFrm' role='form' onsubmit='return false;' data-url=''>
-				<h3>用户注册</h3>
-				<div class='form-group'>
-					<input class='form-control' name='MOBILE' id='regFrm_MOBILE' type='text' placeholder='手机号：13837100000'>
-				</div>
-				<div class='form-group'>
-					<input class='form-control' name='USER_PASS' id='regFrm_USER_PASS' type='text' placeholder='密码'>
-				</div>
-				<div class='form-group'>
-					<input class='form-control' name='AUTH_CODE_ID' id='regFrm_AUTH_CODE_ID' type='text' placeholder='认证码'>
-				</div>
-				<div class='form-group'>
-					<input class='form-control' name='ALIPAY_ACCOUNT' id='regFrm_ALIPAY_ACCOUNT' type='text' placeholder='支付宝帐号'>
-				</div>
-				<div class='form-group'>
-					<input class='form-control' name='REAL_NAME' id='regFrm_REAL_NAME' type='text' placeholder='真实姓名：支付认证时验证'>
-				</div>
-				<div class='form-group'>
-					<input class='form-control' name='EMAIL' id='regFrm_EMAIL' type='text' placeholder='电子邮箱：找回密码时使用'>
-				</div>
-				<button id='btn' type='button' class='btn btn-primary'>注册</button>
-			</form>
-		</section>
+		</div>
+		#parse('front/_pagelet/Side.IndexFooter.html')
 		#parse('front/_pagelet/Common.IndexJs.html')
+		<!-- Own -->
 		<script type='text/javascript'>
-		$('#btn').click(function(){
-			$('#regFrm').olxForm('submit', [function(){
-			}, function (valiResu){
-			}, function (data){
-				if(data.success){
-					return alert('注册成功');
-				}
-				if(data.msg) alert(data.msg[0]);
-			}]);
-		});
 		</script>
+		#parse('front/_pagelet/Common.LastJs.html')
 	</body>
 </html>

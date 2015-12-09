@@ -51,6 +51,8 @@ function proc_front(app){
 function proc_back(app){
 	app.post('/user/register$', express.valiPostData, back.user.register);
 	app.get('/user/register$', back.user.registerUI);
+	app.get('/user/login$', back.user.loginUI);
+	app.get('/', back.user.loginUI);
 }
 
 /**

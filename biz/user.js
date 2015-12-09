@@ -96,9 +96,9 @@ exports.register = function(newInfo, cb){
 	newInfo.AUTH_CODE_ID = newInfo.AUTH_CODE_ID || '';
 	biz.authcode.checkUsed(newInfo.AUTH_CODE_ID, function (err, msg){
 		if(err) return cb(err);
-		if(msg) return cb(null, msg);
+		if(!!msg) return cb(null, msg);
 		// TODO
-		newInfo.USER_NAME = newInfo.MOBILE;
+		newInfo.MOBILE = newInfo.USER_NAME;
 		newInfo.ROLE_ID = '566512b49012fb044691ace6';
 		exports.saveNew(newInfo, cb);
 	});

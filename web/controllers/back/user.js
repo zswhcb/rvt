@@ -15,6 +15,21 @@ var biz = {
 };
 
 /**
+ * 登陆
+ *
+ * @params
+ * @return
+ */
+exports.loginUI = function(req, res, next){
+	res.render('back/user/Login', {
+		conf: conf,
+		title: '用户登陆 | '+ conf.corp.name,
+		description: '',
+		keywords: ',html5'
+	});
+};
+
+/**
  *
  * @params
  * @return
@@ -22,7 +37,7 @@ var biz = {
 exports.registerUI = function(req, res, next){
 	res.render('back/user/Register', {
 		conf: conf,
-		title: '用户注册 | '+ conf.corp.name,
+		title: '新用户注册 | '+ conf.corp.name,
 		description: '',
 		keywords: ',html5'
 	});
