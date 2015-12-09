@@ -12,6 +12,10 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
+var biz = {
+	authcode: require('./authcode')
+};
+
 (function (exports){
 	// 查询用户 关联用户角色表
 	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a, s_role b WHERE a.ROLE_ID=b.id';
@@ -89,10 +93,15 @@ var exports = module.exports;
  * @return
  */
 exports.register = function(newInfo, cb){
-	// TODO
-	newInfo.USER_NAME = newInfo.MOBILE;
-	newInfo.ROLE_ID = '566512b49012fb044691ace6';
-	this.saveNew(newInfo, cb);
+	newInfo.AUTH_CODE_ID = newInfo.AUTH_CODE_ID || '';
+	biz.authcode.checkUsed(newInfo.AUTH_CODE_ID, function (err, msg){
+		if(err) return cb(err);
+		if(msg) return cb(null, msg);
+		// TODO
+		newInfo.USER_NAME = newInfo.MOBILE;
+		newInfo.ROLE_ID = '566512b49012fb044691ace6';
+		exports.saveNew(newInfo, cb);
+	});
 };
 
 /**

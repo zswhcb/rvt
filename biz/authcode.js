@@ -31,13 +31,13 @@ var exports = module.exports;
 			var doc = docs[0];
 			if(!!doc.USER_NAME) return cb(null, ['认证码已经使用']);
 			// TODO
-			cb(null, null, null);
+			cb(null, null);
 		});
 	};
 })(exports);
 
 (function (exports){
-	var sql = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT FROM (SELECT * FROM s_auth_code WHERE USER_ID=?) a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID) ORDER BY a.CREATE_TIME DESC';
+	var sql = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT FROM (SELECT * FROM s_auth_code WHERE USER_ID=?) a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID) ORDER BY a.id DESC';
 
 	/**
 	 *
