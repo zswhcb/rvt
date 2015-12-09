@@ -16,6 +16,7 @@ var conf = require('../../settings'),
 	macros = require('../../lib/macro');
 
 var biz = {
+	handtask: require('../../../biz/handtask'),
 	task: require('../../../biz/task'),
 	project: require('../../../biz/project')
 };
@@ -162,6 +163,55 @@ exports.addUI = function(req, res, next){
 	 function getTemplate(cb){
 		// if(temp) return cb(null, temp);
 		fs.readFile(path.join(cwd, 'views', 'manage', 'task', '_pagelet', 'Side.List.Task.html'), 'utf8', function (err, template){
+			if(err) return cb(err);
+			temp = template;
+			cb(null, template);
+		});
+	};
+})(exports);
+
+(function (exports){
+	/**
+	 * 任务监控
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.getTaskMonitors = function(req, res, next){
+		var result = { success: false },
+			task_id = req.params.task_id;
+
+		biz.handtask.findByTaskId(task_id, function (err, docs){
+			if(err) return next(err);
+			// TODO
+			getTemplate(function (err, template){
+				if(err){
+					result.msg = err;
+					return res.send(result);
+				}
+
+				var html = velocity.render(template, {
+					conf: conf,
+					data: { handtasks: docs }
+				}, macros);
+
+				result.success = true;
+				result.data = html;
+				res.send(result);
+			});
+		});
+	};
+
+	var temp = null;
+	/**
+	 * 获取模板
+	 *
+	 * @params
+	 * @return
+	 */
+	 function getTemplate(cb){
+		// if(temp) return cb(null, temp);
+		fs.readFile(path.join(cwd, 'views', 'manage', 'task', 'monitor', '_pagelet', 'Side.List.HandTask.html'), 'utf8', function (err, template){
 			if(err) return cb(err);
 			temp = template;
 			cb(null, template);

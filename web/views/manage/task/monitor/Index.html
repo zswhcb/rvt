@@ -42,46 +42,19 @@
 		#parse('manage/_pagelet/Common.Iframe.html')
 		<script>
 			$(function(){
-				$('input:radio[name="PROJECT_ID"]').attr('checked', false);
+				$('input:radio[name="TASK_ID"]').attr('checked', false);
 				// TODO
-				$('input:radio[name="PROJECT_ID"]').change(function (obj){
-					var project_id = obj.target.defaultValue;
+				$('input:radio[name="TASK_ID"]').change(function (obj){
+					var task_id = obj.target.defaultValue;
 					// TODO
 					$.ajax({
-						url: './getTasks/'+ project_id,
+						url: './getTaskMonitors/'+ task_id,
 						type: 'POST',
 						dataType: 'JSON'
 					}).done(function (data){
 						if(!data.success) return $('#table2').html('');
 						$('#table2').html(data.data);
 					});
-				});
-				// TODO
-				$('#btn_add').click(function(){
-					var project_id = $('input:radio[name="PROJECT_ID"]:checked').val();
-					if(!project_id) return;
-					parent.location.href = '/manage/#page/task/add?project_id='+ project_id;
-				});
-				// TODO
-				$('#btn_del').click(function(){
-					var task_id = $('input:radio[name="TASK_ID"]:checked').val();
-					if(!task_id) return;
-					// TODO
-					if(confirm('确定要执行该操作吗？')){
-						// TODO
-						$.ajax({
-							url: './del/'+ task_id,
-							type: 'POST',
-							dataType: 'JSON'
-						}).done(function (data){
-							location.reload();
-						});
-					}
-				});
-				// TODO
-				$('#searchFrm_btn_search').click(function(){
-					var formObj = $('#searchFrm').serializeObjectForm();
-					console.log(formObj);
 				});
 			});
 		</script>
