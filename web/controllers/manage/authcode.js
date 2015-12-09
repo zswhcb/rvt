@@ -49,9 +49,9 @@ exports.indexUI = function(req, res, next){
  */
 exports.genAuthCode = function(req, res, next){
 	var result = { success: false };
-	var uid = req.params.uid;
+	var user_id = req.params.user_id;
 
-	biz.authcode.genAuthCode(uid, 10, function (err, msg, status){
+	biz.authcode.genAuthCode(user_id, 10, function (err, msg, status){
 		if(err) return next(err);
 		// TODO
 		if(!!msg){
@@ -72,9 +72,9 @@ exports.genAuthCode = function(req, res, next){
 	 */
 	exports.getAuthCodes = function(req, res, next){
 		var result = { success: false };
-		var uid = req.params.uid;
+		var user_id = req.params.user_id;
 
-		biz.authcode.findByUserId(uid, function (err, docs){
+		biz.authcode.findByUserId(user_id, function (err, docs){
 			if(err) return next(err);
 			// TODO
 			getTemplate(function (err, template){
