@@ -1,6 +1,12 @@
+<style>
+#addFrm_START_TIME, #addFrm_END_TIME{
+	background: #fff url(http://www.foreworld.net/js/My97DatePicker/4.8-Beta4/skin/datePicker.gif) no-repeat right;
+}
+</style>
 #set($doc=$data.task)
 <form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url=''>
 	<input type='hidden' name='id' id='addFrm_id' value='$!doc.id'>
+	<input type='hidden' name='PROJECT_ID' id='addFrm_PROJECT_ID' value='$!doc.PROJECT_ID'>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TASK_NAME'><span class='olx-form-required'>*</span>任务名称</label>
 		<div class='col-sm-4'>
@@ -20,15 +26,15 @@
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_START_TIME'>开始时间</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_START_TIME'><span class='olx-form-required'>*</span>开始时间</label>
 		<div class='col-sm-4'>
-			<input type='text' class='Wdate form-control' name='START_TIME' id='addFrm_START_TIME' placeholder='开始时间' value='$!doc.START_TIME' onClick="WdatePicker()">
+			<input type='text' class='form-control' name='START_TIME' id='addFrm_START_TIME' placeholder='开始时间' value='$!doc.START_TIME' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'addFrm_END_TIME\')}'})">
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_END_TIME'>结束时间</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_END_TIME'><span class='olx-form-required'>*</span>结束时间</label>
 		<div class='col-sm-4'>
-			<input type='text' class='Wdate form-control' name='END_TIME' id='addFrm_END_TIME' placeholder='结束时间' value='$!doc.END_TIME' onClick="WdatePicker()">
+			<input type='text' class='form-control' name='END_TIME' id='addFrm_END_TIME' placeholder='结束时间' value='$!doc.END_TIME' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'addFrm_START_TIME\')}'})">
 		</div>
 	</div>
 	<div class='form-group'>

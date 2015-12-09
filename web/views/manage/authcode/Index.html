@@ -65,7 +65,7 @@
 					var user_id = obj.target.defaultValue;
 					// TODO
 					$.ajax({
-						url: './'+ user_id,
+						url: './getAuthCodes/'+ user_id,
 						type: 'POST',
 						dataType: 'JSON'
 					}).done(function (data){

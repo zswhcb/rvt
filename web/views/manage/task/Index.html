@@ -45,12 +45,14 @@
 					<div class='panel panel-default table-responsive'>
 						<div class='panel-heading'>
 							<div class='btn-group btn-group-xs'>
-								<button class='btn btn-primary glyphicon glyphicon-plus-sign' onclick='parent.location.href="/manage/#page/task/add?name="'>新增</button>
+								<button id='btn_add' class='btn btn-primary glyphicon glyphicon-plus-sign'>新增</button>
 								<button id='btn_edit' class='btn btn-default glyphicon glyphicon-edit' data-toggle='modal' data-target='#editModal'>编辑</button>
 								<button id='btn_del' class='btn btn-danger glyphicon glyphicon-remove-sign'>删除</button>
 							</div>
 						</div>
+						<table id='table2' data-olx-type='olx.grid' class='table table-bordered table-hover table-condensed table-striped' data-url='/role/list' data-current='1' data-pagesize='20' data-count='561'>
 						#parse('manage/task/_pagelet/Side.List.Task.html')
+						</table>
 					</div>
 				</div>
 			</div>
@@ -60,6 +62,25 @@
 		<script>
 			$(function(){
 				$('input:radio[name="PROJECT_ID"]').attr('checked', false);
+				// TODO
+				$('input:radio[name="PROJECT_ID"]').change(function (obj){
+					var project_id = obj.target.defaultValue;
+					// TODO
+					$.ajax({
+						url: './getTasks/'+ project_id,
+						type: 'POST',
+						dataType: 'JSON'
+					}).done(function (data){
+						if(!data.success) return $('#table2').html('');
+						$('#table2').html(data.data);
+					});
+				});
+				// TODO
+				$('#btn_add').click(function(){
+					var project_id = $('input:radio[name="PROJECT_ID"]:checked').val();
+					if(!project_id) return;
+					parent.location.href = '/manage/#page/task/add?project_id='+ project_id;
+				});
 			});
 			$('#searchFrm_btn_search').click(function(){
 				var formObj = $('#searchFrm').serializeObjectForm();

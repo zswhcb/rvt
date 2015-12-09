@@ -70,7 +70,7 @@ exports.genAuthCode = function(req, res, next){
 	 * @params
 	 * @return
 	 */
-	exports.getAuthCode = function(req, res, next){
+	exports.getAuthCodes = function(req, res, next){
 		var result = { success: false };
 		var uid = req.params.uid;
 

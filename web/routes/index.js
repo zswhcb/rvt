@@ -58,9 +58,11 @@ function proc_back(app){
 function proc_manage(app){
 	// 认证码
 	app.post('/manage/authcode/genAuthCode/:uid', manage.user.login_validate, manage.authcode.genAuthCode);
-	app.post('/manage/authcode/:uid', manage.user.login_validate, manage.authcode.getAuthCode);
+	app.post('/manage/authcode/getAuthCodes/:uid', manage.user.login_validate, manage.authcode.getAuthCodes);
 	app.get('/manage/authcode/', manage.user.login_validate, manage.authcode.indexUI);
 	// 任务管理
+	app.post('/manage/task/getTasks/:project_id', manage.user.login_validate, manage.task.getTasks);
+	app.post('/manage/task/add', express.valiPostData, manage.user.login_validate, manage.task.add);
 	app.get('/manage/task/add', manage.user.login_validate, manage.task.addUI);
 	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);
 	// 项目管理
