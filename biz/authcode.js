@@ -14,6 +14,26 @@ var exports = module.exports;
 
 var sql_1 = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT FROM (SELECT * FROM s_auth_code WHERE USER_ID=?) a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID)';
 
+var sql_2 = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT FROM s_auth_code a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID) WHERE a.id=?';
+/**
+ * 检查是否在使用
+ *
+ * @params
+ * @return
+ */
+exports.checkUsed = function(id, cb){
+	var sql = sql_2;
+	// TODO
+	mysql.query(sql, [id], function (err, docs){
+		if(err) return cb(err);
+		// TODO
+		if(1 !== docs.length) return cb(null, true);
+		// TODO
+		var doc = docs[0];
+		cb(null, null !== doc.USER_NAME);
+	});
+};
+
 /**
  *
  * @params

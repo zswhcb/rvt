@@ -11,7 +11,9 @@ var util = require('speedt-utils'),
 var front = {
 	site: require('../controllers/front/site')
 };
-var back = {};
+var back = {
+	user: require('../controllers/back/user')
+};
 var manage = {
 	authcode: require('../controllers/manage/authcode'),
 	task: require('../controllers/manage/task'),
@@ -47,7 +49,8 @@ function proc_front(app){
  * @return
  */
 function proc_back(app){
-	// TODO
+	app.post('/user/register$', express.valiPostData, back.user.register);
+	app.get('/user/register$', back.user.registerUI);
 }
 
 /**

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+	<head>
+		#parse('front/_pagelet/Common.IndexHeader.html')
+		<style>
+		body {
+			background-color: #F5F5F5;
+			padding-bottom: 40px;
+			padding-top: 40px;
+		}
+		#regFrm {
+			background-color: #FFFFFF;
+			border: 1px solid #E5E5E5;
+			border-radius: 5px;
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+			margin: 0 auto 20px;
+			max-width: 450px;
+			padding: 19px 29px 29px;
+		}
+		#alert_info {
+			max-width: 450px;
+			margin: 0 auto 20px;
+		}
+		</style>
+	</head>
+	<body>
+		<section class='container'>
+			<div id='alert_info' class='alert alert-warning'>
+				<button type='button' class='close' data-dismiss='alert'>&times;</button>
+				<strong>提示：</strong><span id='alert_msg'>请按要求输入正确的格式内容。</span>
+			</div>
+			<form id='regFrm' role='form' onsubmit='return false;' data-url=''>
+				<h3>用户注册</h3>
+				<div class='form-group'>
+					<input class='form-control' name='USER_NAME' id='regFrm_USER_NAME' type='text' placeholder='用户名'>
+				</div>
+				<div class='form-group'>
+					<input class='form-control' name='USER_PASS' id='regFrm_USER_PASS' type='password' placeholder='密码'>
+				</div>
+				<div class='form-group'>
+					<input class='form-control' name='AUTH_CODE_ID' id='regFrm_AUTH_CODE_ID' type='text' placeholder='认证码'>
+				</div>
+				<div class='form-group'>
+					<input class='form-control' name='REAL_NAME' id='regFrm_REAL_NAME' type='text' placeholder='真实姓名'>
+				</div>
+				<div class='form-group'>
+					<input class='form-control' name='MOBILE' id='regFrm_MOBILE' type='text' placeholder='手机号'>
+				</div>
+				<div class='form-group'>
+					<input class='form-control' name='ALIPAY_ACCOUNT' id='regFrm_ALIPAY_ACCOUNT' type='text' placeholder='支付宝帐号'>
+				</div>
+				<button id='btn' type='button' class='btn btn-primary'>注册</button>
+			</form>
+		</section>
+		#parse('front/_pagelet/Common.IndexJs.html')
+		<script type='text/javascript'>
+		$('#btn').click(function(){
+			$('#regFrm').olxForm('submit', [function(){
+			}, function (valiResu){
+			}, function (data){
+				if(data.success) return alert('注册成功');
+				if(data.msg) alert(data.msg[0]);
+			}]);
+		});
+		</script>
+	</body>
+</html>
