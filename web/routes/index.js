@@ -41,6 +41,7 @@ module.exports = function(app){
  */
 function proc_front(app){
 	app.get('/api$', valiGetData, front.site.signature_validate, front.site.api);
+	app.get('/api_test/', front.site.api_testUI);
 }
 
 /**

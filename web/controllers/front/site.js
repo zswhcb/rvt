@@ -37,7 +37,6 @@ exports.signature_validate = function(req, res, next){
 	if('login' === query.command) return next();
 };
 
-
 (function (exports){
 	/**
 	 *
@@ -76,3 +75,17 @@ exports.signature_validate = function(req, res, next){
 		}
 	};
 })(exports);
+
+/**
+ *
+ * @param
+ * @return
+ */
+exports.api_testUI = function(req, res, next){
+	res.render('front/Api_testUI', {
+		conf: conf,
+		title: 'API测试 | '+ conf.corp.name,
+		description: '',
+		keywords: ',html5'
+	});
+};
