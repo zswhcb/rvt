@@ -15,11 +15,11 @@
         android:orientation="horizontal" >
 
         <EditText
-            android:id="@+id/sel_date"
+            android:id="@+id/text_sel_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
             android:layout_weight="1"
-            android:ems="10"
             android:inputType="date" >
         </EditText>
 

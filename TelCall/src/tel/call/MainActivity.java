@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class MainActivity extends ActionBarActivity {
 	// TODO
 	private Button btn_sync;
 	private ListView grid_items;
+	private EditText text_sel_date;
 	// TODO
 	private List<HashMap<String, Object>> grid_data;
 	// TODO
@@ -116,6 +118,9 @@ public class MainActivity extends ActionBarActivity {
 	private void findView() {
 		btn_sync = (Button) findViewById(R.id.btn_sync);
 		grid_items = (ListView) findViewById(R.id.grid_items);
+		text_sel_date = (EditText) findViewById(R.id.text_sel_date);
+		// TODO
+		text_sel_date.setText("2015-01-01");
 	}
 
 	private void bind() {

@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang='zh-CN'>
 	<head>
-		<title>API测试 | 打电话</title>
+		<title>$!title</title>
 		<meta charset='utf-8' />
 	</head>
 	<body>
 		<div>
-			121
+			<a href='javascript:login();'>login</a>
 		</div>
 		<div>
-			121
 		</div>
 		<script type='text/javascript' src='http://127.0.0.1/js/jquery/2.0.2/jquery.min.js'></script>
 		<!-- Own -->
 		<script type='text/javascript'>
+		function login(){
+			$.ajax({
+				url: '/api?command=login&data=',
+				type: 'GET',
+				dataType: 'JSON'
+			}).done(function (data){
+				console.log(data);
+			});
+		}
 		</script>
 	</body>
 </html>
