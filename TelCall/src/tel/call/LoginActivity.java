@@ -151,12 +151,14 @@ public class LoginActivity extends Activity {
 					Toast.makeText(getApplicationContext(),
 							R.string.valiate_userpass, Toast.LENGTH_SHORT)
 							.show();
+					btn_login.setEnabled(true);
 					return;
 				}
 				if ("".equals(user_pass)) {
 					Toast.makeText(getApplicationContext(),
 							R.string.valiate_userpass, Toast.LENGTH_SHORT)
 							.show();
+					btn_login.setEnabled(true);
 					return;
 				}
 

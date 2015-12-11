@@ -30,6 +30,10 @@ public class HttpUtil {
 	public static Message get(String url, int what) {
 		HttpGet req = new HttpGet(url);
 		// TODO
+		Message msg = new Message();
+		msg.what = what;
+		msg.obj = null;
+		// TODO
 		try {
 			HttpResponse res = new DefaultHttpClient().execute(req);
 			if (HttpURLConnection.HTTP_OK == res.getStatusLine()
@@ -37,8 +41,6 @@ public class HttpUtil {
 				HttpEntity entity = res.getEntity();
 				String str = EntityUtils.toString(entity, "utf-8");
 				// TODO
-				Message msg = new Message();
-				msg.what = what;
 				msg.obj = str;
 				return msg;
 			}
@@ -47,6 +49,6 @@ public class HttpUtil {
 		} catch (IOException e) {
 			Log.i(TAG, e.getMessage());
 		}
-		return null;
+		return msg;
 	}
 }
