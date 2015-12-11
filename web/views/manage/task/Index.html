@@ -79,7 +79,7 @@
 				$('#btn_add').click(function(){
 					var project_id = $('input:radio[name="PROJECT_ID"]:checked').val();
 					if(!project_id) return;
-					parent.location.href = '/manage/#page/task/add?project_id='+ project_id;
+					parent.location.href = '/manage/#page/task/add/'+ project_id;
 				});
 				// TODO
 				$('#btn_del').click(function(){

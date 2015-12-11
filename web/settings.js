@@ -19,8 +19,8 @@ module.exports = {
 		password: 'password',
 		connectionLimit: 50
 	}, html: {
-		cdn: 'http://127.0.0.1/js/',
-		// cdn: 'http://www.foreworld.net/js/',
+		// cdn: 'http://127.0.0.1/js/',
+		cdn: 'http://www.foreworld.net/js/',
 		static_res: '/public/',
 		external_res: 'http://www.foreworld.net/public/',
 		pagesize: 10,

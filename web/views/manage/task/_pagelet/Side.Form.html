@@ -1,10 +1,10 @@
 <style>
 #addFrm_START_TIME, #addFrm_END_TIME{
-	background: #fff url(http://www.foreworld.net/js/My97DatePicker/4.8-Beta4/skin/datePicker.gif) no-repeat right;
+	background: #fff url($!{conf.html.cdn}My97DatePicker/4.8-Beta4/skin/datePicker.gif) no-repeat right;
 }
 </style>
 #set($doc=$data.task)
-<form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url=''>
+<form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url='./'>
 	<input type='hidden' name='id' id='addFrm_id' value='$!doc.id'>
 	<input type='hidden' name='PROJECT_ID' id='addFrm_PROJECT_ID' value='$!doc.PROJECT_ID'>
 	<div class='form-group'>

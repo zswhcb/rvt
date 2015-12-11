@@ -13,15 +13,21 @@
 		<script type='text/javascript' src='http://127.0.0.1/js/jquery/2.0.2/jquery.min.js'></script>
 		<!-- Own -->
 		<script type='text/javascript'>
-		function login(){
-			$.ajax({
-				url: '/api?command=login&data=',
-				type: 'GET',
-				dataType: 'JSON'
-			}).done(function (data){
-				console.log(data);
-			});
-		}
+		(function(){
+			var data = {
+				USER_NAME: 'admin',
+				USER_PASS: '123456'
+			}
+			window.login = function(){
+				$.ajax({
+					url: '/api?command=login&data='+ encodeURIComponent(JSON.stringify(data)),
+					type: 'GET',
+					dataType: 'JSON'
+				}).done(function (data){
+					console.log(data);
+				});
+			}
+		})(window);
 		</script>
 	</body>
 </html>

@@ -116,7 +116,7 @@ exports.addUI = function(req, res, next){
 		keywords: ',html5',
 		data: {
 			task: {
-				PROJECT_ID: req.query.project_id
+				PROJECT_ID: req.params.project_id
 			}
 		}
 	});

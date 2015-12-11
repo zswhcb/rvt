@@ -40,7 +40,7 @@ module.exports = function(app){
  * @return
  */
 function proc_front(app){
-	app.get('/api$', front.site.signature_validate, front.site.api);
+	app.get('/api$', valiGetData, front.site.signature_validate, front.site.api);
 	app.get('/api_test/', front.site.api_testUI);
 }
 
@@ -73,7 +73,7 @@ function proc_manage(app){
 	app.post('/manage/task/getTasks/:project_id', manage.user.login_validate, manage.task.getTasks);
 	app.post('/manage/task/del/:task_id', manage.user.login_validate, manage.task.del);
 	app.post('/manage/task/add', express.valiPostData, manage.user.login_validate, manage.task.add);
-	app.get('/manage/task/add', manage.user.login_validate, manage.task.addUI);
+	app.get('/manage/task/add/:project_id', manage.user.login_validate, manage.task.addUI);
 	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);
 	// 项目管理
 	app.post('/manage/project/edit', express.valiPostData, manage.user.login_validate, manage.project.edit);
