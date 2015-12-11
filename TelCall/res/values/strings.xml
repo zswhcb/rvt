@@ -21,6 +21,7 @@
     <!--  -->
     <string name="valiate_username">用户名不能为空,请重新输入</string>
     <string name="valiate_userpass">密码不能为空,请重新输入</string>
+    <string name="login_failure">用户名或密码输入错误</string>
     <!--  -->
     <string name="dial_main_btn_dial">立即拨打</string>
     <string name="dial_main_placeholder_tel">电话号码</string>

@@ -75,9 +75,21 @@ public class LoginActivity extends Activity {
 			case HttpAction.LOGIN:
 				try {
 					if (null == msg.obj) {
-						// TODO
+						Toast.makeText(getApplicationContext(),
+								R.string.login_failure, Toast.LENGTH_SHORT)
+								.show();
+						btn_login.setEnabled(true);
+						return;
 					}
 					JSONObject j = new JSONObject((String) msg.obj);
+					// TODO
+					if (!j.getBoolean("success")) {
+						Toast.makeText(getApplicationContext(),
+								R.string.login_failure, Toast.LENGTH_SHORT)
+								.show();
+						btn_login.setEnabled(true);
+						return;
+					}
 					Log.i(TAG, j.getString("success"));
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -130,9 +142,11 @@ public class LoginActivity extends Activity {
 		btn_login.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				btn_login.setEnabled(false);
+				// TODO
 				String user_name = text_username.getText().toString().trim();
 				String user_pass = text_userpass.getText().toString().trim();
-
+				// TODO
 				if ("".equals(user_name)) {
 					Toast.makeText(getApplicationContext(),
 							R.string.valiate_userpass, Toast.LENGTH_SHORT)
