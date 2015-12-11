@@ -53,6 +53,10 @@ exports.signature_validate = function(req, res, next){
 				result.msg = msg;
 				return res.send(result);
 			}
+			if('566512b49012fb044691ace6' !== doc.ROLE_ID){
+				result.msg = ['无权登陆'];
+				return res.send(result);
+			}
 			/* result */
 			result.data = { apikey: doc.APIKEY, seckey: doc.SECKEY };
 			result.success = true;

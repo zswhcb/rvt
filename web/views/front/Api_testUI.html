@@ -10,24 +10,27 @@
 		</div>
 		<div>
 		</div>
-		<script type='text/javascript' src='http://127.0.0.1/js/jquery/2.0.2/jquery.min.js'></script>
+		<script type='text/javascript' src='$!{conf.html.cdn}jquery/2.0.2/jquery.min.js'></script>
 		<!-- Own -->
 		<script type='text/javascript'>
-		(function(){
-			var data = {
-				USER_NAME: 'admin',
+		function login(){
+			ajax('login', {
+				USER_NAME: '18530053050',
 				USER_PASS: '123456'
-			}
-			window.login = function(){
-				$.ajax({
-					url: '/api?command=login&data='+ encodeURIComponent(JSON.stringify(data)),
-					type: 'GET',
-					dataType: 'JSON'
-				}).done(function (data){
-					console.log(data);
-				});
-			}
-		})(window);
+			});
+		}
+		/**
+		 *
+		 */
+		function ajax(command, postData){
+			$.ajax({
+				url: '/api?command='+ command +'&data='+ encodeURIComponent(JSON.stringify(postData)),
+				type: 'GET',
+				dataType: 'JSON'
+			}).done(function (data){
+				console.log(data);
+			});
+		}
 		</script>
 	</body>
 </html>
