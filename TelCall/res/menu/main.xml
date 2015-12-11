@@ -3,6 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="tel.call.MainActivity" >
 
+    <group>
+        <item
+            android:id="@+id/action_taskHistory"
+            android:title="@string/action_taskHistory"
+            app:showAsAction="never"/>
+        <item
+            android:id="@+id/action_changePwd"
+            android:title="@string/action_changePwd"
+            app:showAsAction="never"/>
+    </group>
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

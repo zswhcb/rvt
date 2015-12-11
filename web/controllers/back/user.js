@@ -63,3 +63,42 @@ exports.register = function(req, res, next){
 		res.send(result);
 	});
 };
+
+/**
+ * 用户会话验证
+ *
+ * @params
+ * @return
+ */
+exports.login_validate = function(req, res, next){
+	if(3 === req.session.lv) return next();
+	if(req.xhr) return res.send({ success: false, msg: '无权访问' });
+	res.redirect('/user/login?refererUrl='+ escape(req.url));
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.changePwdUI = function(req, res, next){
+	// TODO
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.indexUI = function(req, res, next){
+	// TODO
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.task_indexUI = function(req, res, next){
+	// TODO
+};

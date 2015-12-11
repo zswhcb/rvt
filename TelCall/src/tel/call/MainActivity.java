@@ -11,6 +11,7 @@ import tel.call.util.DateUtil;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -148,8 +149,26 @@ public class MainActivity extends ActionBarActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_changePwd: {
+			Uri uri = Uri.parse(getString(R.string.httpUrl) + "u/changePwd");
+			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			startActivity(intent);
+			break;
+		}
+		case R.id.action_taskHistory: {
+			Uri uri = Uri.parse(getString(R.string.httpUrl) + "u/task/");
+			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			startActivity(intent);
+			break;
+		}
+		case R.id.action_settings: {
+			Uri uri = Uri.parse(getString(R.string.httpUrl) + "u/");
+			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			startActivity(intent);
+			break;
+		}
+		default:
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -50,6 +50,10 @@ function proc_front(app){
  * @return
  */
 function proc_back(app){
+	app.get('/u/changePwd$', back.user.login_validate, back.user.changePwdUI);
+	app.get('/u/task/', back.user.login_validate, back.user.task_indexUI);
+	app.get('/u/', back.user.login_validate, back.user.indexUI);
+	// TODO
 	app.post('/user/register$', express.valiPostData, back.user.register);
 	app.get('/user/register$', back.user.registerUI);
 	app.get('/user/login$', back.user.loginUI);
