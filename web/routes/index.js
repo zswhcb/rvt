@@ -106,7 +106,7 @@ function proc_manage(app){
 	app.get('/manage/', manage.user.login_validate, manage.site.indexUI);
 }
 
-var str1 = '参数异常';
+var str1 = ['参数异常'];
 
 /**
  *

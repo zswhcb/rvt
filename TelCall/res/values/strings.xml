@@ -19,13 +19,14 @@
     <string name="login_main_label_1">还没有帐号?</string>
     <string name="login_main_label_2"><u>注册</u></string>
     <!--  -->
+    <string name="valiate_username">用户名不能为空,请重新输入</string>
     <string name="valiate_userpass">密码不能为空,请重新输入</string>
     <!--  -->
     <string name="dial_main_btn_dial">立即拨打</string>
     <string name="dial_main_placeholder_tel">电话号码</string>
     <string name="dial_main_placeholder_hint">提示信息</string>
     <!--  -->
-    <string name="fragment_main_btn_sync">数据同步</string>
+    <string name="fragment_main_btn_sync">刷新</string>
     <string name="fragment_main_tab_cell_1">No.</string>
     <string name="fragment_main_tab_cell_2">任务名称</string>
     <string name="fragment_main_tab_cell_3">下发日期</string>
