@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tel.call.util.DataMsg;
 import tel.call.util.HttpUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -66,38 +67,52 @@ public class LoginActivity extends Activity {
 		text_username.setText(getMobileNum().replaceAll("\\+86", ""));
 	}
 
-	@SuppressLint("HandlerLeak")
+	@SuppressLint({ "HandlerLeak", "ShowToast" })
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case HttpAction.LOGIN:
-				try {
-					if (null == msg.obj) {
-						Toast.makeText(getApplicationContext(),
-								R.string.login_failure, Toast.LENGTH_SHORT)
-								.show();
-						btn_login.setEnabled(true);
-						return;
-					}
-					JSONObject j = new JSONObject((String) msg.obj);
-					// TODO
-					if (!j.getBoolean("success")) {
-						Toast.makeText(getApplicationContext(),
-								R.string.login_failure, Toast.LENGTH_SHORT)
-								.show();
-						btn_login.setEnabled(true);
-						return;
-					}
-					Log.i(TAG, j.getString("success"));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+				login(msg);
 				break;
 			default:
 				break;
 			}
+		}
+
+		/**
+		 * 
+		 * @param msg
+		 */
+		private void login(Message msg) {
+			// TODO
+			DataMsg dm = (DataMsg) msg.obj;
+			if (null != dm.getMsg()) {
+				Toast.makeText(getApplicationContext(), getString(dm.getMsg()),
+						Toast.LENGTH_SHORT).show();
+				btn_login.setEnabled(true);
+				return;
+			}
+			// TODO
+			try {
+				JSONObject j = new JSONObject((String) dm.getData());
+				// TODO
+				if (!j.getBoolean("success")) {
+					Toast.makeText(getApplicationContext(),
+							j.getJSONArray("msg").getString(0),
+							Toast.LENGTH_SHORT).show();
+					btn_login.setEnabled(true);
+					return;
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return;
+			}
+			// TODO
+			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+			startActivity(intent);
+			finish();
 		}
 	};
 
@@ -163,11 +178,6 @@ public class LoginActivity extends Activity {
 				}
 
 				login(user_name, user_pass);
-
-				// Intent intent = new Intent(LoginActivity.this,
-				// MainActivity.class);
-				// startActivity(intent);
-				// finish();
 			}
 		});
 

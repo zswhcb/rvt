@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import tel.call.R;
 import android.os.Message;
 import android.util.Log;
 
@@ -32,7 +33,8 @@ public class HttpUtil {
 		// TODO
 		Message msg = new Message();
 		msg.what = what;
-		msg.obj = null;
+		DataMsg dm = new DataMsg();
+		msg.obj = dm;
 		// TODO
 		try {
 			HttpResponse res = new DefaultHttpClient().execute(req);
@@ -41,13 +43,15 @@ public class HttpUtil {
 				HttpEntity entity = res.getEntity();
 				String str = EntityUtils.toString(entity, "utf-8");
 				// TODO
-				msg.obj = str;
+				dm.setData(str);
 				return msg;
 			}
 		} catch (ClientProtocolException e) {
 			Log.i(TAG, e.getMessage());
+			dm.setMsg(R.string.network_anomaly);
 		} catch (IOException e) {
 			Log.i(TAG, e.getMessage());
+			dm.setMsg(R.string.network_anomaly);
 		}
 		return msg;
 	}
