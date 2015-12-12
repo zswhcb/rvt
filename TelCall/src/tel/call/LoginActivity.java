@@ -1,12 +1,12 @@
 package tel.call;
 
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tel.call.util.DataMsg;
 import tel.call.util.HttpUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -86,23 +86,21 @@ public class LoginActivity extends Activity {
 		 * @param msg
 		 */
 		private void login(Message msg) {
+			btn_login.setEnabled(true);
 			// TODO
-			DataMsg dm = (DataMsg) msg.obj;
-			if (null != dm.getMsg()) {
-				Toast.makeText(getApplicationContext(), getString(dm.getMsg()),
+			if (null == msg.obj) {
+				Toast.makeText(getApplicationContext(), getString(msg.arg1),
 						Toast.LENGTH_SHORT).show();
-				btn_login.setEnabled(true);
 				return;
 			}
 			// TODO
 			try {
-				JSONObject j = new JSONObject((String) dm.getData());
+				JSONObject j = new JSONObject((String) msg.obj);
 				// TODO
 				if (!j.getBoolean("success")) {
 					Toast.makeText(getApplicationContext(),
 							j.getJSONArray("msg").getString(0),
 							Toast.LENGTH_SHORT).show();
-					btn_login.setEnabled(true);
 					return;
 				}
 			} catch (JSONException e) {
@@ -118,27 +116,15 @@ public class LoginActivity extends Activity {
 
 	private void login(final String user_name, final String user_pass) {
 		// TODO
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				int what = HttpAction.LOGIN;
-				JSONObject json = new JSONObject();
-				try {
-					json.put("USER_NAME", user_name);
-					json.put("USER_PASS", user_pass);
-				} catch (JSONException e) {
-					Message msg = new Message();
-					msg.what = what;
-					msg.obj = null;
-					handler.sendMessage(msg);
-				}
-				// TODO
-				String url = getString(R.string.httpUrl) + "api";
-				Log.i(TAG, url);
-				Message msg = HttpUtil.get(url, what);
-				handler.sendMessage(msg);
-			}
-		}).start();
+		HashMap<String, String> _params = new HashMap<String, String>();
+		_params.put("USER_NAME", user_name);
+		_params.put("USER_PASS", user_pass);
+		// TODO
+		HttpUtil _hu = new HttpUtil(HttpAction.LOGIN, handler,
+				getString(R.string.httpUrl) + "api", HttpUtil.METHOD_GET,
+				_params);
+		Thread _t = new Thread(_hu);
+		_t.start();
 	}
 
 	/**
@@ -176,7 +162,7 @@ public class LoginActivity extends Activity {
 					btn_login.setEnabled(true);
 					return;
 				}
-
+				// TODO
 				login(user_name, user_pass);
 			}
 		});
