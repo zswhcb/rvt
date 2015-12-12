@@ -1,5 +1,7 @@
 package tel.call;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -87,6 +89,7 @@ public class LoginActivity extends Activity {
 		 */
 		private void login(Message msg) {
 			btn_login.setEnabled(true);
+			btn_login.setText(R.string.login_main_btn_login);
 			// TODO
 			if (null == msg.obj) {
 				Toast.makeText(getApplicationContext(), getString(msg.arg1),
@@ -115,10 +118,25 @@ public class LoginActivity extends Activity {
 	};
 
 	private void login(final String user_name, final String user_pass) {
+		JSONObject j = new JSONObject();
+		try {
+			j.put("USER_NAME", user_name);
+			j.put("USER_PASS", user_pass);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return;
+		}
+
 		// TODO
 		HashMap<String, String> _params = new HashMap<String, String>();
-		_params.put("USER_NAME", user_name);
-		_params.put("USER_PASS", user_pass);
+		_params.put("command", "login");
+		try {
+			_params.put("data", URLEncoder.encode(j.toString(), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return;
+		}
+
 		// TODO
 		HttpUtil _hu = new HttpUtil(HttpAction.LOGIN, handler,
 				getString(R.string.httpUrl) + "api", HttpUtil.METHOD_GET,
@@ -144,6 +162,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 				btn_login.setEnabled(false);
+				btn_login.setText(R.string.login_main_btn_login_ing);
 				// TODO
 				String user_name = text_username.getText().toString().trim();
 				String user_pass = text_userpass.getText().toString().trim();
@@ -153,6 +172,7 @@ public class LoginActivity extends Activity {
 							R.string.valiate_userpass, Toast.LENGTH_SHORT)
 							.show();
 					btn_login.setEnabled(true);
+					btn_login.setText(R.string.login_main_btn_login);
 					return;
 				}
 				if ("".equals(user_pass)) {
@@ -160,6 +180,7 @@ public class LoginActivity extends Activity {
 							R.string.valiate_userpass, Toast.LENGTH_SHORT)
 							.show();
 					btn_login.setEnabled(true);
+					btn_login.setText(R.string.login_main_btn_login);
 					return;
 				}
 				// TODO

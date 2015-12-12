@@ -99,8 +99,7 @@ public class MainActivity extends ActionBarActivity {
 			HashMap<String, Object> item = new HashMap<String, Object>();
 			item.put(DATAGRID_TITLES_FROM[0], i + 1);
 			item.put(DATAGRID_TITLES_FROM[1], task.getTask_name());
-			item.put(DATAGRID_TITLES_FROM[2],
-					DateUtil.dateToShortStr(task.getIssued_time()));
+			item.put(DATAGRID_TITLES_FROM[2], "15/01/02");
 			item.put(DATAGRID_TITLES_FROM[3], task.getStatus());
 			grid_data.add(item);
 		}
@@ -121,7 +120,7 @@ public class MainActivity extends ActionBarActivity {
 		grid_items = (ListView) findViewById(R.id.grid_items);
 		text_sel_date = (EditText) findViewById(R.id.text_sel_date);
 		// TODO
-		text_sel_date.setText("2015-01-01");
+		text_sel_date.setText(DateUtil.getShortDate());
 	}
 
 	private void bind() {

@@ -20,6 +20,9 @@ public class DateUtil {
 	private static final SimpleDateFormat sdf_2 = new SimpleDateFormat(
 			"MM/dd/HH");
 
+	private static final SimpleDateFormat sdf_3 = new SimpleDateFormat(
+			"yyyy-MM-dd");
+
 	public static String dateToStr(Date date) {
 		String str = sdf_1.format(date);
 		return str;
@@ -41,5 +44,9 @@ public class DateUtil {
 	public static String dateToShortStr(Date date) {
 		String str = sdf_2.format(date);
 		return str;
+	}
+
+	public static String getShortDate() {
+		return sdf_3.format(new Date());
 	}
 }

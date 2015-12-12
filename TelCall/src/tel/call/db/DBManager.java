@@ -79,11 +79,9 @@ public class DBManager {
 					.getColumnIndex("TASK_NAME")));
 			task.setTask_content(cursor.getString(cursor
 					.getColumnIndex("TASK_CONTENT")));
-			task.setIssued_time(DateUtil.strToDate(cursor.getString(cursor
-					.getColumnIndex("ISSUED_TIME"))));
+			task.setIssued_time(new Date());
 			task.setStatus(cursor.getInt(cursor.getColumnIndex("STATUS")));
-			task.setCreate_time(DateUtil.strToDate(cursor.getString(cursor
-					.getColumnIndex("CREATE_TIME"))));
+			task.setCreate_time(new Date());
 			// TODO
 			tasks.add(task);
 		}

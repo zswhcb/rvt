@@ -10,8 +10,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import tel.call.R;
 import android.os.Handler;
@@ -56,8 +54,11 @@ public class HttpUtil implements Runnable {
 	/**
 	 * 
 	 */
-	private void get() {
+	private void get(String params) {
 		// TODO
+		msg.arg1 = R.string.valiate_network;
+		// TODO
+		url += "?" + params;
 		Log.i(TAG, url);
 		HttpGet req = new HttpGet(url);
 		// TODO
@@ -68,12 +69,11 @@ public class HttpUtil implements Runnable {
 				HttpEntity entity = res.getEntity();
 				String str = EntityUtils.toString(entity, "utf-8");
 				// TODO
+				Log.i(TAG, str);
 				msg.obj = str;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO
-			msg.arg1 = R.string.valiate_network;
 		}
 		handler.sendMessage(msg);
 	}
@@ -87,26 +87,18 @@ public class HttpUtil implements Runnable {
 
 	@Override
 	public void run() {
-		JSONObject json = new JSONObject();
 		// TODO
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		// TODO
-		while (it.hasNext()) {
-			Entry<String, String> entry = it.next();
-			try {
-				json.put(entry.getKey(), entry.getValue());
-			} catch (JSONException e) {
-				e.printStackTrace();
-				// TODO
-				msg.arg1 = R.string.valiate_form;
-				handler.sendMessage(msg);
-				return;
+		if (METHOD_GET == method) {
+			String params = "";
+			// TODO
+			while (it.hasNext()) {
+				Entry<String, String> entry = it.next();
+				params += "&" + entry.getKey() + "=" + entry.getValue();
 			}
-		}
-
-		if (0 == method)
-			get();
-		else
+			get(params.substring(0 == params.length() ? 0 : 1));
+		} else
 			post();
 	}
 }
