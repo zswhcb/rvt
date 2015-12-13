@@ -49,7 +49,7 @@ import android.widget.Toast;
  */
 public class MainActivity extends ActionBarActivity {
 
-	private final static String TAG = "MainActivity";
+	private final static String TAG = MainActivity.class.getSimpleName();
 
 	public static final String[] DATAGRID_TITLES_FROM = new String[] { "no",
 			"task_name", "issued_time", "status" };

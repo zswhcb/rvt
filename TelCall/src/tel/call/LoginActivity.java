@@ -39,7 +39,7 @@ import android.widget.Toast;
  */
 public class LoginActivity extends Activity {
 
-	private final static String TAG = "LoginActivity";
+	private final static String TAG = LoginActivity.class.getSimpleName();
 
 	private EditText text_username;
 	private EditText text_userpass;

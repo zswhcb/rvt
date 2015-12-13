@@ -19,7 +19,7 @@ import android.widget.EditText;
  */
 public class DialActivity extends Activity {
 
-	private final static String TAG = "DialActivity";
+	private final static String TAG = DialActivity.class.getSimpleName();
 
 	private EditText text_tel;
 	private EditText text_hint;

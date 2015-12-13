@@ -18,7 +18,7 @@ import android.widget.ImageView;
  * 
  */
 public class SplashActivity extends Activity {
-	private static final String TAG = "SplashActivity";
+	private static final String TAG = SplashActivity.class.getSimpleName();
 
 	private static final int GO_GUIDE = 101;
 	private static final int GO_MAIN = 102;
