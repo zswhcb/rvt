@@ -173,10 +173,10 @@ public class LoginActivity extends Activity {
 			public void onClick(View view) {
 				setBtnLoginStatus(false);
 				// TODO
-				String user_name = text_username.getText().toString().trim();
-				String user_pass = text_userpass.getText().toString().trim();
+				String _user_name = text_username.getText().toString().trim();
+				String _user_pass = text_userpass.getText().toString().trim();
 				// TODO
-				if ("".equals(user_name)) {
+				if ("".equals(_user_name)) {
 					Toast.makeText(getApplicationContext(),
 							R.string.valiate_userpass, Toast.LENGTH_SHORT)
 							.show();
@@ -184,7 +184,7 @@ public class LoginActivity extends Activity {
 					btn_login.setText(R.string.login_main_btn_login);
 					return;
 				}
-				if ("".equals(user_pass)) {
+				if ("".equals(_user_pass)) {
 					Toast.makeText(getApplicationContext(),
 							R.string.valiate_userpass, Toast.LENGTH_SHORT)
 							.show();
@@ -193,7 +193,7 @@ public class LoginActivity extends Activity {
 					return;
 				}
 				// TODO
-				login(user_name, user_pass);
+				login(_user_name, _user_pass);
 			}
 		});
 

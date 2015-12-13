@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import tel.call.R;
 import tel.call.util.DateUtil;
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public class CurrentTasksAdapter extends BaseAdapter implements ListAdapter {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+
 		// TODO
 		try {
 			Integer no = position + 1;
@@ -84,6 +86,11 @@ public class CurrentTasksAdapter extends BaseAdapter implements ListAdapter {
 					.getString("START_TIME")));
 		} catch (JSONException e) {
 			e.printStackTrace();
+		}
+
+		// TODO
+		if (1 == position) {
+			viewHolder.task_name.setTextColor(Color.GREEN);
 		}
 		// TODO
 		return convertView;

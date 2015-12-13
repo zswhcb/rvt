@@ -3,8 +3,6 @@ package tel.call;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,9 +15,7 @@ import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,8 +34,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -51,19 +45,12 @@ public class MainActivity extends ActionBarActivity {
 
 	private final static String TAG = MainActivity.class.getSimpleName();
 
-	public static final String[] DATAGRID_TITLES_FROM = new String[] { "no",
-			"task_name", "issued_time", "status" };
-
 	// TODO
 	private Button btn_sync;
 	private ListView grid_items;
 	private EditText text_sel_date;
 	// TODO
-	private List<HashMap<String, Object>> grid_data;
-	// TODO
 	private DBManager dbMgr;
-	// TODO
-	private CurrentTasksAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +90,7 @@ public class MainActivity extends ActionBarActivity {
 		loadData();
 	}
 
-	@SuppressLint({ "HandlerLeak", "ShowToast" })
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -126,26 +113,29 @@ public class MainActivity extends ActionBarActivity {
 			if (null == msg.obj) {
 				Toast.makeText(getApplicationContext(), getString(msg.arg1),
 						Toast.LENGTH_SHORT).show();
+				btn_sync.setEnabled(true);
 				return;
 			}
 			// TODO
 			try {
-				JSONObject jo = new JSONObject((String) msg.obj);
+				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
-				if (!jo.getBoolean("success")) {
+				if (!_jo.getBoolean("success")) {
 					Toast.makeText(getApplicationContext(),
-							jo.getJSONArray("msg").getString(0),
+							_jo.getJSONArray("msg").getString(0),
 							Toast.LENGTH_SHORT).show();
+					btn_sync.setEnabled(true);
 					return;
 				}
 				// TODO
-				JSONArray ja = jo.getJSONArray("data");
+				JSONArray _ja = _jo.getJSONArray("data");
 				// TODO
-				adapter = new CurrentTasksAdapter(
-						R.layout.fragment_main_datagrid, MainActivity.this, ja);
-				grid_items.setAdapter(adapter);
+				CurrentTasksAdapter _adapter = new CurrentTasksAdapter(
+						R.layout.fragment_main_datagrid, MainActivity.this, _ja);
+				grid_items.setAdapter(_adapter);
 			} catch (JSONException e) {
 				e.printStackTrace();
+				btn_sync.setEnabled(true);
 				return;
 			}
 		}
@@ -155,12 +145,13 @@ public class MainActivity extends ActionBarActivity {
 	 * 获取当前可接的任务
 	 */
 	private void refreshRemoteData() {
-		JSONObject j = new JSONObject();
-		// TODO
 		HashMap<String, String> _params = new HashMap<String, String>();
 		_params.put("command", "getCurrentTasks");
+		// TODO
+		JSONObject _j = new JSONObject();
+		// TODO
 		try {
-			_params.put("data", URLEncoder.encode(j.toString(), "utf-8"));
+			_params.put("data", URLEncoder.encode(_j.toString(), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return;
@@ -193,6 +184,7 @@ public class MainActivity extends ActionBarActivity {
 		btn_sync.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				btn_sync.setEnabled(false);
 				refreshRemoteData();
 			}
 		});
@@ -271,76 +263,6 @@ public class MainActivity extends ActionBarActivity {
 		if (0 == requestCode && RESULT_OK == resultCode) {
 			setResult(RESULT_OK);
 			finish();
-		}
-	}
-
-	/**
-	 * 
-	 * @author huangxin (3203317@qq.com)
-	 * 
-	 */
-	class OneSimpleAdapter extends SimpleAdapter {
-
-		public OneSimpleAdapter(Context context,
-				List<? extends Map<String, ?>> data, int resource,
-				String[] from, int[] to) {
-			super(context, data, resource, from, to);
-		}
-
-		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO
-			ViewHolder viewHolder = null;
-			if (null == convertView) {
-				viewHolder = new ViewHolder();
-				LayoutInflater inflater = MainActivity.this.getLayoutInflater();
-				convertView = inflater.inflate(R.layout.fragment_main_datagrid,
-						null);
-				// TODO
-				viewHolder.no = (TextView) convertView.findViewById(R.id.no);
-				viewHolder.task_name = (TextView) convertView
-						.findViewById(R.id.task_name);
-				viewHolder.issued_time = (TextView) convertView
-						.findViewById(R.id.issued_time);
-				viewHolder.status = (TextView) convertView
-						.findViewById(R.id.status);
-				// TODO
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (ViewHolder) convertView.getTag();
-			}
-
-			if (null != grid_data) {
-				// TODO
-				viewHolder.no.setText(grid_data.get(position)
-						.get(DATAGRID_TITLES_FROM[0]).toString());
-				viewHolder.task_name.setText(grid_data.get(position)
-						.get(DATAGRID_TITLES_FROM[1]).toString());
-				viewHolder.issued_time.setText(grid_data.get(position)
-						.get(DATAGRID_TITLES_FROM[2]).toString());
-
-				// TODO
-				int status = Integer.valueOf(grid_data.get(position)
-						.get(DATAGRID_TITLES_FROM[3]).toString());
-				viewHolder.status.setText(4 == status ? "查看" : "同步");
-				// TODO
-				if (2 == position) {
-					viewHolder.task_name.setTextColor(Color.GREEN);
-				}
-			}
-			// TODO
-			return convertView;
-		}
-
-		/**
-		 * 
-		 * @author huangxin (3203317@qq.com)
-		 * 
-		 */
-		class ViewHolder {
-			public TextView no;
-			public TextView task_name;
-			public TextView issued_time;
-			public TextView status;
 		}
 	}
 }
