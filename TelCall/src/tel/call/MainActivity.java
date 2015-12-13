@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tel.call.action.HttpAction;
+import tel.call.action.ServiceAction;
 import tel.call.adapter.CurrentTasksAdapter;
 import tel.call.db.DBManager;
 import tel.call.util.DateUtil;
@@ -109,7 +109,7 @@ public class MainActivity extends ActionBarActivity {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case HttpAction.GET_CURRENTTASKS:
+			case ServiceAction.GET_CURRENTTASKS:
 				getCurrentTasks(msg);
 				break;
 			default:
@@ -166,7 +166,7 @@ public class MainActivity extends ActionBarActivity {
 			return;
 		}
 		// TODO
-		HttpUtil _hu = new HttpUtil(HttpAction.GET_CURRENTTASKS, handler,
+		HttpUtil _hu = new HttpUtil(ServiceAction.GET_CURRENTTASKS, handler,
 				getString(R.string.httpUrl) + "api", RequestMethod.GET, _params);
 		Thread _t = new Thread(_hu);
 		_t.start();

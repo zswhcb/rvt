@@ -73,10 +73,9 @@ public class HttpUtil implements Runnable {
 	 */
 	private void get(String params) {
 		// TODO
-		msg.arg1 = R.string.valiate_network;
-		// TODO
 		url += "?" + params;
 		Log.i(TAG, url);
+		// TODO
 		HttpGet req = new HttpGet(url);
 		// TODO
 		try {
@@ -88,9 +87,12 @@ public class HttpUtil implements Runnable {
 				// TODO
 				Log.i(TAG, str);
 				msg.obj = str;
+			} else {
+				msg.arg1 = R.string.valiate_network;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			msg.arg1 = R.string.valiate_network;
 		}
 		handler.sendMessage(msg);
 	}
