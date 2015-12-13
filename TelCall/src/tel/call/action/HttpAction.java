@@ -1,4 +1,4 @@
-package tel.call;
+package tel.call.action;
 
 /**
  * 
@@ -8,4 +8,5 @@ package tel.call;
 public interface HttpAction {
 
 	public static final int LOGIN = 1;
+	public static final int GET_CURRENTTASKS = 2;
 }

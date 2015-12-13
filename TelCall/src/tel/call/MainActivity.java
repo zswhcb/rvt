@@ -1,18 +1,29 @@
 package tel.call;
 
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tel.call.action.HttpAction;
+import tel.call.adapter.CurrentTasksAdapter;
 import tel.call.db.DBManager;
-import tel.call.model.Task;
 import tel.call.util.DateUtil;
+import tel.call.util.HttpUtil;
+import tel.call.util.HttpUtil.RequestMethod;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -22,11 +33,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 
@@ -39,8 +53,6 @@ public class MainActivity extends ActionBarActivity {
 
 	public static final String[] DATAGRID_TITLES_FROM = new String[] { "no",
 			"task_name", "issued_time", "status" };
-	private static final int[] DATAGRID_TITLES_TO = new int[] { R.id.no,
-			R.id.task_name, R.id.issued_time, R.id.status };
 
 	// TODO
 	private Button btn_sync;
@@ -50,6 +62,8 @@ public class MainActivity extends ActionBarActivity {
 	private List<HashMap<String, Object>> grid_data;
 	// TODO
 	private DBManager dbMgr;
+	// TODO
+	private CurrentTasksAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,26 +103,77 @@ public class MainActivity extends ActionBarActivity {
 		loadData();
 	}
 
-	private void loadData_grid() {
-		List<Task> list = dbMgr.queryTasks();
-		// TODO
-		grid_data = new ArrayList<HashMap<String, Object>>();
-		for (int i = 0, j = list.size(); i < j; i++) {
-			Task task = list.get(i);
+	@SuppressLint({ "HandlerLeak", "ShowToast" })
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case HttpAction.GET_CURRENTTASKS:
+				getCurrentTasks(msg);
+				break;
+			default:
+				break;
+			}
+		}
+
+		/**
+		 * 
+		 * @param msg
+		 */
+		private void getCurrentTasks(Message msg) {
 			// TODO
-			HashMap<String, Object> item = new HashMap<String, Object>();
-			item.put(DATAGRID_TITLES_FROM[0], i + 1);
-			item.put(DATAGRID_TITLES_FROM[1], task.getTask_name());
-			item.put(DATAGRID_TITLES_FROM[2], "15/01/02");
-			item.put(DATAGRID_TITLES_FROM[3], task.getStatus());
-			grid_data.add(item);
+			if (null == msg.obj) {
+				Toast.makeText(getApplicationContext(), getString(msg.arg1),
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			// TODO
+			try {
+				JSONObject jo = new JSONObject((String) msg.obj);
+				// TODO
+				if (!jo.getBoolean("success")) {
+					Toast.makeText(getApplicationContext(),
+							jo.getJSONArray("msg").getString(0),
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+				// TODO
+				JSONArray ja = jo.getJSONArray("data");
+				// TODO
+				adapter = new CurrentTasksAdapter(
+						R.layout.fragment_main_datagrid, MainActivity.this, ja);
+				grid_items.setAdapter(adapter);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+	};
+
+	/**
+	 * 获取当前可接的任务
+	 */
+	private void refreshRemoteData() {
+		JSONObject j = new JSONObject();
+		// TODO
+		HashMap<String, String> _params = new HashMap<String, String>();
+		_params.put("command", "getCurrentTasks");
+		try {
+			_params.put("data", URLEncoder.encode(j.toString(), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return;
 		}
 		// TODO
-		SimpleAdapter adapter = new OneSimpleAdapter(this, grid_data,
-				R.layout.fragment_main_datagrid, DATAGRID_TITLES_FROM,
-				DATAGRID_TITLES_TO);
-		// 实现列表的显示
-		grid_items.setAdapter(adapter);
+		HttpUtil _hu = new HttpUtil(HttpAction.GET_CURRENTTASKS, handler,
+				getString(R.string.httpUrl) + "api", RequestMethod.GET, _params);
+		Thread _t = new Thread(_hu);
+		_t.start();
+	}
+
+	private void loadData_grid() {
+		refreshRemoteData();
 	}
 
 	private void loadData() {
@@ -120,7 +185,7 @@ public class MainActivity extends ActionBarActivity {
 		grid_items = (ListView) findViewById(R.id.grid_items);
 		text_sel_date = (EditText) findViewById(R.id.text_sel_date);
 		// TODO
-		text_sel_date.setText(DateUtil.getShortDate());
+		text_sel_date.setText(DateUtil.getFormat2());
 	}
 
 	private void bind() {
@@ -128,6 +193,16 @@ public class MainActivity extends ActionBarActivity {
 		btn_sync.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				refreshRemoteData();
+			}
+		});
+
+		// TODO
+		grid_items.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> av, View v, int position,
+					long id) {
+				// TODO
 				Intent intent = new Intent(MainActivity.this,
 						DialActivity.class);
 				startActivity(intent);

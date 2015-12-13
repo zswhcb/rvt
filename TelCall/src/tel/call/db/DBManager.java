@@ -32,7 +32,7 @@ public class DBManager {
 	}
 
 	private void initData() {
-		boolean b = true;
+		boolean b = false;
 		if (b)
 			initData_task();
 	}
@@ -44,27 +44,27 @@ public class DBManager {
 		values.put("id", "b100323407df40b69d632aa8cdf8f876");
 		values.put("TASK_NAME", "1");
 		values.put("TASK_CONTENT", "2");
-		values.put("ISSUED_TIME", DateUtil.dateToStr(new Date()));
+		values.put("ISSUED_TIME", DateUtil.getFormat2());
 		values.put("STATUS", "4");
-		values.put("CREATE_TIME", DateUtil.dateToStr(new Date()));
+		values.put("CREATE_TIME", DateUtil.getFormat2());
 		db.insert("p_task", null, values);
 		// TODO
 		values = new ContentValues();
 		values.put("id", "e77741925ef241c09b68342f54b9f779");
 		values.put("TASK_NAME", "11");
 		values.put("TASK_CONTENT", "22");
-		values.put("ISSUED_TIME", DateUtil.dateToStr(new Date()));
+		values.put("ISSUED_TIME", DateUtil.getFormat2());
 		values.put("STATUS", "44");
-		values.put("CREATE_TIME", DateUtil.dateToStr(new Date()));
+		values.put("CREATE_TIME", DateUtil.getFormat2());
 		db.insert("p_task", null, values);
 		// TODO
 		values = new ContentValues();
 		values.put("id", "5e32a2c5ed634e7daf8f1049ce926e70");
 		values.put("TASK_NAME", "111");
 		values.put("TASK_CONTENT", "222");
-		values.put("ISSUED_TIME", DateUtil.dateToStr(new Date()));
+		values.put("ISSUED_TIME", DateUtil.getFormat2());
 		values.put("STATUS", "444");
-		values.put("CREATE_TIME", DateUtil.dateToStr(new Date()));
+		values.put("CREATE_TIME", DateUtil.getFormat2());
 		db.insert("p_task", null, values);
 	}
 

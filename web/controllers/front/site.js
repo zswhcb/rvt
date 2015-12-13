@@ -15,6 +15,7 @@ var conf = require('../../settings'),
 	macros = require('../../lib/macro');
 
 var biz = {
+	task: require('../../../biz/task'),
 	user: require('../../../biz/user')
 };
 
@@ -35,6 +36,7 @@ exports.signature_validate = function(req, res, next){
 	// TODO
 	if('' === query.command) return res.send(result);
 	if('login' === query.command) return next();
+	next();
 };
 
 (function (exports){
@@ -65,6 +67,24 @@ exports.signature_validate = function(req, res, next){
 	}
 
 	/**
+	 *
+	 * @param
+	 * @return
+	 */
+	function getCurrentTasks(req, res, next){
+		var result = { success: false },
+			data = req._data;
+		// TODO
+		biz.task.getCurrentTasks(function (err, docs){
+			if(err) return next(err);
+			/* result */
+			result.data = docs;
+			result.success = true;
+			res.send(result);
+		});
+	}
+
+	/**
 	 * api
 	 *
 	 * @param
@@ -75,6 +95,7 @@ exports.signature_validate = function(req, res, next){
 		// TODO
 		switch(query.command){
 			case 'login': login(req, res, next); break;
+			case 'getCurrentTasks': getCurrentTasks(req, res, next); break;
 			default: res.send({ success: false }); break;
 		}
 	};

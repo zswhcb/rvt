@@ -12,6 +12,29 @@ var util = require('speedt-utils'),
 var exports = module.exports;
 
 /**
+ * 当前可接的任务信息
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'SELECT'+
+				' (SELECT COUNT(1) FROM p_handtask WHERE TASK_ID=a.id) CURRENT_TASK_SUM,'+
+				' (SELECT COUNT(1) FROM p_handtask WHERE STATUS=2 AND TASK_ID=a.id) COMPLETE_CURRENT_TASK_SUM,'+
+				' (SELECT COUNT(1) FROM p_handtask WHERE STATUS=3 AND TASK_ID=a.id) TIMEOUT_CURRENT_TASK_SUM,'+
+				' (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id AND TIMESTAMPDIFF(SECOND, CREATE_TIME, NOW())<a.TALK_TIMEOUT) RUNNING_CURRENT_TASK_SUM,'+
+				' a.* FROM p_task a WHERE NOW() BETWEEN a.START_TIME AND a.END_TIME AND a.STATUS=1 ORDER BY a.CREATE_TIME DESC';
+	// TODO
+	exports.getCurrentTasks = function(cb){
+		// TODO
+		mysql.query(sql, null, function (err, docs){
+			if(err) return cb(err);
+			cb(null, docs);
+		});
+	};
+})(exports);
+
+/**
  * 删除
  *
  * @params
@@ -79,7 +102,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO p_task (id, TASK_NAME, TASK_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, START_TIME, END_TIME, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO p_task (id, TASK_NAME, TASK_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -92,6 +115,7 @@ var exports = module.exports;
 					newInfo.TASK_SUM || 20,
 					newInfo.PROJECT_ID,
 					newInfo.TALK_TIME_LEN || 30,
+					newInfo.TALK_TIMEOUT || 3600,
 					newInfo.START_TIME || new Date(),
 					newInfo.END_TIME || new Date(),
 					new Date(),
@@ -112,7 +136,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE s_user set TASK_NAME=?, TASK_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE s_user set TASK_NAME=?, TASK_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -123,6 +147,7 @@ var exports = module.exports;
 					newInfo.TASK_INTRO,
 					newInfo.TASK_SUM || 20,
 					newInfo.TALK_TIME_LEN || 30,
+					newInfo.TALK_TIMEOUT || 3600,
 					newInfo.START_TIME || new Date(),
 					newInfo.END_TIME || new Date(),
 					newInfo.STATUS || 1,

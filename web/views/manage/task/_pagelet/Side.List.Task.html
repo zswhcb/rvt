@@ -4,6 +4,7 @@
 		<th>任务名称</th>
 		<th>任务数量</th>
 		<th>通话时长</th>
+		<th>超时时长</th>
 		<th>开始时间</th>
 		<th>结束时间</th>
 		<th>创建时间</th>
@@ -16,6 +17,7 @@
 		<td>$!doc.TASK_NAME</td>
 		<td>$!doc.TASK_SUM</td>
 		<td>$!doc.TALK_TIME_LEN</td>
+		<td>$!doc.TALK_TIMEOUT</td>
 		<td>#formatDate($!doc.START_TIME, 5)</td>
 		<td>#formatDate($!doc.END_TIME, 5)</td>
 		<td>#formatDate($!doc.CREATE_TIME)</td>

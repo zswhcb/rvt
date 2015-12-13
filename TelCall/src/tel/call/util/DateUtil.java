@@ -3,6 +3,7 @@ package tel.call.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 
@@ -15,38 +16,33 @@ import android.annotation.SuppressLint;
 public class DateUtil {
 
 	private static final SimpleDateFormat sdf_1 = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
-
+			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	private static final SimpleDateFormat sdf_2 = new SimpleDateFormat(
 			"MM/dd/HH");
-
 	private static final SimpleDateFormat sdf_3 = new SimpleDateFormat(
 			"yyyy-MM-dd");
 
-	public static String dateToStr(Date date) {
-		String str = sdf_1.format(date);
-		return str;
-	}
-
-	public static Date strToDate(String date) {
-		Date d = null;
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String getFormat1(String date) {
+		sdf_1.setTimeZone(TimeZone.getTimeZone("UTC"));
+		// TODO
 		try {
-			d = sdf_1.parse(date);
+			Date _date = sdf_1.parse(date);
+			return sdf_2.format(_date);
 		} catch (ParseException e) {
-			e.printStackTrace();
-		} finally {
-			if (null == d)
-				d = new Date();
+			return "";
 		}
-		return d;
 	}
 
-	public static String dateToShortStr(Date date) {
-		String str = sdf_2.format(date);
-		return str;
-	}
-
-	public static String getShortDate() {
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getFormat2() {
 		return sdf_3.format(new Date());
 	}
 }

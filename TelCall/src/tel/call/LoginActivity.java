@@ -9,7 +9,9 @@ import java.util.TimerTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tel.call.action.HttpAction;
 import tel.call.util.HttpUtil;
+import tel.call.util.HttpUtil.RequestMethod;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -139,8 +141,7 @@ public class LoginActivity extends Activity {
 
 		// TODO
 		HttpUtil _hu = new HttpUtil(HttpAction.LOGIN, handler,
-				getString(R.string.httpUrl) + "api", HttpUtil.METHOD_GET,
-				_params);
+				getString(R.string.httpUrl) + "api", RequestMethod.GET, _params);
 		Thread _t = new Thread(_hu);
 		_t.start();
 	}

@@ -7,8 +7,11 @@ import java.util.Map.Entry;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
 import tel.call.R;
@@ -22,13 +25,11 @@ import android.util.Log;
  * 
  */
 public class HttpUtil implements Runnable {
-	private final static String TAG = "HttpUtil";
-	public final static int METHOD_GET = 0;
-	public final static int METHOD_POST = 1;
+	private final static String TAG = HttpUtil.class.getSimpleName();
 	// TODO
 	private Handler handler;
 	private String url;
-	private int method;
+	private RequestMethod method;
 	private HashMap<String, String> params;
 	// TODO
 	private Message msg;
@@ -40,8 +41,8 @@ public class HttpUtil implements Runnable {
 	 * @param url
 	 * @param params
 	 */
-	public HttpUtil(int what, Handler handler, String url, int method,
-			HashMap<String, String> params) {
+	public HttpUtil(int what, Handler handler, String url,
+			RequestMethod method, HashMap<String, String> params) {
 		this.handler = handler;
 		this.url = url;
 		this.method = method;
@@ -49,6 +50,22 @@ public class HttpUtil implements Runnable {
 		// TODO
 		msg = new Message();
 		msg.what = what;
+	}
+
+	private static final int REQUEST_TIMEOUT = 5 * 1000; // 设置请求超时5秒钟
+	private static final int SO_TIMEOUT = 5 * 1000; // 设置等待数据超时时间5秒钟
+
+	/**
+	 * 请求超时时间和等待时间
+	 * 
+	 * @return
+	 */
+	private static HttpClient getHttpClient() {
+		BasicHttpParams httpParams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, REQUEST_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(httpParams, SO_TIMEOUT);
+		HttpClient client = new DefaultHttpClient(httpParams);
+		return client;
 	}
 
 	/**
@@ -63,7 +80,7 @@ public class HttpUtil implements Runnable {
 		HttpGet req = new HttpGet(url);
 		// TODO
 		try {
-			HttpResponse res = new DefaultHttpClient().execute(req);
+			HttpResponse res = getHttpClient().execute(req);
 			if (HttpURLConnection.HTTP_OK == res.getStatusLine()
 					.getStatusCode()) {
 				HttpEntity entity = res.getEntity();
@@ -90,7 +107,8 @@ public class HttpUtil implements Runnable {
 		// TODO
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		// TODO
-		if (METHOD_GET == method) {
+		switch (method) {
+		case GET: {
 			String params = "";
 			// TODO
 			while (it.hasNext()) {
@@ -98,7 +116,18 @@ public class HttpUtil implements Runnable {
 				params += "&" + entry.getKey() + "=" + entry.getValue();
 			}
 			get(params.substring(0 == params.length() ? 0 : 1));
-		} else
+			break;
+		}
+		case POST: {
 			post();
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+	public enum RequestMethod {
+		POST, GET
 	}
 }
