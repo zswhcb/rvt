@@ -65,9 +65,9 @@ exports.getUsers = function(req, res, next){
  * @return
  */
 exports.genAuthCode = function(req, res, next){
-	var result = { success: false };
-	var user_id = req.params.user_id;
-
+	var result = { success: false },
+		user_id = req.params.user_id;
+	// TODO
 	biz.authcode.genAuthCode(user_id, 10, function (err, msg, status){
 		if(err) return next(err);
 		// TODO

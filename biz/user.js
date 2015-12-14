@@ -58,7 +58,7 @@ var biz = {
 (function (exports){
 	// 查询用户 关联用户角色表
 	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a, s_role b WHERE a.ROLE_ID=b.id';
-	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
+	var sql_orderby = ' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';
 
 	/**
 	 *

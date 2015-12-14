@@ -73,8 +73,11 @@
 				// $('input:radio[name="USER_ID"]').attr('checked', false);
 				// TODO
 				$('#btn_genAuthCode').click(function(){
-					var user_id = $('input:radio[name="USER_ID"]:checked').val();
-					if(!user_id) return;
+					var zTree = $ .fn.zTree.getZTreeObj('menuTree'),
+						node = zTree.getSelectedNodes()[0];
+					if(!node) return;
+					// TODO
+					var user_id = node.id;
 					// TODO
 					$.ajax({
 						url: './genAuthCode/'+ user_id,
@@ -89,6 +92,7 @@
 					});
 				});
 			});
+			// TODO
 			$('#searchFrm_btn_search').click(function(){
 				var formObj = $('#searchFrm').serializeObjectForm();
 				console.log(formObj);
@@ -97,7 +101,9 @@
 		<script>
 		$(function(){
 			var setting = {
-				data: {
+				view: {
+					selectedMulti: false
+				}, data: {
 					simpleData: {
 						enable: true
 					}
