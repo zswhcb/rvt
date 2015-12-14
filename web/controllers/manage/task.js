@@ -16,9 +16,27 @@ var conf = require('../../settings'),
 	macros = require('../../lib/macro');
 
 var biz = {
+	user: require('../../../biz/user'),
 	handtask: require('../../../biz/handtask'),
 	task: require('../../../biz/task'),
 	project: require('../../../biz/project')
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.getProjects = function(req, res, next){
+	var result = { success: false },
+		user_id = req.params.user_id;
+	// TODO
+	biz.project.getByUserId(user_id, function (err, docs){
+		if(err) return next(err);
+		result.data = docs;
+		result.success = true;
+		res.send(result);
+	});
 };
 
 /**
@@ -88,26 +106,6 @@ exports.add = function(req, res, next){
  * @params
  * @return
  */
-exports.indexUI = function(req, res, next){
-	biz.project.findAll(function (err, docs){
-		// TODO
-		res.render('manage/task/Index', {
-			conf: conf,
-			title: req.query.name +' | '+ conf.corp.name,
-			description: '',
-			keywords: ',html5',
-			data: {
-				projects: docs
-			}
-		});
-	});
-};
-
-/**
- *
- * @params
- * @return
- */
 exports.addUI = function(req, res, next){
 	res.render('manage/task/Add', {
 		conf: conf,
@@ -122,16 +120,36 @@ exports.addUI = function(req, res, next){
 	});
 };
 
-(function (exports){
-	/**
-	 *
-	 * @params
-	 * @return
-	 */
-	exports.getTasks = function(req, res, next){
-		var result = { success: false };
-		var project_id = req.params.project_id;
+/**
+ *
+ * @params
+ * @return
+ */
+exports.indexUI = function(req, res, next){
+	biz.user.findByRoleId('566512b49012fb044691ace5', function (err, docs){
+		// TODO
+		res.render('manage/task/Index', {
+			conf: conf,
+			title: req.query.name +' | '+ conf.corp.name,
+			description: '',
+			keywords: ',html5',
+			data: {
+				users: docs
+			}
+		});
+	});
+};
 
+/**
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	exports.getTasks = function(req, res, next){
+		var result = { success: false },
+			project_id = req.params.project_id;
+		// TODO
 		biz.task.findByProjectId(project_id, function (err, docs){
 			if(err) return next(err);
 			// TODO
@@ -140,14 +158,14 @@ exports.addUI = function(req, res, next){
 					result.msg = err;
 					return res.send(result);
 				}
-
+				// TODO
 				var html = velocity.render(template, {
 					conf: conf,
 					data: { tasks: docs }
 				}, macros);
-
-				result.success = true;
+				// TODO
 				result.data = html;
+				result.success = true;
 				res.send(result);
 			});
 		});
@@ -170,17 +188,17 @@ exports.addUI = function(req, res, next){
 	};
 })(exports);
 
+/**
+ * 任务监控
+ *
+ * @params
+ * @return
+ */
 (function (exports){
-	/**
-	 * 任务监控
-	 *
-	 * @params
-	 * @return
-	 */
 	exports.getTaskMonitors = function(req, res, next){
 		var result = { success: false },
 			task_id = req.params.task_id;
-
+		// TODO
 		biz.handtask.findByTaskId(task_id, function (err, docs){
 			if(err) return next(err);
 			// TODO
@@ -189,14 +207,14 @@ exports.addUI = function(req, res, next){
 					result.msg = err;
 					return res.send(result);
 				}
-
+				// TODO
 				var html = velocity.render(template, {
 					conf: conf,
 					data: { handtasks: docs }
 				}, macros);
-
-				result.success = true;
+				// TODO
 				result.data = html;
+				result.success = true;
 				res.send(result);
 			});
 		});

@@ -11,9 +11,25 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
+/**
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'SELECT b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM p_project a, p_project_type b WHERE a.PROJECT_TYPE_ID=b.id AND a.STATUS=1 AND a.USER_ID=? ORDER BY a.PROJECT_TYPE_ID, a.CREATE_TIME DESC'
+	// TODO
+	exports.getByUserId = function(user_id, cb){
+		mysql.query(sql, [user_id], function (err, docs){
+			if(err) return cb(err);
+			cb(null, docs);
+		});
+	};
+})(exports);
+
 (function (exports){
 	var sql_1 = 'SELECT c.USER_NAME, c.REAL_NAME, b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM p_project a, p_project_type b, s_user c WHERE a.PROJECT_TYPE_ID=b.id AND a.USER_ID=c.id';
-	var sql_orderby = ' ORDER BY c.USER_NAME, a.CREATE_TIME DESC';
+	var sql_orderby = ' ORDER BY a.USER_ID, a.CREATE_TIME DESC';
 
 	/**
 	 *

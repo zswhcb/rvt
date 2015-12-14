@@ -129,6 +129,7 @@
 							}
 						});
 					}, onClick: function(event, treeId, treeNode, clickFlag){
+						if(!treeNode.id) return;
 						// TODO
 						$.ajax({
 							url: './getAuthCodes/'+ treeNode.id,
