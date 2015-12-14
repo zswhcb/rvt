@@ -4,13 +4,7 @@
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_PROJECT_NAME'><span class='olx-form-required'>*</span>项目名称</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='PROJECT_NAME' id='addFrm_PROJECT_NAME' placeholder='项目名称' value='$!doc.PROJECT_NAME'#if(null != $!doc.id) readonly#end>
-		</div>
-	</div>
-	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TEL_NUM'><span class='olx-form-required'>*</span>电话号码</label>
-		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='TEL_NUM' id='addFrm_TEL_NUM' placeholder='电话号码' value='$!doc.TEL_NUM'>
+			<input type='text' class='form-control' name='PROJECT_NAME' id='addFrm_PROJECT_NAME' placeholder='项目名称' value='$!doc.PROJECT_NAME'>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -33,8 +27,8 @@
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_PROJECT_TYPE_ID'>项目类型</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='PROJECT_TYPE_ID' id='addFrm_PROJECT_TYPE_ID'>
-			#foreach($!doc in $!data.project_types)
-				<option value='$!doc.id'>$!doc.TYPE_NAME</option>#end
+			#foreach($!docc in $!data.project_types)
+				<option value='$!docc.id'#if($!docc.id == $!doc.PROJECT_TYPE_ID) selected#end>$!docc.TYPE_NAME</option>#end
 			</select>
 		</div>
 	</div>

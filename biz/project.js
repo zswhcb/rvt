@@ -13,7 +13,7 @@ var exports = module.exports;
 
 (function (exports){
 	var sql_1 = 'SELECT c.USER_NAME, c.REAL_NAME, b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM p_project a, p_project_type b, s_user c WHERE a.PROJECT_TYPE_ID=b.id AND a.USER_ID=c.id';
-	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
+	var sql_orderby = ' ORDER BY c.USER_NAME, a.CREATE_TIME DESC';
 
 	/**
 	 *
@@ -42,8 +42,6 @@ var exports = module.exports;
 	};
 })(exports);
 
-
-
 /**
  * 表单
  *
@@ -55,14 +53,14 @@ var exports = module.exports;
 		cb(null);
 	}
 
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
 	(function (exports){
-		var sql = 'INSERT INTO p_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?)';
-
-		/**
-		 *
-		 * @params
-		 * @return
-		 */
+		var sql = 'INSERT INTO p_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?)';
+		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
@@ -72,11 +70,11 @@ var exports = module.exports;
 					newInfo.PROJECT_NAME,
 					newInfo.PROJECT_INTRO,
 					newInfo.PROJECT_TYPE_ID,
-					newInfo.TEL_NUM,
 					newInfo.USER_ID,
 					new Date(),
 					newInfo.STATUS || 1
 				];
+				// TODO
 				mysql.query(sql, postData, function (err, status){
 					if(err) return cb(err);
 					cb(null, null, status);
@@ -85,25 +83,26 @@ var exports = module.exports;
 		};
 	})(exports);
 
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
 	(function (exports){
-		var sql = 'UPDATE p_project set PROJECT_NAME=?, PROJECT_INTRO=?, TEL_NUM=?, STATUS=? WHERE id=?';
-
-		/**
-		 *
-		 * @params
-		 * @return
-		 */
+		var sql = 'UPDATE p_project set PROJECT_NAME=?, PROJECT_INTRO=?, PROJECT_TYPE_ID=?, STATUS=? WHERE id=?';
+		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
-				// CREATE
+				// EDIT
 				var postData = [
 					newInfo.PROJECT_NAME,
 					newInfo.PROJECT_INTRO,
-					newInfo.TEL_NUM,
+					newInfo.PROJECT_TYPE_ID,
 					newInfo.STATUS || 1,
 					newInfo.id
 				];
+				// TODO
 				mysql.query(sql, postData, function (err, status){
 					if(err) return cb(err);
 					cb(null, null, status);
