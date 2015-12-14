@@ -4,6 +4,27 @@
 		#parse('front/_pagelet/Common.IndexHeader.html')
 		<link rel='stylesheet' type='text/css' href='/public/assets/css/manage/1.0.1/index.css' />
 		<link rel='stylesheet' type='text/css' href='/public/assets/css/manage/1.0.1/iframe.css' />
+		<link rel='stylesheet' type='text/css' href='$!{conf.html.cdn}ztree/3.5.15/css/zTreeStyle/zTreeStyle.css' media='screen' />
+		<style>
+		ul.ztree {
+			border: 1px solid #DDDDDD;
+			height: 300px;
+			overflow-y: scroll;
+			overflow-x: auto;
+			margin-bottom: 10px;
+		}
+		ul.ztree * {
+			font-family: 'Microsoft Yahei',Helvetica,Arial,sans-serif;
+		}
+		.ztree li span.button.switch.level0 {
+			visibility: hidden;
+			width: 1px;
+		}
+		.ztree li ul.level0 {
+			padding: 0;
+			background: none;
+		}
+		</style>
 	</head>
 	<body>
 		<div class='container'>
@@ -13,10 +34,6 @@
 						<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
 						<li class='active'><a href='javascript:location.reload();'>认证码管理</a></li>
 					</ol>
-					<div id='info_alert' class='alert alert-info'>
-						<button type='button' class='close' data-dismiss='alert'>&times;</button>
-						<strong>提示：</strong>查询设置认证码信息。
-					</div>
 					<div class='panel panel-info'>
 						<div class='panel-heading'>
 							<h3 class='panel-title'><strong>查询条件</strong></h3>
@@ -32,14 +49,7 @@
 					</div>
 				</div>
 				<div class='col-sm-12 col-md-3'>
-					<div class='panel panel-default table-responsive'>
-						<div class='panel-heading'>
-							<div class='btn-group btn-group-xs'>
-								<button class='btn btn-primary glyphicon glyphicon-refresh' onclick='location.reload();'>刷新</button>
-							</div>
-						</div>
-						#parse('manage/authcode/_pagelet/Side.List.User.html')
-					</div>
+					<ul id='menuTree' class='ztree'></ul>
 				</div>
 				<div class='col-sm-12 col-md-9'>
 					<div class='panel panel-default table-responsive'>
@@ -57,6 +67,7 @@
 		</div>
 		#parse('front/_pagelet/Common.IndexJs.html')
 		#parse('manage/_pagelet/Common.Iframe.html')
+		<script type='text/javascript' src='$!{conf.html.cdn}ztree/3.5.15/js/jquery.ztree.core-3.5.js'></script>
 		<script>
 			$(function(){
 				$('input:radio[name="USER_ID"]').attr('checked', false);
@@ -95,6 +106,23 @@
 				var formObj = $('#searchFrm').serializeObjectForm();
 				console.log(formObj);
 			});
+		</script>
+		<script>
+		$(function(){
+			var setting = {
+				data: {
+					simpleData: {
+						enable: true
+					}
+				}
+			};
+			var zNodes = [{
+				id: '',
+				name: 'Root',
+				open: true
+			}];
+			$ .fn.zTree.init($('#menuTree'), setting, zNodes);
+		});
 		</script>
 	</body>
 </html>

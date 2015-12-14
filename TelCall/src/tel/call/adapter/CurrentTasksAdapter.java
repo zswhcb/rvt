@@ -84,14 +84,21 @@ public class CurrentTasksAdapter extends BaseAdapter implements ListAdapter {
 			viewHolder.task_name.setText(jo.getString("TASK_NAME"));
 			viewHolder.issued_time.setText(DateUtil.getFormat1(jo
 					.getString("START_TIME")));
+			// TODO
+			int _count = jo.getInt("COMPLETE_CURRENT_TASK_SUM")
+					+ jo.getInt("RUNNING_CURRENT_TASK_SUM");
+			int _task_sum = jo.getInt("TASK_SUM");
+			viewHolder.status.setText(_count < _task_sum ? "开抢" : "晚了");
+			// TODO
+			if (_count < _task_sum) {
+				viewHolder.status.setTextColor(Color.GREEN);
+			} else {
+				viewHolder.status.setTextColor(Color.RED);
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
-		// TODO
-		if (1 == position) {
-			viewHolder.task_name.setTextColor(Color.GREEN);
-		}
 		// TODO
 		return convertView;
 	}

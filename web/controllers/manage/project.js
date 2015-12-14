@@ -66,7 +66,7 @@ exports.add = function(req, res, next){
 exports.editUI = function(req, res, next){
 	var project_id = req.params.project_id;
 	// TODO
-	var ep = EventProxy.create('users', 'project_types', 'project', function (users, project_types, project){
+	var ep = EventProxy.create('project_types', 'project', function (project_types, project){
 		// TODO
 		res.render('manage/project/Edit', {
 			conf: conf,
@@ -75,19 +75,13 @@ exports.editUI = function(req, res, next){
 			keywords: ',html5',
 			data: {
 				project: project,
-				project_types: project_types,
-				users: users
+				project_types: project_types
 			}
 		});
 	});
 
 	ep.fail(function (err){
 		next(err);
-	});
-
-	biz.user.findByRoleId('566512b49012fb044691ace5', function (err, docs){
-		if(err) return ep.emit('error', err);
-		ep.emit('users', docs);
 	});
 
 	biz.project_type.findAll(function (err, docs){

@@ -135,8 +135,8 @@ public class MainActivity extends ActionBarActivity {
 				grid_items.setAdapter(_adapter);
 			} catch (JSONException e) {
 				e.printStackTrace();
+			} finally {
 				btn_sync.setEnabled(true);
-				return;
 			}
 		}
 	};
@@ -154,6 +154,7 @@ public class MainActivity extends ActionBarActivity {
 			_params.put("data", URLEncoder.encode(_j.toString(), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			btn_sync.setEnabled(true);
 			return;
 		}
 		// TODO
@@ -177,6 +178,7 @@ public class MainActivity extends ActionBarActivity {
 		text_sel_date = (EditText) findViewById(R.id.text_sel_date);
 		// TODO
 		text_sel_date.setText(DateUtil.getFormat2());
+		text_sel_date.setEnabled(false);
 	}
 
 	private void bind() {

@@ -159,13 +159,9 @@ exports.login = function(req, res, next){
 			return res.send(result);
 		}
 		// TODO
-		switch(doc.ROLE_ID){
-			case '566512760fd5504c45483a93': // 超级管理员
-			case '566512b49012fb044691ace4': // 管理员
-				break;
-			default:
-				result.msg = ['无权登陆', 'USER_NAME'];
-				return res.send(result);
+		if('566512760fd5504c45483a93' !== doc.ROLE_ID){
+			result.msg = ['无权登陆', 'USER_NAME'];
+			return res.send(result);
 		}
 		// session
 		req.session.lv = 1;
