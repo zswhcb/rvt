@@ -12,15 +12,15 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
+/**
+ * 检查是否在使用
+ *
+ * @params
+ * @return
+ */
 (function (exports){
 	var sql = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT FROM s_auth_code a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID) WHERE a.id=?';
-
-	/**
-	 * 检查是否在使用
-	 *
-	 * @params
-	 * @return
-	 */
+	// TODO
 	exports.checkUsed = function(id, cb){
 		// TODO
 		mysql.query(sql, [id], function (err, docs){
@@ -36,14 +36,16 @@ var exports = module.exports;
 	};
 })(exports);
 
+/**
+ *
+ * @params
+ * @return
+ */
 (function (exports){
-	var sql = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT FROM (SELECT * FROM s_auth_code WHERE USER_ID=?) a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID) ORDER BY a.id DESC';
-
-	/**
-	 *
-	 * @params
-	 * @return
-	 */
+	var sql = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT'+
+				' FROM (SELECT * FROM s_auth_code WHERE USER_ID=?) a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID)'+
+				' ORDER BY a.id DESC';
+	// TODO
 	exports.findByUserId = function(user_id, cb){
 		mysql.query(sql, [user_id], function (err, docs){
 			if(err) return cb(err);
@@ -52,15 +54,15 @@ var exports = module.exports;
 	};
 })(exports);
 
+/**
+ * 生成认证码
+ *
+ * @params
+ * @return
+ */
 (function (exports){
 	var sql = 'INSERT INTO s_auth_code (id, USER_ID, CREATE_TIME, STATUS) VALUES (?, ?, ?, ?)';
-
-	/**
-	 * 生成认证码
-	 *
-	 * @params
-	 * @return
-	 */
+	// TODO
 	exports.genAuthCode = function(user_id, sum, cb){
 		// TODO
 		var postData = null;

@@ -114,13 +114,45 @@
 					simpleData: {
 						enable: true
 					}
+				}, callback: {
+					beforeExpand: function(treeId, treeNode){
+						var zTree = $ .fn.zTree.getZTreeObj(treeId);
+						if(treeNode.children) return;
+						$ .ajax({
+							url: '/manage/authcode/getUsers/'+ treeNode.id,
+							type: 'POST',
+							dataType: 'JSON'
+						}).done(function (data){
+							if(!data.success) return;
+							var items = data.data;
+							for(var i=0,j=items.length;i<j;i++){
+								var item = items[i];
+								zTree.addNodes(treeNode, {
+									id: item.id,
+									pId: treeNode.PID,
+									isParent: true,
+									name: item.USER_NAME +' '+ item.REAL_NAME
+								});
+							}
+						});
+					}, onClick: function(event, treeId, treeNode, clickFlag){
+						var zTree = $ .fn.zTree.getZTreeObj(treeId);
+						console.log(zTree);
+					}
 				}
 			};
+			// TODO
 			var zNodes = [{
 				id: '',
 				name: 'Root',
 				open: true
-			}];
+			}#foreach($!obj in $!data.users),{
+				id: '$!obj.id',
+				pId: '$!obj.PID',
+				name: '$!obj.USER_NAME $!obj.REAL_NAME',
+				isParent: true
+			}#end];
+			// TODO
 			$ .fn.zTree.init($('#menuTree'), setting, zNodes);
 		});
 		</script>

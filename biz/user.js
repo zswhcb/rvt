@@ -16,25 +16,49 @@ var biz = {
 	authcode: require('./authcode')
 };
 
+/**
+ * 通过父Id查询子用户
+ *
+ * @params
+ * @return
+ */
 (function (exports){
-	// 查询用户 关联用户角色表
-	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a, s_role b WHERE a.ROLE_ID=b.id';
-	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
-
-	/**
-	 *
-	 * @params
-	 * @return
-	 */
-	exports.findByRoleId = function(role_id, cb){
-		role_id = role_id || '566512b49012fb044691ace6'; // 业务员
+	var sql = 'SELECT b.* FROM'+
+				' (SELECT IFNULL((SELECT USER_ID FROM s_auth_code WHERE id=a.AUTH_CODE_ID), "") PID, a.* FROM s_user a WHERE a.STATUS=1 AND a.ROLE_ID="566512b49012fb044691ace6") b'+
+				' WHERE b.PID=?'+
+				' ORDER BY b.CREATE_TIME DESC';
+	// TODO
+	exports.findByPId = function(pid, cb){
+		pid = pid || '';
 		// TODO
-		var sql = sql_1 +' AND a.AUTH_CODE_ID=? AND a.ROLE_ID=?'+ sql_orderby;
-		mysql.query(sql, ['', role_id], function (err, docs){
+		mysql.query(sql, [pid], function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
 		});
 	};
+})(exports);
+
+/**
+ * 根据角色查询用户
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'SELECT * FROM s_user where ROLE_ID=? ORDER BY CREATE_TIME DESC';
+	// TODO
+	exports.findByRoleId = function(role_id, cb){
+		mysql.query(sql, [role_id], function (err, docs){
+			if(err) return cb(err);
+			cb(null, docs);
+		});
+	};
+})(exports);
+
+(function (exports){
+	// 查询用户 关联用户角色表
+	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a, s_role b WHERE a.ROLE_ID=b.id';
+	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
 
 	/**
 	 *
@@ -128,14 +152,14 @@ exports.findByName = function(name, cb){
 		cb(null);
 	}
 
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
 	(function (exports){
 		var sql = 'INSERT INTO s_user (id, ROLE_ID, USER_NAME, USER_PASS, AVATAR_URL, EMAIL, MOBILE, REAL_NAME, ALIPAY_ACCOUNT, APIKEY, SECKEY, AUTH_CODE_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-		/**
-		 *
-		 * @params
-		 * @return
-		 */
+		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
@@ -144,7 +168,6 @@ exports.findByName = function(name, cb){
 					if(err) return cb(err);
 					// TODO
 					if(!!doc) return cb(null, ['用户名或手机号已经存在', 'USER_NAME']);
-					// TODO
 					// CREATE
 					var postData = [
 						util.genObjectId(),
@@ -171,18 +194,18 @@ exports.findByName = function(name, cb){
 		};
 	})(exports);
 
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
 	(function (exports){
 		var sql = 'UPDATE s_user set EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, STATUS=? WHERE id=?';
-
-		/**
-		 *
-		 * @params
-		 * @return
-		 */
+		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
-				// CREATE
+				// EDIT
 				var postData = [
 					newInfo.EMAIL,
 					newInfo.MOBILE,

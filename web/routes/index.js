@@ -67,6 +67,7 @@ function proc_back(app){
  */
 function proc_manage(app){
 	// 认证码
+	app.post('/manage/authcode/getUsers/:user_id', manage.user.login_validate, manage.authcode.getUsers);
 	app.post('/manage/authcode/genAuthCode/:user_id', manage.user.login_validate, manage.authcode.genAuthCode);
 	app.post('/manage/authcode/getAuthCodes/:user_id', manage.user.login_validate, manage.authcode.getAuthCodes);
 	app.get('/manage/authcode/', manage.user.login_validate, manage.authcode.indexUI);

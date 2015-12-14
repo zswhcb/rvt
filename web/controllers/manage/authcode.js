@@ -28,7 +28,7 @@ var exports = module.exports;
  * @return
  */
 exports.indexUI = function(req, res, next){
-	biz.user.findByRoleId(null, function (err, docs){
+	biz.user.findByPId('', function (err, docs){
 		// TODO
 		res.render('manage/authcode/Index', {
 			conf: conf,
@@ -39,6 +39,23 @@ exports.indexUI = function(req, res, next){
 				users: docs
 			}
 		});
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.getUsers = function(req, res, next){
+	var result = { success: false },
+		user_id = req.params.user_id;
+	// TODO
+	biz.user.findByPId(user_id, function (err, docs){
+		if(err) return next(err);
+		result.data = docs;
+		result.success = true;
+		res.send(result);
 	});
 };
 
