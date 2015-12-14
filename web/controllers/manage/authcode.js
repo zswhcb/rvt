@@ -81,16 +81,17 @@ exports.genAuthCode = function(req, res, next){
 	});
 };
 
+/**
+ * 加载块儿
+ *
+ * @params
+ * @return
+ */
 (function (exports){
-	/**
-	 *
-	 * @params
-	 * @return
-	 */
 	exports.getAuthCodes = function(req, res, next){
-		var result = { success: false };
-		var user_id = req.params.user_id;
-
+		var result = { success: false },
+			user_id = req.params.user_id;
+		// TODO
 		biz.authcode.findByUserId(user_id, function (err, docs){
 			if(err) return next(err);
 			// TODO
@@ -99,14 +100,14 @@ exports.genAuthCode = function(req, res, next){
 					result.msg = err;
 					return res.send(result);
 				}
-
+				// TODO
 				var html = velocity.render(template, {
 					conf: conf,
 					data: { authcodes: docs }
 				}, macros);
-
-				result.success = true;
+				// TODO
 				result.data = html;
+				result.success = true;
 				res.send(result);
 			});
 		});

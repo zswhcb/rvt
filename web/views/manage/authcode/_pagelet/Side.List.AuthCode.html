@@ -5,8 +5,6 @@
 		<th>创建时间</th>
 		<th style='color:green'>状态</th>
 		<th style='color:blue'>用户名</th>
-		<th style='color:blue'>手机号</th>
-		<th style='color:blue'>电子邮箱</th>
 		<th style='color:blue'>真实姓名</th>
 		<th style='color:blue'>支付宝帐号</th>
 	</tr>
@@ -17,10 +15,8 @@
 		<td>$!doc.id</td>
 		<td title='#formatDate($!doc.CREATE_TIME)'>#formatDate($!doc.CREATE_TIME, 4)</td>
 		<td style='color:green'>#toStatus($!doc.STATUS)</td>
-		<td>$!doc.USER_NAME</td>
-		<td>$!doc.MOBILE</td>
-		<td>$!doc.EMAIL</td>
-		<td>$!doc.REAL_NAME</td>
-		<td>$!doc.ALIPAY_ACCOUNT</td>
+		<td>#replaceNull($!doc.USER_NAME)</td>
+		<td>#replaceNull($!doc.REAL_NAME)</td>
+		<td>#replaceNull($!doc.ALIPAY_ACCOUNT)</td>
 	</tr>#end
 </tbody>

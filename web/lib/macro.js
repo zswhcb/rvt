@@ -64,5 +64,7 @@ module.exports = {
 		}
 	}, fileServUrlFill: function(href){
 		return conf.html.fileServ + href;
+	}, replaceNull: function(obj){
+		return obj || '';
 	}
 };
