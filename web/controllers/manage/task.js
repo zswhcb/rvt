@@ -68,6 +68,27 @@ exports.del = function(req, res, next){
  * @params
  * @return
  */
+exports.edit = function(req, res, next){
+	var result = { success: false },
+		data = req._data;
+	// TODO
+	biz.task.editInfo(data, function (err, msg, status){
+		if(err) return next(err);
+		// TODO
+		if(!!msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+		result.success = true;
+		res.send(result);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.add = function(req, res, next){
 	var result = { success: false },
 		data = req._data;
@@ -81,6 +102,29 @@ exports.add = function(req, res, next){
 		}
 		result.success = true;
 		res.send(result);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.editUI = function(req, res, next){
+	var task_id = req.params.task_id;
+	// TODO
+	biz.task.getById(task_id, function (err, doc){
+		if(err) return next(err);
+		// TODO
+		res.render('manage/task/Edit', {
+			conf: conf,
+			title: '编辑 | '+ req.query.name +' | '+ conf.corp.name,
+			description: '',
+			keywords: ',html5',
+			data: {
+				task: doc
+			}
+		});
 	});
 };
 

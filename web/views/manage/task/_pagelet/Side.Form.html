@@ -40,19 +40,19 @@
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_START_TIME'><span class='olx-form-required'>*</span>开始时间</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='START_TIME' id='addFrm_START_TIME' placeholder='开始时间' value='$!doc.START_TIME' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'addFrm_END_TIME\')}'})">
+			<input type='text' class='form-control' name='START_TIME' id='addFrm_START_TIME' placeholder='开始时间' value='#formatDate($!doc.START_TIME)' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'addFrm_END_TIME\')}'})">
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_END_TIME'><span class='olx-form-required'>*</span>结束时间</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='END_TIME' id='addFrm_END_TIME' placeholder='结束时间' value='$!doc.END_TIME' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'addFrm_START_TIME\')}'})">
+			<input type='text' class='form-control' name='END_TIME' id='addFrm_END_TIME' placeholder='结束时间' value='#formatDate($!doc.END_TIME)' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'addFrm_START_TIME\')}'})">
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TASK_INTRO'><span class='olx-form-required'>*</span>任务简介</label>
 		<div class='col-sm-4'>
-			<textarea class='form-control' rows='3' name='TASK_INTRO' id='addFrm_TASK_INTRO' placeholder='任务简介' required='required'>$!doc.TASK_INTRO</textarea>
+			<textarea class='form-control' rows='5' name='TASK_INTRO' id='addFrm_TASK_INTRO' placeholder='任务简介' required='required'>$!doc.TASK_INTRO</textarea>
 		</div>
 	</div>
 	<div class='form-group'>

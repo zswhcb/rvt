@@ -62,6 +62,19 @@ var exports = module.exports;
 	 * @params
 	 * @return
 	 */
+	exports.getById = function(id, cb){
+		var sql = sql_1 +' AND a.id=?';
+		mysql.query(sql, [id], function (err, docs){
+			if(err) return cb(err);
+			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+		});
+	};
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
 	exports.findAll = function(cb){
 		var sql = sql_1 + sql_orderby;
 		mysql.query(sql, null, function (err, docs){
@@ -137,7 +150,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE s_user set TASK_NAME=?, TEL_NUM=?, TASK_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE p_task set TASK_NAME=?, TEL_NUM=?, TASK_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){

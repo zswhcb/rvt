@@ -109,7 +109,9 @@ function proc_manage_task(app){
 	app.post('/manage/task/html/getTasksByProjectId/:project_id', manage.user.login_validate, manage.task.getTasksByProjectId);
 	// 添加 修改 删除
 	app.post('/manage/task/del/:task_id', manage.user.login_validate, manage.task.del);
+	app.post('/manage/task/edit', express.valiPostData, manage.user.login_validate, manage.task.edit);
 	app.post('/manage/task/add', express.valiPostData, manage.user.login_validate, manage.task.add);
+	app.get('/manage/task/edit/:task_id', manage.user.login_validate, manage.task.editUI);
 	app.get('/manage/task/add/:project_id', manage.user.login_validate, manage.task.addUI);
 	// TODO
 	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);
