@@ -27,23 +27,6 @@ var biz = {
  * @params
  * @return
  */
-exports.getProjects = function(req, res, next){
-	var result = { success: false },
-		user_id = req.params.user_id;
-	// TODO
-	biz.project.getByUserId(user_id, function (err, docs){
-		if(err) return next(err);
-		result.data = docs;
-		result.success = true;
-		res.send(result);
-	});
-};
-
-/**
- *
- * @params
- * @return
- */
 exports.monitorUI = function(req, res, next){
 	biz.task.findAll(function (err, docs){
 		// TODO

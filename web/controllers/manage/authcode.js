@@ -47,23 +47,6 @@ exports.indexUI = function(req, res, next){
  * @params
  * @return
  */
-exports.getUsers = function(req, res, next){
-	var result = { success: false },
-		user_id = req.params.user_id;
-	// TODO
-	biz.user.findByPId(user_id, function (err, docs){
-		if(err) return next(err);
-		result.data = docs;
-		result.success = true;
-		res.send(result);
-	});
-};
-
-/**
- *
- * @params
- * @return
- */
 exports.genAuthCode = function(req, res, next){
 	var result = { success: false },
 		user_id = req.params.user_id;

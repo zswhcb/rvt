@@ -112,7 +112,7 @@
 						var zTree = $ .fn.zTree.getZTreeObj(treeId);
 						if(treeNode.children) return;
 						$ .ajax({
-							url: '/manage/authcode/getUsers/'+ treeNode.id,
+							url: '/manage/json/getUsersByPId/'+ treeNode.id,
 							type: 'POST',
 							dataType: 'JSON'
 						}).done(function (data){

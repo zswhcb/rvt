@@ -15,6 +15,7 @@ var back = {
 	user: require('../controllers/back/user')
 };
 var manage = {
+	json: require('../controllers/manage/json'),
 	authcode: require('../controllers/manage/authcode'),
 	task: require('../controllers/manage/task'),
 	project: require('../controllers/manage/project'),
@@ -66,8 +67,10 @@ function proc_back(app){
  * @return
  */
 function proc_manage(app){
+	// JSON
+	app.post('/manage/json/getProjectsByUserId/:user_id', manage.user.login_validate, manage.json.getProjectsByUserId);
+	app.post('/manage/json/getUsersByPId/:user_id', manage.user.login_validate, manage.json.getUsersByPId);
 	// 认证码
-	app.post('/manage/authcode/getUsers/:user_id', manage.user.login_validate, manage.authcode.getUsers);
 	app.post('/manage/authcode/genAuthCode/:user_id', manage.user.login_validate, manage.authcode.genAuthCode);
 	app.post('/manage/authcode/getAuthCodes/:user_id', manage.user.login_validate, manage.authcode.getAuthCodes);
 	app.get('/manage/authcode/', manage.user.login_validate, manage.authcode.indexUI);
@@ -75,7 +78,6 @@ function proc_manage(app){
 	app.post('/manage/task/monitor/getTaskMonitors/:task_id', manage.user.login_validate, manage.task.getTaskMonitors);
 	app.get('/manage/task/monitor/', manage.user.login_validate, manage.task.monitorUI);
 	// 任务管理
-	app.post('/manage/task/getProjects/:user_id', manage.user.login_validate, manage.task.getProjects);
 	app.post('/manage/task/getTasks/:project_id', manage.user.login_validate, manage.task.getTasks);
 	app.post('/manage/task/del/:task_id', manage.user.login_validate, manage.task.del);
 	app.post('/manage/task/add', express.valiPostData, manage.user.login_validate, manage.task.add);

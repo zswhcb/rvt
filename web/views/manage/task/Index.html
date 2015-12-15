@@ -118,7 +118,7 @@
 						var zTree = $ .fn.zTree.getZTreeObj(treeId);
 						if(treeNode.children) return;
 						$ .ajax({
-							url: '/manage/task/getProjects/'+ treeNode.id,
+							url: '/manage/json/getProjectsByUserId/'+ treeNode.id,
 							type: 'POST',
 							dataType: 'JSON'
 						}).done(function (data){
