@@ -13,19 +13,16 @@
 	</tr>
 </thead>
 <tbody>
-	#foreach($!doc in $!data.tasks)<tr>
+	#foreach($!doc in $!data.tasks)<tr title='$!doc.TASK_INTRO'>
 		<td class='ta'><input type='radio' name='TASK_ID' value='$!doc.id'></td>
 		<td style='color:red'>$!doc.TASK_NAME</td>
 		<td>$!doc.TASK_SUM</td>
 		<td>#replaceNull($!doc.TEL_NUM)</td>
 		<td>$!doc.TALK_TIME_LEN</td>
 		<td>$!doc.TALK_TIMEOUT</td>
-		<td style='color:green'>#formatDate($!doc.START_TIME, 5)</td>
-		<td>#formatDate($!doc.END_TIME, 5)</td>
-		<td>#formatDate($!doc.CREATE_TIME, 5)</td>
+		<td style='color:green' title='#formatDate($!doc.START_TIME)'>#formatDate($!doc.START_TIME, 7)</td>
+		<td title='#formatDate($!doc.END_TIME)'>#formatDate($!doc.END_TIME, 7)</td>
+		<td title='#formatDate($!doc.CREATE_TIME)'>#formatDate($!doc.CREATE_TIME, 7)</td>
 		<td style='color:green'>#toStatus($!doc.STATUS)</td>
-	</tr><tr>
-		<td> </td>
-		<td colspan='9' style='font-weight:bold;color:blue'>$!doc.TASK_INTRO</td>
 	</tr>#end
 </tbody>
