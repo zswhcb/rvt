@@ -132,7 +132,7 @@
 						if(!treeNode.id) return;
 						// TODO
 						$.ajax({
-							url: './getAuthCodes/'+ treeNode.id,
+							url: './html/getAuthCodesByUserId/'+ treeNode.id,
 							type: 'POST',
 							dataType: 'JSON'
 						}).done(function (data){

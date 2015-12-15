@@ -138,7 +138,7 @@
 						if(treeNode.isParent) return;
 						// TODO
 						$.ajax({
-							url: './getTasks/'+ treeNode.id,
+							url: './html/getTasksByProjectId/'+ treeNode.id,
 							type: 'POST',
 							dataType: 'JSON'
 						}).done(function (data){

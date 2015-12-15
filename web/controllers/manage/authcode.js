@@ -71,7 +71,7 @@ exports.genAuthCode = function(req, res, next){
  * @return
  */
 (function (exports){
-	exports.getAuthCodes = function(req, res, next){
+	exports.getAuthCodesByUserId = function(req, res, next){
 		var result = { success: false },
 			user_id = req.params.user_id;
 		// TODO

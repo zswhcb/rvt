@@ -129,7 +129,7 @@ exports.indexUI = function(req, res, next){
  * @return
  */
 (function (exports){
-	exports.getTasks = function(req, res, next){
+	exports.getTasksByProjectId = function(req, res, next){
 		var result = { success: false },
 			project_id = req.params.project_id;
 		// TODO

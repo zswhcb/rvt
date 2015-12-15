@@ -67,45 +67,110 @@ function proc_back(app){
  * @return
  */
 function proc_manage(app){
-	// JSON
+	proc_manage_json(app);
+
+	proc_manage_task_monitor(app);
+	proc_manage_task(app);
+
+	proc_manage_project(app);
+
+	proc_manage_authcode(app);
+
+	proc_manage_role(app);
+	// TODO
+	proc_manage_user(app);
+	// TODO
+	proc_manage_login(app);
+	// TODO
+	proc_manage_site(app);
+}
+
+/**
+ * 处理json数据
+ */
+function proc_manage_json(app){
 	app.post('/manage/json/getProjectsByUserId/:user_id', manage.user.login_validate, manage.json.getProjectsByUserId);
 	app.post('/manage/json/getUsersByPId/:user_id', manage.user.login_validate, manage.json.getUsersByPId);
-	// 认证码
-	app.post('/manage/authcode/genAuthCode/:user_id', manage.user.login_validate, manage.authcode.genAuthCode);
-	app.post('/manage/authcode/getAuthCodes/:user_id', manage.user.login_validate, manage.authcode.getAuthCodes);
-	app.get('/manage/authcode/', manage.user.login_validate, manage.authcode.indexUI);
-	// 任务监控
+}
+
+/**
+ * 任务监控
+ */
+function proc_manage_task_monitor(app){
 	app.post('/manage/task/monitor/getTaskMonitors/:task_id', manage.user.login_validate, manage.task.getTaskMonitors);
 	app.get('/manage/task/monitor/', manage.user.login_validate, manage.task.monitorUI);
-	// 任务管理
-	app.post('/manage/task/getTasks/:project_id', manage.user.login_validate, manage.task.getTasks);
+}
+
+/**
+ * 任务管理
+ */
+function proc_manage_task(app){
+	app.post('/manage/task/html/getTasksByProjectId/:project_id', manage.user.login_validate, manage.task.getTasksByProjectId);
+	// 添加 修改 删除
 	app.post('/manage/task/del/:task_id', manage.user.login_validate, manage.task.del);
 	app.post('/manage/task/add', express.valiPostData, manage.user.login_validate, manage.task.add);
 	app.get('/manage/task/add/:project_id', manage.user.login_validate, manage.task.addUI);
+	// TODO
 	app.get('/manage/task/', manage.user.login_validate, manage.task.indexUI);
-	// 项目管理
+}
+
+/**
+ * 项目管理
+ */
+function proc_manage_project(app){
+	// 添加 修改
 	app.post('/manage/project/edit', express.valiPostData, manage.user.login_validate, manage.project.edit);
-	app.get('/manage/project/edit/:project_id', manage.user.login_validate, manage.project.editUI);
 	app.post('/manage/project/add', express.valiPostData, manage.user.login_validate, manage.project.add);
+	app.get('/manage/project/edit/:project_id', manage.user.login_validate, manage.project.editUI);
 	app.get('/manage/project/add', manage.user.login_validate, manage.project.addUI);
+	// TODO
 	app.get('/manage/project/', manage.user.login_validate, manage.project.indexUI);
-	// 角色管理
+}
+
+/**
+ * 认证码
+ */
+function proc_manage_authcode(app){
+	app.post('/manage/authcode/genAuthCode/:user_id', manage.user.login_validate, manage.authcode.genAuthCode);
+	app.post('/manage/authcode/html/getAuthCodesByUserId/:user_id', manage.user.login_validate, manage.authcode.getAuthCodesByUserId);
+	app.get('/manage/authcode/', manage.user.login_validate, manage.authcode.indexUI);
+}
+
+/**
+ * 角色管理
+ */
+function proc_manage_role(app){
 	app.get('/manage/role/', manage.user.login_validate, manage.role.indexUI);
+}
+
+/**
+ * 用户管理
+ */
+function proc_manage_user(app){
 	// 用户相关
-	app.get('/manage/user/logout$', manage.user.logoutUI);
-	app.get('/manage/user/login$', manage.user.loginUI);
-	app.post('/manage/user/login$', express.valiPostData, manage.user.login);
 	app.get('/manage/user/changePwd$', manage.user.login_validate, manage.user.changePwdUI);
 	// 添加 修改
 	app.post('/manage/user/add', express.valiPostData, manage.user.login_validate, manage.user.add);
-	app.get('/manage/user/add', manage.user.login_validate, manage.user.addUI);
 	app.post('/manage/user/edit', express.valiPostData, manage.user.login_validate, manage.user.edit);
 	app.get('/manage/user/edit/:user_id', manage.user.login_validate, manage.user.editUI);
-
-	// 用户管理
+	app.get('/manage/user/add', manage.user.login_validate, manage.user.addUI);
+	// TODO
 	app.get('/manage/user/', manage.user.login_validate, manage.user.indexUI);
+}
 
-	// 管理框架
+/**
+ * 用户登陆
+ */
+function proc_manage_login(app){
+	app.get('/manage/user/logout$', manage.user.logoutUI);
+	app.get('/manage/user/login$', manage.user.loginUI);
+	app.post('/manage/user/login$', express.valiPostData, manage.user.login);
+}
+
+/**
+ * 管理框架
+ */
+function proc_manage_site(app){
 	app.get('/manage/welcome', manage.user.login_validate, manage.site.welcomeUI);
 	app.get('/manage/', manage.user.login_validate, manage.site.indexUI);
 }
