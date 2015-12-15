@@ -48,10 +48,10 @@
 						</div>
 					</div>
 				</div>
-				<div class='col-sm-12 col-md-4'>
+				<div class='col-sm-12 col-md-3'>
 					<ul id='menuTree' class='ztree'></ul>
 				</div>
-				<div class='col-sm-12 col-md-8'>
+				<div class='col-sm-12 col-md-9'>
 					<div class='panel panel-default table-responsive'>
 						<div class='panel-heading'>
 							<div class='btn-group btn-group-xs'>
@@ -72,25 +72,14 @@
 		<script type='text/javascript' src='$!{conf.html.cdn}ztree/3.5.15/js/jquery.ztree.core-3.5.js'></script>
 		<script>
 			$(function(){
-				$('input:radio[name="PROJECT_ID"]').attr('checked', false);
-				// TODO
-				$('input:radio[name="PROJECT_ID"]').change(function (obj){
-					var project_id = obj.target.defaultValue;
-					// TODO
-					$.ajax({
-						url: './getTasks/'+ project_id,
-						type: 'POST',
-						dataType: 'JSON'
-					}).done(function (data){
-						if(!data.success) return $('#table2').html('');
-						$('#table2').html(data.data);
-					});
-				});
 				// TODO
 				$('#btn_add').click(function(){
-					var project_id = $('input:radio[name="PROJECT_ID"]:checked').val();
-					if(!project_id) return;
-					parent.location.href = '/manage/#page/task/add/'+ project_id;
+					var zTree = $ .fn.zTree.getZTreeObj('menuTree'),
+						node = zTree.getSelectedNodes()[0];
+					if(!node) return;
+					if(node.isParent) return;
+					// TODO
+					parent.location.href = '/manage/#page/task/add/'+ node.id;
 				});
 				// TODO
 				$('#btn_del').click(function(){
@@ -140,15 +129,16 @@
 								zTree.addNodes(treeNode, {
 									id: item.id,
 									isParent: false,
-									name: item.PROJECT_TYPE_NAME +'-'+ item.PROJECT_NAME
+									name: item.PROJECT_TYPE_NAME +'-'+ item.PROJECT_NAME +' ('+ item.TASK_COUNT +')'
 								});
 							}
 						});
 					}, onClick: function(event, treeId, treeNode, clickFlag){
 						if(!treeNode.id) return;
+						if(treeNode.isParent) return;
 						// TODO
 						$.ajax({
-							url: './getAuthCodes/'+ treeNode.id,
+							url: './getTasks/'+ treeNode.id,
 							type: 'POST',
 							dataType: 'JSON'
 						}).done(function (data){
@@ -166,7 +156,7 @@
 			}#foreach($!obj in $!data.users),{
 				id: '$!obj.id',
 				pId: '$!obj.PID',
-				name: '$!obj.USER_NAME'+'-'+'$!obj.REAL_NAME',
+				name: '$!obj.USER_NAME'+'-'+'$!obj.REAL_NAME ($!obj.PROJECT_COUNT)',
 				isParent: true
 			}#end];
 			// TODO

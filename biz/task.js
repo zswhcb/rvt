@@ -54,7 +54,7 @@ var exports = module.exports;
 
 
 (function (exports){
-	var sql_1 = 'SELECT b.PROJECT_NAME, b.TEL_NUM, a.* FROM p_task a, p_project b WHERE a.PROJECT_ID=b.id';
+	var sql_1 = 'SELECT b.PROJECT_NAME, a.* FROM p_task a, p_project b WHERE a.PROJECT_ID=b.id';
 	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
 
 	/**
@@ -102,7 +102,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO p_task (id, TASK_NAME, TASK_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO p_task (id, TASK_NAME, TEL_NUM, TASK_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -111,6 +111,7 @@ var exports = module.exports;
 				var postData = [
 					util.genObjectId(),
 					newInfo.TASK_NAME,
+					newInfo.TEL_NUM,
 					newInfo.TASK_INTRO,
 					newInfo.TASK_SUM || 20,
 					newInfo.PROJECT_ID,
@@ -136,7 +137,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE s_user set TASK_NAME=?, TASK_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE s_user set TASK_NAME=?, TEL_NUM=?, TASK_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -144,6 +145,7 @@ var exports = module.exports;
 				// CREATE
 				var postData = [
 					newInfo.TASK_NAME,
+					newInfo.TEL_NUM,
 					newInfo.TASK_INTRO,
 					newInfo.TASK_SUM || 20,
 					newInfo.TALK_TIME_LEN || 30,

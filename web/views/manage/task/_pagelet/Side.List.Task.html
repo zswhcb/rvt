@@ -1,29 +1,31 @@
 <thead>
 	<tr>
 		<th class='ta'>No.</th>
-		<th>任务名称</th>
+		<th style='color:red'>任务名称</th>
 		<th>任务数量</th>
+		<th>任务电话</th>
 		<th>通话时长</th>
 		<th>超时时长</th>
-		<th>开始时间</th>
+		<th style='color:green'>开始时间</th>
 		<th>结束时间</th>
 		<th>创建时间</th>
-		<th>状态</th>
+		<th style='color:green'>状态</th>
 	</tr>
 </thead>
 <tbody>
 	#foreach($!doc in $!data.tasks)<tr>
 		<td class='ta'><input type='radio' name='TASK_ID' value='$!doc.id'></td>
-		<td>$!doc.TASK_NAME</td>
+		<td style='color:red'>$!doc.TASK_NAME</td>
 		<td>$!doc.TASK_SUM</td>
+		<td>#replaceNull($!doc.TEL_NUM)</td>
 		<td>$!doc.TALK_TIME_LEN</td>
 		<td>$!doc.TALK_TIMEOUT</td>
-		<td>#formatDate($!doc.START_TIME, 5)</td>
+		<td style='color:green'>#formatDate($!doc.START_TIME, 5)</td>
 		<td>#formatDate($!doc.END_TIME, 5)</td>
-		<td>#formatDate($!doc.CREATE_TIME)</td>
-		<td>#toStatus($!doc.STATUS)</td>
+		<td>#formatDate($!doc.CREATE_TIME, 5)</td>
+		<td style='color:green'>#toStatus($!doc.STATUS)</td>
 	</tr><tr>
 		<td> </td>
-		<td colspan='7' style='font-weight:bold;color:green'>$!doc.TASK_INTRO</td>
+		<td colspan='9' style='font-weight:bold;color:blue'>$!doc.TASK_INTRO</td>
 	</tr>#end
 </tbody>

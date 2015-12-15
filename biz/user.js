@@ -24,7 +24,10 @@ var biz = {
  */
 (function (exports){
 	var sql = 'SELECT b.* FROM'+
-				' (SELECT IFNULL((SELECT USER_ID FROM s_auth_code WHERE id=a.AUTH_CODE_ID), "") PID, a.* FROM s_user a WHERE a.STATUS=1 AND a.ROLE_ID="566512b49012fb044691ace6") b'+
+				' (SELECT '+
+					'(SELECT COUNT(1) FROM s_auth_code WHERE USER_ID=a.id) AUTH_CODE_COUNT,'+
+					' IFNULL((SELECT USER_ID FROM s_auth_code WHERE id=a.AUTH_CODE_ID), "") PID, a.*'+
+					' FROM s_user a WHERE a.STATUS=1 AND a.ROLE_ID="566512b49012fb044691ace6") b'+
 				' WHERE b.PID=?'+
 				' ORDER BY b.CREATE_TIME DESC';
 	// TODO
@@ -45,7 +48,7 @@ var biz = {
  * @return
  */
 (function (exports){
-	var sql = 'SELECT * FROM s_user where ROLE_ID=? ORDER BY CREATE_TIME DESC';
+	var sql = 'SELECT (SELECT COUNT(1) FROM p_project WHERE STATUS=1 AND USER_ID=a.id) PROJECT_COUNT, a.* FROM s_user a where a.ROLE_ID=? ORDER BY a.CREATE_TIME DESC';
 	// TODO
 	exports.findByRoleId = function(role_id, cb){
 		mysql.query(sql, [role_id], function (err, docs){

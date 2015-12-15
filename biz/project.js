@@ -17,7 +17,10 @@ var exports = module.exports;
  * @return
  */
 (function (exports){
-	var sql = 'SELECT b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM p_project a, p_project_type b WHERE a.PROJECT_TYPE_ID=b.id AND a.STATUS=1 AND a.USER_ID=? ORDER BY a.PROJECT_TYPE_ID, a.CREATE_TIME DESC'
+	var sql = 'SELECT'+
+				' (SELECT COUNT(1) FROM p_task WHERE PROJECT_ID=a.id) TASK_COUNT,'+
+				' b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM p_project a, p_project_type b'+
+				' WHERE a.PROJECT_TYPE_ID=b.id AND a.STATUS=1 AND a.USER_ID=? ORDER BY a.PROJECT_TYPE_ID, a.CREATE_TIME DESC'
 	// TODO
 	exports.getByUserId = function(user_id, cb){
 		mysql.query(sql, [user_id], function (err, docs){

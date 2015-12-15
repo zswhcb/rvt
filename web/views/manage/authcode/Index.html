@@ -124,7 +124,7 @@
 									id: item.id,
 									pId: treeNode.PID,
 									isParent: true,
-									name: item.USER_NAME +' '+ item.REAL_NAME
+									name: item.USER_NAME +' '+ item.REAL_NAME +' ('+ item.AUTH_CODE_COUNT +')'
 								});
 							}
 						});
@@ -150,7 +150,7 @@
 			}#foreach($!obj in $!data.users),{
 				id: '$!obj.id',
 				pId: '$!obj.PID',
-				name: '$!obj.USER_NAME $!obj.REAL_NAME',
+				name: '$!obj.USER_NAME $!obj.REAL_NAME ($!obj.AUTH_CODE_COUNT)',
 				isParent: true
 			}#end];
 			// TODO
