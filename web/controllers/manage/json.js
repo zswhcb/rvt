@@ -16,6 +16,7 @@ var conf = require('../../settings'),
 	macros = require('../../lib/macro');
 
 var biz = {
+	task: require('../../../biz/task'),
 	user: require('../../../biz/user'),
 	project: require('../../../biz/project')
 };
@@ -49,6 +50,25 @@ exports.getUsersByPId = function(req, res, next){
 	// TODO
 	biz.user.findByPId(user_id, function (err, docs){
 		if(err) return next(err);
+		result.data = docs;
+		result.success = true;
+		res.send(result);
+	});
+};
+
+/**
+ * 获取任务
+ *
+ * @params
+ * @return
+ */
+exports.getTasksByProjectId = function(req, res, next){
+	var result = { success: false },
+		project_id = req.params.project_id;
+	// TODO
+	biz.task.findByProjectId(project_id, function (err, docs){
+		if(err) return next(err);
+		// TODO
 		result.data = docs;
 		result.success = true;
 		res.send(result);

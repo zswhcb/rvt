@@ -91,13 +91,14 @@ function proc_manage(app){
 function proc_manage_json(app){
 	app.post('/manage/json/getProjectsByUserId/:user_id', manage.user.login_validate, manage.json.getProjectsByUserId);
 	app.post('/manage/json/getUsersByPId/:user_id', manage.user.login_validate, manage.json.getUsersByPId);
+	app.post('/manage/json/getTasksByProjectId/:project_id', manage.user.login_validate, manage.json.getTasksByProjectId);
 }
 
 /**
  * 任务监控
  */
 function proc_manage_task_monitor(app){
-	app.post('/manage/task/monitor/getTaskMonitors/:task_id', manage.user.login_validate, manage.task.getTaskMonitors);
+	app.post('/manage/task/monitor/html/getTaskMonitorsByTaskId/:task_id', manage.user.login_validate, manage.task.getTaskMonitorsByTaskId);
 	app.get('/manage/task/monitor/', manage.user.login_validate, manage.task.monitorUI);
 }
 

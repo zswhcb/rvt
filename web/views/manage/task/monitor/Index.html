@@ -4,6 +4,27 @@
 		#parse('front/_pagelet/Common.IndexHeader.html')
 		<link rel='stylesheet' type='text/css' href='/public/assets/css/manage/1.0.1/index.css' />
 		<link rel='stylesheet' type='text/css' href='/public/assets/css/manage/1.0.1/iframe.css' />
+		<link rel='stylesheet' type='text/css' href='$!{conf.html.cdn}ztree/3.5.15/css/zTreeStyle/zTreeStyle.css' media='screen' />
+		<style>
+		ul.ztree {
+			border: 1px solid #DDDDDD;
+			height: 350px;
+			overflow-y: scroll;
+			overflow-x: auto;
+			margin-bottom: 10px;
+		}
+		ul.ztree * {
+			font-family: 'Microsoft Yahei',Helvetica,Arial,sans-serif;
+		}
+		.ztree li span.button.switch.level0 {
+			visibility: hidden;
+			width: 1px;
+		}
+		.ztree li ul.level0 {
+			padding: 0;
+			background: none;
+		}
+		</style>
 	</head>
 	<body>
 		<div class='container'>
@@ -13,18 +34,24 @@
 						<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
 						<li class='active'><a href='javascript:location.reload();'>任务监控</a></li>
 					</ol>
-				</div>
-				<div class='col-sm-12 col-md-6'>
-					<div class='panel panel-default table-responsive'>
+					<div class='panel panel-info'>
 						<div class='panel-heading'>
-							<div class='btn-group btn-group-xs'>
-								<button class='btn btn-primary glyphicon glyphicon-refresh' onclick='location.reload()'>刷新</button>
-							</div>
+							<h3 class='panel-title'><strong>查询条件</strong></h3>
 						</div>
-						#parse('manage/task/monitor/_pagelet/Side.List.Task.html')
+						<div class='panel-body'>
+							<form id='searchFrm' class='form-inline' role='form' onsubmit='return false;'>
+								<div class='form-group'>
+									<input type='text' class='form-control' placeholder='任务名称'>
+								</div>
+								<button type='button' class='btn btn-default glyphicon glyphicon-search' id='searchFrm_btn_search'>&#8201;查询</button>
+							</form>
+						</div>
 					</div>
 				</div>
-				<div class='col-sm-12 col-md-6'>
+				<div class='col-sm-12 col-md-3'>
+					<ul id='menuTree' class='ztree'></ul>
+				</div>
+				<div class='col-sm-12 col-md-9'>
 					<div class='panel panel-default table-responsive'>
 						<div class='panel-heading'>
 							<div class='btn-group btn-group-xs'>
@@ -40,23 +67,85 @@
 		</div>
 		#parse('front/_pagelet/Common.IndexJs.html')
 		#parse('manage/_pagelet/Common.Iframe.html')
+		<script type='text/javascript' src='$!{conf.html.cdn}ztree/3.5.15/js/jquery.ztree.core-3.5.js'></script>
 		<script>
-			$(function(){
-				$('input:radio[name="TASK_ID"]').attr('checked', false);
-				// TODO
-				$('input:radio[name="TASK_ID"]').change(function (obj){
-					var task_id = obj.target.defaultValue;
-					// TODO
-					$.ajax({
-						url: './getTaskMonitors/'+ task_id,
-						type: 'POST',
-						dataType: 'JSON'
-					}).done(function (data){
-						if(!data.success) return $('#table2').html('');
-						$('#table2').html(data.data);
-					});
-				});
-			});
+		$(function(){
+			var setting = {
+				view: {
+					selectedMulti: false
+				}, data: {
+					simpleData: {
+						enable: true
+					}
+				}, callback: {
+					beforeExpand: function(treeId, treeNode){
+						var zTree = $ .fn.zTree.getZTreeObj(treeId);
+						if(treeNode.children) return;
+						// TODO
+						if(1 === treeNode.level){
+							$ .ajax({
+								url: '/manage/json/getProjectsByUserId/'+ treeNode.id,
+								type: 'POST',
+								dataType: 'JSON'
+							}).done(function (data){
+								if(!data.success) return;
+								var items = data.data;
+								for(var i=0,j=items.length;i<j;i++){
+									var item = items[i];
+									zTree.addNodes(treeNode, {
+										id: item.id,
+										isParent: true,
+										name: item.PROJECT_TYPE_NAME +'-'+ item.PROJECT_NAME +' ('+ item.TASK_COUNT +')'
+									});
+								}
+							});
+						}else if(2 === treeNode.level){
+							$ .ajax({
+								url: '/manage/json/getTasksByProjectId/'+ treeNode.id,
+								type: 'POST',
+								dataType: 'JSON'
+							}).done(function (data){
+								if(!data.success) return;
+								var items = data.data;
+								for(var i=0,j=items.length;i<j;i++){
+									var item = items[i];
+									zTree.addNodes(treeNode, {
+										id: item.id,
+										isParent: false,
+										name: item.TASK_NAME +' ('+ item.TASK_SUM +')'
+									});
+								}
+							});
+						}
+					}, onClick: function(event, treeId, treeNode, clickFlag){
+						if(!treeNode.id) return;
+						if(treeNode.isParent) return;
+						// TODO
+						$.ajax({
+							url: './html/getTaskMonitorsByTaskId/'+ treeNode.id,
+							type: 'POST',
+							dataType: 'JSON'
+						}).done(function (data){
+							if(!data.success) return $('#table2').html('');
+							$('#table2').html(data.data);
+						});
+					}
+				}
+			};
+			// TODO
+			var zNodes = [{
+				id: '',
+				name: 'Root',
+				open: true
+			}#foreach($!obj in $!data.users),{
+				id: '$!obj.id',
+				pId: '$!obj.PID',
+				name: '$!obj.USER_NAME'+'-'+'$!obj.REAL_NAME ($!obj.PROJECT_COUNT)',
+				isParent: true
+			}#end];
+			// TODO
+			$ .fn.zTree.init($('#menuTree'), setting, zNodes);
+		});
 		</script>
 	</body>
 </html>

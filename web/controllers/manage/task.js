@@ -28,7 +28,7 @@ var biz = {
  * @return
  */
 exports.monitorUI = function(req, res, next){
-	biz.task.findAll(function (err, docs){
+	biz.user.findByRoleId('566512b49012fb044691ace5', function (err, docs){
 		// TODO
 		res.render('manage/task/monitor/Index', {
 			conf: conf,
@@ -36,7 +36,7 @@ exports.monitorUI = function(req, res, next){
 			description: '',
 			keywords: ',html5',
 			data: {
-				tasks: docs
+				users: docs
 			}
 		});
 	});
@@ -178,7 +178,7 @@ exports.indexUI = function(req, res, next){
  * @return
  */
 (function (exports){
-	exports.getTaskMonitors = function(req, res, next){
+	exports.getTaskMonitorsByTaskId = function(req, res, next){
 		var result = { success: false },
 			task_id = req.params.task_id;
 		// TODO
