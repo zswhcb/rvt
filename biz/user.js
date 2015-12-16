@@ -6,6 +6,7 @@
 'use strict';
 
 var util = require('speedt-utils'),
+	rest = util.service.rest,
 	md5 = util.md5,
 	mysql_util = util.mysql_util,
 	mysql = util.mysql;
@@ -202,13 +203,15 @@ exports.findByName = function(name, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE s_user set EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE s_user set APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
 				// EDIT
 				var postData = [
+					rest.genApiKey(),
+					rest.genSecKey(),
 					newInfo.EMAIL,
 					newInfo.MOBILE,
 					newInfo.REAL_NAME,
