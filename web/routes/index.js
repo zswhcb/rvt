@@ -9,7 +9,7 @@ var util = require('speedt-utils'),
 	express = util.express;
 
 var front = {
-	site: require('../controllers/front/site')
+	api: require('../controllers/front/api')
 };
 var back = {
 	user: require('../controllers/back/user')
@@ -41,8 +41,8 @@ module.exports = function(app){
  * @return
  */
 function proc_front(app){
-	app.get('/api$', valiGetData, front.site.signature_validate, front.site.api);
-	app.get('/api_test/', front.site.api_testUI);
+	app.get('/api$', valiGetData, front.api.signature_validate, front.api.index);
+	app.get('/api_test/', front.api.testUI);
 }
 
 /**

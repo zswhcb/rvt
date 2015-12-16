@@ -92,7 +92,6 @@ var biz = {
 			if(!mysql.checkOnly(docs)) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
 			// TODO
 			var doc = docs[0];
-			if(!doc.ROLE_ID) return cb(null, ['无权登陆', 'USER_NAME']);
 			// TODO
 			if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
 				return cb(null, ['用户名或密码输入错误', 'USER_PASS'], doc);

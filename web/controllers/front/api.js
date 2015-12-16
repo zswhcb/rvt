@@ -28,8 +28,8 @@ var exports = module.exports;
  * @return
  */
 exports.signature_validate = function(req, res, next){
-	var result = { success: false };
-	var query = req.query;
+	var result = { success: false },
+		query = req.query;
 	// TODO
 	query.command = query.command || '';
 	query.command = query.command.trim();
@@ -90,7 +90,7 @@ exports.signature_validate = function(req, res, next){
 	 * @param
 	 * @return
 	 */
-	exports.api = function(req, res, next){
+	exports.index = function(req, res, next){
 		var query = req.query;
 		// TODO
 		switch(query.command){
@@ -106,7 +106,7 @@ exports.signature_validate = function(req, res, next){
  * @param
  * @return
  */
-exports.api_testUI = function(req, res, next){
+exports.testUI = function(req, res, next){
 	res.render('front/Api_testUI', {
 		conf: conf,
 		title: 'API测试 | '+ conf.corp.name,
