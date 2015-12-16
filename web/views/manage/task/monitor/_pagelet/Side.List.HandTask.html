@@ -13,9 +13,9 @@
 <tbody>#set($i=1)
 	#foreach($!doc in $!data.handtasks)<tr>
 		<td class='ta'>$i#set($i=$i+1)</td>
-		<td>#formatDate($!doc.TALK_TIME)</td>
-		<td>$!doc.TALK_TIME_LEN</td>
-		<td>$!doc.TEL_NUM</td>
+		<td>#formatDate($!doc.TALK_TIME, 8)</td>
+		<td>#replaceNull($!doc.TALK_TIME_LEN)</td>
+		<td>#replaceNull($!doc.TEL_NUM)</td>
 		<td>#formatDate($!doc.UPLOAD_TIME)</td>
 		<td>$!doc.MOBILE</td>
 		<td>#formatDate($!doc.CREATE_TIME)</td>

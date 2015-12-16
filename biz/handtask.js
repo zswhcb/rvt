@@ -13,7 +13,7 @@ var exports = module.exports;
 
 (function (exports){
 	var sql_1 = 'SELECT b.MOBILE, a.* FROM p_handtask a, s_user b WHERE a.USER_ID=b.id AND a.TASK_ID=?';
-	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
+	var sql_orderby = ' ORDER BY a.STATUS, a.CREATE_TIME DESC';
 
 	/**
 	 *
