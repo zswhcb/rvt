@@ -1,11 +1,11 @@
 <thead>
 	<tr>
 		<th class='ta'>No.</th>
-		<th>通话时间</th>
-		<th>通话时长</th>
-		<th>通话号码</th>
 		<th>上传时间</th>
-		<th>手机号</th>
+		<th>通话时间</th>
+		<th>通话号码</th>
+		<th style='color:green'>通话时长</th>
+		<th>用户名</th>
 		<th>创建时间</th>
 		<th>状态</th>
 	</tr>
@@ -13,10 +13,10 @@
 <tbody>#set($i=1)
 	#foreach($!doc in $!data.handtasks)<tr>
 		<td class='ta'>$i#set($i=$i+1)</td>
-		<td>#formatDate($!doc.TALK_TIME, 8)</td>
-		<td>#replaceNull($!doc.TALK_TIME_LEN)</td>
-		<td>#replaceNull($!doc.TEL_NUM)</td>
 		<td>#formatDate($!doc.UPLOAD_TIME, 8)</td>
+		<td>#formatDate($!doc.TALK_TIME, 8)</td>
+		<td>#replaceNull($!doc.TEL_NUM)</td>
+		<td style='color:green'>#replaceNull($!doc.TALK_TIME_LEN)</td>
 		<td>$!doc.USER_NAME</td>
 		<td>#formatDate($!doc.CREATE_TIME)</td>
 		<td>$!doc.STATUS</td>

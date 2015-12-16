@@ -178,7 +178,7 @@ function proc_manage_site(app){
 	app.get('/manage/', manage.user.login_validate, manage.site.indexUI);
 }
 
-var str1 = ['参数异常'];
+var str1 = '参数异常';
 
 /**
  *
@@ -189,7 +189,7 @@ function valiGetData(req, res, next){
 	var result = { success: false },
 		data = req.query.data;
 	if(!data){
-		result.msg = str1;
+		result.msg = [str1];
 		return res.send(result);
 	}
 	try{
@@ -198,10 +198,9 @@ function valiGetData(req, res, next){
 			req._data = data;
 			return next();
 		}
-		result.msg = str1;
-		res.send(result);
+		result.msg = [str1];
 	}catch(ex){
-		result.msg = ex.message;
-		res.send(result);
+		result.msg = [ex.message];
 	}
+	res.send(result);
 };
