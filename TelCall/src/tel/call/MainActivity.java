@@ -14,6 +14,7 @@ import tel.call.db.DBManager;
 import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
+import tel.call.util.RestUtil;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -159,6 +160,7 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void refreshRemoteData() {
 		HashMap<String, String> _params = new HashMap<String, String>();
+		_params.put("apikey", APIKEY);
 		_params.put("command", "getCurrentTasks");
 		// TODO
 		JSONObject _j = new JSONObject();
@@ -170,6 +172,15 @@ public class MainActivity extends ActionBarActivity {
 			btn_sync.setEnabled(true);
 			return;
 		}
+		// TODO
+		String params = "";
+		try {
+			params = URLEncoder.encode("apikey=" + APIKEY
+					+ "&command=getCurrentTasks", "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		_params.put("signature", RestUtil.standard(params, SECKEY));
 		// TODO
 		HttpUtil _hu = new HttpUtil(ServiceAction.GET_CURRENTTASKS, handler,
 				getString(R.string.httpUrl) + "api", RequestMethod.GET, _params);
@@ -280,4 +291,5 @@ public class MainActivity extends ActionBarActivity {
 			finish();
 		}
 	}
+
 }
