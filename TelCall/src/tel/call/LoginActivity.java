@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import tel.call.action.ServiceAction;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
+import tel.call.util.UserInfo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -116,6 +117,10 @@ public class LoginActivity extends Activity {
 				_bundle = new Bundle();
 				_bundle.putString("APIKEY", _data.getString("APIKEY"));
 				_bundle.putString("SECKEY", _data.getString("SECKEY"));
+				// TODO
+				UserInfo app = (UserInfo) getApplication();
+				app.setApikey(_data.getString("APIKEY"));
+				app.setSeckey(_data.getString("SECKEY"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				setBtnLoginStatus(true);
@@ -151,6 +156,7 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 			return;
 		}
+
 		// TODO
 		try {
 			_params.put("data", URLEncoder.encode(_j.toString(), "utf-8"));

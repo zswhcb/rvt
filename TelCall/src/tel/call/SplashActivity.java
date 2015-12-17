@@ -50,12 +50,12 @@ public class SplashActivity extends Activity {
 
 	private void init() {
 		Log.d(TAG, "init() starting.");
-
+		// TODO
 		if (isFirstUse()) {
 			handler.sendEmptyMessageDelayed(GO_GUIDE, SPLASH_DELAY_MILLIS);
 			return;
 		}
-
+		// TODO
 		handler.sendEmptyMessageDelayed(GO_MAIN, SPLASH_DELAY_MILLIS);
 	}
 

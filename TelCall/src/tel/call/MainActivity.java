@@ -15,6 +15,7 @@ import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
 import tel.call.util.RestUtil;
+import tel.call.util.UserInfo;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -52,6 +53,8 @@ public class MainActivity extends ActionBarActivity {
 	private EditText text_sel_date;
 	// TODO
 	private DBManager dbMgr;
+	// TODO
+	private UserInfo app;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class MainActivity extends ActionBarActivity {
 		}
 		// TODO
 		dbMgr = new DBManager(this);
+		app = (UserInfo) getApplication();
 	}
 
 	@Override
@@ -86,22 +90,9 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		bindData();
 		findView();
 		bind();
 		loadData();
-	}
-
-	private String APIKEY;
-	private String SECKEY;
-
-	/**
-	 * 绑定私钥
-	 */
-	private void bindData() {
-		Bundle bundle = this.getIntent().getExtras();
-		APIKEY = bundle.getString("APIKEY");
-		SECKEY = bundle.getString("SECKEY");
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -160,7 +151,7 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void refreshRemoteData() {
 		HashMap<String, String> _params = new HashMap<String, String>();
-		_params.put("apikey", APIKEY);
+		_params.put("apikey", app.getApikey());
 		_params.put("command", "getCurrentTasks");
 		// TODO
 		JSONObject _j = new JSONObject();
@@ -175,12 +166,12 @@ public class MainActivity extends ActionBarActivity {
 		// TODO
 		String params = "";
 		try {
-			params = URLEncoder.encode("apikey=" + APIKEY
+			params = URLEncoder.encode("apikey=" + app.getApikey()
 					+ "&command=getCurrentTasks", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		_params.put("signature", RestUtil.standard(params, SECKEY));
+		_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		// TODO
 		HttpUtil _hu = new HttpUtil(ServiceAction.GET_CURRENTTASKS, handler,
 				getString(R.string.httpUrl) + "api", RequestMethod.GET, _params);
@@ -291,5 +282,4 @@ public class MainActivity extends ActionBarActivity {
 			finish();
 		}
 	}
-
 }

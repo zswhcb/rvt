@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -21,7 +22,8 @@ public class RestUtil {
 			Mac mac = Mac.getInstance("HmacSHA1");
 			SecretKeySpec spec = new SecretKeySpec(key.getBytes(), "HmacSHA1");
 			mac.init(spec);
-			byteHMAC = mac.doFinal(data.toLowerCase().getBytes());
+			byteHMAC = mac.doFinal(data.toLowerCase(Locale.getDefault())
+					.getBytes());
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException ignore) {
