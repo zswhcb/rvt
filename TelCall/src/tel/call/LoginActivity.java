@@ -98,6 +98,8 @@ public class LoginActivity extends Activity {
 				return;
 			}
 			// TODO
+			Bundle _bundle;
+			// TODO
 			try {
 				JSONObject _j = new JSONObject((String) msg.obj);
 				// TODO
@@ -108,6 +110,12 @@ public class LoginActivity extends Activity {
 					setBtnLoginStatus(true);
 					return;
 				}
+				// TODO
+				JSONObject _data = _j.getJSONObject("data");
+				// TODO 私钥写入内存并传到下一个页面
+				_bundle = new Bundle();
+				_bundle.putString("APIKEY", _data.getString("APIKEY"));
+				_bundle.putString("SECKEY", _data.getString("SECKEY"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				setBtnLoginStatus(true);
@@ -115,6 +123,9 @@ public class LoginActivity extends Activity {
 			}
 			// TODO
 			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+			// TODO
+			intent.putExtras(_bundle);
+			// TODO
 			startActivity(intent);
 			finish();
 		}

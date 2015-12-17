@@ -18,6 +18,22 @@ var biz = {
 };
 
 /**
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'SELECT * FROM s_user WHERE STATUS=1 AND APIKEY=?';
+	// TODO
+	exports.findByApiKey = function(apiKey, cb){
+		mysql.query(sql, [apiKey], function (err, docs){
+			if(err) return cb(err);
+			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+		});
+	};
+})(exports);
+
+/**
  * 通过父Id查询子用户
  *
  * @params

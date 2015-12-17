@@ -6,6 +6,7 @@
 'use strict';
 
 var util = require('speedt-utils'),
+	rest = util.service.rest,
 	EventProxy = require('eventproxy'),
 	path = require('path'),
 	fs = require('fs'),
@@ -36,7 +37,28 @@ exports.signature_validate = function(req, res, next){
 	// TODO
 	if('' === query.command) return res.send(result);
 	if('login' === query.command) return next();
-	next();
+	// TODO
+	query.apikey = query.apikey || '';
+	query.apikey = query.apikey.trim();
+	if('' === query.apikey) return res.send(result);
+	// TODO
+	query.signature = query.signature || '';
+	query.signature = query.signature.trim();
+	if('' === query.signature) return res.send(result);
+	// TODO
+	biz.user.findByApiKey(query.apikey, function (err, doc){
+		if(err) return res.send(result);
+		// TODO
+		if(!doc) return res.send(result);
+		// TODO
+		var data = query.data;
+		delete query.data;
+		// TODO
+		if(!rest.validate(query, doc.SECKEY)) return res.send(result);
+		// TODO
+		req.flash('user', doc);
+		return next();
+	});
 };
 
 (function (exports){
@@ -60,7 +82,7 @@ exports.signature_validate = function(req, res, next){
 				return res.send(result);
 			}
 			/* result */
-			result.data = { apikey: doc.APIKEY, seckey: doc.SECKEY };
+			result.data = { APIKEY: doc.APIKEY, SECKEY: doc.SECKEY };
 			result.success = true;
 			res.send(result);
 		});
@@ -73,9 +95,9 @@ exports.signature_validate = function(req, res, next){
 	 */
 	function getCurrentTasks(req, res, next){
 		var result = { success: false },
-			data = req._data;
+			user = req.flash('user')[0];
 		// TODO
-		biz.task.getCurrentTasks(function (err, docs){
+		biz.task.getCurrentTasks(user.id, function (err, docs){
 			if(err) return next(err);
 			/* result */
 			result.data = docs;

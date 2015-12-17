@@ -85,9 +85,22 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
+		bindData();
 		findView();
 		bind();
 		loadData();
+	}
+
+	private String APIKEY;
+	private String SECKEY;
+
+	/**
+	 * 绑定私钥
+	 */
+	private void bindData() {
+		Bundle bundle = this.getIntent().getExtras();
+		APIKEY = bundle.getString("APIKEY");
+		SECKEY = bundle.getString("SECKEY");
 	}
 
 	@SuppressLint("HandlerLeak")

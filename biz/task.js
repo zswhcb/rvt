@@ -19,15 +19,19 @@ var exports = module.exports;
  */
 (function (exports){
 	var sql = 'SELECT'+
-				' (SELECT COUNT(1) FROM p_handtask WHERE TASK_ID=a.id) CURRENT_TASK_SUM,'+
-				' (SELECT COUNT(1) FROM p_handtask WHERE STATUS=2 AND TASK_ID=a.id) COMPLETE_CURRENT_TASK_SUM,'+
-				' (SELECT COUNT(1) FROM p_handtask WHERE STATUS=3 AND TASK_ID=a.id) TIMEOUT_CURRENT_TASK_SUM,'+
-				' (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id AND TIMESTAMPDIFF(SECOND, CREATE_TIME, NOW())<a.TALK_TIMEOUT) RUNNING_CURRENT_TASK_SUM,'+
-				' a.* FROM p_task a WHERE NOW() BETWEEN a.START_TIME AND a.END_TIME AND a.STATUS=1 ORDER BY a.CREATE_TIME DESC';
+				'  b.STATUS HANDTASK_STATUS,'+
+				'  a.*'+
+				' FROM'+
+				'  p_task a LEFT JOIN p_handtask b ON (a.id=b.TASK_ID AND b.USER_ID=?)'+
+				' WHERE'+
+				'  a.STATUS=1 AND NOW() BETWEEN a.START_TIME AND a.END_TIME AND'+
+				'  a.TASK_SUM>(SELECT COUNT(1) from p_handtask WHERE STATUS=1 AND TASK_ID=a.id)'+
+				' ORDER BY a.CREATE_TIME DESC';
 	// TODO
-	exports.getCurrentTasks = function(cb){
+	exports.getCurrentTasks = function(user_id, cb){
+		user_id = user_id || '5666d061cca60fe0113d1391';
 		// TODO
-		mysql.query(sql, null, function (err, docs){
+		mysql.query(sql, [user_id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
 		});
