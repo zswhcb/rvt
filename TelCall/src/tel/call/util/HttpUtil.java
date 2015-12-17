@@ -9,6 +9,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -100,8 +101,30 @@ public class HttpUtil implements Runnable {
 	/**
 	 * 
 	 */
-	private void post() {
+	private void post(String params) {
 		// TODO
+		url += "?" + params;
+		Log.i(TAG, url);
+		// TODO
+		HttpPost req = new HttpPost(url);
+		// TODO
+		try {
+			HttpResponse res = getHttpClient().execute(req);
+			if (HttpURLConnection.HTTP_OK == res.getStatusLine()
+					.getStatusCode()) {
+				HttpEntity entity = res.getEntity();
+				String str = EntityUtils.toString(entity, "utf-8");
+				// TODO
+				Log.i(TAG, str);
+				msg.obj = str;
+			} else {
+				msg.arg1 = R.string.valiate_network;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg.arg1 = R.string.valiate_network;
+		}
+		handler.sendMessage(msg);
 	}
 
 	@Override
@@ -121,7 +144,13 @@ public class HttpUtil implements Runnable {
 			break;
 		}
 		case POST: {
-			post();
+			String params = "";
+			// TODO
+			while (it.hasNext()) {
+				Entry<String, String> entry = it.next();
+				params += "&" + entry.getKey() + "=" + entry.getValue();
+			}
+			post(params.substring(0 == params.length() ? 0 : 1));
 			break;
 		}
 		default:

@@ -167,7 +167,8 @@ public class LoginActivity extends Activity {
 
 		// TODO
 		HttpUtil _hu = new HttpUtil(ServiceAction.LOGIN, handler,
-				getString(R.string.httpUrl) + "api", RequestMethod.GET, _params);
+				getString(R.string.httpUrl) + "api", RequestMethod.POST,
+				_params);
 		Thread _t = new Thread(_hu);
 		_t.start();
 	}

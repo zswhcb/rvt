@@ -34,7 +34,6 @@ exports.signature_validate = function(req, res, next){
 	// TODO
 	query.command = query.command || '';
 	query.command = query.command.trim();
-	// TODO
 	if('' === query.command) return res.send(result);
 	if('login' === query.command) return next();
 	// TODO
@@ -56,6 +55,7 @@ exports.signature_validate = function(req, res, next){
 		// TODO
 		if(!rest.validate(query, doc.SECKEY)) return res.send(result);
 		// TODO
+		req.flash('data', data);
 		req.flash('user', doc);
 		return next();
 	});

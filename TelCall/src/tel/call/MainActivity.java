@@ -2,6 +2,7 @@ package tel.call;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -153,6 +154,8 @@ public class MainActivity extends ActionBarActivity {
 		HashMap<String, String> _params = new HashMap<String, String>();
 		_params.put("apikey", app.getApikey());
 		_params.put("command", "getCurrentTasks");
+		long ts = (new Date()).getTime();
+		_params.put("ts", Long.toString(ts));
 		// TODO
 		JSONObject _j = new JSONObject();
 		// TODO
@@ -167,14 +170,15 @@ public class MainActivity extends ActionBarActivity {
 		String params = "";
 		try {
 			params = URLEncoder.encode("apikey=" + app.getApikey()
-					+ "&command=getCurrentTasks", "UTF-8");
+					+ "&command=getCurrentTasks&ts=" + ts, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		// TODO
 		HttpUtil _hu = new HttpUtil(ServiceAction.GET_CURRENTTASKS, handler,
-				getString(R.string.httpUrl) + "api", RequestMethod.GET, _params);
+				getString(R.string.httpUrl) + "api", RequestMethod.POST,
+				_params);
 		Thread _t = new Thread(_hu);
 		_t.start();
 	}
