@@ -2,6 +2,7 @@ package tel.call;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -146,6 +147,8 @@ public class LoginActivity extends Activity {
 		// TODO
 		HashMap<String, String> _params = new HashMap<String, String>();
 		_params.put("command", "login");
+		long ts = (new Date()).getTime();
+		_params.put("ts", Long.toString(ts));
 
 		// TODO
 		JSONObject _j = new JSONObject();

@@ -28,38 +28,61 @@ var exports = module.exports;
  * @param
  * @return
  */
-exports.signature_validate = function(req, res, next){
-	var result = { success: false },
-		query = req.query;
-	// TODO
-	query.command = query.command || '';
-	query.command = query.command.trim();
-	if('' === query.command) return res.send(result);
-	if('login' === query.command) return next();
-	// TODO
-	query.apikey = query.apikey || '';
-	query.apikey = query.apikey.trim();
-	if('' === query.apikey) return res.send(result);
-	// TODO
-	query.signature = query.signature || '';
-	query.signature = query.signature.trim();
-	if('' === query.signature) return res.send(result);
-	// TODO
-	biz.user.findByApiKey(query.apikey, function (err, doc){
-		if(err) return res.send(result);
+(function (exports){
+
+	function query_command(query){
+		query.command = query.command || '';
+		query.command = query.command.trim();
+		return '' === query.command;
+	}
+
+	function query_ts(query){
+		query.ts = query.ts || '';
+		query.ts = query.ts.trim();
+		return '' === query.ts;
+	}
+
+	function query_apikey(query){
+		query.apikey = query.apikey || '';
+		query.apikey = query.apikey.trim();
+		return '' === query.apikey;
+	}
+
+	function query_signature(query){
+		query.signature = query.signature || '';
+		query.signature = query.signature.trim();
+		return '' === query.signature;
+	}
+
+	exports.signature_validate = function(req, res, next){
+		var result = { success: false },
+			query = req.query;
 		// TODO
-		if(!doc) return res.send(result);
+		if(query_command(query)) return res.send(result);
 		// TODO
-		var data = query.data;
-		delete query.data;
+		if(query_ts(query)) return res.send(result);
 		// TODO
-		if(!rest.validate(query, doc.SECKEY)) return res.send(result);
+		if('login' === query.command) return next();
 		// TODO
-		req.flash('data', data);
-		req.flash('user', doc);
-		return next();
-	});
-};
+		if(query_apikey(query)) return res.send(result);
+		// TODO
+		if(query_signature(query)) return res.send(result);
+		// TODO
+		biz.user.findByApiKey(query.apikey, function (err, doc){
+			if(err) return next(err);
+			// TODO
+			if(!doc) return res.send(result);
+			// TODO
+			var data = query.data;
+			delete query.data;
+			// TODO
+			if(!rest.validate(query, doc.SECKEY)) return res.send(result);
+			// TODO
+			req.flash('user', doc);
+			return next();
+		});
+	};
+})(exports);
 
 (function (exports){
 	/**
