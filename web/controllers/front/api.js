@@ -84,12 +84,14 @@ var exports = module.exports;
 	};
 })(exports);
 
+/**
+ * api
+ *
+ * @param
+ * @return
+ */
 (function (exports){
-	/**
-	 *
-	 * @param
-	 * @return
-	 */
+
 	function login(req, res, next){
 		var result = { success: false },
 			data = req._data;
@@ -111,11 +113,6 @@ var exports = module.exports;
 		});
 	}
 
-	/**
-	 *
-	 * @param
-	 * @return
-	 */
 	function getCurrentTasks(req, res, next){
 		var result = { success: false },
 			user = req.flash('user')[0];
@@ -129,18 +126,22 @@ var exports = module.exports;
 		});
 	}
 
-	/**
-	 * api
-	 *
-	 * @param
-	 * @return
-	 */
+	function applyTask(req, res, next){
+		var result = { success: false },
+			data = req._data,
+			user = req.flash('user')[0];
+		// TODO
+		result.msg = ['applyTask'];
+		res.send(result);
+	}
+
 	exports.index = function(req, res, next){
 		var query = req.query;
 		// TODO
 		switch(query.command){
 			case 'login': login(req, res, next); break;
 			case 'getCurrentTasks': getCurrentTasks(req, res, next); break;
+			case 'applyTask': applyTask(req, res, next); break;
 			default: res.send({ success: false }); break;
 		}
 	};

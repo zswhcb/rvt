@@ -215,10 +215,25 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int position,
 					long id) {
+
+				JSONObject _jo = (JSONObject) grid_items
+						.getItemAtPosition(position);
+
+				try {
+					String test = _jo.getString("TASK_NAME");
+					Toast.makeText(getApplicationContext(), test,
+							Toast.LENGTH_SHORT).show();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				grid_items.setEnabled(false);
+
 				// TODO
-				Intent intent = new Intent(MainActivity.this,
-						DialActivity.class);
-				startActivity(intent);
+				// Intent intent = new Intent(MainActivity.this,
+				// DialActivity.class);
+				// startActivity(intent);
 			}
 		});
 	}

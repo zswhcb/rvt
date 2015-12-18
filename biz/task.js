@@ -11,6 +11,60 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
+var biz = {
+	handtask: require('./handtask')
+};
+
+/**
+ * 申请任务
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	// 当前时间可申请的任务列表，过滤已经达到完成任务数的任务
+	// 传递参数：时间和任务ID
+	var sql_1 = 'SELECT a.* FROM p_task a LEFT JOIN p_project b ON (b.STATUS=1 AND a.PROJECT_ID=b.id) WHERE'+
+				' a.STATUS=1 AND ? BETWEEN a.START_TIME AND a.END_TIME AND'+
+				' a.TASK_SUM>(SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id)'+
+				' AND a.id=?';
+	// TODO
+	exports.apply = function(user_id, task_id, cb){
+		// TODO 是否已经申请过，但未完成的任务
+		biz.handtask.findByUserId(0, user_id, function (err, docs){
+			if(err) return cb(err);
+			// TODO
+			if(1 < docs.length){ // 非法数据 4，申请的任务未完成超过1个
+				var handtask_ids = [];
+				// TODO
+				for(var i in docs){
+					var doc = docs[i];
+					handtask_ids.push(doc.id);
+				}
+				// TODO
+				biz.handtask.editStatus(4, handtask_ids, function (err, result){
+					if(err) return cb(err);
+					cb(null, ['非法操作，请重新申请']);
+				});
+				return;
+			}
+			// TODO
+			if(1 === docs.length){ // 检查此任务的状态信息
+				var doc = docs[0];
+				if(1 !== doc.TASK_STATUS || doc.STATUS_END_TIME < (new Date())){ // 任务失效 3
+					biz.handtask.editStatus(3, [doc.id], function (err, result){
+						if(err) return cb(err);
+						cb(null, ['任务失效，请重新申请']);
+					});
+					return;
+				}
+				return cb(null, null, doc);
+			}
+			// TODO
+		});
+	};
+})(exports);
+
 /**
  * 当前可接的任务信息
  *
