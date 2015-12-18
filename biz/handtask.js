@@ -18,7 +18,8 @@ var exports = module.exports;
  * @return
  */
 (function (exports){
-	var sql = 'SELECT b.STATUS TASK_STATUS, b.END_TIME STATUS_END_TIME, a.* FROM p_handtask a LEFT JOIN p_task b ON (a.TASK_ID=b.id)'+
+	var sql = 'SELECT b.STATUS TASK_STATUS, b.END_TIME TASK_END_TIME, b.TALK_TIMEOUT TASK_TALK_TIMEOUT,'+
+				' a.* FROM p_handtask a LEFT JOIN p_task b ON (a.TASK_ID=b.id)'+
 				' WHERE a.STATUS=? AND a.USER_ID=?';
 	// TODO
 	exports.findByUserId = function(status, user_id, cb){

@@ -50,8 +50,13 @@ var biz = {
 			}
 			// TODO
 			if(1 === docs.length){ // 检查此任务的状态信息
-				var doc = docs[0];
-				if(1 !== doc.TASK_STATUS || doc.STATUS_END_TIME < (new Date())){ // 任务失效 3
+				var doc = docs[0],
+					curTime = new Date();
+				// TODO
+				if((1 !== doc.TASK_STATUS) // 任务的状态非 1
+						|| (doc.TASK_END_TIME < curTime) // 任务的结束时间小于当前时间
+						|| (new Date(doc.CREATE_TIME + doc.TASK_TALK_TIMEOUT * 1000) < curTime) // 申请的创建时间加上任务的超时时间小于当前时间
+					){ // 任务失效 3
 					biz.handtask.editStatus(3, [doc.id], function (err, result){
 						if(err) return cb(err);
 						cb(null, ['任务失效，请重新申请']);
@@ -60,7 +65,7 @@ var biz = {
 				}
 				return cb(null, null, doc);
 			}
-			// TODO
+			// TODO 申请新任务
 		});
 	};
 })(exports);
