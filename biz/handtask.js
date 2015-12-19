@@ -38,7 +38,7 @@ var exports = module.exports;
  */
 (function (exports){
 	var sql = 'SELECT'+
-				' b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.STATUS TASK_STATUS,'+
+				'  b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.STATUS TASK_STATUS,'+
 				'  a.*'+
 				' FROM (SELECT * FROM p_handtask WHERE STATUS=? AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
 	// TODO
@@ -100,7 +100,8 @@ var exports = module.exports;
  * @return
  */
 (function (exports){
-	var sql = 'SELECT b.USER_NAME, a.* FROM p_handtask a LEFT JOIN s_user b ON (a.USER_ID=b.id) ORDER BY a.STATUS, a.CREATE_TIME DESC';
+	var sql = 'SELECT b.USER_NAME, a.* FROM'+
+				' (SELECT * FROM p_handtask WHERE TASK_ID=?) a LEFT JOIN s_user b ON (a.USER_ID=b.id) ORDER BY a.STATUS, a.CREATE_TIME DESC';
 	// TODO
 	exports.findByTaskId = function(task_id, cb){
 		mysql.query(sql, [task_id], function (err, docs){

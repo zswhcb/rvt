@@ -85,7 +85,7 @@ var biz = {
 	exports.apply = function(user_id, task_id, cb){
 		var that = this;
 		// TODO 清理超时数据
-		biz.handtask.clearTimeout(null, function (err, result){
+		biz.handtask.clearTimeout(null, function (err, status){
 			if(err) return cb(err);
 			// TODO 获取之前申请的任务（未过期）
 			biz.handtask.getMyHandTask(0, user_id, function (err, msg, doc){
