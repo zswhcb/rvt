@@ -28,7 +28,7 @@ var biz = {
 			if(err) return cb(err);
 			if(!doc || 1 === doc.STATUS) return cb(null, ['非法操作']);
 			// TODO
-			biz.handtask.commit(newInfo, function (err, msg, status){
+			biz.handtask.editInfo(newInfo, function (err, msg, status){
 				if(err) return cb(err);
 				cb(null, null, status);
 			});
@@ -148,7 +148,7 @@ var biz = {
 		// TODO
 		mysql.query(sql, [id], function (err, status){
 			if(err) return cb(err);
-			cb(null, null, status);
+			cb(null, status);
 		});
 	};
 })(exports);

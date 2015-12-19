@@ -31,27 +31,6 @@ var exports = module.exports;
 })(exports);
 
 /**
- * 获取用户接手的任务列表
- *
- * @params
- * @return
- */
-(function (exports){
-	var sql = 'SELECT'+
-				'  b.STATUS TASK_STATUS, b.END_TIME TASK_END_TIME, b.TALK_TIMEOUT TASK_TALK_TIMEOUT,'+
-				'  a.*'+
-				' FROM ('+
-					'SELECT * FROM p_handtask WHERE STATUS=? AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
-	// TODO
-	exports.findByUserId = function(status, user_id, cb){
-		mysql.query(sql, [status, user_id], function (err, docs){
-			if(err) return cb(err);
-			cb(null, docs);
-		});
-	};
-})(exports);
-
-/**
  * 获取我未过期（未失效）的任务
  *
  * @params
@@ -114,18 +93,16 @@ var exports = module.exports;
 	};
 })(exports);
 
+/**
+ * 获取用户名
+ *
+ * @params
+ * @return
+ */
 (function (exports){
-	var sql_1 = 'SELECT b.USER_NAME, a.* FROM p_handtask a, s_user b WHERE a.USER_ID=b.id AND a.TASK_ID=?';
-	var sql_orderby = ' ORDER BY a.STATUS, a.CREATE_TIME DESC';
-
-	/**
-	 *
-	 * @params
-	 * @return
-	 */
+	var sql = 'SELECT b.USER_NAME, a.* FROM p_handtask a LEFT JOIN s_user b ON (a.USER_ID=b.id) ORDER BY a.STATUS, a.CREATE_TIME DESC';
+	// TODO
 	exports.findByTaskId = function(task_id, cb){
-		task_id = task_id || '';
-		var sql = sql_1 + sql_orderby;
 		mysql.query(sql, [task_id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
@@ -140,7 +117,7 @@ var exports = module.exports;
  * @return
  */
 (function (exports){
-	var sql = 'INSERT INTO p_handtask (id, TASK_ID, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?,)';
+	var sql = 'INSERT INTO p_handtask (id, TASK_ID, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?)';
 	// TODO
 	exports.saveNew = function(newInfo, cb){
 		var postData = [
@@ -152,7 +129,7 @@ var exports = module.exports;
 		];
 		mysql.query(sql, postData, function (err, status){
 			if(err) return cb(err);
-			cb(null, { id: postData[0] });
+			cb(null, { id: postData[0], CREATE_TIME: postData[3] });
 		});
 	};
 })(exports);
@@ -166,7 +143,7 @@ var exports = module.exports;
 (function (exports){
 	var sql = 'UPDATE p_handtask TEL_NUM=?, UPLOAD_TIME=?, TALK_TIME=?, TALK_TIME_LEN=?, STATUS=? WHERE id=?';
 	// TODO
-	exports.commit = function(newInfo, cb){
+	exports.editInfo = function(newInfo, cb){
 		var postData = [
 			newInfo.TEL_NUM,
 			newInfo.UPLOAD_TIME,
