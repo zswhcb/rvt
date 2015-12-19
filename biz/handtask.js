@@ -18,14 +18,58 @@ var exports = module.exports;
  * @return
  */
 (function (exports){
-	var sql = 'SELECT b.STATUS TASK_STATUS, b.END_TIME TASK_END_TIME, b.TALK_TIMEOUT TASK_TALK_TIMEOUT,'+
-				' a.* FROM p_handtask a LEFT JOIN p_task b ON (a.TASK_ID=b.id)'+
-				' WHERE a.STATUS=? AND a.USER_ID=?';
+	var sql = 'SELECT'+
+				'  b.STATUS TASK_STATUS, b.END_TIME TASK_END_TIME, b.TALK_TIMEOUT TASK_TALK_TIMEOUT,'+
+				'  a.*'+
+				' FROM ('+
+					'SELECT * FROM p_handtask WHERE STATUS=? AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
 	// TODO
 	exports.findByUserId = function(status, user_id, cb){
 		mysql.query(sql, [status, user_id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
+		});
+	};
+})(exports);
+
+/**
+ * 获取我未过期（未失效）的任务
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'SELECT'+
+				' b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.STATUS TASK_STATUS,'+
+				'  a.*'+
+				' FROM (SELECT * FROM p_handtask WHERE STATUS=0 AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
+	// TODO
+	exports.getMyHandTask = function(user_id, cb){
+		mysql.query(sql, [user_id, new Date()], function (err, docs){
+			if(err) return cb(err);
+			if(1 < docs.length) return cb(null, ['数据异常，请联系管理员']);
+			cb(null, null, mysql.checkOnly(docs) ? docs[0] : null);
+		});
+	};
+})(exports);
+
+/**
+ * 申请任务时，清理过期状态
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'UPDATE p_handtask SET STATUS=3'+ // 状态：3，由0变为3，任务超时（失效）
+				' WHERE id in (SELECT a.id FROM'+
+					' (SELECT * FROM p_handtask WHERE STATUS=0) a'+
+					' LEFT JOIN p_task b ON (a.TASK_ID=b.id)'+
+					' WHERE DATE_ADD(a.CREATE_TIME, INTERVAL (10 + b.TALK_TIMEOUT) second)<?)';
+	// TODO
+	exports.clearTimeout = function(cb){
+		mysql.query(sql, [new Date()], function (err, status){
+			if(err) return cb(err);
+			cb(null, status);
 		});
 	};
 })(exports);
@@ -62,6 +106,54 @@ var exports = module.exports;
 		mysql.query(sql, [task_id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
+		});
+	};
+})(exports);
+
+/**
+ * 新的申请
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'INSERT INTO p_handtask (id, TASK_ID, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?,)';
+	// TODO
+	exports.saveNew = function(newInfo, cb){
+		var postData = [
+			util.genObjectId(),
+			newInfo.TASK_ID,
+			newInfo.USER_ID,
+			new Date(),
+			0
+		];
+		mysql.query(sql, postData, function (err, status){
+			if(err) return cb(err);
+			cb(null, { id: postData[0] });
+		});
+	};
+})(exports);
+
+/**
+ * 提交
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'UPDATE p_handtask TEL_NUM=?, UPLOAD_TIME=?, TALK_TIME=?, TALK_TIME_LEN=?, STATUS=? WHERE id=?';
+	// TODO
+	exports.commit = function(newInfo, cb){
+		var postData = [
+			newInfo.TEL_NUM,
+			newInfo.UPLOAD_TIME,
+			newInfo.TALK_TIME,
+			newInfo.TALK_TIME_LEN,
+			newInfo.STATUS
+		];
+		mysql.query(sql, postData, function (err, status){
+			if(err) return cb(err);
+			cb(null, status);
 		});
 	};
 })(exports);

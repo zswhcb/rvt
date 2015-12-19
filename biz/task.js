@@ -16,56 +16,96 @@ var biz = {
 };
 
 /**
+ * 获取指定任务ID的任务状态
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	// TODO
+	exports.commit = function(newInfo, cb){
+		biz.handtask.getMyHandTask(newInfo.USER_ID, function (err, docs){
+			if(err) return cb(err);
+			if(1 !== docs.length) return cb(null, ['数据异常，请联系管理员']);
+			// TODO
+			biz.handtask.commit(newInfo, function (err, status){
+				if(err) return cb(err);
+				cb(null, status);
+			});
+		});
+	};
+})(exports);
+
+/**
+ * 获取指定任务ID的任务状态
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'SELECT'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=a.id) INIT_TASK_SUM,'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id) SUCCESS_TASK_SUM,'+
+				'  a.*'+
+				' FROM p_task a WHERE a.id=? AND ? BETWEEN a.START_TIME AND a.END_TIME';
+	// TODO
+	exports.getTaskStatus = function(task_id, curTime, cb){
+		curTime = curTime || new Date();
+		// TODO
+		mysql.query(sql, [task_id, curTime], function (err, docs){
+			if(err) return cb(err);
+			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+		});
+	};
+})(exports);
+
+/**
  * 申请任务
  *
  * @params
  * @return
  */
 (function (exports){
-	// 当前时间可申请的任务列表，过滤已经达到完成任务数的任务
-	// 传递参数：时间和任务ID
-	var sql_1 = 'SELECT a.* FROM p_task a LEFT JOIN p_project b ON (b.STATUS=1 AND a.PROJECT_ID=b.id) WHERE'+
-				' a.STATUS=1 AND ? BETWEEN a.START_TIME AND a.END_TIME AND'+
-				' a.TASK_SUM>(SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id)'+
-				' AND a.id=?';
+	// 一个复杂的 用户申请任务使用
+	// SELECT b1.id HANDTASK_ID, b1.USER_ID HANDTASK_USER_ID, b1.CREATE_TIME HANDTASK_CREATE_TIME, b1.STATUS HANDTASK_STATUS, a1.* FROM (SELECT b.PROJECT_NAME, a.* FROM (SELECT (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=a01.id AND DATE_ADD(CREATE_TIME, INTERVAL a01.TALK_TIMEOUT second)>NOW()) INIT_TASK_SUM, (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a01.id) SUCCESS_TASK_SUM, a01.* FROM p_task a01 WHERE a01.STATUS=1) a LEFT JOIN (SELECT * FROM p_project WHERE STATUS=1) b ON (a.PROJECT_ID=b.id)) a1 LEFT JOIN (SELECT * FROM p_handtask WHERE USER_ID='566512760fd5504c45483a92') b1 ON (a1.id=b1.TASK_ID)
+	var sql_1 = 'SELECT'+
+				'  b1.id HANDTASK_ID, b1.USER_ID HANDTASK_USER_ID, b1.CREATE_TIME HANDTASK_CREATE_TIME, b1.STATUS HANDTASK_STATUS,'+
+				'  a1.*'+
+				' FROM (SELECT'+
+				'  b.PROJECT_NAME,'+
+				'  a.*'+
+				' FROM (SELECT'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=a01.id AND DATE_ADD(CREATE_TIME, INTERVAL a01.TALK_TIMEOUT second)>?) INIT_TASK_SUM,'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a01.id) SUCCESS_TASK_SUM,'+
+				'  a01.*'+
+				' FROM p_task a01 WHERE a01.STATUS=1) a'+
+				' LEFT JOIN (SELECT * FROM p_project WHERE STATUS=1) b ON (a.PROJECT_ID=b.id)) a1'+
+				' LEFT JOIN (SELECT * FROM p_handtask WHERE USER_ID=?) b1 ON (a1.id=b1.TASK_ID)';
 	// TODO
 	exports.apply = function(user_id, task_id, cb){
-		// TODO 是否已经申请过，但未完成的任务
-		biz.handtask.findByUserId(0, user_id, function (err, docs){
+		var that = this;
+		// TODO 清理超时数据
+		biz.handtask.clearTimeout(function (err, result){
 			if(err) return cb(err);
-			// TODO
-			if(1 < docs.length){ // 非法数据 4，申请的任务未完成超过1个
-				var handtask_ids = [];
-				// TODO
-				for(var i in docs){
-					var doc = docs[i];
-					handtask_ids.push(doc.id);
-				}
-				// TODO
-				biz.handtask.editStatus(4, handtask_ids, function (err, result){
+			// TODO 获取之前申请的任务（未过期）
+			biz.handtask.getMyHandTask(user_id, function (err, msg, doc){
+				if(err) return cb(err);
+				if(!!msg) return cb(null, msg);
+				if(!!doc) return cb(null, null, doc);
+				// TODO 获取任务状态信息
+				that.getTaskStatus(task_id, null, function (err, doc){
 					if(err) return cb(err);
-					cb(null, ['非法操作，请重新申请']);
-				});
-				return;
-			}
-			// TODO
-			if(1 === docs.length){ // 检查此任务的状态信息
-				var doc = docs[0],
-					curTime = new Date();
-				// TODO
-				if((1 !== doc.TASK_STATUS) // 任务的状态非 1
-						|| (doc.TASK_END_TIME < curTime) // 任务的结束时间小于当前时间
-						|| (new Date(doc.CREATE_TIME + doc.TASK_TALK_TIMEOUT * 1000) < curTime) // 申请的创建时间加上任务的超时时间小于当前时间
-					){ // 任务失效 3
-					biz.handtask.editStatus(3, [doc.id], function (err, result){
+					if(!doc) return cb(null, ['此任务不存在，请重新申请']);
+					// TODO 检测任务状态
+					if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['任务抢完了']);
+					// TODO 开始新的申请
+					biz.handtask.saveNew({ TASK_ID: task_id, USER_ID: user_id }, function (err, doc){
 						if(err) return cb(err);
-						cb(null, ['任务失效，请重新申请']);
+						// TODO 返回抢任务的ID
+						cb(null, null, doc);
 					});
-					return;
-				}
-				return cb(null, null, doc);
-			}
-			// TODO 申请新任务
+				});
+			});
 		});
 	};
 })(exports);
@@ -77,20 +117,18 @@ var biz = {
  * @return
  */
 (function (exports){
-	var sql = 'SELECT'+
-				'  b.STATUS HANDTASK_STATUS,'+
+	var sql = 'SELECT b.* FROM (SELECT'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=a.id) INIT_TASK_SUM,'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id) SUCCESS_TASK_SUM,'+
 				'  a.*'+
-				' FROM'+
-				'  p_task a LEFT JOIN p_handtask b ON (a.id=b.TASK_ID AND b.USER_ID=?)'+
-				' WHERE'+
-				'  a.STATUS=1 AND NOW() BETWEEN a.START_TIME AND a.END_TIME AND'+
-				'  a.TASK_SUM>(SELECT COUNT(1) from p_handtask WHERE STATUS=1 AND TASK_ID=a.id)'+
-				' ORDER BY a.CREATE_TIME DESC';
+				' FROM p_task a WHERE ? BETWEEN a.START_TIME AND a.END_TIME) b'+
+				' WHERE b.TASK_SUM>(b.INIT_TASK_SUM+b.SUCCESS_TASK_SUM)';
 	// TODO
 	exports.getCurrentTasks = function(user_id, cb){
 		user_id = user_id || '5666d061cca60fe0113d1391';
+		var curTime = new Date();
 		// TODO
-		mysql.query(sql, [user_id], function (err, docs){
+		mysql.query(sql, [curTime], function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
 		});
