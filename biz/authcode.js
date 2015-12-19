@@ -28,11 +28,10 @@ var exports = module.exports;
 		// TODO
 		mysql.query(sql, [id], function (err, docs){
 			if(err) return cb(err);
-			// TODO
 			if(!mysql.checkOnly(docs)) return cb(null, ['认证码不存在']);
 			// TODO
 			var doc = docs[0];
-			cb(null, (!!doc.USER_NAME ? ['认证码已经使用'] : null));
+			cb(null, !!doc.USER_NAME, doc);
 		});
 	};
 })(exports);

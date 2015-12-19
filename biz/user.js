@@ -81,7 +81,7 @@ var biz = {
 
 (function (exports){
 	// 查询用户 关联用户角色表
-	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a LEFT JOIN s_role b ON (a.ROLE_ID=b.id)';
+	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a LEFT JOIN s_role b ON (a.ROLE_ID=b.id) WHERE b.ROLE_NAME IS NOT NULL';
 	var sql_orderby = ' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';
 
 	/**
@@ -105,7 +105,7 @@ var biz = {
 	 * @return
 	 */
 	exports.login = function(logInfo, cb){
-		var sql = sql_1 +' WHERE a.USER_NAME=?';
+		var sql = sql_1 +' AND a.USER_NAME=?';
 		// TODO
 		mysql.query(sql, [logInfo.USER_NAME], function (err, docs){
 			if(err) return cb(err);
@@ -126,7 +126,7 @@ var biz = {
 	 * @return
 	 */
 	exports.getById = function(id, cb){
-		var sql = sql_1 +' WHERE a.id=?';
+		var sql = sql_1 +' AND a.id=?';
 		mysql.query(sql, [id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
@@ -140,15 +140,18 @@ var biz = {
  * @return
  */
 exports.register = function(newInfo, cb){
+	var that = this;
 	newInfo.AUTH_CODE_ID = newInfo.AUTH_CODE_ID || '';
 	// TODO
-	biz.authcode.checkUsed(newInfo.AUTH_CODE_ID, function (err, msg){
+	biz.authcode.checkUsed(newInfo.AUTH_CODE_ID, function (err, result, doc){
 		if(err) return cb(err);
-		if(!!msg) return cb(null, msg);
+		// TODO
+		if(!doc) return cb(null, ['认证码不存在']);
+		if(result) return cb(null, ['认证码已经使用']);
 		// TODO
 		newInfo.MOBILE = newInfo.USER_NAME;
 		newInfo.ROLE_ID = '566512b49012fb044691ace6';
-		exports.saveNew(newInfo, cb);
+		that.saveNew(newInfo, cb);
 	});
 };
 
