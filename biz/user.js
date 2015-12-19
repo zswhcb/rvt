@@ -81,7 +81,7 @@ var biz = {
 
 (function (exports){
 	// 查询用户 关联用户角色表
-	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a LEFT JOIN s_role b ON (a.ROLE_ID=b.id) WHERE b.ROLE_NAME IS NOT NULL';
+	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a LEFT JOIN s_role b ON (a.ROLE_ID=b.id) WHERE b.id IS NOT NULL';
 	var sql_orderby = ' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';
 
 	/**
@@ -143,11 +143,11 @@ exports.register = function(newInfo, cb){
 	var that = this;
 	newInfo.AUTH_CODE_ID = newInfo.AUTH_CODE_ID || '';
 	// TODO
-	biz.authcode.checkUsed(newInfo.AUTH_CODE_ID, function (err, result, doc){
+	biz.authcode.checkUsed(newInfo.AUTH_CODE_ID, function (err, msg, result, doc){
 		if(err) return cb(err);
 		// TODO
-		if(!doc) return cb(null, ['认证码不存在']);
-		if(result) return cb(null, ['认证码已经使用']);
+		if(!doc) return cb(null, msg);
+		if(result) return cb(null, msg);
 		// TODO
 		newInfo.MOBILE = newInfo.USER_NAME;
 		newInfo.ROLE_ID = '566512b49012fb044691ace6';

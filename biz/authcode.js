@@ -31,7 +31,7 @@ var exports = module.exports;
 			if(!mysql.checkOnly(docs)) return cb(null, ['认证码不存在']);
 			// TODO
 			var doc = docs[0];
-			cb(null, !!doc.USER_NAME, doc);
+			cb(null, [!!doc.USER_NAME ? '认证码已被使用' : '认证码可以正常使用'], !!doc.USER_NAME, doc);
 		});
 	};
 })(exports);
