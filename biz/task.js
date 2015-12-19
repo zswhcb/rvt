@@ -24,13 +24,13 @@ var biz = {
 (function (exports){
 	// TODO
 	exports.commit = function(newInfo, cb){
-		biz.handtask.getMyHandTask(newInfo.USER_ID, function (err, docs){
+		biz.handtask.getById(newInfo.HANDTASK_ID, function (err, doc){
 			if(err) return cb(err);
-			if(1 !== docs.length) return cb(null, ['数据异常，请联系管理员']);
+			if(!doc || 1 === doc.STATUS) return cb(null, ['非法操作']);
 			// TODO
-			biz.handtask.commit(newInfo, function (err, status){
+			biz.handtask.commit(newInfo, function (err, msg, status){
 				if(err) return cb(err);
-				cb(null, status);
+				cb(null, null, status);
 			});
 		});
 	};

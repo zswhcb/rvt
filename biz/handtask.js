@@ -12,6 +12,25 @@ var util = require('speedt-utils'),
 var exports = module.exports;
 
 /**
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'SELECT'+
+				'  b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.STATUS TASK_STATUS,'+
+				'  a.*'+
+				' FROM (SELECT * FROM p_handtask WHERE id=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
+	// TODO
+	exports.getById = function(id, cb){
+		mysql.query(sql, [id], function (err, docs){
+			if(err) return cb(err);
+			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+		});
+	};
+})(exports);
+
+/**
  * 获取用户接手的任务列表
  *
  * @params
