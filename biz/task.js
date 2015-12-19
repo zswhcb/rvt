@@ -167,7 +167,7 @@ var biz = {
 
 
 (function (exports){
-	var sql_1 = 'SELECT b.PROJECT_NAME, a.* FROM p_task a, p_project b WHERE a.PROJECT_ID=b.id';
+	var sql_1 = 'SELECT b.PROJECT_NAME, a.* FROM p_task a LEFT JOIN p_project b ON (a.PROJECT_ID=b.id) WHERE b.id IS NOT NULL';
 	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
 
 	/**

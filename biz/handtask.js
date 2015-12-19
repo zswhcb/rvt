@@ -20,7 +20,7 @@ var exports = module.exports;
 	var sql = 'SELECT'+
 				'  b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.STATUS TASK_STATUS,'+
 				'  a.*'+
-				' FROM (SELECT * FROM p_handtask WHERE id=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
+				' FROM (SELECT * FROM p_handtask WHERE id=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL';
 	// TODO
 	exports.getById = function(id, cb){
 		mysql.query(sql, [id], function (err, docs){
@@ -40,7 +40,7 @@ var exports = module.exports;
 	var sql = 'SELECT'+
 				'  b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.STATUS TASK_STATUS,'+
 				'  a.*'+
-				' FROM (SELECT * FROM p_handtask WHERE STATUS=? AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
+				' FROM (SELECT * FROM p_handtask WHERE STATUS=? AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL';
 	// TODO
 	exports.getMyHandTask = function(status, user_id, cb){
 		status = status || 0;
@@ -64,7 +64,7 @@ var exports = module.exports;
 				' WHERE id in (SELECT a.id FROM'+
 					' (SELECT * FROM p_handtask WHERE STATUS=0) a'+
 					' LEFT JOIN p_task b ON (a.TASK_ID=b.id)'+
-					' WHERE DATE_ADD(a.CREATE_TIME, INTERVAL (b.TALK_TIMEOUT - 10) second)<?)';
+					' WHERE b.id IS NOT NULL AND DATE_ADD(a.CREATE_TIME, INTERVAL (b.TALK_TIMEOUT - 10) second)<?)';
 	// TODO
 	exports.clearTimeout = function(curTime, cb){
 		curTime = curTime || new Date();
@@ -101,7 +101,7 @@ var exports = module.exports;
  */
 (function (exports){
 	var sql = 'SELECT b.USER_NAME, a.* FROM'+
-				' (SELECT * FROM p_handtask WHERE TASK_ID=?) a LEFT JOIN s_user b ON (a.USER_ID=b.id) ORDER BY a.STATUS, a.CREATE_TIME DESC';
+				' (SELECT * FROM p_handtask WHERE TASK_ID=?) a LEFT JOIN s_user b ON (a.USER_ID=b.id) WHERE b.id IS NOT NULL ORDER BY a.STATUS, a.CREATE_TIME DESC';
 	// TODO
 	exports.findByTaskId = function(task_id, cb){
 		mysql.query(sql, [task_id], function (err, docs){
@@ -150,7 +150,8 @@ var exports = module.exports;
 			newInfo.UPLOAD_TIME,
 			newInfo.TALK_TIME,
 			newInfo.TALK_TIME_LEN,
-			newInfo.STATUS
+			newInfo.STATUS,
+			newInfo.HANDTASK_ID
 		];
 		mysql.query(sql, postData, function (err, status){
 			if(err) return cb(err);
