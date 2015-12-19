@@ -80,15 +80,15 @@ var biz = {
 				'  a01.*'+
 				' FROM p_task a01 WHERE a01.STATUS=1) a'+
 				' LEFT JOIN (SELECT * FROM p_project WHERE STATUS=1) b ON (a.PROJECT_ID=b.id)) a1'+
-				' LEFT JOIN (SELECT * FROM p_handtask WHERE USER_ID=?) b1 ON (a1.id=b1.TASK_ID)';
+				' LEFT JOIN (SELECT * FROM p_handtask WHERE USER_ID=?) b1 ON (a1.id=b1.TASK_ID)'; // 暂时此 sql 无用
 	// TODO
 	exports.apply = function(user_id, task_id, cb){
 		var that = this;
 		// TODO 清理超时数据
-		biz.handtask.clearTimeout(function (err, result){
+		biz.handtask.clearTimeout(null, function (err, result){
 			if(err) return cb(err);
 			// TODO 获取之前申请的任务（未过期）
-			biz.handtask.getMyHandTask(user_id, function (err, msg, doc){
+			biz.handtask.getMyHandTask(0, user_id, function (err, msg, doc){
 				if(err) return cb(err);
 				if(!!msg) return cb(null, msg);
 				if(!!doc) return cb(null, null, doc);

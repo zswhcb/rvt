@@ -61,10 +61,12 @@ var exports = module.exports;
 	var sql = 'SELECT'+
 				' b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.STATUS TASK_STATUS,'+
 				'  a.*'+
-				' FROM (SELECT * FROM p_handtask WHERE STATUS=0 AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
+				' FROM (SELECT * FROM p_handtask WHERE STATUS=? AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id)';
 	// TODO
-	exports.getMyHandTask = function(user_id, cb){
-		mysql.query(sql, [user_id, new Date()], function (err, docs){
+	exports.getMyHandTask = function(status, user_id, cb){
+		status = status || 0;
+		// TODO
+		mysql.query(sql, [status, user_id], function (err, docs){
 			if(err) return cb(err);
 			if(1 < docs.length) return cb(null, ['数据异常，请联系管理员']);
 			cb(null, null, mysql.checkOnly(docs) ? docs[0] : null);
@@ -83,10 +85,12 @@ var exports = module.exports;
 				' WHERE id in (SELECT a.id FROM'+
 					' (SELECT * FROM p_handtask WHERE STATUS=0) a'+
 					' LEFT JOIN p_task b ON (a.TASK_ID=b.id)'+
-					' WHERE DATE_ADD(a.CREATE_TIME, INTERVAL (10 + b.TALK_TIMEOUT) second)<?)';
+					' WHERE DATE_ADD(a.CREATE_TIME, INTERVAL (b.TALK_TIMEOUT - 10) second)<?)';
 	// TODO
-	exports.clearTimeout = function(cb){
-		mysql.query(sql, [new Date()], function (err, status){
+	exports.clearTimeout = function(curTime, cb){
+		curTime = curTime || new Date();
+		// TODO
+		mysql.query(sql, [curTime], function (err, status){
 			if(err) return cb(err);
 			cb(null, status);
 		});
@@ -103,9 +107,9 @@ var exports = module.exports;
 	var sql = 'UPDATE p_handtask SET STATUS=? WHERE id in (?)';
 	// TODO
 	exports.editStatus = function(status, handtask_ids, cb){
-		mysql.query(sql, [status, handtask_ids], function (err, result){
+		mysql.query(sql, [status, handtask_ids], function (err, status){
 			if(err) return cb(err);
-			cb(null, result);
+			cb(null, status);
 		});
 	};
 })(exports);
