@@ -25,22 +25,22 @@ var biz = {
 	// TODO
 	exports.commit = function(newInfo, cb){
 		// TODO 检查是否为数字
-		var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
-		if(null == TALK_TIME_LEN) return cb(null, ['参数异常']);
+		var TASK_TALK_TIME_LEN = util.checkNum(newInfo.TASK_TALK_TIME_LEN);
+		if(null === TASK_TALK_TIME_LEN || 0 === TASK_TALK_TIME_LEN) return cb(null, ['参数异常']);
 		// TODO
 		biz.handtask.getById(newInfo.HANDTASK_ID, function (err, doc){
 			if(err) return cb(err);
 			if(!doc || 1 === doc.STATUS) return cb(null, ['非法操作']);
 			// TODO 通话时长不达标
-			if(TALK_TIME_LEN < doc.TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_LEN +' 秒']);
+			if(TASK_TALK_TIME_LEN < doc.TASK_TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TASK_TALK_TIME_LEN +' 秒']);
 			// TODO 当前时间
 			var curTime = new Date();
 			// TODO 超时截止时间
-			var timeout = new Date(doc.CREATE_TIME + (doc.TASK_TALK_TIMEOUT * 1000));
+			var timeout = new Date(doc.CREATE_TIME.getTime() + (doc.TASK_TALK_TIMEOUT * 1000));
 			// TODO
 			newInfo.STATUS = timeout.getTime() > curTime.getTime() ? 1 : 2;
 			// TODO
-			biz.handtask.editInfo(newInfo, function (err, msg, status){
+			biz.handtask.editInfo(newInfo, function (err, status){
 				if(err) return cb(err);
 				cb(null, null, status);
 			});
@@ -109,7 +109,7 @@ var biz = {
 					if(err) return cb(err);
 					if(!doc) return cb(null, ['此任务不存在，请重新申请']);
 					// TODO 检测任务状态
-					if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['任务抢完了']);
+					if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['下手晚了']);
 					// TODO 开始新的申请
 					biz.handtask.saveNew({ TASK_ID: task_id, USER_ID: user_id }, function (err, doc){
 						if(err) return cb(err);
@@ -177,6 +177,7 @@ var biz = {
 	 */
 	exports.getById = function(id, cb){
 		var sql = sql_1 +' AND a.id=?';
+		// TODO
 		mysql.query(sql, [id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
@@ -190,6 +191,7 @@ var biz = {
 	 */
 	exports.findAll = function(cb){
 		var sql = sql_1 + sql_orderby;
+		// TODO
 		mysql.query(sql, null, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);

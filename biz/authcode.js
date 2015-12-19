@@ -19,19 +19,20 @@ var exports = module.exports;
  * @return
  */
 (function (exports){
-	var sql = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT FROM s_auth_code a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID) WHERE a.id=?';
+	var sql = 'SELECT'+
+				'  b.USER_NAME,'+
+				'  a.*'+
+				' FROM (SELECT * FROM s_auth_code WHERE id=?) a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID)';
 	// TODO
 	exports.checkUsed = function(id, cb){
 		// TODO
 		mysql.query(sql, [id], function (err, docs){
 			if(err) return cb(err);
 			// TODO
-			if(1 !== docs.length) return cb(null, ['认证码不存在']);
+			if(!mysql.checkOnly(docs)) return cb(null, ['认证码不存在']);
 			// TODO
 			var doc = docs[0];
-			if(!!doc.USER_NAME) return cb(null, ['认证码已经使用']);
-			// TODO
-			cb(null, null);
+			cb(null, (!!doc.USER_NAME ? ['认证码已经使用'] : null));
 		});
 	};
 })(exports);
@@ -42,7 +43,9 @@ var exports = module.exports;
  * @return
  */
 (function (exports){
-	var sql = 'SELECT a.*, b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT'+
+	var sql = 'SELECT'+
+				'  b.USER_NAME, b.MOBILE, b.EMAIL, b.REAL_NAME, b.ALIPAY_ACCOUNT,'+
+				'  a.*'+
 				' FROM (SELECT * FROM s_auth_code WHERE USER_ID=?) a LEFT JOIN s_user b ON (a.id=b.AUTH_CODE_ID)'+
 				' ORDER BY a.id DESC';
 	// TODO

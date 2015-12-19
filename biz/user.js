@@ -137,6 +137,7 @@ var biz = {
  */
 exports.register = function(newInfo, cb){
 	newInfo.AUTH_CODE_ID = newInfo.AUTH_CODE_ID || '';
+	// TODO
 	biz.authcode.checkUsed(newInfo.AUTH_CODE_ID, function (err, msg){
 		if(err) return cb(err);
 		if(!!msg) return cb(null, msg);
