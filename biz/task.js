@@ -24,9 +24,21 @@ var biz = {
 (function (exports){
 	// TODO
 	exports.commit = function(newInfo, cb){
+		// TODO 检查是否为数字
+		var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
+		if(null == TALK_TIME_LEN) return cb(null, ['参数异常']);
+		// TODO
 		biz.handtask.getById(newInfo.HANDTASK_ID, function (err, doc){
 			if(err) return cb(err);
 			if(!doc || 1 === doc.STATUS) return cb(null, ['非法操作']);
+			// TODO 通话时长不达标
+			if(TALK_TIME_LEN < doc.TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_LEN +' 秒']);
+			// TODO 当前时间
+			var curTime = new Date();
+			// TODO 超时截止时间
+			var timeout = new Date(doc.CREATE_TIME + (doc.TASK_TALK_TIMEOUT * 1000));
+			// TODO
+			newInfo.STATUS = timeout.getTime() > curTime.getTime() ? 1 : 2;
 			// TODO
 			biz.handtask.editInfo(newInfo, function (err, msg, status){
 				if(err) return cb(err);

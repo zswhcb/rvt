@@ -6,7 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "speedt-utils": "0.1.44",
+    "speedt-utils": "0.1.45",
     "eventproxy": "0.3.1"
   }
 }
