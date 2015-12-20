@@ -49,6 +49,18 @@ public class LoginActivity extends Activity {
 	private Button btn_showpass;
 	private Button btn_login;
 
+	private Toast toast;
+
+	private void showToast(String msg) {
+		if (null == toast)
+			toast = Toast.makeText(getApplicationContext(), msg,
+					Toast.LENGTH_SHORT);
+		else
+			toast.setText(msg);
+
+		toast.show();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,8 +106,7 @@ public class LoginActivity extends Activity {
 		private void login(Message msg) {
 			// TODO
 			if (null == msg.obj) {
-				Toast.makeText(getApplicationContext(), getString(msg.arg1),
-						Toast.LENGTH_SHORT).show();
+				showToast(getString(msg.arg1));
 				setBtnLoginStatus(true);
 				return;
 			}
@@ -106,9 +117,7 @@ public class LoginActivity extends Activity {
 				JSONObject _j = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_j.getBoolean("success")) {
-					Toast.makeText(getApplicationContext(),
-							_j.getJSONArray("msg").getString(0),
-							Toast.LENGTH_SHORT).show();
+					showToast(_j.getJSONArray("msg").getString(0));
 					setBtnLoginStatus(true);
 					return;
 				}
@@ -125,6 +134,7 @@ public class LoginActivity extends Activity {
 				app.setTs(_data.getLong("TS"));
 			} catch (JSONException e) {
 				e.printStackTrace();
+				showToast(e.getMessage());
 				setBtnLoginStatus(true);
 				return;
 			}
@@ -152,20 +162,21 @@ public class LoginActivity extends Activity {
 		_params.put("ts", Long.toString(ts));
 
 		// TODO
-		JSONObject _j = new JSONObject();
 		try {
-			_j.put("USER_NAME", user_name);
-			_j.put("USER_PASS", user_pass);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return;
-		}
-
-		// TODO
-		try {
-			_params.put("data", URLEncoder.encode(_j.toString(), "utf-8"));
+			JSONObject jo = new JSONObject();
+			jo.put("USER_NAME", user_name);
+			jo.put("USER_PASS", user_pass);
+			// TODO
+			_params.put("data", URLEncoder.encode(jo.toString(), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			showToast(e.getMessage());
+			setBtnLoginStatus(true);
+			return;
+		} catch (JSONException e) {
+			e.printStackTrace();
+			showToast(e.getMessage());
+			setBtnLoginStatus(true);
 			return;
 		}
 
@@ -199,19 +210,13 @@ public class LoginActivity extends Activity {
 				String _user_pass = text_userpass.getText().toString().trim();
 				// TODO
 				if ("".equals(_user_name)) {
-					Toast.makeText(getApplicationContext(),
-							R.string.valiate_userpass, Toast.LENGTH_SHORT)
-							.show();
-					btn_login.setEnabled(true);
-					btn_login.setText(R.string.login_main_btn_login);
+					showToast(getString(R.string.valiate_userpass));
+					setBtnLoginStatus(true);
 					return;
 				}
 				if ("".equals(_user_pass)) {
-					Toast.makeText(getApplicationContext(),
-							R.string.valiate_userpass, Toast.LENGTH_SHORT)
-							.show();
-					btn_login.setEnabled(true);
-					btn_login.setText(R.string.login_main_btn_login);
+					showToast(getString(R.string.valiate_userpass));
+					setBtnLoginStatus(true);
 					return;
 				}
 				// TODO

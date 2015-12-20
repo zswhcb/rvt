@@ -56,15 +56,15 @@ public class MainActivity extends ActionBarActivity {
 	// TODO
 	private UserInfo app;
 
-	private Toast toast = null;
+	private Toast toast;
 
 	private void showToast(String msg) {
-		if (null == toast) {
+		if (null == toast)
 			toast = Toast.makeText(getApplicationContext(), msg,
 					Toast.LENGTH_SHORT);
-		} else {
+		else
 			toast.setText(msg);
-		}
+
 		toast.show();
 	}
 
