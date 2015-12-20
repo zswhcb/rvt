@@ -141,14 +141,19 @@ public class MainActivity extends ActionBarActivity {
 				}
 				// TODO
 				JSONObject _data = _jo.getJSONObject("data");
+
 				// TODO
-				showToast(_data.getString("id"));
+				Bundle _bundle = new Bundle();
+				_bundle.putString("HANDTASK_ID", _data.getString("id"));
+
 				// TODO
 				Intent intent = new Intent(MainActivity.this,
 						DialActivity.class);
+				intent.putExtras(_bundle);
 				startActivity(intent);
 			} catch (JSONException e) {
 				e.printStackTrace();
+				showToast(e.getMessage());
 			} finally {
 				grid_items.setEnabled(true);
 			}
@@ -178,6 +183,7 @@ public class MainActivity extends ActionBarActivity {
 				grid_items.setAdapter(_adapter);
 			} catch (JSONException e) {
 				e.printStackTrace();
+				showToast(e.getMessage());
 			} finally {
 				btn_sync.setEnabled(true);
 			}
@@ -207,6 +213,7 @@ public class MainActivity extends ActionBarActivity {
 			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			showToast(e.getMessage());
 			btn_sync.setEnabled(true);
 			return;
 		}
