@@ -73,9 +73,6 @@ var exports = module.exports;
 			// TODO
 			if(!doc) return res.send(result);
 			// TODO
-			var data = query.data;
-			delete query.data;
-			// TODO
 			if(!rest.validate(query, doc.SECKEY)) return res.send(result);
 			// TODO
 			req.flash('user', doc);
@@ -131,7 +128,7 @@ var exports = module.exports;
 			data = req._data,
 			user = req.flash('user')[0];
 		// TODO
-		biz.task.apply(user.id, req.query.task_id, function (err, msg, doc){
+		biz.task.apply(user.id, data.TASK_ID, function (err, msg, doc){
 			if(err) return next(err);
 			// TODO
 			if(!!msg){

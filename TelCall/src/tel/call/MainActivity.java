@@ -56,6 +56,18 @@ public class MainActivity extends ActionBarActivity {
 	// TODO
 	private UserInfo app;
 
+	private Toast toast = null;
+
+	private void showToast(String msg) {
+		if (null == toast) {
+			toast = Toast.makeText(getApplicationContext(), msg,
+					Toast.LENGTH_SHORT);
+		} else {
+			toast.setText(msg);
+		}
+		toast.show();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (checkLogin())
@@ -114,8 +126,7 @@ public class MainActivity extends ActionBarActivity {
 		private void applyTask(Message msg) {
 			// TODO
 			if (null == msg.obj) {
-				Toast.makeText(getApplicationContext(), getString(msg.arg1),
-						Toast.LENGTH_SHORT).show();
+				showToast(getString(msg.arg1));
 				grid_items.setEnabled(true);
 				return;
 			}
@@ -124,17 +135,18 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
-					Toast.makeText(getApplicationContext(),
-							_jo.getJSONArray("msg").getString(0),
-							Toast.LENGTH_SHORT).show();
+					showToast(_jo.getJSONArray("msg").getString(0));
 					grid_items.setEnabled(true);
 					return;
 				}
 				// TODO
 				JSONObject _data = _jo.getJSONObject("data");
 				// TODO
-				Toast.makeText(getApplicationContext(), _data.getString("id"),
-						Toast.LENGTH_SHORT).show();
+				showToast(_data.getString("id"));
+				// TODO
+				Intent intent = new Intent(MainActivity.this,
+						DialActivity.class);
+				startActivity(intent);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			} finally {
@@ -145,8 +157,7 @@ public class MainActivity extends ActionBarActivity {
 		private void getCurrentTasks(Message msg) {
 			// TODO
 			if (null == msg.obj) {
-				Toast.makeText(getApplicationContext(), getString(msg.arg1),
-						Toast.LENGTH_SHORT).show();
+				showToast(getString(msg.arg1));
 				btn_sync.setEnabled(true);
 				return;
 			}
@@ -155,9 +166,7 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
-					Toast.makeText(getApplicationContext(),
-							_jo.getJSONArray("msg").getString(0),
-							Toast.LENGTH_SHORT).show();
+					showToast(_jo.getJSONArray("msg").getString(0));
 					btn_sync.setEnabled(true);
 					return;
 				}
@@ -180,31 +189,28 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void refreshRemoteData() {
 		HashMap<String, String> _params = new HashMap<String, String>();
+		// TODO
 		_params.put("apikey", app.getApikey());
 		_params.put("command", "getCurrentTasks");
 		long ts = (new Date()).getTime() + app.getTs();
 		_params.put("ts", Long.toString(ts));
-		// TODO
-		JSONObject _j = new JSONObject();
+
 		// TODO
 		try {
-			_params.put("data", URLEncoder.encode(_j.toString(), "utf-8"));
+			JSONObject jo = new JSONObject();
+			String data = jo.toString();
+			_params.put("data", URLEncoder.encode(data, "UTF-8"));
+			// TODO
+			String params = URLEncoder.encode("apikey=" + app.getApikey()
+					+ "&command=getCurrentTasks&data=" + data + "&ts=" + ts,
+					"UTF-8");
+			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			btn_sync.setEnabled(true);
 			return;
 		}
-		// TODO
-		String params = "";
-		try {
-			params = URLEncoder.encode("apikey=" + app.getApikey()
-					+ "&command=getCurrentTasks&ts=" + ts, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			btn_sync.setEnabled(true);
-			return;
-		}
-		_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+
 		// TODO
 		HttpUtil _hu = new HttpUtil(ServiceAction.GET_CURRENTTASKS, handler,
 				getString(R.string.httpUrl) + "api", RequestMethod.POST,
@@ -232,33 +238,33 @@ public class MainActivity extends ActionBarActivity {
 
 	private void applyTask(String task_id) {
 		HashMap<String, String> _params = new HashMap<String, String>();
+		// TODO
 		_params.put("apikey", app.getApikey());
 		_params.put("command", "applyTask");
-		_params.put("task_id", task_id);
 		long ts = (new Date()).getTime() + app.getTs();
 		_params.put("ts", Long.toString(ts));
-		// TODO
-		JSONObject _j = new JSONObject();
+
 		// TODO
 		try {
-			_params.put("data", URLEncoder.encode(_j.toString(), "utf-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			grid_items.setEnabled(true);
-			return;
-		}
-		// TODO
-		String params = "";
-		try {
+			JSONObject jo = new JSONObject();
+			jo.put("TASK_ID", task_id);
+			String data = jo.toString();
+			_params.put("data", URLEncoder.encode(data, "UTF-8"));
+
+			String params = "";
 			params = URLEncoder.encode("apikey=" + app.getApikey()
-					+ "&command=applyTask&task_id=" + task_id + "&ts=" + ts,
-					"UTF-8");
+					+ "&command=applyTask&data=" + data + "&ts=" + ts, "UTF-8");
+			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			grid_items.setEnabled(true);
 			return;
+		} catch (JSONException e) {
+			e.printStackTrace();
+			grid_items.setEnabled(true);
+			return;
 		}
-		_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+
 		// TODO
 		HttpUtil _hu = new HttpUtil(ServiceAction.APPLYTASK, handler,
 				getString(R.string.httpUrl) + "api", RequestMethod.POST,
@@ -294,8 +300,7 @@ public class MainActivity extends ActionBarActivity {
 					int INIT_TASK_SUM = _jo.getInt("INIT_TASK_SUM");
 					// TODO
 					if ((INIT_TASK_SUM + SUCCESS_TASK_SUM) >= TASK_SUM) {
-						Toast.makeText(getApplicationContext(), "下手晚了",
-								Toast.LENGTH_SHORT).show();
+						showToast("下手晚了");
 						grid_items.setEnabled(true);
 						return;
 					}
@@ -305,11 +310,6 @@ public class MainActivity extends ActionBarActivity {
 					e.printStackTrace();
 					grid_items.setEnabled(true);
 				}
-
-				// TODO
-				// Intent intent = new Intent(MainActivity.this,
-				// DialActivity.class);
-				// startActivity(intent);
 			}
 		});
 	}
