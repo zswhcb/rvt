@@ -131,7 +131,7 @@ var exports = module.exports;
 			data = req._data,
 			user = req.flash('user')[0];
 		// TODO
-		biz.task.apply(data.USER_ID, data.TASK_ID, function (err, msg, doc){
+		biz.task.apply(user.id, req.query.task_id, function (err, msg, doc){
 			if(err) return next(err);
 			// TODO
 			if(!!msg){

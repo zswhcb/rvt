@@ -104,15 +104,44 @@ public class MainActivity extends ActionBarActivity {
 			case ServiceAction.GET_CURRENTTASKS:
 				getCurrentTasks(msg);
 				break;
+			case ServiceAction.APPLYTASK:
+				applyTask(msg);
 			default:
 				break;
 			}
 		}
 
-		/**
-		 * 
-		 * @param msg
-		 */
+		private void applyTask(Message msg) {
+			// TODO
+			if (null == msg.obj) {
+				Toast.makeText(getApplicationContext(), getString(msg.arg1),
+						Toast.LENGTH_SHORT).show();
+				grid_items.setEnabled(true);
+				return;
+			}
+			// TODO
+			try {
+				JSONObject _jo = new JSONObject((String) msg.obj);
+				// TODO
+				if (!_jo.getBoolean("success")) {
+					Toast.makeText(getApplicationContext(),
+							_jo.getJSONArray("msg").getString(0),
+							Toast.LENGTH_SHORT).show();
+					grid_items.setEnabled(true);
+					return;
+				}
+				// TODO
+				JSONObject _data = _jo.getJSONObject("data");
+				// TODO
+				Toast.makeText(getApplicationContext(), _data.getString("id"),
+						Toast.LENGTH_SHORT).show();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} finally {
+				grid_items.setEnabled(true);
+			}
+		}
+
 		private void getCurrentTasks(Message msg) {
 			// TODO
 			if (null == msg.obj) {
@@ -172,6 +201,8 @@ public class MainActivity extends ActionBarActivity {
 					+ "&command=getCurrentTasks&ts=" + ts, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			btn_sync.setEnabled(true);
+			return;
 		}
 		_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		// TODO
@@ -200,7 +231,40 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void applyTask(String task_id) {
-
+		HashMap<String, String> _params = new HashMap<String, String>();
+		_params.put("apikey", app.getApikey());
+		_params.put("command", "applyTask");
+		_params.put("task_id", task_id);
+		long ts = (new Date()).getTime() + app.getTs();
+		_params.put("ts", Long.toString(ts));
+		// TODO
+		JSONObject _j = new JSONObject();
+		// TODO
+		try {
+			_params.put("data", URLEncoder.encode(_j.toString(), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			grid_items.setEnabled(true);
+			return;
+		}
+		// TODO
+		String params = "";
+		try {
+			params = URLEncoder.encode("apikey=" + app.getApikey()
+					+ "&command=applyTask&task_id=" + task_id + "&ts=" + ts,
+					"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			grid_items.setEnabled(true);
+			return;
+		}
+		_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+		// TODO
+		HttpUtil _hu = new HttpUtil(ServiceAction.APPLYTASK, handler,
+				getString(R.string.httpUrl) + "api", RequestMethod.POST,
+				_params);
+		Thread _t = new Thread(_hu);
+		_t.start();
 	}
 
 	private void bind() {
@@ -224,7 +288,7 @@ public class MainActivity extends ActionBarActivity {
 						.getItemAtPosition(position);
 				// TODO
 				try {
-					String TASK_ID = _jo.getString("TASK_ID");
+					String TASK_ID = _jo.getString("id");
 					int TASK_SUM = _jo.getInt("TASK_SUM");
 					int SUCCESS_TASK_SUM = _jo.getInt("SUCCESS_TASK_SUM");
 					int INIT_TASK_SUM = _jo.getInt("INIT_TASK_SUM");

@@ -56,15 +56,16 @@ var biz = {
  */
 (function (exports){
 	var sql = 'SELECT'+
+				'  (SELECT b.id FROM p_handtask b WHERE STATUS=1 AND b.USER_ID=? AND b.TASK_ID IN (SELECT id FROM p_task WHERE PROJECT_ID=a.PROJECT_ID)) HANDTASK_ID,'+
 				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=a.id) INIT_TASK_SUM,'+
 				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id) SUCCESS_TASK_SUM,'+
 				'  a.*'+
 				' FROM p_task a WHERE a.id=? AND ? BETWEEN a.START_TIME AND a.END_TIME';
 	// TODO
-	exports.getTaskStatus = function(task_id, curTime, cb){
+	exports.getTaskStatus = function(user_id, task_id, curTime, cb){
 		curTime = curTime || new Date();
 		// TODO
-		mysql.query(sql, [task_id, curTime], function (err, docs){
+		mysql.query(sql, [user_id, task_id, curTime], function (err, docs){
 			if(err) return cb(err);
 			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
 		});
@@ -105,9 +106,11 @@ var biz = {
 				if(!!msg) return cb(null, msg);
 				if(!!doc) return cb(null, null, doc);
 				// TODO 获取任务状态信息
-				that.getTaskStatus(task_id, null, function (err, doc){
+				that.getTaskStatus(user_id, task_id, null, function (err, doc){
 					if(err) return cb(err);
 					if(!doc) return cb(null, ['此任务不存在，请重新申请']);
+					// TODO
+					if(!!doc.HANDTASK_ID) return cb(null, ['此任务之前已经申请过']);
 					// TODO 检测任务状态
 					if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['下手晚了']);
 					// TODO 开始新的申请
