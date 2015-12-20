@@ -1,6 +1,5 @@
 package tel.call;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -110,23 +109,18 @@ public class LoginActivity extends Activity {
 				setBtnLoginStatus(true);
 				return;
 			}
-			// TODO
-			Bundle _bundle;
+
 			// TODO
 			try {
-				JSONObject _j = new JSONObject((String) msg.obj);
+				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
-				if (!_j.getBoolean("success")) {
-					showToast(_j.getJSONArray("msg").getString(0));
+				if (!_jo.getBoolean("success")) {
+					showToast(_jo.getJSONArray("msg").getString(0));
 					setBtnLoginStatus(true);
 					return;
 				}
 				// TODO
-				JSONObject _data = _j.getJSONObject("data");
-				// TODO 私钥写入内存并传到下一个页面
-				_bundle = new Bundle();
-				_bundle.putString("APIKEY", _data.getString("APIKEY"));
-				_bundle.putString("SECKEY", _data.getString("SECKEY"));
+				JSONObject _data = _jo.getJSONObject("data");
 				// TODO
 				UserInfo app = (UserInfo) getApplication();
 				app.setApikey(_data.getString("APIKEY"));
@@ -140,8 +134,6 @@ public class LoginActivity extends Activity {
 			}
 			// TODO
 			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-			// TODO
-			intent.putExtras(_bundle);
 			// TODO
 			startActivity(intent);
 			finish();
@@ -157,6 +149,7 @@ public class LoginActivity extends Activity {
 	private void login(final String user_name, final String user_pass) {
 		// TODO
 		HashMap<String, String> _params = new HashMap<String, String>();
+		// TODO
 		_params.put("command", "login");
 		long ts = (new Date()).getTime();
 		_params.put("ts", Long.toString(ts));
@@ -168,12 +161,7 @@ public class LoginActivity extends Activity {
 			jo.put("USER_PASS", user_pass);
 			// TODO
 			_params.put("data", URLEncoder.encode(jo.toString(), "utf-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			showToast(e.getMessage());
-			setBtnLoginStatus(true);
-			return;
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			showToast(e.getMessage());
 			setBtnLoginStatus(true);

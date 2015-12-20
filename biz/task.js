@@ -113,11 +113,14 @@ var biz = {
 					if(!!doc.HANDTASK_ID) return cb(null, ['此任务之前已经申请过']);
 					// TODO 检测任务状态
 					if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['下手晚了']);
+					// TODO
+					var newTask = doc;
 					// TODO 开始新的申请
 					biz.handtask.saveNew({ TASK_ID: task_id, USER_ID: user_id }, function (err, doc){
 						if(err) return cb(err);
 						// TODO 返回抢任务的ID
-						cb(null, null, doc);
+						newTask.HANDTASK_ID = doc.id;
+						cb(null, null, newTask);
 					});
 				});
 			});

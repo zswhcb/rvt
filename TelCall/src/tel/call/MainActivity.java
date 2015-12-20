@@ -130,6 +130,8 @@ public class MainActivity extends ActionBarActivity {
 				grid_items.setEnabled(true);
 				return;
 			}
+
+			Bundle _bundle = null;
 			// TODO
 			try {
 				JSONObject _jo = new JSONObject((String) msg.obj);
@@ -140,23 +142,22 @@ public class MainActivity extends ActionBarActivity {
 					return;
 				}
 				// TODO
-				JSONObject _data = _jo.getJSONObject("data");
+				JSONObject _jdata = _jo.getJSONObject("data");
 
 				// TODO
-				Bundle _bundle = new Bundle();
-				_bundle.putString("HANDTASK_ID", _data.getString("id"));
-
-				// TODO
-				Intent intent = new Intent(MainActivity.this,
-						DialActivity.class);
-				intent.putExtras(_bundle);
-				startActivity(intent);
+				_bundle = new Bundle();
+				_bundle.putString("HANDTASK_ID", _jdata.getString("id"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showToast(e.getMessage());
+				return;
 			} finally {
 				grid_items.setEnabled(true);
 			}
+			// TODO
+			Intent intent = new Intent(MainActivity.this, DialActivity.class);
+			intent.putExtras(_bundle);
+			startActivity(intent);
 		}
 
 		private void getCurrentTasks(Message msg) {
@@ -176,10 +177,11 @@ public class MainActivity extends ActionBarActivity {
 					return;
 				}
 				// TODO
-				JSONArray _ja = _jo.getJSONArray("data");
+				JSONArray _jdata = _jo.getJSONArray("data");
 				// TODO
 				CurrentTasksAdapter _adapter = new CurrentTasksAdapter(
-						R.layout.fragment_main_datagrid, MainActivity.this, _ja);
+						R.layout.fragment_main_datagrid, MainActivity.this,
+						_jdata);
 				grid_items.setAdapter(_adapter);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -258,16 +260,12 @@ public class MainActivity extends ActionBarActivity {
 			String data = jo.toString();
 			_params.put("data", URLEncoder.encode(data, "UTF-8"));
 
-			String params = "";
-			params = URLEncoder.encode("apikey=" + app.getApikey()
+			String params = URLEncoder.encode("apikey=" + app.getApikey()
 					+ "&command=applyTask&data=" + data + "&ts=" + ts, "UTF-8");
 			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			grid_items.setEnabled(true);
-			return;
-		} catch (JSONException e) {
-			e.printStackTrace();
+			showToast(e.getMessage());
 			grid_items.setEnabled(true);
 			return;
 		}
@@ -315,6 +313,7 @@ public class MainActivity extends ActionBarActivity {
 					applyTask(TASK_ID);
 				} catch (JSONException e) {
 					e.printStackTrace();
+					showToast(e.getMessage());
 					grid_items.setEnabled(true);
 				}
 			}
