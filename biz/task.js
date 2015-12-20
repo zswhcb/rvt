@@ -133,7 +133,7 @@ var biz = {
 				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=a.id) INIT_TASK_SUM,'+
 				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id) SUCCESS_TASK_SUM,'+
 				'  a.*'+
-				' FROM p_task a WHERE ? BETWEEN a.START_TIME AND a.END_TIME) b'+
+				' FROM p_task a WHERE a.STATUS=1 AND ? BETWEEN a.START_TIME AND a.END_TIME) b'+
 				' WHERE b.TASK_SUM>b.SUCCESS_TASK_SUM';
 	// TODO
 	exports.getCurrentTasks = function(user_id, cb){

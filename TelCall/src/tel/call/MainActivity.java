@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 import tel.call.action.ServiceAction;
 import tel.call.adapter.CurrentTasksAdapter;
-import tel.call.db.DBManager;
 import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
@@ -53,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
 	private ListView grid_items;
 	private EditText text_sel_date;
 	// TODO
-	private DBManager dbMgr;
+	// private DBManager dbMgr;
 	// TODO
 	private UserInfo app;
 
@@ -70,14 +69,14 @@ public class MainActivity extends ActionBarActivity {
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		// TODO
-		dbMgr = new DBManager(this);
+		// dbMgr = new DBManager(this);
 		app = (UserInfo) getApplication();
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (null != dbMgr)
-			dbMgr.close();
+		// if (null != dbMgr)
+		// dbMgr.close();
 		super.onDestroy();
 	}
 
@@ -155,7 +154,7 @@ public class MainActivity extends ActionBarActivity {
 		_params.put("apikey", app.getApikey());
 		_params.put("command", "getCurrentTasks");
 		long ts = (new Date()).getTime();
-		_params.put("ts", Long.toString(ts));
+		_params.put("ts", Long.toString((new Date(ts + app.getTs())).getTime()));
 		// TODO
 		JSONObject _j = new JSONObject();
 		// TODO

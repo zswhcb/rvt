@@ -60,9 +60,9 @@ var exports = module.exports;
 		// TODO
 		if(query_command(query)) return res.send(result);
 		// TODO
-		if(query_ts(query)) return res.send(result);
-		// TODO
 		if('login' === query.command) return next();
+		// TODO
+		if(query_ts(query)) return res.send(result);
 		// TODO
 		if(query_apikey(query)) return res.send(result);
 		// TODO
@@ -107,7 +107,7 @@ var exports = module.exports;
 				return res.send(result);
 			}
 			/* result */
-			result.data = { APIKEY: doc.APIKEY, SECKEY: doc.SECKEY };
+			result.data = { APIKEY: doc.APIKEY, SECKEY: doc.SECKEY, TS: new Date().getTime() };
 			result.success = true;
 			res.send(result);
 		});

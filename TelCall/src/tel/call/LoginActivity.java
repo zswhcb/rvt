@@ -122,6 +122,7 @@ public class LoginActivity extends Activity {
 				UserInfo app = (UserInfo) getApplication();
 				app.setApikey(_data.getString("APIKEY"));
 				app.setSeckey(_data.getString("SECKEY"));
+				app.setTs(_data.getLong("TS"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				setBtnLoginStatus(true);
