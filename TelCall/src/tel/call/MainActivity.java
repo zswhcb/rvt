@@ -153,8 +153,8 @@ public class MainActivity extends ActionBarActivity {
 		HashMap<String, String> _params = new HashMap<String, String>();
 		_params.put("apikey", app.getApikey());
 		_params.put("command", "getCurrentTasks");
-		long ts = (new Date()).getTime();
-		_params.put("ts", Long.toString((new Date(ts + app.getTs())).getTime()));
+		long ts = (new Date()).getTime() + app.getTs();
+		_params.put("ts", Long.toString(ts));
 		// TODO
 		JSONObject _j = new JSONObject();
 		// TODO
