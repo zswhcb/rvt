@@ -131,8 +131,34 @@ var exports = module.exports;
 			data = req._data,
 			user = req.flash('user')[0];
 		// TODO
-		result.msg = ['applyTask'];
-		res.send(result);
+		biz.task.apply(data.USER_ID, data.TASK_ID, function (err, msg, doc){
+			if(err) return next(err);
+			// TODO
+			if(!!msg){
+				result.msg = msg;
+				return res.send(result);
+			}
+			// TODO
+			result.data = doc;
+			result.success = true;
+			res.send(result);
+		});
+	}
+
+	function applyTask(req, res, next){
+		var result = { success: false },
+			data = req._data,
+			user = req.flash('user')[0];
+		// TODO
+		data.USER_ID = user.id;
+		// TODO
+		biz.task.commit(data, function (err, msg, status){
+			if(err) return next(err);
+			// TODO
+			if(!!msg) result.msg = msg;
+			result.success = true;
+			res.send(result);
+		});
 	}
 
 	exports.index = function(req, res, next){
@@ -142,6 +168,7 @@ var exports = module.exports;
 			case 'login': login(req, res, next); break;
 			case 'getCurrentTasks': getCurrentTasks(req, res, next); break;
 			case 'applyTask': applyTask(req, res, next); break;
+			case 'commitTask': commitTask(req, res, next); break;
 			default: res.send({ success: false }); break;
 		}
 	};

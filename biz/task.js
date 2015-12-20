@@ -30,7 +30,7 @@ var biz = {
 		// TODO
 		biz.handtask.getById(newInfo.HANDTASK_ID, function (err, doc){
 			if(err) return cb(err);
-			if(!doc || 1 === doc.STATUS) return cb(null, ['非法操作']);
+			if(!doc || (1 === doc.STATUS) || (newInfo.USER_ID !== doc.USER_ID)) return cb(null, ['非法操作']);
 			// TODO 通话时长不达标
 			if(TASK_TALK_TIME_LEN < doc.TASK_TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TASK_TALK_TIME_LEN +' 秒']);
 			// TODO 当前时间
@@ -134,7 +134,7 @@ var biz = {
 				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id) SUCCESS_TASK_SUM,'+
 				'  a.*'+
 				' FROM p_task a WHERE ? BETWEEN a.START_TIME AND a.END_TIME) b'+
-				' WHERE b.TASK_SUM>(b.INIT_TASK_SUM+b.SUCCESS_TASK_SUM)';
+				' WHERE b.TASK_SUM>b.SUCCESS_TASK_SUM';
 	// TODO
 	exports.getCurrentTasks = function(user_id, cb){
 		user_id = user_id || '5666d061cca60fe0113d1391';
