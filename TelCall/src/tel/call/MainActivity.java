@@ -199,6 +199,10 @@ public class MainActivity extends ActionBarActivity {
 		text_sel_date.setEnabled(false);
 	}
 
+	private void applyTask(String task_id) {
+
+	}
+
 	private void bind() {
 		// click
 		btn_sync.setOnClickListener(new OnClickListener() {
@@ -214,20 +218,29 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int position,
 					long id) {
-
+				grid_items.setEnabled(false);
+				// TODO
 				JSONObject _jo = (JSONObject) grid_items
 						.getItemAtPosition(position);
-
+				// TODO
 				try {
-					String test = _jo.getString("TASK_NAME");
-					Toast.makeText(getApplicationContext(), test,
-							Toast.LENGTH_SHORT).show();
+					String TASK_ID = _jo.getString("TASK_ID");
+					int TASK_SUM = _jo.getInt("TASK_SUM");
+					int SUCCESS_TASK_SUM = _jo.getInt("SUCCESS_TASK_SUM");
+					int INIT_TASK_SUM = _jo.getInt("INIT_TASK_SUM");
+					// TODO
+					if ((INIT_TASK_SUM + SUCCESS_TASK_SUM) >= TASK_SUM) {
+						Toast.makeText(getApplicationContext(), "下手晚了",
+								Toast.LENGTH_SHORT).show();
+						grid_items.setEnabled(true);
+						return;
+					}
+					// TODO
+					applyTask(TASK_ID);
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+					grid_items.setEnabled(true);
 				}
-
-				grid_items.setEnabled(false);
 
 				// TODO
 				// Intent intent = new Intent(MainActivity.this,

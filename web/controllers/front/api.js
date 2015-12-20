@@ -145,7 +145,7 @@ var exports = module.exports;
 		});
 	}
 
-	function applyTask(req, res, next){
+	function commitTask(req, res, next){
 		var result = { success: false },
 			data = req._data,
 			user = req.flash('user')[0];

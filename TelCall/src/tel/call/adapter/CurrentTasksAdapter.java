@@ -5,7 +5,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tel.call.R;
-import tel.call.util.DateUtil;
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -82,8 +81,10 @@ public class CurrentTasksAdapter extends BaseAdapter implements ListAdapter {
 			// TODO
 			viewHolder.no.setText(no.toString());
 			viewHolder.task_name.setText(jo.getString("TASK_NAME"));
-			viewHolder.issued_time.setText(DateUtil.getFormat1(jo
-					.getString("START_TIME")));
+			// viewHolder.issued_time.setText(DateUtil.getFormat1(jo
+			// .getString("START_TIME")));
+			viewHolder.issued_time.setText(jo.getString("TASK_SUM") + "/"
+					+ jo.getString("SUCCESS_TASK_SUM"));
 			// TODO
 			viewHolder.status.setText("抢");
 			viewHolder.status.setTextColor(Color.GREEN);
