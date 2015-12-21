@@ -21,6 +21,8 @@ public class DateUtil {
 			"MM/dd/HH");
 	private static final SimpleDateFormat sdf_3 = new SimpleDateFormat(
 			"yyyy-MM-dd");
+	private static final SimpleDateFormat sdf_4 = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss");
 
 	/**
 	 * 
@@ -44,5 +46,16 @@ public class DateUtil {
 	 */
 	public static String getFormat2() {
 		return sdf_3.format(new Date());
+	}
+
+	public static String getFormat3(String date) {
+		sdf_1.setTimeZone(TimeZone.getTimeZone("UTC"));
+		// TODO
+		try {
+			Date _date = sdf_1.parse(date);
+			return sdf_4.format(_date);
+		} catch (ParseException e) {
+			return "";
+		}
 	}
 }

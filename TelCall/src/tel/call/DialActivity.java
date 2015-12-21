@@ -1,6 +1,7 @@
 package tel.call;
 
 import tel.call.broadcast.PhoneBroadcastReceiver;
+import tel.call.util.DateUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -71,14 +72,14 @@ public class DialActivity extends Activity {
 		text_task_name.setText("任务名称：" + _bundle.getString("TASK_NAME"));
 		text_task_tel_num.setText("电话号码：" + _bundle.getString("TASK_TEL_NUM"));
 		text_task_intro.setText(_bundle.getString("TASK_INTRO"));
-		text_task_talk_timeout.setText("通话超时："
-				+ _bundle.getString("TASK_TALK_TIMEOUT"));
-		text_task_talk_time_len.setText("通话时长："
-				+ _bundle.getString("TASK_TALK_TIME_LEN"));
+		text_task_talk_timeout.setText("通话超时：还剩"
+				+ _bundle.getString("TASK_TALK_TIMEOUT") + "（秒）过期");
+		text_task_talk_time_len.setText("通话时长：不能少于"
+				+ _bundle.getString("TASK_TALK_TIME_LEN") + "（秒）");
 		text_task_start_time.setText("开始时间："
-				+ _bundle.getString("TASK_START_TIME"));
-		text_task_end_time
-				.setText("结束时间：" + _bundle.getString("TASK_END_TIME"));
+				+ DateUtil.getFormat3(_bundle.getString("TASK_START_TIME")));
+		text_task_end_time.setText("结束时间："
+				+ DateUtil.getFormat3(_bundle.getString("TASK_END_TIME")));
 
 		// TODO
 		text_task_name.setEnabled(false);
