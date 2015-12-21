@@ -143,7 +143,7 @@ var exports = module.exports;
 			newInfo.TALK_TIME,
 			newInfo.TALK_TIME_LEN,
 			newInfo.STATUS,
-			newInfo.HANDTASK_ID
+			newInfo.id
 		];
 		mysql.query(sql, postData, function (err, status){
 			if(err) return cb(err);

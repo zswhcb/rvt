@@ -28,7 +28,7 @@ var biz = {
 		var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
 		if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['参数异常']);
 		// TODO
-		biz.handtask.getById(newInfo.id, function (err, doc){
+		biz.handtask.getById(newInfo.HANDTASK_ID, function (err, doc){
 			if(err) return cb(err);
 			if(!doc || (1 === doc.STATUS) || (user_id !== doc.USER_ID)) return cb(null, ['非法操作']);
 			// TODO 通话时长不达标
@@ -39,6 +39,8 @@ var biz = {
 			var timeout = new Date(doc.CREATE_TIME.getTime() + (doc.TASK_TALK_TIMEOUT * 1000));
 			// TODO
 			newInfo.STATUS = timeout.getTime() > curTime.getTime() ? 1 : 2;
+			newInfo.TALK_TIME_LEN = TALK_TIME_LEN;
+			newInfo.id = newInfo.HANDTASK_ID;
 			// TODO
 			biz.handtask.editInfo(newInfo, function (err, status){
 				if(err) return cb(err);
