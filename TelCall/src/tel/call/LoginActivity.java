@@ -15,7 +15,9 @@ import tel.call.util.HttpUtil.RequestMethod;
 import tel.call.util.UserInfo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -112,7 +114,28 @@ public class LoginActivity extends Activity {
 
 			// TODO
 			try {
+				UserInfo app = (UserInfo) getApplication();
+				// TODO
 				JSONObject _jo = new JSONObject((String) msg.obj);
+
+				// TODO
+				final int version = _jo.getInt("version");
+				if (app.getVersion() < version) {
+
+					new AlertDialog.Builder(LoginActivity.this)
+							.setMessage("有新版本更新，请点击确定下载")
+							.setPositiveButton("确定",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialoginterface,
+												int i) {
+
+											showToast("haha:" + version);
+										}
+									}).show();
+					return;
+				}
+
 				// TODO
 				if (!_jo.getBoolean("success")) {
 					showToast(_jo.getJSONArray("msg").getString(0));
@@ -122,7 +145,6 @@ public class LoginActivity extends Activity {
 				// TODO
 				JSONObject _jdata = _jo.getJSONObject("data");
 				// TODO
-				UserInfo app = (UserInfo) getApplication();
 				app.setApikey(_jdata.getString("APIKEY"));
 				app.setSeckey(_jdata.getString("SECKEY"));
 				app.setTs(_jdata.getLong("TS"));
