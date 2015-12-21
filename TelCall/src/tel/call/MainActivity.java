@@ -157,10 +157,7 @@ public class MainActivity extends ActionBarActivity {
 						_jdata.getString("TALK_TIMEOUT"));
 				_bundle.putString("TALK_TIME_LEN",
 						_jdata.getString("TALK_TIME_LEN"));
-				_bundle.putString("START_TIME", _jdata.getString("START_TIME"));
-				_bundle.putString("END_TIME", _jdata.getString("END_TIME"));
-				_bundle.putString("CREATE_TIME",
-						_jdata.getString("CREATE_TIME"));
+				_bundle.putString("SMS_INTRO", _jdata.getString("SMS_INTRO"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showToast(e.getMessage());

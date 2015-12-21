@@ -1,7 +1,6 @@
 package tel.call;
 
 import tel.call.broadcast.PhoneBroadcastReceiver;
-import tel.call.util.DateUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -27,8 +26,7 @@ public class DialActivity extends Activity {
 	private EditText text_task_talk_timeout;
 	private EditText text_task_intro;
 	private EditText text_task_talk_time_len;
-	private EditText text_task_start_time;
-	private EditText text_task_end_time;
+	private EditText text_sms_intro;
 
 	private Button btn_dial;
 
@@ -64,8 +62,7 @@ public class DialActivity extends Activity {
 		text_task_intro = (EditText) findViewById(R.id.text_task_intro);
 		text_task_talk_timeout = (EditText) findViewById(R.id.text_task_talk_timeout);
 		text_task_talk_time_len = (EditText) findViewById(R.id.text_task_talk_time_len);
-		text_task_start_time = (EditText) findViewById(R.id.text_task_start_time);
-		text_task_end_time = (EditText) findViewById(R.id.text_task_end_time);
+		text_sms_intro = (EditText) findViewById(R.id.text_sms_intro);
 		btn_dial = (Button) findViewById(R.id.btn_dial);
 		// TODO
 		Bundle _bundle = this.getIntent().getExtras();
@@ -76,19 +73,9 @@ public class DialActivity extends Activity {
 				+ _bundle.getString("TALK_TIMEOUT") + "（秒）过期");
 		text_task_talk_time_len.setText("通话时长：不能少于"
 				+ _bundle.getString("TALK_TIME_LEN") + "（秒）");
-		text_task_start_time.setText("开始时间："
-				+ DateUtil.getFormat3(_bundle.getString("START_TIME")));
-		text_task_end_time.setText("结束时间："
-				+ DateUtil.getFormat3(_bundle.getString("END_TIME")));
+		text_sms_intro.setText(_bundle.getString("SMS_INTRO"));
 
 		// TODO
-		text_task_name.setEnabled(false);
-		text_task_tel_num.setEnabled(false);
-		text_task_intro.setEnabled(false);
-		text_task_talk_timeout.setEnabled(false);
-		text_task_talk_time_len.setEnabled(false);
-		text_task_start_time.setEnabled(false);
-		text_task_end_time.setEnabled(false);
 	}
 
 	private void bind() {
