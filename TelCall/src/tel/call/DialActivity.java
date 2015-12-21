@@ -60,7 +60,7 @@ public class DialActivity extends Activity {
 				.setText("要抢就抢地铁微豪宅，【郑东商业中心-云朵公寓】4.8米层高31-59㎡复式精装公寓，省府旁地铁3、5号线上盖，保值升值赚不停87089999");
 		// TODO
 		Bundle _bundle = this.getIntent().getExtras();
-		text_tel.setText(_bundle.getString("HANDTASK_ID"));
+		text_tel.setText(_bundle.getString("id"));
 	}
 
 	private void bind() {

@@ -147,9 +147,7 @@ var exports = module.exports;
 			data = req._data,
 			user = req.flash('user')[0];
 		// TODO
-		data.USER_ID = user.id;
-		// TODO
-		biz.task.commit(data, function (err, msg, status){
+		biz.task.commit(user.id, data, function (err, msg, status){
 			if(err) return next(err);
 			// TODO
 			if(!!msg) result.msg = msg;

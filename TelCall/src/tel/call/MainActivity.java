@@ -146,7 +146,7 @@ public class MainActivity extends ActionBarActivity {
 
 				// TODO
 				_bundle = new Bundle();
-				_bundle.putString("HANDTASK_ID", _jdata.getString("id"));
+				_bundle.putString("id", _jdata.getString("id"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showToast(e.getMessage());
@@ -299,7 +299,7 @@ public class MainActivity extends ActionBarActivity {
 						.getItemAtPosition(position);
 				// TODO
 				try {
-					String TASK_ID = _jo.getString("id");
+					String TASK_ID = _jo.getString("TASK_ID");
 					int TASK_SUM = _jo.getInt("TASK_SUM");
 					int SUCCESS_TASK_SUM = _jo.getInt("SUCCESS_TASK_SUM");
 					int INIT_TASK_SUM = _jo.getInt("INIT_TASK_SUM");

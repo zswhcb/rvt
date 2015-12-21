@@ -23,16 +23,16 @@ var biz = {
  */
 (function (exports){
 	// TODO
-	exports.commit = function(newInfo, cb){
+	exports.commit = function(user_id, newInfo, cb){
 		// TODO 检查是否为数字
-		var TASK_TALK_TIME_LEN = util.checkNum(newInfo.TASK_TALK_TIME_LEN);
-		if(null === TASK_TALK_TIME_LEN || 0 === TASK_TALK_TIME_LEN) return cb(null, ['参数异常']);
+		var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
+		if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['参数异常']);
 		// TODO
-		biz.handtask.getById(newInfo.HANDTASK_ID, function (err, doc){
+		biz.handtask.getById(newInfo.id, function (err, doc){
 			if(err) return cb(err);
-			if(!doc || (1 === doc.STATUS) || (newInfo.USER_ID !== doc.USER_ID)) return cb(null, ['非法操作']);
+			if(!doc || (1 === doc.STATUS) || (user_id !== doc.USER_ID)) return cb(null, ['非法操作']);
 			// TODO 通话时长不达标
-			if(TASK_TALK_TIME_LEN < doc.TASK_TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TASK_TALK_TIME_LEN +' 秒']);
+			if(TALK_TIME_LEN < doc.TASK_TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TASK_TALK_TIME_LEN +' 秒']);
 			// TODO 当前时间
 			var curTime = new Date();
 			// TODO 超时截止时间
@@ -56,11 +56,11 @@ var biz = {
  */
 (function (exports){
 	var sql = 'SELECT'+
-				'  (SELECT b.id FROM p_handtask b WHERE STATUS=1 AND b.USER_ID=? AND b.TASK_ID IN (SELECT id FROM p_task WHERE PROJECT_ID=a.PROJECT_ID)) HANDTASK_ID,'+
-				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=a.id) INIT_TASK_SUM,'+
-				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id) SUCCESS_TASK_SUM,'+
-				'  a.*'+
-				' FROM p_task a WHERE a.id=? AND ? BETWEEN a.START_TIME AND a.END_TIME';
+				'  (SELECT a.id FROM p_handtask a WHERE a.STATUS=1 AND a.USER_ID=? AND a.TASK_ID IN (SELECT id FROM p_task WHERE PROJECT_ID=b.PROJECT_ID)) id,'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=b.id) INIT_TASK_SUM,'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=b.id) SUCCESS_TASK_SUM,'+
+				'  b.id TASK_ID, b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.CREATE_TIME TASK_CREATE_TIME, b.STATUS TASK_STATUS'+
+				' FROM p_task b WHERE b.id=? AND ? BETWEEN b.START_TIME AND b.END_TIME';
 	// TODO
 	exports.getTaskStatus = function(user_id, task_id, curTime, cb){
 		curTime = curTime || new Date();
@@ -110,7 +110,7 @@ var biz = {
 					if(err) return cb(err);
 					if(!doc) return cb(null, ['此任务不存在，请重新申请']);
 					// TODO
-					if(!!doc.HANDTASK_ID) return cb(null, ['此任务之前已经申请过']);
+					if(!!doc.id) return cb(null, ['此任务之前已经申请过']);
 					// TODO 检测任务状态
 					if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['下手晚了']);
 					// TODO
@@ -119,7 +119,7 @@ var biz = {
 					biz.handtask.saveNew({ TASK_ID: task_id, USER_ID: user_id }, function (err, doc){
 						if(err) return cb(err);
 						// TODO 返回抢任务的ID
-						newTask.HANDTASK_ID = doc.id;
+						newTask.id = doc.id;
 						cb(null, null, newTask);
 					});
 				});
@@ -135,12 +135,12 @@ var biz = {
  * @return
  */
 (function (exports){
-	var sql = 'SELECT b.* FROM (SELECT'+
-				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=a.id) INIT_TASK_SUM,'+
-				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=a.id) SUCCESS_TASK_SUM,'+
-				'  a.*'+
-				' FROM p_task a WHERE a.STATUS=1 AND ? BETWEEN a.START_TIME AND a.END_TIME) b'+
-				' WHERE b.TASK_SUM>b.SUCCESS_TASK_SUM';
+	var sql = 'SELECT a.* FROM (SELECT'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=b.id) INIT_TASK_SUM,'+
+				'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=b.id) SUCCESS_TASK_SUM,'+
+				'  b.id TASK_ID, b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.CREATE_TIME TASK_CREATE_TIME, b.STATUS TASK_STATUS'+
+				' FROM p_task b WHERE b.STATUS=1 AND ? BETWEEN b.START_TIME AND b.END_TIME) a'+
+				' WHERE a.TASK_SUM>a.SUCCESS_TASK_SUM';
 	// TODO
 	exports.getCurrentTasks = function(user_id, cb){
 		user_id = user_id || '5666d061cca60fe0113d1391';
