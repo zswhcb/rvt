@@ -90,7 +90,7 @@ var exports = module.exports;
 (function (exports){
 
 	function login(req, res, next){
-		var result = { success: false },
+		var result = { success: false, version: 2 },
 			data = req._data;
 		// TODO
 		biz.user.login(data, function (err, msg, doc){
