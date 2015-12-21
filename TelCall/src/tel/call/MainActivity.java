@@ -147,6 +147,28 @@ public class MainActivity extends ActionBarActivity {
 				// TODO
 				_bundle = new Bundle();
 				_bundle.putString("id", _jdata.getString("id"));
+				// TODO
+				_bundle.putString("TASK_ID", _jdata.getString("TASK_ID"));
+				_bundle.putString("TASK_TEL_NUM",
+						_jdata.getString("TASK_TEL_NUM"));
+				_bundle.putString("TASK_NAME", _jdata.getString("TASK_NAME"));
+				_bundle.putString("TASK_INTRO", _jdata.getString("TASK_INTRO"));
+				_bundle.putString("TASK_SUM", _jdata.getString("TASK_SUM"));
+				// TODO
+				_bundle.putString("PROJECT_ID", _jdata.getString("PROJECT_ID"));
+				_bundle.putString("TASK_TALK_TIMEOUT",
+						_jdata.getString("TASK_TALK_TIMEOUT"));
+				_bundle.putString("TASK_TALK_TIME_LEN",
+						_jdata.getString("TASK_TALK_TIME_LEN"));
+				_bundle.putString("TASK_START_TIME",
+						_jdata.getString("TASK_START_TIME"));
+				_bundle.putString("TASK_END_TIME",
+						_jdata.getString("TASK_END_TIME"));
+				// TODO
+				_bundle.putString("TASK_CREATE_TIME",
+						_jdata.getString("TASK_CREATE_TIME"));
+				_bundle.putString("TASK_STATUS",
+						_jdata.getString("TASK_STATUS"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showToast(e.getMessage());

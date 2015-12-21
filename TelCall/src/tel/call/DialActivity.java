@@ -21,8 +21,14 @@ public class DialActivity extends Activity {
 
 	private final static String TAG = DialActivity.class.getSimpleName();
 
-	private EditText text_tel;
-	private EditText text_hint;
+	private EditText text_task_name;
+	private EditText text_task_tel_num;
+	private EditText text_task_talk_timeout;
+	private EditText text_task_intro;
+	private EditText text_task_talk_time_len;
+	private EditText text_task_start_time;
+	private EditText text_task_end_time;
+
 	private Button btn_dial;
 
 	private PhoneBroadcastReceiver receiver;
@@ -51,16 +57,37 @@ public class DialActivity extends Activity {
 	}
 
 	private void findView() {
-		text_tel = (EditText) findViewById(R.id.text_tel);
-		text_hint = (EditText) findViewById(R.id.text_hint);
+		// TODO
+		text_task_name = (EditText) findViewById(R.id.text_task_name);
+		text_task_tel_num = (EditText) findViewById(R.id.text_task_tel_num);
+		text_task_intro = (EditText) findViewById(R.id.text_task_intro);
+		text_task_talk_timeout = (EditText) findViewById(R.id.text_task_talk_timeout);
+		text_task_talk_time_len = (EditText) findViewById(R.id.text_task_talk_time_len);
+		text_task_start_time = (EditText) findViewById(R.id.text_task_start_time);
+		text_task_end_time = (EditText) findViewById(R.id.text_task_end_time);
 		btn_dial = (Button) findViewById(R.id.btn_dial);
 		// TODO
-		text_tel.setText("13837186852");
-		text_hint
-				.setText("要抢就抢地铁微豪宅，【郑东商业中心-云朵公寓】4.8米层高31-59㎡复式精装公寓，省府旁地铁3、5号线上盖，保值升值赚不停87089999");
-		// TODO
 		Bundle _bundle = this.getIntent().getExtras();
-		text_tel.setText(_bundle.getString("id"));
+		text_task_name.setText("任务名称：" + _bundle.getString("TASK_NAME"));
+		text_task_tel_num.setText("电话号码：" + _bundle.getString("TASK_TEL_NUM"));
+		text_task_intro.setText(_bundle.getString("TASK_INTRO"));
+		text_task_talk_timeout.setText("通话超时："
+				+ _bundle.getString("TASK_TALK_TIMEOUT"));
+		text_task_talk_time_len.setText("通话时长："
+				+ _bundle.getString("TASK_TALK_TIME_LEN"));
+		text_task_start_time.setText("开始时间："
+				+ _bundle.getString("TASK_START_TIME"));
+		text_task_end_time
+				.setText("结束时间：" + _bundle.getString("TASK_END_TIME"));
+
+		// TODO
+		text_task_name.setEnabled(false);
+		text_task_tel_num.setEnabled(false);
+		text_task_intro.setEnabled(false);
+		text_task_talk_timeout.setEnabled(false);
+		text_task_talk_time_len.setEnabled(false);
+		text_task_start_time.setEnabled(false);
+		text_task_end_time.setEnabled(false);
 	}
 
 	private void bind() {
@@ -68,7 +95,7 @@ public class DialActivity extends Activity {
 		btn_dial.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				String tel_num = text_tel.getText().toString();
+				String tel_num = text_task_tel_num.getText().toString();
 				// 用intent启动拨打电话
 				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 						+ tel_num));
