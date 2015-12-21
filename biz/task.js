@@ -110,7 +110,7 @@ exports.apply = function(user_id, task_id, cb){
 		var sql = 'SELECT'+
 					'  (SELECT a.id FROM p_handtask a WHERE a.STATUS=1 AND a.USER_ID=? AND a.TASK_ID IN (SELECT id FROM p_task WHERE PROJECT_ID=c.PROJECT_ID)) HANDTASK_ID,'+
 					'  c.*'+
-					' FROM ('+ sql_1 +') c WHERE c.TASK_ID=?';
+					' FROM ('+ sql_1 +') c WHERE c.id=?';
 		// TODO
 		mysql.query(sql, [user_id, new Date(), task_id], function (err, docs){
 			if(err) return cb(err);

@@ -146,29 +146,21 @@ public class MainActivity extends ActionBarActivity {
 
 				// TODO
 				_bundle = new Bundle();
-				_bundle.putString("id", _jdata.getString("id"));
-				// TODO
-				_bundle.putString("TASK_ID", _jdata.getString("TASK_ID"));
-				_bundle.putString("TASK_TEL_NUM",
-						_jdata.getString("TASK_TEL_NUM"));
+				_bundle.putString("HANDTASK_ID",
+						_jdata.getString("HANDTASK_ID"));
+				_bundle.putString("TEL_NUM", _jdata.getString("TEL_NUM"));
 				_bundle.putString("TASK_NAME", _jdata.getString("TASK_NAME"));
 				_bundle.putString("TASK_INTRO", _jdata.getString("TASK_INTRO"));
 				_bundle.putString("TASK_SUM", _jdata.getString("TASK_SUM"));
 				// TODO
-				_bundle.putString("PROJECT_ID", _jdata.getString("PROJECT_ID"));
-				_bundle.putString("TASK_TALK_TIMEOUT",
-						_jdata.getString("TASK_TALK_TIMEOUT"));
-				_bundle.putString("TASK_TALK_TIME_LEN",
-						_jdata.getString("TASK_TALK_TIME_LEN"));
-				_bundle.putString("TASK_START_TIME",
-						_jdata.getString("TASK_START_TIME"));
-				_bundle.putString("TASK_END_TIME",
-						_jdata.getString("TASK_END_TIME"));
-				// TODO
-				_bundle.putString("TASK_CREATE_TIME",
-						_jdata.getString("TASK_CREATE_TIME"));
-				_bundle.putString("TASK_STATUS",
-						_jdata.getString("TASK_STATUS"));
+				_bundle.putString("TALK_TIMEOUT",
+						_jdata.getString("TALK_TIMEOUT"));
+				_bundle.putString("TALK_TIME_LEN",
+						_jdata.getString("TALK_TIME_LEN"));
+				_bundle.putString("START_TIME", _jdata.getString("START_TIME"));
+				_bundle.putString("END_TIME", _jdata.getString("END_TIME"));
+				_bundle.putString("CREATE_TIME",
+						_jdata.getString("CREATE_TIME"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showToast(e.getMessage());
@@ -321,7 +313,7 @@ public class MainActivity extends ActionBarActivity {
 						.getItemAtPosition(position);
 				// TODO
 				try {
-					String TASK_ID = _jo.getString("TASK_ID");
+					String TASK_ID = _jo.getString("id");
 					// TODO
 					applyTask(TASK_ID);
 				} catch (JSONException e) {
