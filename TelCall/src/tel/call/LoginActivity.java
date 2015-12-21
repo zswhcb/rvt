@@ -120,12 +120,12 @@ public class LoginActivity extends Activity {
 					return;
 				}
 				// TODO
-				JSONObject _data = _jo.getJSONObject("data");
+				JSONObject _jdata = _jo.getJSONObject("data");
 				// TODO
 				UserInfo app = (UserInfo) getApplication();
-				app.setApikey(_data.getString("APIKEY"));
-				app.setSeckey(_data.getString("SECKEY"));
-				app.setTs(_data.getLong("TS"));
+				app.setApikey(_jdata.getString("APIKEY"));
+				app.setSeckey(_jdata.getString("SECKEY"));
+				app.setTs(_jdata.getLong("TS"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showToast(e.getMessage());

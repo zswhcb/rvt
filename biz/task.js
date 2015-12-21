@@ -28,19 +28,18 @@ var biz = {
 		var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
 		if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['参数异常']);
 		// TODO
-		biz.handtask.getById(newInfo.HANDTASK_ID, function (err, doc){
+		biz.handtask.getById(newInfo.id, function (err, doc){
 			if(err) return cb(err);
-			if(!doc || (1 === doc.STATUS) || (user_id !== doc.USER_ID)) return cb(null, ['非法操作']);
+			if(!doc || (1 === doc.HANDTASK_STATUS) || (user_id !== doc.HANDTASK_USER_ID)) return cb(null, ['非法操作']);
 			// TODO 通话时长不达标
-			if(TALK_TIME_LEN < doc.TASK_TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TASK_TALK_TIME_LEN +' 秒']);
+			if(TALK_TIME_LEN < doc.TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_LEN +' 秒']);
 			// TODO 当前时间
 			var curTime = new Date();
 			// TODO 超时截止时间
-			var timeout = new Date(doc.CREATE_TIME.getTime() + (doc.TASK_TALK_TIMEOUT * 1000));
+			var timeout = new Date(doc.HANDTASK_CREATE_TIME.getTime() + (doc.TALK_TIMEOUT * 1000));
 			// TODO
 			newInfo.STATUS = timeout.getTime() > curTime.getTime() ? 1 : 2;
 			newInfo.TALK_TIME_LEN = TALK_TIME_LEN;
-			newInfo.id = newInfo.HANDTASK_ID;
 			// TODO
 			biz.handtask.editInfo(newInfo, function (err, status){
 				if(err) return cb(err);
@@ -98,7 +97,7 @@ exports.apply = function(user_id, task_id, cb){
 	var sql_1 = 'SELECT'+
 					'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=b.id) INIT_TASK_SUM,'+
 					'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=b.id) SUCCESS_TASK_SUM,'+
-					' b.id TASK_ID, b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.CREATE_TIME TASK_CREATE_TIME, b.STATUS TASK_STATUS'+
+					'  b.*'+
 					' FROM p_task b WHERE b.STATUS=1 AND ? BETWEEN b.START_TIME AND b.END_TIME';
 
 	/**

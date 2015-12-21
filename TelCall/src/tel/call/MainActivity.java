@@ -322,15 +322,6 @@ public class MainActivity extends ActionBarActivity {
 				// TODO
 				try {
 					String TASK_ID = _jo.getString("TASK_ID");
-					int TASK_SUM = _jo.getInt("TASK_SUM");
-					int SUCCESS_TASK_SUM = _jo.getInt("SUCCESS_TASK_SUM");
-					int INIT_TASK_SUM = _jo.getInt("INIT_TASK_SUM");
-					// TODO
-					if ((INIT_TASK_SUM + SUCCESS_TASK_SUM) >= TASK_SUM) {
-						showToast("下手晚了");
-						grid_items.setEnabled(true);
-						return;
-					}
 					// TODO
 					applyTask(TASK_ID);
 				} catch (JSONException e) {
