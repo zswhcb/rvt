@@ -58,4 +58,16 @@ public class DateUtil {
 			return "";
 		}
 	}
+
+	public static String getFormat4(String date, int second) {
+		sdf_1.setTimeZone(TimeZone.getTimeZone("UTC"));
+		// TODO
+		try {
+			Date _date = sdf_1.parse(date);
+			Date d = new Date(_date.getTime() + second * 1000);
+			return sdf_4.format(d);
+		} catch (ParseException e) {
+			return "";
+		}
+	}
 }

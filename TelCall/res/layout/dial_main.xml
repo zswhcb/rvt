@@ -36,7 +36,8 @@
             android:enabled="false"
             android:hint="@string/dial_main_placeholder_tel"
             android:imeOptions="actionNext"
-            android:inputType="text" >
+            android:inputType="text"
+            android:textColor="#ff8c00" >
         </EditText>
 
         <EditText
@@ -49,7 +50,8 @@
             android:enabled="false"
             android:hint="通话超时（秒）"
             android:imeOptions="actionNext"
-            android:inputType="text" >
+            android:inputType="text"
+            android:textColor="#ff8c00" >
         </EditText>
 
         <EditText
@@ -62,7 +64,8 @@
             android:enabled="false"
             android:hint="通话时长（秒）"
             android:imeOptions="actionNext"
-            android:inputType="text" >
+            android:inputType="text"
+            android:textColor="#ff8c00" >
         </EditText>
 
         <LinearLayout
@@ -81,7 +84,8 @@
                 android:hint="短信信息"
                 android:imeOptions="actionNext"
                 android:inputType="textMultiLine"
-                android:scrollHorizontally="true" />
+                android:scrollHorizontally="true"
+                android:textColor="#ff8c00" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +104,8 @@
                 android:hint="@string/dial_main_placeholder_hint"
                 android:imeOptions="actionNext"
                 android:inputType="textMultiLine"
-                android:scrollHorizontally="true" />
+                android:scrollHorizontally="true"
+                android:textColor="#ff8c00" />
         </LinearLayout>
 
         <Button

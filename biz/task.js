@@ -80,6 +80,7 @@ exports.apply = function(user_id, task_id, cb){
 					if(err) return cb(err);
 					// TODO 返回抢任务的ID
 					newTask.HANDTASK_ID = doc.id;
+					newInfo.HANDTASK_CREATE_TIME = doc.CREATE_TIME;
 					cb(null, null, newTask);
 				});
 			});

@@ -151,13 +151,14 @@ public class MainActivity extends ActionBarActivity {
 				_bundle.putString("TEL_NUM", _jdata.getString("TEL_NUM"));
 				_bundle.putString("TASK_NAME", _jdata.getString("TASK_NAME"));
 				_bundle.putString("TASK_INTRO", _jdata.getString("TASK_INTRO"));
-				_bundle.putString("TASK_SUM", _jdata.getString("TASK_SUM"));
 				// TODO
 				_bundle.putString("TALK_TIMEOUT",
 						_jdata.getString("TALK_TIMEOUT"));
 				_bundle.putString("TALK_TIME_LEN",
 						_jdata.getString("TALK_TIME_LEN"));
 				_bundle.putString("SMS_INTRO", _jdata.getString("SMS_INTRO"));
+				_bundle.putString("HANDTASK_CREATE_TIME",
+						_jdata.getString("HANDTASK_CREATE_TIME"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showToast(e.getMessage());

@@ -1,6 +1,7 @@
 package tel.call;
 
 import tel.call.broadcast.PhoneBroadcastReceiver;
+import tel.call.util.DateUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -69,8 +70,10 @@ public class DialActivity extends Activity {
 		text_task_name.setText("任务名称：" + _bundle.getString("TASK_NAME"));
 		text_task_tel_num.setText("电话号码：" + _bundle.getString("TEL_NUM"));
 		text_task_intro.setText(_bundle.getString("TASK_INTRO"));
-		text_task_talk_timeout.setText("通话超时：还剩"
-				+ _bundle.getString("TALK_TIMEOUT") + "（秒）过期");
+		text_task_talk_timeout.setText("任务过期："
+				+ DateUtil.getFormat4(
+						_bundle.getString("HANDTASK_CREATE_TIME"),
+						Integer.valueOf(_bundle.getString("TALK_TIMEOUT"))));
 		text_task_talk_time_len.setText("通话时长：不能少于"
 				+ _bundle.getString("TALK_TIME_LEN") + "（秒）");
 		text_sms_intro.setText(_bundle.getString("SMS_INTRO"));

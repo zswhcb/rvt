@@ -13,7 +13,7 @@ var exports = module.exports;
 
 (function (exports){
 	var sql_1 = 'SELECT'+
-					'  a.id HANDTASK_ID, a.TEL_NUM HANDTASK_TEL_NUM, a.UPLOAD_TIME HANDTASK_UPLOAD_TIME, a.TALK_TIME HANDTASK_TALK_TIME, a.TALK_TIME_LEN HANDTASK_TALK_TIME_LEN, a.USER_ID HANDTASK_USER_ID, a.CREATE_TIME HANDTASK_CREATE_TIME, a.STATUS HANDTASK_STATUS,'+
+					'  a.id HANDTASK_ID, a.USER_ID HANDTASK_USER_ID, a.CREATE_TIME HANDTASK_CREATE_TIME, a.STATUS HANDTASK_STATUS,'+
 					'  b.*'+
 					' FROM p_handtask a LEFT JOIN p_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL';
 	/**
@@ -36,9 +36,9 @@ var exports = module.exports;
 	 * @return
 	 */
 	exports.getMyHandTask = function(user_id, cb){
-		var sql = sql_1 +' AND a.STATUS=? AND a.USER_ID=?';
+		var sql = sql_1 +' AND a.STATUS=0 AND a.USER_ID=?';
 		// TODO
-		mysql.query(sql, [0, user_id], function (err, docs){
+		mysql.query(sql, [user_id], function (err, docs){
 			if(err) return cb(err);
 			if(1 < docs.length) return cb(null, ['数据异常，请联系管理员']);
 			cb(null, null, mysql.checkOnly(docs) ? docs[0] : null);
