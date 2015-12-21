@@ -11,39 +11,34 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
-/**
- *
- * @params
- * @return
- */
 (function (exports){
-	var sql = 'SELECT'+
-				'  b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.CREATE_TIME TASK_CREATE_TIME, b.STATUS TASK_STATUS,'+
-				'  a.*'+
-				' FROM (SELECT * FROM p_handtask WHERE id=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL';
-	// TODO
+	var sql_1 = 'SELECT'+
+					'  b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.CREATE_TIME TASK_CREATE_TIME, b.STATUS TASK_STATUS,'+
+					'  a.*'+
+					' FROM p_handtask a LEFT JOIN p_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL';
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
 	exports.getById = function(id, cb){
+		var sql = sql_1 +' AND a.id=?';
 		mysql.query(sql, [id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
 		});
 	};
-})(exports);
 
-/**
- * 获取我未过期（未失效）的任务
- *
- * @params
- * @return
- */
-(function (exports){
-	var sql = 'SELECT'+
-				'  b.TEL_NUM TASK_TEL_NUM, b.TASK_NAME, b.TASK_INTRO, b.TASK_SUM, b.PROJECT_ID, b.TALK_TIMEOUT TASK_TALK_TIMEOUT, b.TALK_TIME_LEN TASK_TALK_TIME_LEN, b.START_TIME TASK_START_TIME, b.END_TIME TASK_END_TIME, b.CREATE_TIME TASK_CREATE_TIME, b.STATUS TASK_STATUS,'+
-				'  a.*'+
-				' FROM (SELECT * FROM p_handtask WHERE STATUS=? AND USER_ID=?) a LEFT JOIN p_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL';
-	// TODO
+	/**
+	 * 获取我未过期（未失效）的任务
+	 *
+	 * @params
+	 * @return
+	 */
 	exports.getMyHandTask = function(status, user_id, cb){
 		status = status || 0;
+		// TODO
+		var sql = sql_1 +' AND a.STATUS=? AND a.USER_ID=?';
 		// TODO
 		mysql.query(sql, [status, user_id], function (err, docs){
 			if(err) return cb(err);
@@ -62,7 +57,7 @@ var exports = module.exports;
 (function (exports){
 	var sql = 'UPDATE p_handtask SET STATUS=3'+ // 状态：3，由0变为3，任务超时（失效）
 				' WHERE id in (SELECT a.id FROM'+
-					' (SELECT * FROM p_handtask WHERE STATUS=0) a'+
+					' (SELECT id, TASK_ID, CREATE_TIME FROM p_handtask WHERE STATUS=0) a'+
 					' LEFT JOIN p_task b ON (a.TASK_ID=b.id)'+
 					' WHERE b.id IS NOT NULL AND DATE_ADD(a.CREATE_TIME, INTERVAL (b.TALK_TIMEOUT - 10) second)<?)';
 	// TODO
