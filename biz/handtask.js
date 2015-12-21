@@ -35,12 +35,10 @@ var exports = module.exports;
 	 * @params
 	 * @return
 	 */
-	exports.getMyHandTask = function(status, user_id, cb){
-		status = status || 0;
-		// TODO
+	exports.getMyHandTask = function(user_id, cb){
 		var sql = sql_1 +' AND a.STATUS=? AND a.USER_ID=?';
 		// TODO
-		mysql.query(sql, [status, user_id], function (err, docs){
+		mysql.query(sql, [0, user_id], function (err, docs){
 			if(err) return cb(err);
 			if(1 < docs.length) return cb(null, ['数据异常，请联系管理员']);
 			cb(null, null, mysql.checkOnly(docs) ? docs[0] : null);
@@ -61,10 +59,9 @@ var exports = module.exports;
 					' LEFT JOIN p_task b ON (a.TASK_ID=b.id)'+
 					' WHERE b.id IS NOT NULL AND DATE_ADD(a.CREATE_TIME, INTERVAL (b.TALK_TIMEOUT - 10) second)<?)';
 	// TODO
-	exports.clearTimeout = function(curTime, cb){
-		curTime = curTime || new Date();
+	exports.clearTimeout = function(cb){
 		// TODO
-		mysql.query(sql, [curTime], function (err, status){
+		mysql.query(sql, [new Date()], function (err, status){
 			if(err) return cb(err);
 			cb(null, status);
 		});
