@@ -123,9 +123,8 @@ public class LoginActivity extends Activity {
 				// TODO
 				JSONObject _jo = new JSONObject((String) msg.obj);
 
-				// TODO
-				final int version = _jo.getInt("ver");
-				if (AppUtil.getVerCode(LoginActivity.this) < version) {
+				// TODO 版本检测
+				if (AppUtil.getVerCode(LoginActivity.this) < _jo.getInt("ver")) {
 					alertDialog.setPositiveButton("确定",
 							new DialogInterface.OnClickListener() {
 								public void onClick(

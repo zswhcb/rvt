@@ -126,7 +126,7 @@ public class MainActivity extends ActionBarActivity {
 			// TODO
 			if (null == msg.obj) {
 				showToast(getString(msg.arg1));
-				grid_items.setEnabled(true);
+				setGridStatus(true);
 				return;
 			}
 
@@ -161,9 +161,8 @@ public class MainActivity extends ActionBarActivity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showToast(e.getMessage());
+				setGridStatus(true);
 				return;
-			} finally {
-				grid_items.setEnabled(true);
 			}
 			// TODO
 			Intent intent = new Intent(MainActivity.this, DialActivity.class);
@@ -175,7 +174,7 @@ public class MainActivity extends ActionBarActivity {
 			// TODO
 			if (null == msg.obj) {
 				showToast(getString(msg.arg1));
-				setBtnLoginStatus(true);
+				setBtnSyncStatus(true);
 				return;
 			}
 			// TODO
@@ -184,7 +183,6 @@ public class MainActivity extends ActionBarActivity {
 				// TODO
 				if (!_jo.getBoolean("success")) {
 					showToast(_jo.getJSONArray("msg").getString(0));
-					setBtnLoginStatus(true);
 					return;
 				}
 				// TODO
@@ -198,7 +196,7 @@ public class MainActivity extends ActionBarActivity {
 				e.printStackTrace();
 				showToast(e.getMessage());
 			} finally {
-				setBtnLoginStatus(true);
+				setBtnSyncStatus(true);
 			}
 		}
 	};
@@ -227,7 +225,7 @@ public class MainActivity extends ActionBarActivity {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			showToast(e.getMessage());
-			setBtnLoginStatus(true);
+			setBtnSyncStatus(true);
 			return;
 		}
 
@@ -277,7 +275,7 @@ public class MainActivity extends ActionBarActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 			showToast(e.getMessage());
-			grid_items.setEnabled(true);
+			setGridStatus(true);
 			return;
 		}
 
@@ -289,11 +287,18 @@ public class MainActivity extends ActionBarActivity {
 		_t.start();
 	}
 
-	private void setBtnLoginStatus(boolean status) {
+	private void setBtnSyncStatus(boolean status) {
 		btn_sync.setEnabled(status);
 		grid_items.setEnabled(status);
 		btn_sync.setText(status ? getString(R.string.fragment_main_btn_sync)
 				: "正在刷新");
+	}
+
+	private void setGridStatus(boolean status) {
+		btn_sync.setEnabled(status);
+		grid_items.setEnabled(status);
+		btn_sync.setText(status ? getString(R.string.fragment_main_btn_sync)
+				: "正在申请");
 	}
 
 	private void bind() {
@@ -301,7 +306,7 @@ public class MainActivity extends ActionBarActivity {
 		btn_sync.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				setBtnLoginStatus(false);
+				setBtnSyncStatus(false);
 				refreshRemoteData();
 			}
 		});
@@ -311,7 +316,7 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int position,
 					long id) {
-				grid_items.setEnabled(false);
+				setGridStatus(false);
 				// TODO
 				JSONObject _jo = (JSONObject) grid_items
 						.getItemAtPosition(position);
@@ -323,7 +328,7 @@ public class MainActivity extends ActionBarActivity {
 				} catch (JSONException e) {
 					e.printStackTrace();
 					showToast(e.getMessage());
-					grid_items.setEnabled(true);
+					setGridStatus(true);
 				}
 			}
 		});
