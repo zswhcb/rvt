@@ -53,6 +53,8 @@ public class LoginActivity extends Activity {
 
 	private Toast toast;
 
+	private AlertDialog.Builder alertDialog;
+
 	private void showToast(String msg) {
 		if (null == toast)
 			toast = Toast.makeText(getApplicationContext(), msg,
@@ -85,6 +87,9 @@ public class LoginActivity extends Activity {
 		btn_login = (Button) findViewById(R.id.btn_login);
 		// TODO
 		text_username.setText(getCurrentMobileNum().replaceAll("\\+86", ""));
+
+		alertDialog = new AlertDialog.Builder(LoginActivity.this);
+		alertDialog.setMessage("有新版本更新，请点击确定下载");
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -121,18 +126,17 @@ public class LoginActivity extends Activity {
 				// TODO
 				final int version = _jo.getInt("ver");
 				if (AppUtil.getVerCode(LoginActivity.this) < version) {
-					new AlertDialog.Builder(LoginActivity.this)
-							.setMessage("有新版本更新，请点击确定下载")
-							.setPositiveButton("确定",
-									new DialogInterface.OnClickListener() {
-										public void onClick(
-												DialogInterface dialoginterface,
-												int i) {
-											showToast("haha:"
-													+ AppUtil
-															.getVerCode(LoginActivity.this));
-										}
-									}).show();
+					alertDialog.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										DialogInterface dialoginterface, int i) {
+									showToast("haha:"
+											+ AppUtil
+													.getVerCode(LoginActivity.this));
+								}
+							});
+					alertDialog.show();
+					setBtnLoginStatus(true);
 					return;
 				}
 
