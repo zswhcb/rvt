@@ -76,7 +76,7 @@ var exports = module.exports;
 			if(!rest.validate(query, doc.SECKEY)) return res.send(result);
 			// TODO
 			req.flash('user', doc);
-			return next();
+			next();
 		});
 	};
 })(exports);
@@ -90,7 +90,7 @@ var exports = module.exports;
 (function (exports){
 
 	function login(req, res, next){
-		var result = { success: false, version: 2 },
+		var result = { success: false, ver: conf.app.ver },
 			data = req._data;
 		// TODO
 		biz.user.login(data, function (err, msg, doc){
@@ -111,7 +111,7 @@ var exports = module.exports;
 	}
 
 	function getCurrentTasks(req, res, next){
-		var result = { success: false },
+		var result = { success: false, ver: conf.app.ver },
 			user = req.flash('user')[0];
 		// TODO
 		biz.task.getCurrentTasks(function (err, docs){
@@ -124,7 +124,7 @@ var exports = module.exports;
 	}
 
 	function applyTask(req, res, next){
-		var result = { success: false },
+		var result = { success: false, ver: conf.app.ver },
 			data = req._data,
 			user = req.flash('user')[0];
 		// TODO
@@ -143,7 +143,7 @@ var exports = module.exports;
 	}
 
 	function commitTask(req, res, next){
-		var result = { success: false },
+		var result = { success: false, ver: conf.app.ver },
 			data = req._data,
 			user = req.flash('user')[0];
 		// TODO
@@ -164,7 +164,7 @@ var exports = module.exports;
 			case 'getCurrentTasks': getCurrentTasks(req, res, next); break;
 			case 'applyTask': applyTask(req, res, next); break;
 			case 'commitTask': commitTask(req, res, next); break;
-			default: res.send({ success: false }); break;
+			default: res.send({ success: false, ver: conf.app.ver }); break;
 		}
 	};
 })(exports);

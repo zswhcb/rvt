@@ -35,5 +35,7 @@ module.exports = {
 			user: 'firefrog@163.com',
 			pass: ''
 		}
+	}, app: {
+		ver: 2
 	}
 };

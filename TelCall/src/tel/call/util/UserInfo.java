@@ -15,10 +15,6 @@ public class UserInfo extends Application {
 	private String seckey;
 	private long ts;
 
-	public int getVersion() {
-		return 1;
-	}
-
 	public long getTs() {
 		return ts;
 	}

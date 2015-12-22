@@ -64,7 +64,6 @@ public class MainActivity extends ActionBarActivity {
 					Toast.LENGTH_SHORT);
 		else
 			toast.setText(msg);
-
 		toast.show();
 	}
 

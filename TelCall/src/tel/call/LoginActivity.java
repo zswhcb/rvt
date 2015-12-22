@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tel.call.action.ServiceAction;
+import tel.call.util.AppUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
 import tel.call.util.UserInfo;
@@ -114,14 +115,12 @@ public class LoginActivity extends Activity {
 
 			// TODO
 			try {
-				UserInfo app = (UserInfo) getApplication();
 				// TODO
 				JSONObject _jo = new JSONObject((String) msg.obj);
 
 				// TODO
-				final int version = _jo.getInt("version");
-				if (app.getVersion() < version) {
-
+				final int version = _jo.getInt("ver");
+				if (AppUtil.getVerCode(LoginActivity.this) < version) {
 					new AlertDialog.Builder(LoginActivity.this)
 							.setMessage("有新版本更新，请点击确定下载")
 							.setPositiveButton("确定",
@@ -129,8 +128,9 @@ public class LoginActivity extends Activity {
 										public void onClick(
 												DialogInterface dialoginterface,
 												int i) {
-
-											showToast("haha:" + version);
+											showToast("haha:"
+													+ AppUtil
+															.getVerCode(LoginActivity.this));
 										}
 									}).show();
 					return;
@@ -145,6 +145,7 @@ public class LoginActivity extends Activity {
 				// TODO
 				JSONObject _jdata = _jo.getJSONObject("data");
 				// TODO
+				UserInfo app = (UserInfo) getApplication();
 				app.setApikey(_jdata.getString("APIKEY"));
 				app.setSeckey(_jdata.getString("SECKEY"));
 				app.setTs(_jdata.getLong("TS"));
