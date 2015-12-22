@@ -130,9 +130,11 @@ public class LoginActivity extends Activity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(
 										DialogInterface dialoginterface, int i) {
-									showToast("haha:"
-											+ AppUtil
-													.getVerCode(LoginActivity.this));
+									Uri uri = Uri
+											.parse(getString(R.string.AppUrl));
+									Intent intent = new Intent(
+											Intent.ACTION_VIEW, uri);
+									startActivity(intent);
 								}
 							});
 					alertDialog.show();

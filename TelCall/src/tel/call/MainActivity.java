@@ -175,7 +175,7 @@ public class MainActivity extends ActionBarActivity {
 			// TODO
 			if (null == msg.obj) {
 				showToast(getString(msg.arg1));
-				btn_sync.setEnabled(true);
+				setBtnLoginStatus(true);
 				return;
 			}
 			// TODO
@@ -184,7 +184,7 @@ public class MainActivity extends ActionBarActivity {
 				// TODO
 				if (!_jo.getBoolean("success")) {
 					showToast(_jo.getJSONArray("msg").getString(0));
-					btn_sync.setEnabled(true);
+					setBtnLoginStatus(true);
 					return;
 				}
 				// TODO
@@ -198,7 +198,7 @@ public class MainActivity extends ActionBarActivity {
 				e.printStackTrace();
 				showToast(e.getMessage());
 			} finally {
-				btn_sync.setEnabled(true);
+				setBtnLoginStatus(true);
 			}
 		}
 	};
@@ -227,7 +227,7 @@ public class MainActivity extends ActionBarActivity {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			showToast(e.getMessage());
-			btn_sync.setEnabled(true);
+			setBtnLoginStatus(true);
 			return;
 		}
 
@@ -289,12 +289,19 @@ public class MainActivity extends ActionBarActivity {
 		_t.start();
 	}
 
+	private void setBtnLoginStatus(boolean status) {
+		btn_sync.setEnabled(status);
+		grid_items.setEnabled(status);
+		btn_sync.setText(status ? getString(R.string.fragment_main_btn_sync)
+				: "正在刷新");
+	}
+
 	private void bind() {
 		// click
 		btn_sync.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				btn_sync.setEnabled(false);
+				setBtnLoginStatus(false);
 				refreshRemoteData();
 			}
 		});

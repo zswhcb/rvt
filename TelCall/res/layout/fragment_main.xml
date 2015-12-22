@@ -30,8 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fragment_main_btn_sync"
-            android:textColor="#00f" />
+            android:text="@string/fragment_main_btn_sync" />
     </LinearLayout>
 
     <LinearLayout

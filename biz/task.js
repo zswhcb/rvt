@@ -121,7 +121,7 @@ exports.apply = function(user_id, task_id, cb){
 
 	// TODO
 	exports.getCurrentTasks = function(cb){
-		var sql = 'SELECT c.* FROM ('+ sql_1 +') c WHERE c.TASK_SUM>c.SUCCESS_TASK_SUM';
+		var sql = 'SELECT c.* FROM ('+ sql_1 +') c WHERE c.TASK_SUM>(c.INIT_TASK_SUM+c.SUCCESS_TASK_SUM)';
 		// TODO
 		mysql.query(sql, [new Date()], function (err, docs){
 			if(err) return cb(err);
