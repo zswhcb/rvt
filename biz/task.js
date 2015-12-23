@@ -66,8 +66,9 @@ exports.apply = function(user_id, task_id, cb){
 			if(!!msg) return cb(null, msg);
 			if(!!doc) return cb(null, null, doc);
 			// TODO 获取任务状态信息
-			that.getTaskStatus(user_id, task_id, function (err, doc){
+			that.getTaskStatus(user_id, task_id, function (err, msg, doc){
 				if(err) return cb(err);
+				if(!!msg) return cb(null, msg);
 				if(!doc) return cb(null, ['此任务不存在，请重新申请']);
 				// TODO
 				if(!!doc.HANDTASK_ID) return cb(null, ['同一项目下的任务只能申请一次']);
@@ -109,13 +110,20 @@ exports.apply = function(user_id, task_id, cb){
 	 */
 	exports.getTaskStatus = function(user_id, task_id, cb){
 		var sql = 'SELECT'+
-					'  (SELECT a.id FROM p_handtask a WHERE a.STATUS=1 AND a.USER_ID=? AND a.TASK_ID IN (SELECT id FROM p_task WHERE PROJECT_ID=c.PROJECT_ID)) HANDTASK_ID,'+
+					'  (SELECT a.id FROM p_handtask a WHERE a.STATUS=1 AND a.USER_ID=? AND a.TASK_ID IN (SELECT id FROM p_task WHERE PROJECT_ID=c.PROJECT_ID) LIMIT 1) HANDTASK_ID,'+
+					'  (SELECT COUNT(1) FROM p_handtask a WHERE a.STATUS=1 AND a.USER_ID=? AND a.TASK_ID IN (SELECT id FROM p_task WHERE PROJECT_ID=c.PROJECT_ID)) HANDTASK_FINISH_COUNT,'+
 					'  c.*'+
 					' FROM ('+ sql_1 +') c WHERE c.TASK_SUM>c.SUCCESS_TASK_SUM AND c.id=?';
 		// TODO
-		mysql.query(sql, [user_id, new Date(), task_id], function (err, docs){
+		mysql.query(sql, [user_id, user_id, new Date(), task_id], function (err, docs){
 			if(err) return cb(err);
-			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+			// TODO
+			if(!mysql.checkOnly(docs)) return cb(null, null, null);
+			// TODO
+			var doc = docs[0];
+			if(1 < doc.HANDTASK_FINISH_COUNT) return cb(null, ['数据异常，请联系管理员']);
+			// TODO
+			cb(null, null, doc);
 		});
 	};
 
