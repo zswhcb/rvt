@@ -237,11 +237,9 @@ public class MainActivity extends ActionBarActivity {
 						.getItemAtPosition(position);
 				// TODO
 				try {
-					String TASK_ID = _jo.getString("id");
-
 					// TODO
 					Bundle _bundle = new Bundle();
-					_bundle.putString("TASK_ID", TASK_ID);
+					_bundle.putString("TASK_ID", _jo.getString("id"));
 					_bundle.putString("TEL_NUM", _jo.getString("TEL_NUM"));
 					Intent intent = new Intent(MainActivity.this,
 							DialActivity.class);

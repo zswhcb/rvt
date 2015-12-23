@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -213,5 +214,14 @@ public class DialActivity extends Activity {
 	public void onDestroy() {
 		unregisterReceiver(receiver);
 		super.onDestroy();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			DialActivity.this.finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }
