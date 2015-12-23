@@ -88,7 +88,6 @@ public class LoginActivity extends Activity {
 		text_username.setText(getCurrentMobileNum().replaceAll("\\+86", ""));
 
 		alertDialog = new AlertDialog.Builder(LoginActivity.this);
-		alertDialog.setMessage("有新版本更新，请点击确定下载");
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -124,6 +123,7 @@ public class LoginActivity extends Activity {
 
 				// TODO 版本检测
 				if (AppUtil.getVerCode(LoginActivity.this) < _jo.getInt("ver")) {
+					alertDialog.setMessage("有新版本更新，请点击确定下载");
 					alertDialog.setPositiveButton("确定",
 							new DialogInterface.OnClickListener() {
 								public void onClick(

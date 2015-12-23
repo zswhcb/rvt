@@ -18,6 +18,7 @@ import tel.call.util.RestUtil;
 import tel.call.util.UserInfo;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ public class MainActivity extends ActionBarActivity {
 	private UserInfo app;
 
 	private AlertDialog.Builder alertDialog;
+	private AlertDialog.Builder exitDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +201,10 @@ public class MainActivity extends ActionBarActivity {
 		text_sel_date.setText(DateUtil.getFormat2());
 		text_sel_date.setEnabled(false);
 		// TODO
-		alertDialog = new AlertDialog.Builder(MainActivity.this);
+		alertDialog = new AlertDialog.Builder(this);
+		exitDialog = new AlertDialog.Builder(this);
+		exitDialog.setTitle("你确定要退出吗？");
+		exitDialog.setIcon(android.R.drawable.ic_dialog_info);
 	}
 
 	private void setBtnSyncStatus(boolean status) {
@@ -252,6 +257,22 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		});
+
+		// TODO
+		exitDialog.setPositiveButton("确定",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						MainActivity.this.finish();
+					}
+				});
+		exitDialog.setNegativeButton("返回",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO
+					}
+				});
 	}
 
 	@Override
@@ -316,5 +337,10 @@ public class MainActivity extends ActionBarActivity {
 			setResult(RESULT_OK);
 			finish();
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		exitDialog.show();
 	}
 }
