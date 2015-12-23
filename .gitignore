@@ -29,6 +29,7 @@ node_modules
 
 TelCall/bin
 TelCall/gen
+TelCall/assets/*.apk
 
 
 *.pdb
