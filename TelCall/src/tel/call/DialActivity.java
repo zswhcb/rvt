@@ -58,13 +58,12 @@ public class DialActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dial_main);
-		registerListener();
 		// TODO
 		app = (UserInfo) getApplication();
 	}
 
 	private void registerListener() {
-		receiver = new PhoneBroadcastReceiver();
+		receiver = new PhoneBroadcastReceiver(handtask_id);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
 		filter.setPriority(Integer.MAX_VALUE);
@@ -84,6 +83,8 @@ public class DialActivity extends Activity {
 		Bundle _bundle = getIntent().getExtras();
 		applyTask(_bundle.getString("TASK_ID"));
 	}
+
+	private String handtask_id;
 
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
@@ -130,6 +131,8 @@ public class DialActivity extends Activity {
 						+ _jdata.getString("TALK_TIME_LEN") + " 秒");
 				text_sms_intro.setText(_jdata.getString("SMS_INTRO"));
 
+				// TODO
+				handtask_id = _jdata.getString("HANDTASK_ID");
 				// TODO
 				btn_dial.setEnabled(true);
 			} catch (JSONException e) {
@@ -196,6 +199,7 @@ public class DialActivity extends Activity {
 			public void onClick(View view) {
 				Bundle _bundle = getIntent().getExtras();
 				String tel_num = _bundle.getString("TEL_NUM");
+				registerListener();
 				// 用intent启动拨打电话
 				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 						+ tel_num));

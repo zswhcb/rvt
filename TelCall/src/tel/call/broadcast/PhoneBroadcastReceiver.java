@@ -18,12 +18,19 @@ import android.util.Log;
  * 
  */
 public class PhoneBroadcastReceiver extends BroadcastReceiver {
-	private static final String TAG = "PhoneBroadcastReceiver";
+	private static final String TAG = PhoneBroadcastReceiver.class
+			.getSimpleName();
 
 	private static final String[] porjection = new String[] { Calls.TYPE,
 			Calls.NUMBER, Calls.DATE, Calls.DURATION };
 
 	private OnePhoneStateListener listener;
+
+	private String handtask_id;
+
+	public PhoneBroadcastReceiver(String handtask_id) {
+		this.handtask_id = handtask_id;
+	}
 
 	@Override
 	public void onReceive(Context ctx, Intent intent) {
@@ -49,6 +56,10 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 		super.finalize();
 	}
 
+	private void commitTask(String TEL_NUM, String TALK_TIME_LEN) {
+
+	}
+
 	private void findLast(Context ctx, String telNum, long callTime) {
 		Cursor cursor = null;
 		// TODO
@@ -67,13 +78,13 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 								+ cursor.getString(1) + ","
 								+ cursor.getString(2) + ","
 								+ cursor.getString(3));
+
+				commitTask(cursor.getString(1), cursor.getString(3));
 			} else {
 				Log.i(TAG, "===========no");
 			}
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-			if (null != cursor)
-				cursor.close();
 		} finally {
 			if (null != cursor)
 				cursor.close();
