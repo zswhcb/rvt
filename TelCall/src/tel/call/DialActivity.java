@@ -1,12 +1,29 @@
 package tel.call;
 
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.HashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tel.call.action.ServiceAction;
 import tel.call.broadcast.PhoneBroadcastReceiver;
 import tel.call.util.DateUtil;
+import tel.call.util.HttpUtil;
+import tel.call.util.HttpUtil.RequestMethod;
+import tel.call.util.RestUtil;
+import tel.call.util.UserInfo;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,14 +47,19 @@ public class DialActivity extends Activity {
 	private EditText text_sms_intro;
 
 	private Button btn_dial;
+	private UserInfo app;
 
 	private PhoneBroadcastReceiver receiver;
+
+	private AlertDialog.Builder alertDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dial_main);
 		registerListener();
+		// TODO
+		app = (UserInfo) getApplication();
 	}
 
 	private void registerListener() {
@@ -54,6 +76,109 @@ public class DialActivity extends Activity {
 		super.onStart();
 		findView();
 		bind();
+		loadData();
+	}
+
+	private void loadData() {
+		Bundle _bundle = getIntent().getExtras();
+		applyTask(_bundle.getString("TASK_ID"));
+	}
+
+	@SuppressLint("HandlerLeak")
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case ServiceAction.APPLYTASK:
+				applyTask(msg);
+			default:
+				break;
+			}
+		}
+
+		private void applyTask(Message msg) {
+			// TODO
+			if (null == msg.obj) {
+				errorBack(getString(msg.arg1));
+				return;
+			}
+
+			// TODO
+			try {
+				JSONObject _jo = new JSONObject((String) msg.obj);
+				// TODO
+				if (!_jo.getBoolean("success")) {
+					errorBack(_jo.getJSONArray("msg").getString(0));
+					return;
+				}
+
+				// TODO
+				JSONObject _jdata = _jo.getJSONObject("data");
+
+				// TODO
+				text_task_name.setText("任务名称：" + _jdata.getString("TASK_NAME"));
+				text_task_tel_num
+						.setText("电话号码：" + _jdata.getString("TEL_NUM"));
+				text_task_intro.setText(_jdata.getString("TASK_INTRO"));
+				text_task_talk_timeout.setText("任务过期："
+						+ DateUtil.getFormat4(
+								_jdata.getString("HANDTASK_CREATE_TIME"),
+								_jdata.getInt("TALK_TIMEOUT")));
+				text_task_talk_time_len.setText("通话时长：不能少于 "
+						+ _jdata.getString("TALK_TIME_LEN") + " 秒");
+				text_sms_intro.setText(_jdata.getString("SMS_INTRO"));
+
+				// TODO
+				btn_dial.setEnabled(true);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				errorBack(e.getMessage());
+			}
+		}
+	};
+
+	private void applyTask(String task_id) {
+		HashMap<String, String> _params = new HashMap<String, String>();
+		// TODO
+		_params.put("apikey", app.getApikey());
+		_params.put("command", "applyTask");
+		long ts = (new Date()).getTime() + app.getTs();
+		_params.put("ts", Long.toString(ts));
+
+		// TODO
+		try {
+			JSONObject jo = new JSONObject();
+			jo.put("TASK_ID", task_id);
+			String data = jo.toString();
+			_params.put("data", URLEncoder.encode(data, "UTF-8"));
+
+			String params = URLEncoder.encode("apikey=" + app.getApikey()
+					+ "&command=applyTask&data=" + data + "&ts=" + ts, "UTF-8");
+			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorBack(e.getMessage());
+			return;
+		}
+
+		// TODO
+		HttpUtil _hu = new HttpUtil(ServiceAction.APPLYTASK, handler,
+				getString(R.string.httpUrl) + "api", RequestMethod.POST,
+				_params);
+		Thread _t = new Thread(_hu);
+		_t.start();
+	}
+
+	private void errorBack(String msg) {
+		alertDialog.setMessage(msg);
+		alertDialog.setPositiveButton("确定",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialoginterface, int i) {
+						DialActivity.this.finish();
+					}
+				});
+		alertDialog.show();
 	}
 
 	private void findView() {
@@ -66,19 +191,7 @@ public class DialActivity extends Activity {
 		text_sms_intro = (EditText) findViewById(R.id.text_sms_intro);
 		btn_dial = (Button) findViewById(R.id.btn_dial);
 
-		// TODO
-		Bundle _bundle = getIntent().getExtras();
-		text_task_name.setText("任务名称：" + _bundle.getString("TASK_NAME"));
-		text_task_tel_num.setText("电话号码：" + _bundle.getString("TEL_NUM"));
-		text_task_intro.setText(_bundle.getString("TASK_INTRO"));
-		text_task_talk_timeout.setText("任务过期："
-				+ DateUtil.getFormat4(
-						_bundle.getString("HANDTASK_CREATE_TIME"),
-						Integer.valueOf(_bundle.getString("TALK_TIMEOUT"))));
-		text_task_talk_time_len.setText("通话时长：不能少于 "
-				+ _bundle.getString("TALK_TIME_LEN") + " 秒");
-		text_sms_intro.setText(_bundle.getString("SMS_INTRO"));
-		// TODO
+		alertDialog = new AlertDialog.Builder(DialActivity.this);
 	}
 
 	private void bind() {

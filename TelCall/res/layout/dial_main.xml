@@ -48,7 +48,7 @@
             android:layout_marginRight="12dip"
             android:layout_marginTop="15dip"
             android:enabled="false"
-            android:hint="通话超时（秒）"
+            android:hint="任务过期"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:textColor="#ff8c00" >
@@ -62,7 +62,7 @@
             android:layout_marginRight="12dip"
             android:layout_marginTop="15dip"
             android:enabled="false"
-            android:hint="通话时长（秒）"
+            android:hint="通话时长"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:textColor="#ff8c00" >
@@ -114,6 +114,7 @@
             android:layout_height="fill_parent"
             android:layout_marginLeft="12dip"
             android:layout_marginRight="12dip"
+            android:enabled="false"
             android:text="@string/dial_main_btn_dial" />
     </LinearLayout>
 

@@ -61,7 +61,6 @@ public class LoginActivity extends Activity {
 					Toast.LENGTH_SHORT);
 		else
 			toast.setText(msg);
-
 		toast.show();
 	}
 

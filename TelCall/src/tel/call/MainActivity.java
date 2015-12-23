@@ -37,7 +37,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * 
@@ -57,7 +56,6 @@ public class MainActivity extends ActionBarActivity {
 	// TODO
 	private UserInfo app;
 
-	private Toast toast;
 	private AlertDialog.Builder alertDialog;
 
 	@Override
@@ -108,70 +106,15 @@ public class MainActivity extends ActionBarActivity {
 			case ServiceAction.GET_CURRENTTASKS:
 				getCurrentTasks(msg);
 				break;
-			case ServiceAction.APPLYTASK:
-				applyTask(msg);
 			default:
 				break;
 			}
 		}
 
-		private void applyTask(Message msg) {
-			// TODO
-			if (null == msg.obj) {
-				alertDialog.setMessage(getString(msg.arg1));
-				alertDialog.show();
-				setGridStatus(true);
-				return;
-			}
-
-			Bundle _bundle = null;
-			// TODO
-			try {
-				JSONObject _jo = new JSONObject((String) msg.obj);
-				// TODO
-				if (!_jo.getBoolean("success")) {
-					alertDialog
-							.setMessage(_jo.getJSONArray("msg").getString(0));
-					alertDialog.show();
-					setGridStatus(true);
-					return;
-				}
-				// TODO
-				JSONObject _jdata = _jo.getJSONObject("data");
-
-				// TODO
-				_bundle = new Bundle();
-				_bundle.putString("HANDTASK_ID",
-						_jdata.getString("HANDTASK_ID"));
-				_bundle.putString("TEL_NUM", _jdata.getString("TEL_NUM"));
-				_bundle.putString("TASK_NAME", _jdata.getString("TASK_NAME"));
-				_bundle.putString("TASK_INTRO", _jdata.getString("TASK_INTRO"));
-				// TODO
-				_bundle.putString("TALK_TIMEOUT",
-						_jdata.getString("TALK_TIMEOUT"));
-				_bundle.putString("TALK_TIME_LEN",
-						_jdata.getString("TALK_TIME_LEN"));
-				_bundle.putString("SMS_INTRO", _jdata.getString("SMS_INTRO"));
-				_bundle.putString("HANDTASK_CREATE_TIME",
-						_jdata.getString("HANDTASK_CREATE_TIME"));
-			} catch (JSONException e) {
-				e.printStackTrace();
-				alertDialog.setMessage(e.getMessage());
-				alertDialog.show();
-				setGridStatus(true);
-				return;
-			}
-			// TODO
-			Intent intent = new Intent(MainActivity.this, DialActivity.class);
-			intent.putExtras(_bundle);
-			startActivity(intent);
-		}
-
 		private void getCurrentTasks(Message msg) {
 			// TODO
 			if (null == msg.obj) {
-				alertDialog.setMessage(getString(msg.arg1));
-				alertDialog.show();
+				errorMsg(getString(msg.arg1));
 				setBtnSyncStatus(true);
 				return;
 			}
@@ -180,10 +123,7 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
-
-					alertDialog
-							.setMessage(_jo.getJSONArray("msg").getString(0));
-					alertDialog.show();
+					errorMsg(_jo.getJSONArray("msg").getString(0));
 					return;
 				}
 				// TODO
@@ -195,9 +135,7 @@ public class MainActivity extends ActionBarActivity {
 				grid_items.setAdapter(_adapter);
 			} catch (JSONException e) {
 				e.printStackTrace();
-
-				alertDialog.setMessage("有新版本更新，请点击确定下载");
-				alertDialog.show();
+				errorMsg(e.getMessage());
 			} finally {
 				setBtnSyncStatus(true);
 			}
@@ -227,9 +165,7 @@ public class MainActivity extends ActionBarActivity {
 			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-
-			alertDialog.setMessage("有新版本更新，请点击确定下载");
-			alertDialog.show();
+			errorMsg(e.getMessage());
 			setBtnSyncStatus(true);
 			return;
 		}
@@ -240,6 +176,11 @@ public class MainActivity extends ActionBarActivity {
 				_params);
 		Thread _t = new Thread(_hu);
 		_t.start();
+	}
+
+	private void errorMsg(String msg) {
+		alertDialog.setMessage(msg);
+		alertDialog.show();
 	}
 
 	private void loadData_grid() {
@@ -259,40 +200,6 @@ public class MainActivity extends ActionBarActivity {
 		text_sel_date.setEnabled(false);
 		// TODO
 		alertDialog = new AlertDialog.Builder(MainActivity.this);
-	}
-
-	private void applyTask(String task_id) {
-		HashMap<String, String> _params = new HashMap<String, String>();
-		// TODO
-		_params.put("apikey", app.getApikey());
-		_params.put("command", "applyTask");
-		long ts = (new Date()).getTime() + app.getTs();
-		_params.put("ts", Long.toString(ts));
-
-		// TODO
-		try {
-			JSONObject jo = new JSONObject();
-			jo.put("TASK_ID", task_id);
-			String data = jo.toString();
-			_params.put("data", URLEncoder.encode(data, "UTF-8"));
-
-			String params = URLEncoder.encode("apikey=" + app.getApikey()
-					+ "&command=applyTask&data=" + data + "&ts=" + ts, "UTF-8");
-			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
-		} catch (Exception e) {
-			e.printStackTrace();
-			alertDialog.setMessage("有新版本更新，请点击确定下载");
-			alertDialog.show();
-			setGridStatus(true);
-			return;
-		}
-
-		// TODO
-		HttpUtil _hu = new HttpUtil(ServiceAction.APPLYTASK, handler,
-				getString(R.string.httpUrl) + "api", RequestMethod.POST,
-				_params);
-		Thread _t = new Thread(_hu);
-		_t.start();
 	}
 
 	private void setBtnSyncStatus(boolean status) {
@@ -331,13 +238,18 @@ public class MainActivity extends ActionBarActivity {
 				// TODO
 				try {
 					String TASK_ID = _jo.getString("id");
+
 					// TODO
-					applyTask(TASK_ID);
+					Bundle _bundle = new Bundle();
+					_bundle.putString("TASK_ID", TASK_ID);
+					_bundle.putString("TEL_NUM", _jo.getString("TEL_NUM"));
+					Intent intent = new Intent(MainActivity.this,
+							DialActivity.class);
+					intent.putExtras(_bundle);
+					startActivity(intent);
 				} catch (JSONException e) {
 					e.printStackTrace();
-
-					alertDialog.setMessage("有新版本更新，请点击确定下载");
-					alertDialog.show();
+					errorMsg(e.getMessage());
 					setGridStatus(true);
 				}
 			}
