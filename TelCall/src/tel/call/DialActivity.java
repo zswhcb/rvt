@@ -173,12 +173,6 @@ public class DialActivity extends Activity {
 
 	private void errorBack(String msg) {
 		alertDialog.setMessage(msg);
-		alertDialog.setPositiveButton("确定",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialoginterface, int i) {
-						DialActivity.this.finish();
-					}
-				});
 		alertDialog.show();
 	}
 
@@ -192,7 +186,7 @@ public class DialActivity extends Activity {
 		text_sms_intro = (EditText) findViewById(R.id.text_sms_intro);
 		btn_dial = (Button) findViewById(R.id.btn_dial);
 
-		alertDialog = new AlertDialog.Builder(DialActivity.this);
+		alertDialog = new AlertDialog.Builder(this);
 	}
 
 	private void bind() {
@@ -208,6 +202,14 @@ public class DialActivity extends Activity {
 				DialActivity.this.startActivity(intent);
 			}
 		});
+
+		// TODO
+		alertDialog.setPositiveButton("确定",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialoginterface, int i) {
+						DialActivity.this.finish();
+					}
+				});
 	}
 
 	@Override
