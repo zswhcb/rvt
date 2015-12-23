@@ -65,8 +65,9 @@ public class DialActivity extends Activity {
 		text_task_talk_time_len = (EditText) findViewById(R.id.text_task_talk_time_len);
 		text_sms_intro = (EditText) findViewById(R.id.text_sms_intro);
 		btn_dial = (Button) findViewById(R.id.btn_dial);
+
 		// TODO
-		Bundle _bundle = this.getIntent().getExtras();
+		Bundle _bundle = getIntent().getExtras();
 		text_task_name.setText("任务名称：" + _bundle.getString("TASK_NAME"));
 		text_task_tel_num.setText("电话号码：" + _bundle.getString("TEL_NUM"));
 		text_task_intro.setText(_bundle.getString("TASK_INTRO"));
@@ -74,10 +75,9 @@ public class DialActivity extends Activity {
 				+ DateUtil.getFormat4(
 						_bundle.getString("HANDTASK_CREATE_TIME"),
 						Integer.valueOf(_bundle.getString("TALK_TIMEOUT"))));
-		text_task_talk_time_len.setText("通话时长：不能少于"
-				+ _bundle.getString("TALK_TIME_LEN") + "（秒）");
+		text_task_talk_time_len.setText("通话时长：不能少于 "
+				+ _bundle.getString("TALK_TIME_LEN") + " 秒");
 		text_sms_intro.setText(_bundle.getString("SMS_INTRO"));
-
 		// TODO
 	}
 
@@ -86,7 +86,8 @@ public class DialActivity extends Activity {
 		btn_dial.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				String tel_num = text_task_tel_num.getText().toString();
+				Bundle _bundle = getIntent().getExtras();
+				String tel_num = _bundle.getString("TEL_NUM");
 				// 用intent启动拨打电话
 				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 						+ tel_num));

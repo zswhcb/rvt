@@ -70,7 +70,7 @@ exports.apply = function(user_id, task_id, cb){
 				if(err) return cb(err);
 				if(!doc) return cb(null, ['此任务不存在，请重新申请']);
 				// TODO
-				if(!!doc.HANDTASK_ID) return cb(null, ['此任务之前已经申请过']);
+				if(!!doc.HANDTASK_ID) return cb(null, ['同一项目下的任务只能申请一次']);
 				// TODO 检测任务状态
 				if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['下手晚了']);
 				// TODO

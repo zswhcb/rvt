@@ -17,6 +17,7 @@ import tel.call.util.HttpUtil.RequestMethod;
 import tel.call.util.RestUtil;
 import tel.call.util.UserInfo;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,15 +58,7 @@ public class MainActivity extends ActionBarActivity {
 	private UserInfo app;
 
 	private Toast toast;
-
-	private void showToast(String msg) {
-		if (null == toast)
-			toast = Toast.makeText(getApplicationContext(), msg,
-					Toast.LENGTH_SHORT);
-		else
-			toast.setText(msg);
-		toast.show();
-	}
+	private AlertDialog.Builder alertDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +118,8 @@ public class MainActivity extends ActionBarActivity {
 		private void applyTask(Message msg) {
 			// TODO
 			if (null == msg.obj) {
-				showToast(getString(msg.arg1));
+				alertDialog.setMessage(getString(msg.arg1));
+				alertDialog.show();
 				setGridStatus(true);
 				return;
 			}
@@ -136,8 +130,10 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
-					showToast(_jo.getJSONArray("msg").getString(0));
-					grid_items.setEnabled(true);
+					alertDialog
+							.setMessage(_jo.getJSONArray("msg").getString(0));
+					alertDialog.show();
+					setGridStatus(true);
 					return;
 				}
 				// TODO
@@ -160,7 +156,8 @@ public class MainActivity extends ActionBarActivity {
 						_jdata.getString("HANDTASK_CREATE_TIME"));
 			} catch (JSONException e) {
 				e.printStackTrace();
-				showToast(e.getMessage());
+				alertDialog.setMessage(e.getMessage());
+				alertDialog.show();
 				setGridStatus(true);
 				return;
 			}
@@ -173,7 +170,8 @@ public class MainActivity extends ActionBarActivity {
 		private void getCurrentTasks(Message msg) {
 			// TODO
 			if (null == msg.obj) {
-				showToast(getString(msg.arg1));
+				alertDialog.setMessage(getString(msg.arg1));
+				alertDialog.show();
 				setBtnSyncStatus(true);
 				return;
 			}
@@ -182,7 +180,10 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
-					showToast(_jo.getJSONArray("msg").getString(0));
+
+					alertDialog
+							.setMessage(_jo.getJSONArray("msg").getString(0));
+					alertDialog.show();
 					return;
 				}
 				// TODO
@@ -194,7 +195,9 @@ public class MainActivity extends ActionBarActivity {
 				grid_items.setAdapter(_adapter);
 			} catch (JSONException e) {
 				e.printStackTrace();
-				showToast(e.getMessage());
+
+				alertDialog.setMessage("有新版本更新，请点击确定下载");
+				alertDialog.show();
 			} finally {
 				setBtnSyncStatus(true);
 			}
@@ -224,7 +227,9 @@ public class MainActivity extends ActionBarActivity {
 			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			showToast(e.getMessage());
+
+			alertDialog.setMessage("有新版本更新，请点击确定下载");
+			alertDialog.show();
 			setBtnSyncStatus(true);
 			return;
 		}
@@ -252,6 +257,8 @@ public class MainActivity extends ActionBarActivity {
 		// TODO
 		text_sel_date.setText(DateUtil.getFormat2());
 		text_sel_date.setEnabled(false);
+		// TODO
+		alertDialog = new AlertDialog.Builder(MainActivity.this);
 	}
 
 	private void applyTask(String task_id) {
@@ -274,7 +281,8 @@ public class MainActivity extends ActionBarActivity {
 			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
 		} catch (Exception e) {
 			e.printStackTrace();
-			showToast(e.getMessage());
+			alertDialog.setMessage("有新版本更新，请点击确定下载");
+			alertDialog.show();
 			setGridStatus(true);
 			return;
 		}
@@ -327,7 +335,9 @@ public class MainActivity extends ActionBarActivity {
 					applyTask(TASK_ID);
 				} catch (JSONException e) {
 					e.printStackTrace();
-					showToast(e.getMessage());
+
+					alertDialog.setMessage("有新版本更新，请点击确定下载");
+					alertDialog.show();
 					setGridStatus(true);
 				}
 			}
