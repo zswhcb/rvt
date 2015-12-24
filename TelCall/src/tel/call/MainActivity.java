@@ -55,17 +55,16 @@ public class MainActivity extends ActionBarActivity {
 
 	// TODO
 	private Button btn_sync;
-	private ListView grid_items;
+	private ListView list_grid;
 	private EditText text_sel_date;
-	// TODO
-	// private DBManager dbMgr;
-	// TODO
-	private UserInfo app;
 
-	private AlertDialog.Builder alertDialog;
-	private AlertDialog.Builder exitDialog;
+	// TODO
+	private UserInfo userInfo;
 
-	private PhoneBroadcastReceiver receiver;
+	private AlertDialog.Builder dialog_alert;
+	private AlertDialog.Builder dialog_exit;
+
+	private PhoneBroadcastReceiver receiver_phone;
 	private SharedPreferences preferences;
 
 	@Override
@@ -83,26 +82,24 @@ public class MainActivity extends ActionBarActivity {
 
 		// TODO
 		registerListener();
+
 		// TODO
 		// dbMgr = new DBManager(this);
-		app = (UserInfo) getApplication();
-		preferences = getSharedPreferences(AppUtil.UN_UPLOAD, MODE_PRIVATE);
 	}
 
 	private void registerListener() {
-		receiver = new PhoneBroadcastReceiver();
+		receiver_phone = new PhoneBroadcastReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
 		filter.setPriority(Integer.MAX_VALUE);
-		registerReceiver(receiver, filter);
+		registerReceiver(receiver_phone, filter);
 	}
 
 	@Override
 	protected void onDestroy() {
-		// if (null != dbMgr)
-		// dbMgr.close();
-		if (null != receiver)
-			unregisterReceiver(receiver);
+		// if (null != dbMgr) dbMgr.close();
+		if (null != receiver_phone)
+			unregisterReceiver(receiver_phone);
 		super.onDestroy();
 	}
 
@@ -130,7 +127,7 @@ public class MainActivity extends ActionBarActivity {
 			case ServiceAction.GET_CURRENTTASKS:
 				getCurrentTasks(msg);
 				break;
-			case ServiceAction.COMMITTASK:
+			case ServiceAction.COMMIT_TASK:
 				commitTask(msg);
 				break;
 			default:
@@ -138,40 +135,48 @@ public class MainActivity extends ActionBarActivity {
 			}
 		}
 
-		private void remove() {
-			Editor editor = preferences.edit();
-			editor.remove("id");
-			editor.remove("TALK_TIME_LEN");
-			editor.remove("TALK_TIME");
-			editor.remove("TEL_NUM");
-			editor.commit();
-		}
-
 		private void commitTask(Message msg) {
 			// TODO
 			if (null == msg.obj) {
+				showAlertDialog(getString(msg.arg1));
+				setStatus_BtnSync(true);
+				setWidgetsStatus(true);
 				return;
 			}
 
 			// TODO
 			try {
 				JSONObject _jo = new JSONObject((String) msg.obj);
+
+				// TODO
+				if (null == preferences)
+					preferences = getSharedPreferences(AppUtil.UN_UPLOAD,
+							MODE_PRIVATE);
+
+				// TODO
+				Editor _editor = preferences.edit();
+				_editor.remove("id");
+				_editor.commit();
+
 				// TODO
 				if (!_jo.getBoolean("success")) {
-					// TODO
+					showAlertDialog(_jo.getJSONArray("msg").getString(0));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+				showAlertDialog(e.getMessage());
 			} finally {
-				remove();
+				setStatus_BtnSync(true);
+				setWidgetsStatus(true);
 			}
 		}
 
 		private void getCurrentTasks(Message msg) {
 			// TODO
 			if (null == msg.obj) {
-				errorMsg(getString(msg.arg1));
-				setBtnSyncStatus(true);
+				showAlertDialog(getString(msg.arg1));
+				setStatus_BtnSync(true);
+				setWidgetsStatus(true);
 				return;
 			}
 
@@ -180,7 +185,7 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
-					errorMsg(_jo.getJSONArray("msg").getString(0));
+					showAlertDialog(_jo.getJSONArray("msg").getString(0));
 					return;
 				}
 				// TODO
@@ -189,12 +194,13 @@ public class MainActivity extends ActionBarActivity {
 				CurrentTasksAdapter _adapter = new CurrentTasksAdapter(
 						R.layout.fragment_main_datagrid, MainActivity.this,
 						_jdata);
-				grid_items.setAdapter(_adapter);
+				list_grid.setAdapter(_adapter);
 			} catch (JSONException e) {
 				e.printStackTrace();
-				errorMsg(e.getMessage());
+				showAlertDialog(e.getMessage());
 			} finally {
-				setBtnSyncStatus(true);
+				setStatus_BtnSync(true);
+				setWidgetsStatus(true);
 			}
 		}
 	};
@@ -202,28 +208,35 @@ public class MainActivity extends ActionBarActivity {
 	/**
 	 * 获取当前可接的任务
 	 */
-	private void refreshRemoteData() {
+	private void loadData_grid() {
+		if (null == userInfo)
+			userInfo = (UserInfo) getApplication();
+
+		// TODO
 		HashMap<String, String> _params = new HashMap<String, String>();
 		// TODO
-		_params.put("apikey", app.getApikey());
+		_params.put("apikey", userInfo.getApikey());
 		_params.put("command", "getCurrentTasks");
-		long ts = (new Date()).getTime() + app.getTs();
-		_params.put("ts", Long.toString(ts));
+		long _ts = (new Date()).getTime() + userInfo.getTs();
+		_params.put("ts", Long.toString(_ts));
 
 		// TODO
 		try {
-			JSONObject jo = new JSONObject();
-			String data = jo.toString();
-			_params.put("data", URLEncoder.encode(data, "UTF-8"));
+			JSONObject _jo = new JSONObject();
+			String _data = _jo.toString();
+			_params.put("data", URLEncoder.encode(_data, "UTF-8"));
 			// TODO
-			String params = URLEncoder.encode("apikey=" + app.getApikey()
-					+ "&command=getCurrentTasks&data=" + data + "&ts=" + ts,
-					"UTF-8");
-			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+			String _paramStr = URLEncoder.encode(
+					"apikey=" + userInfo.getApikey()
+							+ "&command=getCurrentTasks&data=" + _data + "&ts="
+							+ _ts, "UTF-8");
+			_params.put("signature",
+					RestUtil.standard(_paramStr, userInfo.getSeckey()));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			errorMsg(e.getMessage());
-			setBtnSyncStatus(true);
+			showAlertDialog(e.getMessage());
+			setStatus_BtnSync(true);
+			setWidgetsStatus(true);
 			return;
 		}
 
@@ -235,125 +248,149 @@ public class MainActivity extends ActionBarActivity {
 		_t.start();
 	}
 
-	private void startUnUpload(String id, String tel_num, long talk_time,
+	/**
+	 * 上传数据
+	 * 
+	 * @param id
+	 * @param tel_num
+	 * @param talk_time
+	 * @param talk_time_len
+	 */
+	private void uploadData(String id, String tel_num, long talk_time,
 			int talk_time_len) {
+		if (null == userInfo)
+			userInfo = (UserInfo) getApplication();
+
+		// TODO
 		HashMap<String, String> _params = new HashMap<String, String>();
 		// TODO
-		_params.put("apikey", app.getApikey());
+		_params.put("apikey", userInfo.getApikey());
 		_params.put("command", "commitTask");
-		long ts = (new Date()).getTime() + app.getTs();
-		_params.put("ts", Long.toString(ts));
+		long _ts = (new Date()).getTime() + userInfo.getTs();
+		_params.put("ts", Long.toString(_ts));
 
 		// TODO
 		try {
-			JSONObject jo = new JSONObject();
-			jo.put("id", id);
-			jo.put("TALK_TIME_LEN", talk_time_len);
-			jo.put("TALK_TIME", talk_time);
-			jo.put("TEL_NUM", tel_num);
-			String data = jo.toString();
-			_params.put("data", URLEncoder.encode(data, "UTF-8"));
+			JSONObject _jo = new JSONObject();
+			_jo.put("id", id);
+			_jo.put("TALK_TIME_LEN", talk_time_len);
+			_jo.put("TALK_TIME", talk_time);
+			_jo.put("TEL_NUM", tel_num);
 
-			String params = URLEncoder
-					.encode("apikey=" + app.getApikey()
-							+ "&command=commitTask&data=" + data + "&ts=" + ts,
-							"UTF-8");
-			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+			// TODO
+			String _data = _jo.toString();
+			_params.put("data", URLEncoder.encode(_data, "UTF-8"));
+
+			String _paramStr = URLEncoder.encode(
+					"apikey=" + userInfo.getApikey()
+							+ "&command=commitTask&data=" + _data + "&ts="
+							+ _ts, "UTF-8");
+			_params.put("signature",
+					RestUtil.standard(_paramStr, userInfo.getSeckey()));
 			// TODO
 		} catch (Exception e) {
 			e.printStackTrace();
+			showAlertDialog(e.getMessage());
+			setStatus_BtnSync(true);
+			setWidgetsStatus(true);
 			return;
 		}
 
 		// TODO
-		HttpUtil _hu = new HttpUtil(ServiceAction.COMMITTASK, handler,
+		HttpUtil _hu = new HttpUtil(ServiceAction.COMMIT_TASK, handler,
 				getString(R.string.httpUrl) + "api", RequestMethod.POST,
 				_params);
 		Thread _t = new Thread(_hu);
 		_t.start();
 	}
 
-	private void errorMsg(String msg) {
-		alertDialog.setMessage(msg);
-		alertDialog.show();
-	}
+	private void showAlertDialog(String msg) {
+		if (null == dialog_alert)
+			dialog_alert = new AlertDialog.Builder(this);
 
-	private void loadData_grid() {
-		refreshRemoteData();
+		// TODO
+		dialog_alert.setMessage(msg);
+		dialog_alert.show();
 	}
 
 	private void loadData() {
-		if (checkUnUpload())
+		setStatus_BtnSync(false);
+		setWidgetsStatus(false);
+		// TODO
+		if (checkUnUploadData())
 			loadData_grid();
 	}
 
 	private void findView() {
 		btn_sync = (Button) findViewById(R.id.btn_sync);
-		grid_items = (ListView) findViewById(R.id.grid_items);
-		text_sel_date = (EditText) findViewById(R.id.text_sel_date);
+		list_grid = (ListView) findViewById(R.id.grid_items);
+
 		// TODO
+		text_sel_date = (EditText) findViewById(R.id.text_sel_date);
 		text_sel_date.setText(DateUtil.getFormat2());
 		text_sel_date.setEnabled(false);
+
 		// TODO
-		alertDialog = new AlertDialog.Builder(this);
+		dialog_exit = new AlertDialog.Builder(this);
+		dialog_exit.setTitle("你确定要退出吗？");
+		dialog_exit.setIcon(android.R.drawable.ic_dialog_info);
+	}
+
+	private void setStatus_BtnSync(boolean status) {
+		btn_sync.setText(status ? "刷新" : "正在刷新");
+	}
+
+	private void setWidgetsStatus(boolean status) {
+		btn_sync.setEnabled(status);
+		list_grid.setEnabled(status);
+	}
+
+	/**
+	 * 检测未上传数据，无未上传记录则返回true
+	 * 
+	 * @return
+	 */
+	private boolean checkUnUploadData() {
+		if (null == preferences)
+			preferences = getSharedPreferences(AppUtil.UN_UPLOAD, MODE_PRIVATE);
+
 		// TODO
-		exitDialog = new AlertDialog.Builder(this);
-		exitDialog.setTitle("你确定要退出吗？");
-		exitDialog.setIcon(android.R.drawable.ic_dialog_info);
-	}
-
-	private void setBtnSyncStatus(boolean status) {
-		btn_sync.setEnabled(status);
-		grid_items.setEnabled(status);
-		btn_sync.setText(status ? getString(R.string.fragment_main_btn_sync)
-				: "正在刷新");
-	}
-
-	private void setGridStatus(boolean status) {
-		btn_sync.setEnabled(status);
-		grid_items.setEnabled(status);
-		btn_sync.setText(status ? getString(R.string.fragment_main_btn_sync)
-				: "正在申请");
-	}
-
-	private boolean checkUnUpload() {
 		String id = preferences.getString("id", null);
 		if (null == id)
 			return true;
 
 		int talk_time_len = preferences.getInt("TALK_TIME_LEN", 0);
-		long talk_time = preferences.getLong("TALK_TIME", 0L);
+		long talk_time = preferences.getLong("TALK_TIME", 0);
 		String tel_num = preferences.getString("TEL_NUM", "");
 
-		startUnUpload(id, tel_num, talk_time, talk_time_len);
+		uploadData(id, tel_num, talk_time, talk_time_len);
 		return false;
 	}
 
+	/**
+	 * 事件绑定
+	 */
 	private void bind() {
 		// click
 		btn_sync.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				setBtnSyncStatus(false);
-				// TODO
 				loadData();
 			}
 		});
 
 		// TODO
-		grid_items.setOnItemClickListener(new OnItemClickListener() {
+		list_grid.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int position,
 					long id) {
-				setGridStatus(false);
-
-				if (!checkUnUpload()) {
-					setGridStatus(true);
+				if (!checkUnUploadData())
 					return;
-				}
+
+				setWidgetsStatus(false);
 
 				// TODO
-				JSONObject _jo = (JSONObject) grid_items
+				JSONObject _jo = (JSONObject) list_grid
 						.getItemAtPosition(position);
 				// TODO
 				try {
@@ -361,27 +398,27 @@ public class MainActivity extends ActionBarActivity {
 					Bundle _bundle = new Bundle();
 					_bundle.putString("TASK_ID", _jo.getString("id"));
 					_bundle.putString("TEL_NUM", _jo.getString("TEL_NUM"));
-					Intent intent = new Intent(MainActivity.this,
+					Intent _intent = new Intent(MainActivity.this,
 							DialActivity.class);
-					intent.putExtras(_bundle);
-					startActivity(intent);
+					_intent.putExtras(_bundle);
+					startActivity(_intent);
 				} catch (JSONException e) {
 					e.printStackTrace();
-					errorMsg(e.getMessage());
-					setGridStatus(true);
+					showAlertDialog(e.getMessage());
+					setWidgetsStatus(true);
 				}
 			}
 		});
 
 		// TODO
-		exitDialog.setPositiveButton("确定",
+		dialog_exit.setPositiveButton("确定",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						MainActivity.this.finish();
 					}
 				});
-		exitDialog.setNegativeButton("返回",
+		dialog_exit.setNegativeButton("返回",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -404,21 +441,21 @@ public class MainActivity extends ActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.action_changePwd: {
-			Uri uri = Uri.parse(getString(R.string.httpUrl) + "u/changePwd");
-			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			startActivity(intent);
+			Uri _uri = Uri.parse(getString(R.string.httpUrl) + "u/changePwd");
+			Intent _intent = new Intent(Intent.ACTION_VIEW, _uri);
+			startActivity(_intent);
 			break;
 		}
 		case R.id.action_taskHistory: {
-			Uri uri = Uri.parse(getString(R.string.httpUrl) + "u/task/");
-			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			startActivity(intent);
+			Uri _uri = Uri.parse(getString(R.string.httpUrl) + "u/task/");
+			Intent _intent = new Intent(Intent.ACTION_VIEW, _uri);
+			startActivity(_intent);
 			break;
 		}
 		case R.id.action_settings: {
-			Uri uri = Uri.parse(getString(R.string.httpUrl) + "u/");
-			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			startActivity(intent);
+			Uri _uri = Uri.parse(getString(R.string.httpUrl) + "u/");
+			Intent _intent = new Intent(Intent.ACTION_VIEW, _uri);
+			startActivity(_intent);
 			break;
 		}
 		default:
@@ -455,6 +492,9 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public void onBackPressed() {
-		exitDialog.show();
+		if (null == dialog_exit) {
+			dialog_exit = new AlertDialog.Builder(this);
+		}
+		dialog_exit.show();
 	}
 }

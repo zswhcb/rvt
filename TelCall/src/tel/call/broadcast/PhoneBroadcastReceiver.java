@@ -43,7 +43,7 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 
 	private OnePhoneStateListener listener;
 
-	private UserInfo app;
+	private UserInfo userInfo;
 	private String httpUrl;
 	private SharedPreferences preferences;
 
@@ -51,23 +51,24 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context ctx, Intent intent) {
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
-			app = (UserInfo) ctx.getApplicationContext();
+			// TODO
+			userInfo = (UserInfo) ctx.getApplicationContext();
 			httpUrl = ctx.getString(R.string.httpUrl);
 			preferences = ctx.getSharedPreferences(AppUtil.UN_UPLOAD,
 					ctx.getApplicationContext().MODE_PRIVATE);
 
 			// TODO
-			String telNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+			String tel_num = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 			// TODO
-			TelephonyManager tm = (TelephonyManager) ctx
+			TelephonyManager _tm = (TelephonyManager) ctx
 					.getSystemService(Service.TELEPHONY_SERVICE);
 			// TODO
 			if (null == listener)
 				listener = new OnePhoneStateListener(ctx);
 			// TODO
-			listener.setTelNum(telNum);
-			listener.setCallTime(new Date());
-			tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
+			listener.setTel_num(tel_num);
+			listener.setCall_time(new Date());
+			_tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
 		}
 	}
 
@@ -84,21 +85,12 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case ServiceAction.COMMITTASK:
+			case ServiceAction.COMMIT_TASK:
 				commitTask(msg);
 				break;
 			default:
 				break;
 			}
-		}
-
-		private void remove() {
-			Editor editor = preferences.edit();
-			editor.remove("id");
-			editor.remove("TALK_TIME_LEN");
-			editor.remove("TALK_TIME");
-			editor.remove("TEL_NUM");
-			editor.commit();
 		}
 
 		private void commitTask(Message msg) {
@@ -114,45 +106,52 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 				if (!_jo.getBoolean("success")) {
 					// TODO
 				}
+
+				// TODO
+				Editor editor = preferences.edit();
+				editor.remove("id");
+				editor.commit();
 			} catch (JSONException e) {
 				e.printStackTrace();
-			} finally {
-				remove();
 			}
 		}
 	};
 
 	private void commitTask(String tel_num, long talk_time, int talk_time_len) {
-		if (null == tel_num || !tel_num.equals(app.getCallInfo().getTel_num())
-				|| talk_time_len < app.getCallInfo().getTalk_time_len())
+		if (null == tel_num
+				|| !tel_num.equals(userInfo.getCallInfo().getTel_num())
+				|| talk_time_len < userInfo.getCallInfo().getTalk_time_len())
 			return;
 
 		HashMap<String, String> _params = new HashMap<String, String>();
 		// TODO
-		_params.put("apikey", app.getApikey());
+		_params.put("apikey", userInfo.getApikey());
 		_params.put("command", "commitTask");
-		long ts = (new Date()).getTime() + app.getTs();
-		_params.put("ts", Long.toString(ts));
+		long _ts = (new Date()).getTime() + userInfo.getTs();
+		_params.put("ts", Long.toString(_ts));
 
 		// TODO
 		try {
-			JSONObject jo = new JSONObject();
-			jo.put("id", app.getCallInfo().getHandtask_id());
-			jo.put("TALK_TIME_LEN", talk_time_len);
-			jo.put("TALK_TIME", talk_time);
-			jo.put("TEL_NUM", tel_num);
-			String data = jo.toString();
-			_params.put("data", URLEncoder.encode(data, "UTF-8"));
+			JSONObject _jo = new JSONObject();
+			_jo.put("id", userInfo.getCallInfo().getHandtask_id());
+			_jo.put("TALK_TIME_LEN", talk_time_len);
+			_jo.put("TALK_TIME", talk_time);
+			_jo.put("TEL_NUM", tel_num);
 
-			String params = URLEncoder
-					.encode("apikey=" + app.getApikey()
-							+ "&command=commitTask&data=" + data + "&ts=" + ts,
-							"UTF-8");
-			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+			// TODO
+			String _data = _jo.toString();
+			_params.put("data", URLEncoder.encode(_data, "UTF-8"));
+
+			String _paramStr = URLEncoder.encode(
+					"apikey=" + userInfo.getApikey()
+							+ "&command=commitTask&data=" + _data + "&ts="
+							+ _ts, "UTF-8");
+			_params.put("signature",
+					RestUtil.standard(_paramStr, userInfo.getSeckey()));
 
 			// TODO
 			Editor editor = preferences.edit();
-			editor.putString("id", app.getCallInfo().getHandtask_id());
+			editor.putString("id", userInfo.getCallInfo().getHandtask_id());
 			editor.putInt("TALK_TIME_LEN", talk_time_len);
 			editor.putLong("TALK_TIME", talk_time);
 			editor.putString("TEL_NUM", tel_num);
@@ -161,63 +160,63 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 			e.printStackTrace();
 			return;
 		} finally {
-			app.setCallInfo(null);
+			userInfo.setCallInfo(null);
 		}
 
 		// TODO
-		HttpUtil _hu = new HttpUtil(ServiceAction.COMMITTASK, handler, httpUrl
+		HttpUtil _hu = new HttpUtil(ServiceAction.COMMIT_TASK, handler, httpUrl
 				+ "api", RequestMethod.POST, _params);
 		Thread _t = new Thread(_hu);
 		_t.start();
 	}
 
-	private void findLast(Context ctx, String telNum, long callTime) {
-		Cursor cursor = null;
+	private void findLast(Context ctx, String tel_num, long call_time) {
+		Cursor _cursor = null;
 		// TODO
 		try {
-			cursor = ctx.getContentResolver().query(
+			_cursor = ctx.getContentResolver().query(
 					Calls.CONTENT_URI,
 					porjection,
 					Calls.TYPE + "=" + Calls.OUTGOING_TYPE + " AND "
 							+ Calls.NUMBER + "=? AND " + Calls.DATE + ">"
-							+ callTime + " AND 0<" + Calls.DURATION,
-					new String[] { telNum }, "DATE DESC LIMIT 1");
+							+ call_time + " AND 0<" + Calls.DURATION,
+					new String[] { tel_num }, "DATE DESC LIMIT 1");
 			// TODO
-			if (cursor.moveToFirst()) {
+			if (_cursor.moveToFirst()) {
 				Log.i(TAG,
-						"===========" + cursor.getString(0) + ","
-								+ cursor.getString(1) + ","
-								+ cursor.getString(2) + ","
-								+ cursor.getString(3));
+						"===========" + _cursor.getString(0) + ","
+								+ _cursor.getString(1) + ","
+								+ _cursor.getString(2) + ","
+								+ _cursor.getString(3));
 
-				commitTask(cursor.getString(1), cursor.getLong(2),
-						cursor.getInt(3));
+				commitTask(_cursor.getString(1), _cursor.getLong(2),
+						_cursor.getInt(3));
 			} else {
-				Log.i(TAG, "===========no");
+				Log.i(TAG, "===========");
 			}
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		} finally {
-			if (null != cursor)
-				cursor.close();
+			if (null != _cursor)
+				_cursor.close();
 		}
 	}
 
 	private class OnePhoneStateListener extends PhoneStateListener {
-		private String telNum;
-		private Date callTime;
+		private String tel_num;
+		private Date call_time;
 		private Context ctx;
 
 		public OnePhoneStateListener(Context ctx) {
 			this.ctx = ctx;
 		}
 
-		public void setTelNum(String telNum) {
-			this.telNum = telNum;
+		public void setTel_num(String tel_num) {
+			this.tel_num = tel_num;
 		}
 
-		public void setCallTime(Date callTime) {
-			this.callTime = callTime;
+		public void setCall_time(Date call_time) {
+			this.call_time = call_time;
 		}
 
 		@Override
@@ -225,7 +224,7 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 			super.onCallStateChanged(state, incomingNumber);
 			switch (state) {
 			case TelephonyManager.CALL_STATE_IDLE: // 挂断
-				findLast(ctx, telNum, callTime.getTime());
+				findLast(ctx, tel_num, call_time.getTime());
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK: // 接听
 				break;

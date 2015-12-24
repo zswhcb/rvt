@@ -1,6 +1,7 @@
 package tel.call.util;
 
 import java.net.HttpURLConnection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -69,6 +70,8 @@ public class HttpUtil implements Runnable {
 		return client;
 	}
 
+	private static long TIME_OUT_IN_SECONDS = 120;
+
 	/**
 	 * 
 	 */
@@ -102,6 +105,8 @@ public class HttpUtil implements Runnable {
 	 * 
 	 */
 	private void post(String params) {
+		long requestStratTime = new Date().getTime();
+
 		// TODO
 		url += "?" + params;
 		Log.i(TAG, url);
@@ -110,6 +115,14 @@ public class HttpUtil implements Runnable {
 		// TODO
 		try {
 			HttpResponse res = getHttpClient().execute(req);
+
+			long requestEndTime = new Date().getTime();
+			long timeOfRequest = (requestEndTime - requestStratTime) / 1000;
+			if (res == null && timeOfRequest > TIME_OUT_IN_SECONDS) {
+				msg.arg1 = R.string.valiate_network;
+				return;
+			}
+
 			if (HttpURLConnection.HTTP_OK == res.getStatusLine()
 					.getStatusCode()) {
 				HttpEntity entity = res.getEntity();
@@ -117,14 +130,16 @@ public class HttpUtil implements Runnable {
 				// TODO
 				Log.i(TAG, str);
 				msg.obj = str;
-			} else {
-				msg.arg1 = R.string.valiate_network;
+				return;
 			}
+
+			msg.arg1 = R.string.valiate_network;
 		} catch (Exception e) {
 			e.printStackTrace();
 			msg.arg1 = R.string.valiate_network;
+		} finally {
+			handler.sendMessage(msg);
 		}
-		handler.sendMessage(msg);
 	}
 
 	@Override

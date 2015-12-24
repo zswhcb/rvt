@@ -27,7 +27,7 @@
         </EditText>
 
         <EditText
-            android:id="@+id/text_task_tel_num"
+            android:id="@+id/text_tel_num"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dip"
@@ -41,7 +41,7 @@
         </EditText>
 
         <EditText
-            android:id="@+id/text_task_talk_timeout"
+            android:id="@+id/text_talk_timeout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dip"
@@ -55,7 +55,7 @@
         </EditText>
 
         <EditText
-            android:id="@+id/text_task_talk_time_len"
+            android:id="@+id/text_talk_time_len"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dip"
