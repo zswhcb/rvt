@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tel.call.R;
 import tel.call.action.ServiceAction;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
@@ -42,14 +43,12 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 	private UserInfo app;
 	private String httpUrl;
 
-	public PhoneBroadcastReceiver(String httpUrl) {
-		this.httpUrl = httpUrl;
-	}
-
 	@Override
 	public void onReceive(Context ctx, Intent intent) {
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 			app = (UserInfo) ctx.getApplicationContext();
+			httpUrl = ctx.getString(R.string.httpUrl);
+
 			String telNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 			// TODO
 			TelephonyManager tm = (TelephonyManager) ctx

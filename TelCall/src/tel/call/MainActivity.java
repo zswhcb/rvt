@@ -83,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void registerListener() {
-		receiver = new PhoneBroadcastReceiver(getString(R.string.httpUrl));
+		receiver = new PhoneBroadcastReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
 		filter.setPriority(Integer.MAX_VALUE);
