@@ -17,6 +17,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
 import tel.call.R;
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -57,16 +58,24 @@ public class HttpUtil implements Runnable {
 	private static final int REQUEST_TIMEOUT = 5 * 1000; // 设置请求超时5秒钟
 	private static final int SO_TIMEOUT = 5 * 1000; // 设置等待数据超时时间5秒钟
 
+	private static HttpClient client;
+
 	/**
 	 * 请求超时时间和等待时间
 	 * 
 	 * @return
 	 */
+	@SuppressLint("UseValueOf")
 	private static HttpClient getHttpClient() {
-		BasicHttpParams httpParams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, REQUEST_TIMEOUT);
-		HttpConnectionParams.setSoTimeout(httpParams, SO_TIMEOUT);
-		HttpClient client = new DefaultHttpClient(httpParams);
+		if (null == client) {
+			BasicHttpParams httpParams = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParams,
+					REQUEST_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(httpParams, SO_TIMEOUT);
+			client = new DefaultHttpClient(httpParams);
+			client.getParams().setParameter("http.socket.timeout",
+					new Integer(30000));
+		}
 		return client;
 	}
 
