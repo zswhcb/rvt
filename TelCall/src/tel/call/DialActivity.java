@@ -8,18 +8,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tel.call.action.ServiceAction;
-import tel.call.broadcast.PhoneBroadcastReceiver;
 import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
 import tel.call.util.RestUtil;
 import tel.call.util.UserInfo;
+import tel.call.util.UserInfo.CallInfo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,8 +49,6 @@ public class DialActivity extends Activity {
 	private Button btn_dial;
 	private UserInfo app;
 
-	private PhoneBroadcastReceiver receiver;
-
 	private AlertDialog.Builder alertDialog;
 
 	@Override
@@ -60,14 +57,6 @@ public class DialActivity extends Activity {
 		setContentView(R.layout.dial_main);
 		// TODO
 		app = (UserInfo) getApplication();
-	}
-
-	private void registerListener() {
-		receiver = new PhoneBroadcastReceiver(handtask_id);
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
-		filter.setPriority(Integer.MAX_VALUE);
-		registerReceiver(receiver, filter);
 	}
 
 	@Override
@@ -84,10 +73,9 @@ public class DialActivity extends Activity {
 		applyTask(_bundle.getString("TASK_ID"));
 	}
 
-	private String handtask_id;
-
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
+
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -132,11 +120,16 @@ public class DialActivity extends Activity {
 				text_sms_intro.setText(_jdata.getString("SMS_INTRO"));
 
 				// TODO
-				handtask_id = _jdata.getString("HANDTASK_ID");
+				CallInfo ci = app.new CallInfo();
+				ci.setHandtask_id(_jdata.getString("HANDTASK_ID"));
+				ci.setTel_num(_jdata.getString("TEL_NUM"));
+				ci.setTalk_time_len(_jdata.getInt("TALK_TIME_LEN"));
+				app.setCallInfo(ci);
 				// TODO
 				btn_dial.setEnabled(true);
 			} catch (JSONException e) {
 				e.printStackTrace();
+				app.setCallInfo(null);
 				errorBack(e.getMessage());
 			}
 		}
@@ -199,11 +192,11 @@ public class DialActivity extends Activity {
 			public void onClick(View view) {
 				Bundle _bundle = getIntent().getExtras();
 				String tel_num = _bundle.getString("TEL_NUM");
-				registerListener();
 				// 用intent启动拨打电话
 				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 						+ tel_num));
 				DialActivity.this.startActivity(intent);
+				DialActivity.this.finish();
 			}
 		});
 
@@ -217,15 +210,10 @@ public class DialActivity extends Activity {
 	}
 
 	@Override
-	public void onDestroy() {
-		unregisterReceiver(receiver);
-		super.onDestroy();
-	}
-
-	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			DialActivity.this.finish();
+			app.setCallInfo(null);
+			this.finish();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);

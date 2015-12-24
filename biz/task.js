@@ -30,7 +30,10 @@ var biz = {
 		// TODO
 		biz.handtask.getById(newInfo.id, function (err, doc){
 			if(err) return cb(err);
-			if(!doc || (1 === doc.HANDTASK_STATUS) || (user_id !== doc.HANDTASK_USER_ID)) return cb(null, ['非法操作']);
+			if(!doc ||
+				(1 === doc.HANDTASK_STATUS) ||
+				(user_id !== doc.HANDTASK_USER_ID) ||
+				(newInfo.TEL_NUM !== doc.TEL_NUM)) return cb(null, ['非法操作']);
 			// TODO 通话时长不达标
 			if(TALK_TIME_LEN < doc.TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_LEN +' 秒']);
 			// TODO 当前时间
@@ -129,7 +132,7 @@ exports.apply = function(user_id, task_id, cb){
 
 	// TODO
 	exports.getCurrentTasks = function(cb){
-		var sql = 'SELECT c.* FROM ('+ sql_1 +') c WHERE c.TASK_SUM>(c.INIT_TASK_SUM+c.SUCCESS_TASK_SUM)';
+		var sql = 'SELECT c.* FROM ('+ sql_1 +') c WHERE c.TASK_SUM>(c.INIT_TASK_SUM+c.SUCCESS_TASK_SUM) ORDER BY c.CREATE_TIME DESC';
 		// TODO
 		mysql.query(sql, [new Date()], function (err, docs){
 			if(err) return cb(err);

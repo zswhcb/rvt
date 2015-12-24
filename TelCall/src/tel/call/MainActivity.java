@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import tel.call.action.ServiceAction;
 import tel.call.adapter.CurrentTasksAdapter;
+import tel.call.broadcast.PhoneBroadcastReceiver;
 import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
@@ -20,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,6 +62,8 @@ public class MainActivity extends ActionBarActivity {
 	private AlertDialog.Builder alertDialog;
 	private AlertDialog.Builder exitDialog;
 
+	private PhoneBroadcastReceiver receiver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (checkLogin())
@@ -72,15 +76,26 @@ public class MainActivity extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+		registerListener();
 		// TODO
 		// dbMgr = new DBManager(this);
 		app = (UserInfo) getApplication();
+	}
+
+	private void registerListener() {
+		receiver = new PhoneBroadcastReceiver(getString(R.string.httpUrl));
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+		filter.setPriority(Integer.MAX_VALUE);
+		registerReceiver(receiver, filter);
 	}
 
 	@Override
 	protected void onDestroy() {
 		// if (null != dbMgr)
 		// dbMgr.close();
+		if (null != receiver)
+			unregisterReceiver(receiver);
 		super.onDestroy();
 	}
 

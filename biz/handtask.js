@@ -134,13 +134,13 @@ var exports = module.exports;
  * @return
  */
 (function (exports){
-	var sql = 'UPDATE p_handtask TEL_NUM=?, UPLOAD_TIME=?, TALK_TIME=?, TALK_TIME_LEN=?, STATUS=? WHERE id=?';
+	var sql = 'UPDATE p_handtask SET TEL_NUM=?, UPLOAD_TIME=?, TALK_TIME=?, TALK_TIME_LEN=?, STATUS=? WHERE id=?';
 	// TODO
 	exports.editInfo = function(newInfo, cb){
 		var postData = [
 			newInfo.TEL_NUM,
 			new Date(),
-			newInfo.TALK_TIME,
+			new Date(newInfo.TALK_TIME),
 			newInfo.TALK_TIME_LEN,
 			newInfo.STATUS,
 			newInfo.id

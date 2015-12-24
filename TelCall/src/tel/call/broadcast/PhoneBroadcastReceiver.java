@@ -1,12 +1,25 @@
 package tel.call.broadcast;
 
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tel.call.action.ServiceAction;
+import tel.call.util.HttpUtil;
+import tel.call.util.HttpUtil.RequestMethod;
+import tel.call.util.RestUtil;
+import tel.call.util.UserInfo;
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.CallLog.Calls;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -26,15 +39,17 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 
 	private OnePhoneStateListener listener;
 
-	private String handtask_id;
+	private UserInfo app;
+	private String httpUrl;
 
-	public PhoneBroadcastReceiver(String handtask_id) {
-		this.handtask_id = handtask_id;
+	public PhoneBroadcastReceiver(String httpUrl) {
+		this.httpUrl = httpUrl;
 	}
 
 	@Override
 	public void onReceive(Context ctx, Intent intent) {
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
+			app = (UserInfo) ctx.getApplicationContext();
 			String telNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 			// TODO
 			TelephonyManager tm = (TelephonyManager) ctx
@@ -56,8 +71,76 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 		super.finalize();
 	}
 
-	private void commitTask(String TEL_NUM, String TALK_TIME_LEN) {
+	@SuppressLint("HandlerLeak")
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case ServiceAction.COMMITTASK:
+				commitTask(msg);
+			default:
+				break;
+			}
+		}
 
+		private void commitTask(Message msg) {
+			// TODO
+			if (null == msg.obj) {
+				return;
+			}
+
+			// TODO
+			try {
+				JSONObject _jo = new JSONObject((String) msg.obj);
+				// TODO
+				if (!_jo.getBoolean("success")) {
+					return;
+				}
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	};
+
+	private void commitTask(String TEL_NUM, long TALK_TIME, int TALK_TIME_LEN) {
+		if (!TEL_NUM.equals(app.getCallInfo().getTel_num())
+				|| TALK_TIME_LEN < app.getCallInfo().getTalk_time_len())
+			return;
+
+		HashMap<String, String> _params = new HashMap<String, String>();
+		// TODO
+		_params.put("apikey", app.getApikey());
+		_params.put("command", "commitTask");
+		long ts = (new Date()).getTime() + app.getTs();
+		_params.put("ts", Long.toString(ts));
+
+		// TODO
+		try {
+			JSONObject jo = new JSONObject();
+			jo.put("id", app.getCallInfo().getHandtask_id());
+			jo.put("TALK_TIME_LEN", TALK_TIME_LEN);
+			jo.put("TALK_TIME", TALK_TIME);
+			jo.put("TEL_NUM", TEL_NUM);
+			String data = jo.toString();
+			_params.put("data", URLEncoder.encode(data, "UTF-8"));
+
+			String params = URLEncoder
+					.encode("apikey=" + app.getApikey()
+							+ "&command=commitTask&data=" + data + "&ts=" + ts,
+							"UTF-8");
+			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+		// TODO
+		HttpUtil _hu = new HttpUtil(ServiceAction.COMMITTASK, handler, httpUrl
+				+ "api", RequestMethod.POST, _params);
+		Thread _t = new Thread(_hu);
+		_t.start();
 	}
 
 	private void findLast(Context ctx, String telNum, long callTime) {
@@ -79,7 +162,8 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 								+ cursor.getString(2) + ","
 								+ cursor.getString(3));
 
-				commitTask(cursor.getString(1), cursor.getString(3));
+				commitTask(cursor.getString(1), cursor.getLong(2),
+						cursor.getInt(3));
 			} else {
 				Log.i(TAG, "===========no");
 			}
