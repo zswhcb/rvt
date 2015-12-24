@@ -18,6 +18,8 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
@@ -43,11 +45,16 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 	private UserInfo app;
 	private String httpUrl;
 
+	private SharedPreferences preferences;
+
+	@SuppressWarnings("static-access")
 	@Override
 	public void onReceive(Context ctx, Intent intent) {
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 			app = (UserInfo) ctx.getApplicationContext();
 			httpUrl = ctx.getString(R.string.httpUrl);
+			preferences = ctx.getSharedPreferences("upload",
+					ctx.getApplicationContext().MODE_PRIVATE);
 
 			String telNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 			// TODO
@@ -78,9 +85,19 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 			switch (msg.what) {
 			case ServiceAction.COMMITTASK:
 				commitTask(msg);
+				break;
 			default:
 				break;
 			}
+		}
+
+		private void remove() {
+			Editor editor = preferences.edit();
+			editor.remove("id");
+			editor.remove("TALK_TIME_LEN");
+			editor.remove("TALK_TIME");
+			editor.remove("TEL_NUM");
+			editor.commit();
 		}
 
 		private void commitTask(Message msg) {
@@ -94,9 +111,9 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
-					return;
 				}
 
+				remove();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -130,9 +147,19 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 							+ "&command=commitTask&data=" + data + "&ts=" + ts,
 							"UTF-8");
 			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+
+			// TODO
+			Editor editor = preferences.edit();
+			editor.putString("id", app.getCallInfo().getHandtask_id());
+			editor.putInt("TALK_TIME_LEN", TALK_TIME_LEN);
+			editor.putLong("TALK_TIME", TALK_TIME);
+			editor.putString("TEL_NUM", TEL_NUM);
+			editor.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
+		} finally {
+			app.setCallInfo(null);
 		}
 
 		// TODO

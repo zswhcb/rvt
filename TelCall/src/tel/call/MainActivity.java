@@ -22,6 +22,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -123,8 +125,41 @@ public class MainActivity extends ActionBarActivity {
 			case ServiceAction.GET_CURRENTTASKS:
 				getCurrentTasks(msg);
 				break;
+			case ServiceAction.COMMITTASK:
+				commitTask(msg);
+				break;
 			default:
 				break;
+			}
+		}
+
+		private void remove() {
+			SharedPreferences preferences = getSharedPreferences("upload",
+					MODE_PRIVATE);
+			Editor editor = preferences.edit();
+			editor.remove("id");
+			editor.remove("TALK_TIME_LEN");
+			editor.remove("TALK_TIME");
+			editor.remove("TEL_NUM");
+			editor.commit();
+		}
+
+		private void commitTask(Message msg) {
+			// TODO
+			if (null == msg.obj) {
+				return;
+			}
+
+			// TODO
+			try {
+				JSONObject _jo = new JSONObject((String) msg.obj);
+				// TODO
+				if (!_jo.getBoolean("success")) {
+				}
+
+				remove();
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -195,13 +230,64 @@ public class MainActivity extends ActionBarActivity {
 		_t.start();
 	}
 
+	private void upload(String id, String TEL_NUM, long TALK_TIME,
+			int TALK_TIME_LEN) {
+		HashMap<String, String> _params = new HashMap<String, String>();
+		// TODO
+		_params.put("apikey", app.getApikey());
+		_params.put("command", "commitTask");
+		long ts = (new Date()).getTime() + app.getTs();
+		_params.put("ts", Long.toString(ts));
+
+		// TODO
+		try {
+			JSONObject jo = new JSONObject();
+			jo.put("id", id);
+			jo.put("TALK_TIME_LEN", TALK_TIME_LEN);
+			jo.put("TALK_TIME", TALK_TIME);
+			jo.put("TEL_NUM", TEL_NUM);
+			String data = jo.toString();
+			_params.put("data", URLEncoder.encode(data, "UTF-8"));
+
+			String params = URLEncoder
+					.encode("apikey=" + app.getApikey()
+							+ "&command=commitTask&data=" + data + "&ts=" + ts,
+							"UTF-8");
+			_params.put("signature", RestUtil.standard(params, app.getSeckey()));
+			// TODO
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+		// TODO
+		HttpUtil _hu = new HttpUtil(ServiceAction.COMMITTASK, handler,
+				getString(R.string.httpUrl) + "api", RequestMethod.POST,
+				_params);
+		Thread _t = new Thread(_hu);
+		_t.start();
+	}
+
 	private void errorMsg(String msg) {
 		alertDialog.setMessage(msg);
 		alertDialog.show();
 	}
 
 	private void loadData_grid() {
-		refreshRemoteData();
+		SharedPreferences preferences = getSharedPreferences("upload",
+				MODE_PRIVATE);
+
+		String id = preferences.getString("id", null);
+		if (null == id) {
+			refreshRemoteData();
+			return;
+		}
+
+		int TALK_TIME_LEN = preferences.getInt("TALK_TIME_LEN", 0);
+		long TALK_TIME = preferences.getLong("TALK_TIME", 0L);
+		String TEL_NUM = preferences.getString("TEL_NUM", "");
+
+		upload(id, TEL_NUM, TALK_TIME, TALK_TIME_LEN);
 	}
 
 	private void loadData() {
@@ -242,7 +328,21 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View view) {
 				setBtnSyncStatus(false);
-				refreshRemoteData();
+
+				SharedPreferences preferences = getSharedPreferences("upload",
+						MODE_PRIVATE);
+
+				String id = preferences.getString("id", null);
+				if (null == id) {
+					refreshRemoteData();
+					return;
+				}
+
+				int TALK_TIME_LEN = preferences.getInt("TALK_TIME_LEN", 0);
+				long TALK_TIME = preferences.getLong("TALK_TIME", 0L);
+				String TEL_NUM = preferences.getString("TEL_NUM", "");
+
+				upload(id, TEL_NUM, TALK_TIME, TALK_TIME_LEN);
 			}
 		});
 
@@ -252,6 +352,21 @@ public class MainActivity extends ActionBarActivity {
 			public void onItemClick(AdapterView<?> av, View v, int position,
 					long id) {
 				setGridStatus(false);
+
+				SharedPreferences preferences = getSharedPreferences("upload",
+						MODE_PRIVATE);
+
+				String idd = preferences.getString("id", null);
+				if (null != idd) {
+					int TALK_TIME_LEN = preferences.getInt("TALK_TIME_LEN", 0);
+					long TALK_TIME = preferences.getLong("TALK_TIME", 0L);
+					String TEL_NUM = preferences.getString("TEL_NUM", "");
+					// TODO
+					upload(idd, TEL_NUM, TALK_TIME, TALK_TIME_LEN);
+					setGridStatus(true);
+					return;
+				}
+
 				// TODO
 				JSONObject _jo = (JSONObject) grid_items
 						.getItemAtPosition(position);
