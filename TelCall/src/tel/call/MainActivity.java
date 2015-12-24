@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import tel.call.action.ServiceAction;
 import tel.call.adapter.CurrentTasksAdapter;
 import tel.call.broadcast.PhoneBroadcastReceiver;
+import tel.call.util.AppUtil;
 import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
@@ -65,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
 	private AlertDialog.Builder exitDialog;
 
 	private PhoneBroadcastReceiver receiver;
+	private SharedPreferences preferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +80,13 @@ public class MainActivity extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+
+		// TODO
 		registerListener();
 		// TODO
 		// dbMgr = new DBManager(this);
 		app = (UserInfo) getApplication();
+		preferences = getSharedPreferences(AppUtil.UN_UPLOAD, MODE_PRIVATE);
 	}
 
 	private void registerListener() {
@@ -134,8 +139,6 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		private void remove() {
-			SharedPreferences preferences = getSharedPreferences("upload",
-					MODE_PRIVATE);
 			Editor editor = preferences.edit();
 			editor.remove("id");
 			editor.remove("TALK_TIME_LEN");
@@ -155,11 +158,12 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
+					// TODO
 				}
-
-				remove();
 			} catch (JSONException e) {
 				e.printStackTrace();
+			} finally {
+				remove();
 			}
 		}
 
@@ -170,6 +174,7 @@ public class MainActivity extends ActionBarActivity {
 				setBtnSyncStatus(true);
 				return;
 			}
+
 			// TODO
 			try {
 				JSONObject _jo = new JSONObject((String) msg.obj);
@@ -230,8 +235,8 @@ public class MainActivity extends ActionBarActivity {
 		_t.start();
 	}
 
-	private void upload(String id, String TEL_NUM, long TALK_TIME,
-			int TALK_TIME_LEN) {
+	private void startUnUpload(String id, String tel_num, long talk_time,
+			int talk_time_len) {
 		HashMap<String, String> _params = new HashMap<String, String>();
 		// TODO
 		_params.put("apikey", app.getApikey());
@@ -243,9 +248,9 @@ public class MainActivity extends ActionBarActivity {
 		try {
 			JSONObject jo = new JSONObject();
 			jo.put("id", id);
-			jo.put("TALK_TIME_LEN", TALK_TIME_LEN);
-			jo.put("TALK_TIME", TALK_TIME);
-			jo.put("TEL_NUM", TEL_NUM);
+			jo.put("TALK_TIME_LEN", talk_time_len);
+			jo.put("TALK_TIME", talk_time);
+			jo.put("TEL_NUM", tel_num);
 			String data = jo.toString();
 			_params.put("data", URLEncoder.encode(data, "UTF-8"));
 
@@ -274,24 +279,12 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void loadData_grid() {
-		SharedPreferences preferences = getSharedPreferences("upload",
-				MODE_PRIVATE);
-
-		String id = preferences.getString("id", null);
-		if (null == id) {
-			refreshRemoteData();
-			return;
-		}
-
-		int TALK_TIME_LEN = preferences.getInt("TALK_TIME_LEN", 0);
-		long TALK_TIME = preferences.getLong("TALK_TIME", 0L);
-		String TEL_NUM = preferences.getString("TEL_NUM", "");
-
-		upload(id, TEL_NUM, TALK_TIME, TALK_TIME_LEN);
+		refreshRemoteData();
 	}
 
 	private void loadData() {
-		loadData_grid();
+		if (checkUnUpload())
+			loadData_grid();
 	}
 
 	private void findView() {
@@ -303,6 +296,7 @@ public class MainActivity extends ActionBarActivity {
 		text_sel_date.setEnabled(false);
 		// TODO
 		alertDialog = new AlertDialog.Builder(this);
+		// TODO
 		exitDialog = new AlertDialog.Builder(this);
 		exitDialog.setTitle("你确定要退出吗？");
 		exitDialog.setIcon(android.R.drawable.ic_dialog_info);
@@ -322,27 +316,27 @@ public class MainActivity extends ActionBarActivity {
 				: "正在申请");
 	}
 
+	private boolean checkUnUpload() {
+		String id = preferences.getString("id", null);
+		if (null == id)
+			return true;
+
+		int talk_time_len = preferences.getInt("TALK_TIME_LEN", 0);
+		long talk_time = preferences.getLong("TALK_TIME", 0L);
+		String tel_num = preferences.getString("TEL_NUM", "");
+
+		startUnUpload(id, tel_num, talk_time, talk_time_len);
+		return false;
+	}
+
 	private void bind() {
 		// click
 		btn_sync.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				setBtnSyncStatus(false);
-
-				SharedPreferences preferences = getSharedPreferences("upload",
-						MODE_PRIVATE);
-
-				String id = preferences.getString("id", null);
-				if (null == id) {
-					refreshRemoteData();
-					return;
-				}
-
-				int TALK_TIME_LEN = preferences.getInt("TALK_TIME_LEN", 0);
-				long TALK_TIME = preferences.getLong("TALK_TIME", 0L);
-				String TEL_NUM = preferences.getString("TEL_NUM", "");
-
-				upload(id, TEL_NUM, TALK_TIME, TALK_TIME_LEN);
+				// TODO
+				loadData();
 			}
 		});
 
@@ -353,16 +347,7 @@ public class MainActivity extends ActionBarActivity {
 					long id) {
 				setGridStatus(false);
 
-				SharedPreferences preferences = getSharedPreferences("upload",
-						MODE_PRIVATE);
-
-				String idd = preferences.getString("id", null);
-				if (null != idd) {
-					int TALK_TIME_LEN = preferences.getInt("TALK_TIME_LEN", 0);
-					long TALK_TIME = preferences.getLong("TALK_TIME", 0L);
-					String TEL_NUM = preferences.getString("TEL_NUM", "");
-					// TODO
-					upload(idd, TEL_NUM, TALK_TIME, TALK_TIME_LEN);
+				if (!checkUnUpload()) {
 					setGridStatus(true);
 					return;
 				}
@@ -407,7 +392,6 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;

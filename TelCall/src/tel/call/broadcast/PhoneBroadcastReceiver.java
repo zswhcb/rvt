@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import tel.call.R;
 import tel.call.action.ServiceAction;
+import tel.call.util.AppUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
 import tel.call.util.RestUtil;
@@ -44,7 +45,6 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 
 	private UserInfo app;
 	private String httpUrl;
-
 	private SharedPreferences preferences;
 
 	@SuppressWarnings("static-access")
@@ -53,9 +53,10 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 			app = (UserInfo) ctx.getApplicationContext();
 			httpUrl = ctx.getString(R.string.httpUrl);
-			preferences = ctx.getSharedPreferences("upload",
+			preferences = ctx.getSharedPreferences(AppUtil.UN_UPLOAD,
 					ctx.getApplicationContext().MODE_PRIVATE);
 
+			// TODO
 			String telNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 			// TODO
 			TelephonyManager tm = (TelephonyManager) ctx
@@ -111,18 +112,19 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
 				if (!_jo.getBoolean("success")) {
+					// TODO
 				}
-
-				remove();
 			} catch (JSONException e) {
 				e.printStackTrace();
+			} finally {
+				remove();
 			}
 		}
 	};
 
-	private void commitTask(String TEL_NUM, long TALK_TIME, int TALK_TIME_LEN) {
-		if (!TEL_NUM.equals(app.getCallInfo().getTel_num())
-				|| TALK_TIME_LEN < app.getCallInfo().getTalk_time_len())
+	private void commitTask(String tel_num, long talk_time, int talk_time_len) {
+		if (null == tel_num || !tel_num.equals(app.getCallInfo().getTel_num())
+				|| talk_time_len < app.getCallInfo().getTalk_time_len())
 			return;
 
 		HashMap<String, String> _params = new HashMap<String, String>();
@@ -136,9 +138,9 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 		try {
 			JSONObject jo = new JSONObject();
 			jo.put("id", app.getCallInfo().getHandtask_id());
-			jo.put("TALK_TIME_LEN", TALK_TIME_LEN);
-			jo.put("TALK_TIME", TALK_TIME);
-			jo.put("TEL_NUM", TEL_NUM);
+			jo.put("TALK_TIME_LEN", talk_time_len);
+			jo.put("TALK_TIME", talk_time);
+			jo.put("TEL_NUM", tel_num);
 			String data = jo.toString();
 			_params.put("data", URLEncoder.encode(data, "UTF-8"));
 
@@ -151,9 +153,9 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 			// TODO
 			Editor editor = preferences.edit();
 			editor.putString("id", app.getCallInfo().getHandtask_id());
-			editor.putInt("TALK_TIME_LEN", TALK_TIME_LEN);
-			editor.putLong("TALK_TIME", TALK_TIME);
-			editor.putString("TEL_NUM", TEL_NUM);
+			editor.putInt("TALK_TIME_LEN", talk_time_len);
+			editor.putLong("TALK_TIME", talk_time);
+			editor.putString("TEL_NUM", tel_num);
 			editor.commit();
 		} catch (Exception e) {
 			e.printStackTrace();

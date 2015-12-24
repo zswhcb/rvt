@@ -9,6 +9,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
  * 
  */
 public class AppUtil {
+	public static final String UN_UPLOAD = "UN_UPLOAD";
+
 	public static int getVerCode(Context context) {
 		int verCode = 0;
 		try {
