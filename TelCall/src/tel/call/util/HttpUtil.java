@@ -74,7 +74,7 @@ public class HttpUtil implements Runnable {
 			HttpConnectionParams.setSoTimeout(httpParams, SO_TIMEOUT);
 			client = new DefaultHttpClient(httpParams);
 			client.getParams().setParameter("http.socket.timeout",
-					new Integer(30000));
+					new Integer(30 * 1000));
 		}
 		return client;
 	}
@@ -147,6 +147,7 @@ public class HttpUtil implements Runnable {
 			e.printStackTrace();
 			msg.arg1 = R.string.valiate_network;
 		} finally {
+			req.abort();
 			handler.sendMessage(msg);
 		}
 	}

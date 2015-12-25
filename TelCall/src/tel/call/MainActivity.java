@@ -149,6 +149,11 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 
 				// TODO
+				if (!_jo.getBoolean("success")) {
+					showAlertDialog(_jo.getJSONArray("msg").getString(0));
+					return;
+				}
+				// TODO
 				if (null == preferences)
 					preferences = getSharedPreferences(AppUtil.UN_UPLOAD,
 							MODE_PRIVATE);
@@ -157,11 +162,6 @@ public class MainActivity extends ActionBarActivity {
 				Editor _editor = preferences.edit();
 				_editor.remove("id");
 				_editor.commit();
-
-				// TODO
-				if (!_jo.getBoolean("success")) {
-					showAlertDialog(_jo.getJSONArray("msg").getString(0));
-				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 				showAlertDialog(e.getMessage());

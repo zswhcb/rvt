@@ -103,9 +103,8 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 			try {
 				JSONObject _jo = new JSONObject((String) msg.obj);
 				// TODO
-				if (!_jo.getBoolean("success")) {
-					// TODO
-				}
+				if (!_jo.getBoolean("success"))
+					return;
 
 				// TODO
 				Editor editor = preferences.edit();

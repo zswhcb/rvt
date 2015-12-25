@@ -53,7 +53,7 @@ public class LoginActivity extends Activity {
 
 	private Toast toast;
 
-	private AlertDialog.Builder alertDialog;
+	private AlertDialog.Builder dialog_alert;
 
 	private void showToast(String msg) {
 		if (null == toast)
@@ -87,8 +87,8 @@ public class LoginActivity extends Activity {
 		// TODO
 		text_username.setText(getCurrentMobileNum().replaceAll("\\+86", ""));
 
-		alertDialog = new AlertDialog.Builder(this);
-		alertDialog.setMessage("有新版本更新，请点击确定下载");
+		dialog_alert = new AlertDialog.Builder(this);
+		dialog_alert.setMessage("有新版本更新，请点击确定下载");
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -124,7 +124,7 @@ public class LoginActivity extends Activity {
 
 				// TODO 版本检测
 				if (AppUtil.getVerCode(LoginActivity.this) < _jo.getInt("ver")) {
-					alertDialog.show();
+					dialog_alert.show();
 					setBtnLoginStatus(true);
 					return;
 				}
@@ -205,7 +205,7 @@ public class LoginActivity extends Activity {
 
 	private void bind() {
 		// TODO
-		alertDialog.setPositiveButton("确定",
+		dialog_alert.setPositiveButton("确定",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialoginterface, int i) {
 						Uri uri = Uri.parse(getString(R.string.AppUrl));
