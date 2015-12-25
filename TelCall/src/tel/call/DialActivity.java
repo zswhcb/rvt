@@ -138,13 +138,15 @@ public class DialActivity extends Activity {
 	private void applyTask(String task_id) {
 		HashMap<String, String> _params = new HashMap<String, String>();
 		// TODO
-		_params.put("apikey", userInfo.getApikey());
 		_params.put("command", "applyTask");
 		long _ts = (new Date()).getTime() + userInfo.getTs();
 		_params.put("ts", Long.toString(_ts));
 
 		// TODO
 		try {
+			_params.put("apikey",
+					URLEncoder.encode(userInfo.getApikey(), "UTF-8"));
+
 			JSONObject _jo = new JSONObject();
 			_jo.put("TASK_ID", task_id);
 			String data = _jo.toString();

@@ -124,13 +124,15 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 
 		HashMap<String, String> _params = new HashMap<String, String>();
 		// TODO
-		_params.put("apikey", userInfo.getApikey());
 		_params.put("command", "commitTask");
 		long _ts = (new Date()).getTime() + userInfo.getTs();
 		_params.put("ts", Long.toString(_ts));
 
 		// TODO
 		try {
+			_params.put("apikey",
+					URLEncoder.encode(userInfo.getApikey(), "UTF-8"));
+
 			JSONObject _jo = new JSONObject();
 			_jo.put("id", userInfo.getCallInfo().getHandtask_id());
 			_jo.put("TALK_TIME_LEN", talk_time_len);

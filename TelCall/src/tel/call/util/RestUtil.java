@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.Random;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -38,5 +39,11 @@ public class RestUtil {
 			e.printStackTrace();
 		}
 		return "";
+	}
+
+	public static void main(String[] args) {
+		for (int i = 0; i < 10; i++)
+			System.out.println(standard((new Random()).toString(),
+					(new Random()).toString()));
 	}
 }
