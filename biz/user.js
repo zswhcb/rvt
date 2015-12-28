@@ -213,8 +213,8 @@ exports.findByName = function(name, cb){
 						newInfo.MOBILE,
 						newInfo.REAL_NAME,
 						newInfo.ALIPAY_ACCOUNT,
-						newInfo.APIKEY,
-						newInfo.SECKEY,
+						rest.genApiKey(),
+						rest.genSecKey(),
 						newInfo.AUTH_CODE_ID || '',
 						new Date(),
 						newInfo.STATUS || 1
