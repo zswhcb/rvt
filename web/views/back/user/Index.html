@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+	<head>
+		#parse('front/_pagelet/Common.IndexHeader.html')
+		<style>
+		body{
+			background: rgba(0, 0, 0, 0) url('$!{conf.html.external_res}assets/css/olx/images/bg.jpg') repeat scroll 0 0;
+		}
+		.olx-form-required {
+			color: red;
+		}
+		</style>
+	</head>
+	<body>
+		#parse('back/_pagelet/Side.TopBanner.html')
+		<header id='header'></header>
+		<div class='container'>
+			<div class='row'>
+				<div class='col-md-12'>
+				</div>
+			</div>
+		</div>
+		#parse('front/_pagelet/Side.IndexFooter.html')
+		#parse('front/_pagelet/Common.IndexJs.html')
+		<!-- Own -->
+		<script type='text/javascript'>
+		</script>
+		#parse('front/_pagelet/Common.LastJs.html')
+		<script type='text/javascript'>
+		</script>
+	</body>
+</html>

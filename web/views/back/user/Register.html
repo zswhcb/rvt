@@ -103,7 +103,10 @@
 			$('#regFrm').olxForm('submit', [function(){
 			}, function (valiResu){
 			}, function (data){
-				if(data.success) return alert('注册成功');
+				if(data.success){
+					alert('注册成功');
+					return location.href = '/user/login';
+				}
 				if(data.msg) alert(data.msg[0]);
 			}]);
 		});

@@ -15,6 +15,36 @@ var biz = {
 };
 
 /**
+ *
+ * @params
+ * @return
+ */
+exports.login = function(req, res, next){
+	var result = { success: false },
+		data = req._data;
+	// TODO
+	biz.user.login(data, function (err, msg, doc){
+		if(err) return next(err);
+		if(!!msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+		if('566512b49012fb044691ace6' !== doc.ROLE_ID){
+			result.msg = ['无权登陆'];
+			return res.send(result);
+		}
+		// session
+		req.session.lv = 3;
+		req.session.userId = doc.id;
+		req.session.roleId = doc.ROLE_ID;
+		req.session.user = doc;
+		// TODO
+		result.success = true;
+		res.send(result);
+	});
+};
+
+/**
  * 登陆
  *
  * @params
@@ -91,7 +121,13 @@ exports.changePwdUI = function(req, res, next){
  * @return
  */
 exports.indexUI = function(req, res, next){
-	// TODO
+	res.render('back/user/Index', {
+		conf: conf,
+		title: '我的 | '+ conf.corp.name,
+		description: '',
+		keywords: ',html5',
+		loginState: 3 === req.session.lv
+	});
 };
 
 /**
@@ -101,4 +137,14 @@ exports.indexUI = function(req, res, next){
  */
 exports.task_indexUI = function(req, res, next){
 	// TODO
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.logoutUI = function(req, res, next){
+	req.session.destroy();
+	res.redirect('/user/login');
 };

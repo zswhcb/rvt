@@ -78,5 +78,15 @@
 		<script type='text/javascript'>
 		</script>
 		#parse('front/_pagelet/Common.LastJs.html')
+		<script type='text/javascript'>
+		$('#btn_log').click(function(){
+			$('#logFrm').olxForm('submit', [function(){
+			}, function (valiResu){
+			}, function (data){
+				if(data.success) location.href = '/u/';
+				if(data.msg) alert(data.msg[0]);
+			}]);
+		});
+		</script>
 	</body>
 </html>

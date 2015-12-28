@@ -57,8 +57,10 @@ function proc_back(app){
 	// TODO
 	app.post('/user/register$', express.valiPostData, back.user.register);
 	app.get('/user/register$', back.user.registerUI);
+	// TODO
+	app.post('/user/login$', express.valiPostData, back.user.login);
 	app.get('/user/login$', back.user.loginUI);
-	app.get('/', back.user.loginUI);
+	app.get('/user/logout$', back.user.logoutUI);
 }
 
 /**

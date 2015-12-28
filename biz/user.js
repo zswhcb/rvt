@@ -113,6 +113,7 @@ var biz = {
 			if(!mysql.checkOnly(docs)) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
 			// TODO
 			var doc = docs[0];
+			if(1 !== doc.STATUS) return cb(null, ['禁用状态']);
 			// TODO
 			if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
 				return cb(null, ['用户名或密码输入错误', 'USER_PASS'], doc);
@@ -141,6 +142,10 @@ var biz = {
  */
 exports.register = function(newInfo, cb){
 	var that = this;
+	// TODO
+	var mobile = util.checkMobile(newInfo.USER_NAME);
+	if('' === mobile) return cb(null, ['请输入正确的手机号']);
+	// TODO
 	newInfo.AUTH_CODE_ID = newInfo.AUTH_CODE_ID || '';
 	// TODO
 	biz.authcode.checkUsed(newInfo.AUTH_CODE_ID, function (err, msg, result, doc){
@@ -149,8 +154,10 @@ exports.register = function(newInfo, cb){
 		if(!doc) return cb(null, msg);
 		if(result) return cb(null, msg);
 		// TODO
+		newInfo.USER_NAME = mobile;
 		newInfo.MOBILE = newInfo.USER_NAME;
 		newInfo.ROLE_ID = '566512b49012fb044691ace6';
+		newInfo.STATUS = 2;
 		that.saveNew(newInfo, cb);
 	});
 };
