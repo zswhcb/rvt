@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 import tel.call.action.ServiceAction;
 import tel.call.adapter.CurrentTasksAdapter;
-import tel.call.broadcast.PhoneBroadcastReceiver;
 import tel.call.util.AppUtil;
 import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
@@ -22,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
@@ -64,7 +62,6 @@ public class MainActivity extends ActionBarActivity {
 	private AlertDialog.Builder dialog_alert;
 	private AlertDialog.Builder dialog_exit;
 
-	private PhoneBroadcastReceiver receiver_phone;
 	private SharedPreferences preferences;
 
 	@Override
@@ -81,25 +78,12 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		// TODO
-		registerListener();
-
-		// TODO
 		// dbMgr = new DBManager(this);
-	}
-
-	private void registerListener() {
-		receiver_phone = new PhoneBroadcastReceiver();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
-		filter.setPriority(Integer.MAX_VALUE);
-		registerReceiver(receiver_phone, filter);
 	}
 
 	@Override
 	protected void onDestroy() {
 		// if (null != dbMgr) dbMgr.close();
-		if (null != receiver_phone)
-			unregisterReceiver(receiver_phone);
 		super.onDestroy();
 	}
 

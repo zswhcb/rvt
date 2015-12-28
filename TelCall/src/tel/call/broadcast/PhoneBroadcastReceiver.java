@@ -4,6 +4,7 @@ import java.util.Date;
 
 import tel.call.util.AppUtil;
 import tel.call.util.UserInfo;
+import tel.call.util.UserInfo.CallInfo;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -65,9 +66,13 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 	}
 
 	private void commitTask(String tel_num, long talk_time, int talk_time_len) {
+		CallInfo ci = userInfo.getCallInfo();
+		if (null == ci || !tel_num.equals(ci.getTel_num())
+				|| talk_time_len < ci.getTalk_time_len())
+			return;
 		// TODO
 		Editor editor = preferences.edit();
-		editor.putString("id", userInfo.getCallInfo().getHandtask_id());
+		editor.putString("id", ci.getHandtask_id());
 		editor.putInt("TALK_TIME_LEN", talk_time_len);
 		editor.putLong("TALK_TIME", talk_time);
 		editor.putString("TEL_NUM", tel_num);
@@ -83,8 +88,9 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 					porjection,
 					Calls.TYPE + "=" + Calls.OUTGOING_TYPE + " AND "
 							+ Calls.NUMBER + "=? AND " + Calls.DATE + ">"
-							+ call_time + " AND 0<" + Calls.DURATION,
-					new String[] { tel_num }, "DATE DESC LIMIT 1");
+							+ (call_time - 10 * 60 * 1000) + " AND 0<"
+							+ Calls.DURATION, new String[] { tel_num },
+					"DATE DESC LIMIT 1");
 			// TODO
 			if (_cursor.moveToFirst()) {
 				Log.i(TAG,
