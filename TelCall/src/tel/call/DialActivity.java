@@ -223,7 +223,6 @@ public class DialActivity extends Activity {
 				Intent _intent = new Intent(Intent.ACTION_CALL, Uri
 						.parse("tel:" + _bundle.getString("TEL_NUM")));
 				DialActivity.this.startActivity(_intent);
-				DialActivity.this.finish();
 			}
 		});
 
@@ -239,11 +238,6 @@ public class DialActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && 0 == event.getRepeatCount()) {
-			// TODO
-			preferences = getSharedPreferences();
-			Editor _editor = preferences.edit();
-			_editor.remove("id");
-			_editor.commit();
 			// TODO
 			finish();
 			return true;

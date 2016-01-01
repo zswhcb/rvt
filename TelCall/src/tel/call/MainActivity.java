@@ -361,11 +361,15 @@ public class MainActivity extends ActionBarActivity {
 		String tel_num = preferences.getString("TEL_NUM", "");
 
 		// TODO
-		findLast(id, tel_num, talk_time, talk_time_len);
+		Object[] os = findLast(id, tel_num, talk_time, talk_time_len);
+		if (null == os)
+			return true;
+
+		uploadData(id, tel_num, (Long) os[0], (Integer) os[1]);
 		return false;
 	}
 
-	private void findLast(String id, String tel_num, long talk_time,
+	private Object[] findLast(String id, String tel_num, long talk_time,
 			int talk_time_len) {
 		Cursor _cursor = null;
 		// TODO
@@ -385,7 +389,10 @@ public class MainActivity extends ActionBarActivity {
 								+ _cursor.getString(1) + ","
 								+ _cursor.getString(2) + ","
 								+ _cursor.getString(3));
-				uploadData(id, tel_num, _cursor.getLong(2), _cursor.getInt(3));
+
+				Object[] os = new Object[] { _cursor.getLong(2),
+						_cursor.getInt(3) };
+				return os;
 			} else {
 				Log.i(TAG, "===========");
 			}
@@ -395,6 +402,7 @@ public class MainActivity extends ActionBarActivity {
 			if (null != _cursor)
 				_cursor.close();
 		}
+		return null;
 	}
 
 	/**
