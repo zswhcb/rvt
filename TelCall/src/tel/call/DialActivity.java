@@ -76,6 +76,12 @@ public class DialActivity extends Activity {
 		applyTask(_bundle.getString("TASK_ID"));
 	}
 
+	private SharedPreferences getSharedPreferences() {
+		if (null == preferences)
+			preferences = getSharedPreferences(AppUtil.UN_UPLOAD, MODE_PRIVATE);
+		return preferences;
+	}
+
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 
@@ -100,9 +106,7 @@ public class DialActivity extends Activity {
 			}
 
 			// TODO
-			if (null == preferences)
-				preferences = getSharedPreferences(AppUtil.UN_UPLOAD,
-						MODE_PRIVATE);
+			preferences = getSharedPreferences();
 			Editor _editor = preferences.edit();
 
 			// TODO
@@ -132,7 +136,6 @@ public class DialActivity extends Activity {
 				// TODO
 				_editor.putString("id", _jdata.getString("HANDTASK_ID"));
 				_editor.putInt("TALK_TIME_LEN", _jdata.getInt("TALK_TIME_LEN"));
-				_editor.putLong("TALK_TIME", (new Date()).getTime());
 				_editor.putString("TEL_NUM", _jdata.getString("TEL_NUM"));
 				_editor.commit();
 				// TODO
@@ -209,12 +212,18 @@ public class DialActivity extends Activity {
 		btn_dial.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				// TODO
+				preferences = getSharedPreferences();
+				Editor _editor = preferences.edit();
+				_editor.putLong("TALK_TIME", (new Date()).getTime());
+				_editor.commit();
+				// TODO
 				Bundle _bundle = getIntent().getExtras();
 				// 用intent启动拨打电话
 				Intent _intent = new Intent(Intent.ACTION_CALL, Uri
 						.parse("tel:" + _bundle.getString("TEL_NUM")));
 				DialActivity.this.startActivity(_intent);
-				btn_dial.setEnabled(false);
+				DialActivity.this.finish();
 			}
 		});
 
@@ -230,6 +239,12 @@ public class DialActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && 0 == event.getRepeatCount()) {
+			// TODO
+			preferences = getSharedPreferences();
+			Editor _editor = preferences.edit();
+			_editor.remove("id");
+			_editor.commit();
+			// TODO
 			finish();
 			return true;
 		}
