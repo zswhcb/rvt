@@ -23,10 +23,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.CallLog.Calls;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -63,6 +65,9 @@ public class MainActivity extends ActionBarActivity {
 	private AlertDialog.Builder dialog_exit;
 
 	private SharedPreferences preferences;
+
+	private static final String[] porjection = new String[] { Calls.TYPE,
+			Calls.NUMBER, Calls.DATE, Calls.DURATION };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -351,8 +356,44 @@ public class MainActivity extends ActionBarActivity {
 		long talk_time = preferences.getLong("TALK_TIME", 0);
 		String tel_num = preferences.getString("TEL_NUM", "");
 
-		uploadData(id, tel_num, talk_time, talk_time_len);
+		int _talk_time_len = findLast(tel_num, talk_time, talk_time_len);
+		if (0 == talk_time_len)
+			return true;
+
+		uploadData(id, tel_num, talk_time, _talk_time_len);
 		return false;
+	}
+
+	private int findLast(String tel_num, long talk_time, int talk_time_len) {
+		Cursor _cursor = null;
+		// TODO
+		try {
+			_cursor = getContentResolver().query(
+					Calls.CONTENT_URI,
+					porjection,
+					Calls.TYPE + "=" + Calls.OUTGOING_TYPE + " AND "
+							+ Calls.NUMBER + "=? AND " + Calls.DATE + ">"
+							+ (talk_time - 10 * 60 * 1000) + " AND "
+							+ talk_time_len + "<" + Calls.DURATION,
+					new String[] { tel_num }, "DATE DESC LIMIT 1");
+			// TODO
+			if (_cursor.moveToFirst()) {
+				Log.i(TAG,
+						"===========" + _cursor.getString(0) + ","
+								+ _cursor.getString(1) + ","
+								+ _cursor.getString(2) + ","
+								+ _cursor.getString(3));
+				return _cursor.getInt(3);
+			} else {
+				Log.i(TAG, "===========");
+			}
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		} finally {
+			if (null != _cursor)
+				_cursor.close();
+		}
+		return 0;
 	}
 
 	/**
