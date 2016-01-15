@@ -67,7 +67,7 @@ var biz = {
  */
 (function (exports){
 	var sql = 'SELECT'+
-				'  (SELECT COUNT(1) FROM p_project WHERE STATUS=1 AND USER_ID=a.id) PROJECT_COUNT,'+
+				'  (SELECT COUNT(1) FROM p_project WHERE STATUS=1 AND CREATE_USER_ID=a.id) PROJECT_COUNT,'+
 				'  a.*'+
 				' FROM s_user a where a.ROLE_ID=? ORDER BY a.CREATE_TIME DESC';
 	// TODO
