@@ -13,9 +13,10 @@ var exports = module.exports;
 
 (function (exports){
 	var sql_1 = 'SELECT'+
+					'  c.TEL_NUM,'+
 					'  a.id HANDTASK_ID, a.USER_ID HANDTASK_USER_ID, a.CREATE_TIME HANDTASK_CREATE_TIME, a.STATUS HANDTASK_STATUS,'+
 					'  b.*'+
-					' FROM p_handtask a LEFT JOIN p_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL';
+					' FROM p_handtask a LEFT JOIN p_task b ON (a.TASK_ID=b.id) LEFT JOIN p_project c ON (b.PROJECT_ID=c.id) WHERE b.id IS NOT NULL AND c.id IS NOT NULL';
 	/**
 	 *
 	 * @params
