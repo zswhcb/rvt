@@ -225,7 +225,7 @@ exports.apply = function(user_id, task_id, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO p_task (id, TASK_NAME, TASK_INTRO, SMS_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO p_task (id, TASK_NAME, TASK_INTRO, SMS_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_USER_ID, CREATE_TIME) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -242,8 +242,7 @@ exports.apply = function(user_id, task_id, cb){
 					newInfo.TALK_TIMEOUT || 3600,
 					newInfo.START_TIME || new Date(),
 					newInfo.END_TIME || new Date(),
-					new Date(),
-					newInfo.STATUS || 1
+					new Date()
 				];
 				mysql.query(sql, postData, function (err, status){
 					if(err) return cb(err);
@@ -260,7 +259,7 @@ exports.apply = function(user_id, task_id, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE p_task set TASK_NAME=?, TASK_INTRO=?, SMS_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE p_task set TASK_NAME=?, TASK_INTRO=?, SMS_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -275,7 +274,6 @@ exports.apply = function(user_id, task_id, cb){
 					newInfo.TALK_TIMEOUT || 3600,
 					newInfo.START_TIME || new Date(),
 					newInfo.END_TIME || new Date(),
-					newInfo.STATUS || 1,
 					newInfo.id
 				];
 				mysql.query(sql, postData, function (err, status){
