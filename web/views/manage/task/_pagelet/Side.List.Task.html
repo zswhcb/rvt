@@ -3,11 +3,11 @@
 		<th class='ta'>No.</th>
 		<th style='color:red'>任务名称</th>
 		<th>任务数量</th>
-		<th>任务电话</th>
 		<th>通话时长</th>
 		<th>超时时长</th>
 		<th style='color:green'>开始时间</th>
 		<th>结束时间</th>
+		<th>创建人</th>
 		<th>创建时间</th>
 		<th style='color:green'>状态</th>
 	</tr>
@@ -17,11 +17,11 @@
 		<td class='ta'><input type='radio' name='TASK_ID' value='$!doc.id'></td>
 		<td style='color:red'>$!doc.TASK_NAME</td>
 		<td>$!doc.TASK_SUM</td>
-		<td>#replaceNull($!doc.TEL_NUM)</td>
 		<td>$!doc.TALK_TIME_LEN</td>
 		<td>$!doc.TALK_TIMEOUT</td>
 		<td style='color:green' title='#formatDate($!doc.START_TIME)'>#formatDate($!doc.START_TIME, 7)</td>
 		<td title='#formatDate($!doc.END_TIME)'>#formatDate($!doc.END_TIME, 7)</td>
+		<td>$!doc.USER_NAME</td>
 		<td title='#formatDate($!doc.CREATE_TIME)'>#formatDate($!doc.CREATE_TIME, 7)</td>
 		<td style='color:green'>#toStatus($!doc.STATUS)</td>
 	</tr>#end

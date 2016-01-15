@@ -161,7 +161,7 @@ exports.apply = function(user_id, task_id, cb){
 
 
 (function (exports){
-	var sql_1 = 'SELECT b.PROJECT_NAME, a.* FROM p_task a LEFT JOIN p_project b ON (a.PROJECT_ID=b.id) WHERE b.id IS NOT NULL';
+	var sql_1 = 'SELECT c.USER_NAME, b.PROJECT_NAME, a.* FROM p_task a LEFT JOIN p_project b ON (a.PROJECT_ID=b.id) LEFT JOIN s_user c ON (a.CREATE_USER_ID=c.id) WHERE b.id IS NOT NULL AND c.id IS NOT NULL';
 	var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
 
 	/**
@@ -225,7 +225,7 @@ exports.apply = function(user_id, task_id, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO p_task (id, TASK_NAME, TEL_NUM, TASK_INTRO, SMS_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO p_task (id, TASK_NAME, TASK_INTRO, SMS_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -234,7 +234,6 @@ exports.apply = function(user_id, task_id, cb){
 				var postData = [
 					util.genObjectId(),
 					newInfo.TASK_NAME,
-					newInfo.TEL_NUM,
 					newInfo.TASK_INTRO,
 					newInfo.SMS_INTRO,
 					newInfo.TASK_SUM || 20,
@@ -261,7 +260,7 @@ exports.apply = function(user_id, task_id, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE p_task set TASK_NAME=?, TEL_NUM=?, TASK_INTRO=?, SMS_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE p_task set TASK_NAME=?, TASK_INTRO=?, SMS_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -269,7 +268,6 @@ exports.apply = function(user_id, task_id, cb){
 				// CREATE
 				var postData = [
 					newInfo.TASK_NAME,
-					newInfo.TEL_NUM,
 					newInfo.TASK_INTRO,
 					newInfo.SMS_INTRO,
 					newInfo.TASK_SUM || 20,
