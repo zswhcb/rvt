@@ -37,8 +37,8 @@ var exports = module.exports;
 					'  c.USER_NAME, c.REAL_NAME, b.TYPE_NAME PROJECT_TYPE_NAME,'+
 					'  a.*'+
 					' FROM p_project a, p_project_type b, s_user c'+
-					' WHERE a.PROJECT_TYPE_ID=b.id AND a.USER_ID=c.id';
-	var sql_orderby = ' ORDER BY a.USER_ID, a.CREATE_TIME DESC';
+					' WHERE a.PROJECT_TYPE_ID=b.id AND a.CREATE_USER_ID=c.id';
+	var sql_orderby = ' ORDER BY a.CREATE_USER_ID, a.CREATE_TIME DESC';
 
 	/**
 	 *
@@ -84,7 +84,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO p_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO p_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, CREATE_USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -95,7 +95,7 @@ var exports = module.exports;
 					newInfo.PROJECT_NAME,
 					newInfo.PROJECT_INTRO,
 					newInfo.PROJECT_TYPE_ID,
-					newInfo.USER_ID,
+					newInfo.CREATE_USER_ID,
 					new Date(),
 					newInfo.STATUS || 1
 				];

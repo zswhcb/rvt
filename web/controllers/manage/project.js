@@ -46,6 +46,8 @@ exports.add = function(req, res, next){
 	var result = { success: false },
 		data = req._data;
 	// TODO
+	data.CREATE_USER_ID = req.session.userId;
+	// TODO
 	biz.project.saveNew(data, function (err, msg, status){
 		if(err) return next(err);
 		// TODO
@@ -145,7 +147,7 @@ exports.indexUI = function(req, res, next){
 			description: '',
 			keywords: ',html5',
 			data: {
-				roles: docs
+				projects: docs
 			}
 		});
 	});

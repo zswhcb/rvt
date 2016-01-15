@@ -2,21 +2,19 @@
 	<thead>
 		<tr>
 			<th class='ta'><input type='checkbox' title='全选/取消'></th>
-			<th style='color:red'>发布人</th>
-			<th>真实姓名</th>
 			<th>项目名称</th>
 			<th style='color:green'>项目类型</th>
+			<th>创建人</th>
 			<th>创建时间</th>
 			<th style='color:green'>状态</th>
 		</tr>
 	</thead>
 	<tbody>
-		#foreach($!doc in $!data.roles)<tr title='$!doc.PROJECT_INTRO'>
+		#foreach($!doc in $!data.projects)<tr title='$!doc.PROJECT_INTRO'>
 			<td class='ta'><input type='checkbox' value='$!doc.id'></td>
-			<td style='color:red'>$!doc.USER_NAME</td>
-			<td>$!doc.REAL_NAME</td>
 			<td>$!doc.PROJECT_NAME</td>
 			<td style='color:green'>$!doc.PROJECT_TYPE_NAME</td>
+			<td>$!doc.USER_NAME</td>
 			<td>#formatDate($!doc.CREATE_TIME)</td>
 			<td style='color:green'>#toStatus($!doc.STATUS)</td>
 		</tr>#end
