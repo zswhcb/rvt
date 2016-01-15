@@ -114,7 +114,7 @@ var exports = module.exports;
 		var result = { success: false, ver: conf.app.ver },
 			user = req.flash('user')[0];
 		// TODO
-		biz.task.getCurrentTasks(function (err, docs){
+		biz.task.getCurrentTasks(user.id, function (err, docs){
 			if(err) return next(err);
 			/* result */
 			result.data = docs;

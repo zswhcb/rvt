@@ -103,7 +103,7 @@ exports.apply = function(user_id, task_id, cb){
 					'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=0 AND TASK_ID=b.id) INIT_TASK_SUM,'+
 					'  (SELECT COUNT(1) FROM p_handtask WHERE STATUS=1 AND TASK_ID=b.id) SUCCESS_TASK_SUM,'+
 					'  b.*'+
-					' FROM p_task b WHERE b.STATUS=1 AND ? BETWEEN b.START_TIME AND b.END_TIME';
+					' FROM p_task b WHERE ? BETWEEN b.START_TIME AND b.END_TIME';
 
 	/**
 	 * 获取指定任务ID的任务状态
@@ -131,10 +131,12 @@ exports.apply = function(user_id, task_id, cb){
 	};
 
 	// TODO
-	exports.getCurrentTasks = function(cb){
-		var sql = 'SELECT c.* FROM ('+ sql_1 +') c WHERE c.TASK_SUM>(c.INIT_TASK_SUM+c.SUCCESS_TASK_SUM) ORDER BY c.CREATE_TIME DESC';
+	exports.getCurrentTasks = function(user_id, cb){
+		var sql = 'SELECT'+
+					' (SELECT d.STATUS FROM p_handtask d LEFT JOIN p_task e ON (d.TASK_ID=e.id) WHERE e.id IS NOT NULL AND e.PROJECT_ID=c.PROJECT_ID AND d.USER_ID=? ORDER BY d.CREATE_TIME DESC LIMIT 1) HANDTASK_STATUS,'+
+					' c.* FROM ('+ sql_1 +') c ORDER BY c.CREATE_TIME DESC';
 		// TODO
-		mysql.query(sql, [new Date()], function (err, docs){
+		mysql.query(sql, [user_id, new Date()], function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
 		});
