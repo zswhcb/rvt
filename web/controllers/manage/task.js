@@ -84,6 +84,8 @@ exports.add = function(req, res, next){
 	var result = { success: false },
 		data = req._data;
 	// TODO
+	data.CREATE_USER_ID = req.session.userId;
+	// TODO
 	biz.task.saveNew(data, function (err, msg, status){
 		if(err) return next(err);
 		// TODO

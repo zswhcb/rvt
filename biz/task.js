@@ -242,6 +242,7 @@ exports.apply = function(user_id, task_id, cb){
 					newInfo.TALK_TIMEOUT || 3600,
 					newInfo.START_TIME || new Date(),
 					newInfo.END_TIME || new Date(),
+					newInfo.CREATE_USER_ID,
 					new Date()
 				];
 				mysql.query(sql, postData, function (err, status){
