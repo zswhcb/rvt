@@ -34,7 +34,7 @@ var exports = module.exports;
 
 (function (exports){
 	var sql_1 = 'SELECT'+
-					'  c.USER_NAME, c.REAL_NAME, b.TYPE_NAME PROJECT_TYPE_NAME,'+
+					'  c.USER_NAME CREATE_USER_NAME, b.TYPE_NAME PROJECT_TYPE_NAME,'+
 					'  a.*'+
 					' FROM p_project a, p_project_type b, s_user c'+
 					' WHERE a.PROJECT_TYPE_ID=b.id AND a.CREATE_USER_ID=c.id';
@@ -84,7 +84,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO p_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, CREATE_USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO p_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, START_TIME, END_TIME, CREATE_USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -96,6 +96,8 @@ var exports = module.exports;
 					newInfo.PROJECT_INTRO,
 					newInfo.PROJECT_TYPE_ID,
 					newInfo.TEL_NUM,
+					newInfo.START_TIME,
+					newInfo.END_TIME,
 					newInfo.CREATE_USER_ID,
 					new Date(),
 					newInfo.STATUS || 1
@@ -115,7 +117,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE p_project set PROJECT_NAME=?, PROJECT_INTRO=?, PROJECT_TYPE_ID=?, TEL_NUM=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE p_project set PROJECT_NAME=?, PROJECT_INTRO=?, PROJECT_TYPE_ID=?, TEL_NUM=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -126,6 +128,8 @@ var exports = module.exports;
 					newInfo.PROJECT_INTRO,
 					newInfo.PROJECT_TYPE_ID,
 					newInfo.TEL_NUM,
+					newInfo.START_TIME,
+					newInfo.END_TIME,
 					newInfo.STATUS || 1,
 					newInfo.id
 				];

@@ -1,3 +1,8 @@
+<style>
+#addFrm_START_TIME, #addFrm_END_TIME{
+	background: #fff url($!{conf.html.cdn}My97DatePicker/4.8-Beta4/skin/datePicker.gif) no-repeat right;
+}
+</style>
 #set($doc=$data.project)
 <form class='form-horizontal' id='addFrm' role='form' onsubmit='return false;' data-url='#if(null != $!doc.id)../edit#end'>
 	<input type='hidden' name='id' id='addFrm_id' value='$!doc.id'>
@@ -21,6 +26,18 @@
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TEL_NUM'><span class='olx-form-required'>*</span>项目电话</label>
 		<div class='col-sm-4'>
 			<input type='text' class='form-control' name='TEL_NUM' id='addFrm_TEL_NUM' placeholder='项目电话' value='$!doc.TEL_NUM'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_START_TIME'><span class='olx-form-required'>*</span>开始时间</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='START_TIME' id='addFrm_START_TIME' placeholder='开始时间' value='#formatDate($!doc.START_TIME)' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'addFrm_END_TIME\')}'})">
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_END_TIME'><span class='olx-form-required'>*</span>结束时间</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='END_TIME' id='addFrm_END_TIME' placeholder='结束时间' value='#formatDate($!doc.END_TIME)' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'addFrm_START_TIME\')}'})">
 		</div>
 	</div>
 	<div class='form-group'>
