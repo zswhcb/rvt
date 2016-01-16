@@ -133,7 +133,7 @@ exports.apply = function(user_id, task_id, cb){
 	// TODO
 	exports.getCurrentTasks = function(user_id, cb){
 		var sql = 'SELECT'+
-					' (SELECT d.STATUS FROM p_handtask d LEFT JOIN p_task e ON (d.TASK_ID=e.id) WHERE e.id IS NOT NULL AND e.PROJECT_ID=c.PROJECT_ID AND d.USER_ID=? ORDER BY d.CREATE_TIME DESC LIMIT 1) HANDTASK_STATUS,'+
+					' IFNULL((SELECT d.STATUS FROM p_handtask d LEFT JOIN p_task e ON (d.TASK_ID=e.id) WHERE e.id IS NOT NULL AND e.PROJECT_ID=c.PROJECT_ID AND d.USER_ID=? ORDER BY d.CREATE_TIME DESC LIMIT 1), 4) HANDTASK_STATUS,'+
 					' c.* FROM ('+ sql_1 +') c ORDER BY c.CREATE_TIME DESC';
 		// TODO
 		mysql.query(sql, [user_id, new Date()], function (err, docs){
