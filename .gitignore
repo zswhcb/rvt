@@ -34,7 +34,7 @@ TelCall/gen
 
 *.pdb
 
-*/target/
+**/target/
 
 *.bak
 
