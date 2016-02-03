@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="Author" content="">
+<meta name="Keywords" content="">
+<meta name="Description" content="">
+<title>后台管理</title>
+<script type='text/javascript'
+	src='http://www.foreworld.net/js/jquery/2.0.2/jquery.min.js'></script>
+</head>
+<body>
+	<div id='banner'>
+		<ul>
+			<li><a href='${(conf_html_virtualPath)!}'>管理首页</a></li>
+			<li><a href='javascript:;'>${(data_session_user.userName)!}</a>，<a
+				href='${(conf_html_virtualPath)!}user/logout'>退出</a></li>
+			<li>登陆时间：${data_session_time!}</li>
+		</ul>
+	</div>
+	<script>
+		$(function() {
+			console.log('index');
+		});
+	</script>
+</body>
+</html>
