@@ -22,7 +22,7 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 <!-- 如果这个配置扫描  -->
-	<context:component-scan base-package="com.isea533.mybatis.controller" />
+	<context:component-scan base-package="net.foreworld.mybatis.controller" />
 	<bean
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
 	<bean id="stringHttpMessageConverter"
