@@ -10,10 +10,12 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  *
  * @author huangxin (3203317@qq.com)
+ * @license LGPL (http://www.gnu.org/licenses/lgpl.html)
+ * @copyright FOREWORLD.NET
  *
  */
 @Controller
-public class ManageController {
+public class DefaultController {
 
 	private String index_ftl = "manage/1.0.2/index";
 
