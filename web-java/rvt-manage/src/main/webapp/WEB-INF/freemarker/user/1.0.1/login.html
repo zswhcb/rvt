@@ -22,13 +22,13 @@
 			<table>
 				<tr>
 					<td>用户名</td>
-					<td><input type="text" id='loginFrm_USERNAME' name='userName'
+					<td><input type="text" id='loginFrm_user_name' name='user_name'
 						value='${(user.user_name)!}'></td>
 				</tr>
 				<tr>
 					<td>密码</td>
-					<td><input type="password" id='loginFrm_USERPASS'
-						name='userPass' value='${(user.user_pass)!}'>
+					<td><input type="password" id='loginFrm_user_pass'
+						name='user_pass' value='${(user.user_pass)!}'>
 					</td>
 				</tr>
 				<tr>
@@ -46,8 +46,8 @@
 					type : 'POST',
 					dataType : 'JSON',
 					data : {
-						userName : $('#loginFrm_USERNAME').val(),
-						userPass : $('#loginFrm_USERPASS').val()
+						user_name : $('#loginFrm_user_name').val(),
+						user_pass : $('#loginFrm_user_pass').val()
 					}
 				}).done(function(data) {
 					if (data.success)
