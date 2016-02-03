@@ -34,21 +34,21 @@ app.set('port', process.env.PORT || 3011)
 	.use(express.cookieParser());
 
 // production
-app.configure('production', function(){
+if('production' === app.get('env')){
 	app.use('/public', express.static(path.join(__dirname, 'public'), { maxAge: 101000 }))
 		.use(express.errorHandler())
 		.use(express.logger('dev'));
-});
+}
 
 // development
-app.configure('development', function(){
+if('development' === app.get('env')){
 	app.use(express.logger('dev'))
 		.use('/public', express.static(path.join(__dirname, 'public')))
 		.use(express.errorHandler({
 			dumpExceptions: true,
 			showStack: true
 		}));
-});
+}
 
 app.use(express.session({
 	secret: conf.cookie.secret,
