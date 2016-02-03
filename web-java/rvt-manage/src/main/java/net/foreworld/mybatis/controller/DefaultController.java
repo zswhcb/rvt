@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class DefaultController {
 
-	private String index_ftl = "manage/1.0.2/index";
+	private String index_ftl = "default/1.0.2/index";
 
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView indexUI(HttpSession session) {
