@@ -27,9 +27,15 @@
 		<pagehelper.version>4.0.3</pagehelper.version>
 		<mysql.version>5.1.29</mysql.version>
 		<spring.version>4.2.4.RELEASE</spring.version>
+		<foreworld-util.version>1.0.2</foreworld-util.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>net.foreworld</groupId>
+			<artifactId>foreworld-util</artifactId>
+			<version>${foreworld-util.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>net.foreworld</groupId>
 			<artifactId>foreworld-dsession</artifactId>

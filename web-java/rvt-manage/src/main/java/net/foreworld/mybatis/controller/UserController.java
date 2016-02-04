@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.mybatis.model.User;
 import net.foreworld.mybatis.service.UserService;
+import net.foreworld.util.encryptUtil.MD5;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,9 +32,6 @@ public class UserController {
 	@RequestMapping(value = { "/user/login" }, method = RequestMethod.GET)
 	public ModelAndView loginUI() {
 		ModelAndView result = new ModelAndView(login_ftl);
-		// TODO
-		User user = userService.findByName("xxfb001");
-		result.addObject("user", user);
 		return result;
 	}
 
@@ -46,41 +44,26 @@ public class UserController {
 	@RequestMapping(value = { "/user/login" }, method = RequestMethod.POST, produces = "application/json")
 	public ModelAndView login(User user, HttpSession session) {
 		ModelAndView result = new ModelAndView();
-		User _user = login(user.getUser_name(), user.getUser_pass());
-		// TODO
-		if (null != _user) {
-			result.addObject("success", true);
-			// TODO
-			session.setAttribute("session.user", _user);
-			session.setAttribute("session.time", (new Date()).toString());
-		} else {
-			result.addObject("success", false);
-			result.addObject("msg", "用户名或密码输入错误");
-		} // END
-		return result;
-	}
+		result.addObject("success", false);
 
-	/**
-	 * 用户登陆
-	 *
-	 * @param userName
-	 *            用户名
-	 * @param userPass
-	 *            密码
-	 * @return
-	 */
-	private User login(String userName, String userPass) {
-		if ("admin".equals(userName) && "123456".equals(userPass)) {
-			User user = new User();
-			user.setUser_name("admin");
-			user.setUser_pass("123456");
-			return user;
-		} else if ("huangxin".equals(userName) && "123456".equals(userPass)) {
-			User user = new User();
-			user.setUser_name("huangxin");
-			user.setUser_pass("123456");
-			return user;
-		}
-		return null;
+		User _user = userService.findByName(user.getUser_name());
+
+		if (null == _user) {
+			result.addObject("msg", new String[] { "用户名或密码输入错误", "user_name" });
+			return result;
+		} // END
+
+		String user_pass = MD5.encode(user.getUser_pass());
+
+		if (!user_pass.equals(_user.getUser_pass())) {
+			result.addObject("msg", new String[] { "用户名或密码输入错误", "user_pass" });
+			return result;
+		} // END
+
+		session.setAttribute("session.user", _user);
+		session.setAttribute("session.time", (new Date()).toString());
+		// TODO
+		result.addObject("success", true);
+		return result;
 	}
 }

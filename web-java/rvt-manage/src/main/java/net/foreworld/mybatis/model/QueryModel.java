@@ -13,7 +13,7 @@ public class QueryModel {
 	private Integer pageSize;
 
 	public Integer getOffset() {
-		return offset;
+		return null == offset ? 0 : offset;
 	}
 
 	public void setOffset(Integer offset) {
@@ -21,7 +21,7 @@ public class QueryModel {
 	}
 
 	public Integer getPageSize() {
-		return pageSize;
+		return null == pageSize ? Integer.MAX_VALUE : pageSize;
 	}
 
 	public void setPageSize(Integer pageSize) {
