@@ -32,7 +32,7 @@ public class UserController {
 	public ModelAndView loginUI() {
 		ModelAndView result = new ModelAndView(login_ftl);
 		// TODO
-		User user = userService.selectByKey("56654ccbbace76fc6d67073e");
+		User user = userService.findByName("xxfb001");
 		result.addObject("user", user);
 		return result;
 	}

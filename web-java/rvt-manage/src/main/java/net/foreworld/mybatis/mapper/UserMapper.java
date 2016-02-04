@@ -12,4 +12,5 @@ import net.foreworld.mybatis.util.MyMapper;
  */
 public interface UserMapper extends MyMapper<User> {
 
+	User findByName(String user_name);
 }

@@ -11,4 +11,5 @@ import net.foreworld.mybatis.model.User;
  */
 public interface UserService extends IService<User> {
 
+	User findByName(String user_name);
 }

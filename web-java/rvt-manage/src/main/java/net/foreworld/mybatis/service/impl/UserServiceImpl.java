@@ -1,5 +1,6 @@
 package net.foreworld.mybatis.service.impl;
 
+import net.foreworld.mybatis.mapper.UserMapper;
 import net.foreworld.mybatis.model.User;
 import net.foreworld.mybatis.service.UserService;
 
@@ -15,4 +16,8 @@ import org.springframework.stereotype.Service;
 @Service("userService")
 public class UserServiceImpl extends BaseService<User> implements UserService {
 
+	@Override
+	public User findByName(String user_name) {
+		return ((UserMapper) getMapper()).findByName(user_name);
+	}
 }

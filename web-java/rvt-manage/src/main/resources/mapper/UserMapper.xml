@@ -7,4 +7,8 @@
 		<result column="user_pass" property="user_pass" jdbcType="VARCHAR" />
 		<result column="email" property="email" jdbcType="VARCHAR" />
 	</resultMap>
+
+	<select id="findByName" resultMap="BaseResultMap">
+		SELECT a.* FROM s_user a WHERE a.user_name=#{user_name}
+	</select>
 </mapper>
