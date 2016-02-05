@@ -1,8 +1,8 @@
-package net.foreworld.mybatis.service.impl;
+package net.foreworld.manage.service.impl;
 
-import net.foreworld.mybatis.mapper.UserMapper;
-import net.foreworld.mybatis.model.User;
-import net.foreworld.mybatis.service.UserService;
+import net.foreworld.manage.mapper.UserMapper;
+import net.foreworld.manage.model.User;
+import net.foreworld.manage.service.UserService;
 
 import org.springframework.stereotype.Service;
 

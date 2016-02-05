@@ -1,4 +1,4 @@
-package net.foreworld.mybatis.service;
+package net.foreworld.manage.service;
 
 import java.util.List;
 

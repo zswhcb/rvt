@@ -1,4 +1,4 @@
-package net.foreworld.mybatis.controller;
+package net.foreworld.manage.controller;
 
 import javax.servlet.http.HttpSession;
 

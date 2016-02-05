@@ -1,8 +1,8 @@
-package net.foreworld.mybatis.service.impl;
+package net.foreworld.manage.service.impl;
 
 import java.util.List;
 
-import net.foreworld.mybatis.service.IService;
+import net.foreworld.manage.service.IService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

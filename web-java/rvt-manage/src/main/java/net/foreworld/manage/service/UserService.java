@@ -1,6 +1,6 @@
-package net.foreworld.mybatis.service;
+package net.foreworld.manage.service;
 
-import net.foreworld.mybatis.model.User;
+import net.foreworld.manage.model.User;
 
 /**
  *

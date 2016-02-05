@@ -1,4 +1,4 @@
-package net.foreworld.mybatis.model;
+package net.foreworld.manage.model;
 
 /**
  *

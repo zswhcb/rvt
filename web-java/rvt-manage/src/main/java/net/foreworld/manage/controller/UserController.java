@@ -1,11 +1,11 @@
-package net.foreworld.mybatis.controller;
+package net.foreworld.manage.controller;
 
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
-import net.foreworld.mybatis.model.User;
-import net.foreworld.mybatis.service.UserService;
+import net.foreworld.manage.model.User;
+import net.foreworld.manage.service.UserService;
 import net.foreworld.util.encryptUtil.MD5;
 
 import org.springframework.beans.factory.annotation.Autowired;

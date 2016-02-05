@@ -1,7 +1,7 @@
-package net.foreworld.mybatis.mapper;
+package net.foreworld.manage.mapper;
 
-import net.foreworld.mybatis.model.User;
-import net.foreworld.mybatis.util.MyMapper;
+import net.foreworld.manage.model.User;
+import net.foreworld.manage.util.MyMapper;
 
 /**
  *
