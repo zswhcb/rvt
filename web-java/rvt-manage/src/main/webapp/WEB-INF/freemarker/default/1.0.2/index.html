@@ -1,13 +1,9 @@
+<#include "/_pagelet/constant.html"/>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="Author" content="">
-<meta name="Keywords" content="">
-<meta name="Description" content="">
-<title>后台管理</title>
-<script type='text/javascript'
-	src='http://www.foreworld.net/js/jquery/2.0.2/jquery.min.js'></script>
+<#include "/_pagelet/header.html"/>
+<title>用户登陆</title>
 </head>
 <body>
 	<div id='banner'>
@@ -18,6 +14,7 @@
 			<li>登陆时间：${data_session_time!}</li>
 		</ul>
 	</div>
+	<#include "/_pagelet/js.html"/>
 	<script>
 		$(function() {
 			console.log('index');
