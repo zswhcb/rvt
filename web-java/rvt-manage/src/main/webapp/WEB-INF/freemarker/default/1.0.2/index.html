@@ -15,14 +15,6 @@
 </head>
 <body>
 	<#include "/default/1.0.2/_pagelet/banner.html"/>
-	<!-- <div id='banner'>
-		<ul>
-			<li><a href='${(conf_html_virtualPath)!}'>管理首页</a></li>
-			<li><a href='javascript:;'>${(data_session_user.user_name)!}</a>，<a
-				href='${(conf_html_virtualPath)!}user/logout'>退出</a></li>
-			<li>登陆时间：${data_session_time!}</li>
-		</ul>
-	</div> -->
 	<header id='header'></header>
 	<div class='container'>
 		<div class='row'>
@@ -48,7 +40,7 @@
 					/* console.log('initialize'); */
 				},
 				_showDefPage : function() {
-					innerPage.attr('src', 'welcome');
+					this._showPage('welcome');
 				},
 				_showPage : function(url) {
 					innerPage.attr('src', url);
