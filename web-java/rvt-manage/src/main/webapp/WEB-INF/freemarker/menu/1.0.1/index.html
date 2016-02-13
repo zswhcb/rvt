@@ -107,7 +107,23 @@ ul.ztree * {
 					}
 				},
 				callback : {
+					beforeExpand: function(treeId, treeNode){
+						if(treeNode.children) return;
+						// TODO
+						$ .ajax({
+							url: '${(conf_html_virtualPath)!}menu/list',
+							type: 'POST',
+							dataType: 'JSON',
+							data: {
+								pid: treeNode.id
+							}
+						}).done(function (data){
 
+						});
+					},
+					onClick: function(event, treeId, treeNode, clickFlag){
+						console.log(arguments)
+					}
 				}
 			};
 

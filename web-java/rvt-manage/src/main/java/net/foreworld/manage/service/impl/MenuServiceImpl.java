@@ -20,13 +20,13 @@ import tk.mybatis.mapper.entity.Example;
 public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
 
 	@Override
-	public List<Menu> findByPid(String id) {
-		if (null == id)
-			id = "0";
+	public List<Menu> findByPid(String pid) {
+		if (null == pid)
+			pid = "0";
 		// TODO
 		Example example = new Example(Menu.class);
 		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("pid", id);
+		criteria.andEqualTo("pid", pid);
 		return selectByExample(example);
 	}
 }

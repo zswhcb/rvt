@@ -36,4 +36,15 @@ public class MenuController {
 		// TODO
 		return result;
 	}
+
+	@RequestMapping(value = { "/menu/list" }, method = RequestMethod.POST, produces = "application/json")
+	public ModelAndView list(Menu menu) {
+		ModelAndView result = new ModelAndView();
+		// TODO
+		List<Menu> list = menuService.findByPid(menu.getPid());
+		result.addObject("data", list);
+		// TODO
+		result.addObject("success", true);
+		return result;
+	}
 }
