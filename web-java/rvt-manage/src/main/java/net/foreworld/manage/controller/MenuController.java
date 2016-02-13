@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import tk.mybatis.mapper.entity.Example;
-
 /**
  *
  * @author huangxin (3203317@qq.com)
@@ -31,8 +29,11 @@ public class MenuController {
 	@RequestMapping(value = { "/menu/" }, method = RequestMethod.GET)
 	public ModelAndView indexUI() {
 		ModelAndView result = new ModelAndView(index_ftl);
-		List<Menu> list = menuService.selectByExample(new Example(Menu.class));
+		// TODO
+		List<Menu> list = menuService.findByPid(null);
 		result.addObject("data_menus", list);
+		result.addObject("data_menuTree", list);
+		// TODO
 		return result;
 	}
 }

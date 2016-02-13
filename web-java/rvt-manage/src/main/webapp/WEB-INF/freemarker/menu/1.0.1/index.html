@@ -4,6 +4,32 @@
 <head>
 <#include "/_pagelet/header.html"/>
 <title>菜单管理</title>
+<link rel='stylesheet' type='text/css'
+	href='${(conf_html_cdn)!}js/ztree/3.5.15/css/zTreeStyle/zTreeStyle.css'
+	media='screen' />
+<style>
+ul.ztree {
+	border: 1px solid #DDDDDD;
+	height: 300px;
+	overflow-y: scroll;
+	overflow-x: auto;
+	margin-bottom: 10px;
+}
+
+ul.ztree * {
+	font-family: "Microsoft Yahei", Helvetica, Arial, sans-serif;
+}
+
+.ztree li span.button.switch.level0 {
+	visibility: hidden;
+	width: 1px;
+}
+
+.ztree li ul.level0 {
+	padding: 0;
+	background: none;
+}
+</style>
 </head>
 <body>
 	<div class='container'>
@@ -36,6 +62,11 @@
 						</form>
 					</div>
 				</div>
+			</div>
+			<div class='col-sm-12 col-md-3'>
+				<ul id="menuTree" class="ztree"></ul>
+			</div>
+			<div class='col-sm-12 col-md-9'>
 				<div class='panel panel-default table-responsive'>
 					<div class='panel-heading'>
 						<div class='btn-group btn-group-xs'>
@@ -65,5 +96,34 @@
 		</div>
 	</div>
 	<#include "/_pagelet/js.html"/> <#include "/_pagelet/iframe.html"/>
+	<script type="text/javascript"
+		src="${(conf_html_cdn)!}js/ztree/3.5.15/js/jquery.ztree.core-3.5.js"></script>
+	<script>
+		$(function() {
+			var setting = {
+				data : {
+					simpleData : {
+						enable : true
+					}
+				},
+				callback : {
+
+				}
+			};
+
+			var zNodes = [ {
+				id : '0',
+				name : 'Root',
+				open : true
+			}<#list data_menuTree as doc>,{
+				id: '${(doc.id)!}',
+				pId: '${(doc.pid)!}',
+				name: '${(doc.menu_name)!}',
+				isParent: !!${(doc.is_parent)!0}
+			}</#list>];
+
+			$.fn.zTree.init($("#menuTree"), setting, zNodes);
+		});
+	</script>
 </body>
 </html>

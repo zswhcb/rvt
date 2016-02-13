@@ -1,5 +1,7 @@
 package net.foreworld.manage.service;
 
+import java.util.List;
+
 import net.foreworld.manage.model.Menu;
 
 /**
@@ -11,4 +13,5 @@ import net.foreworld.manage.model.Menu;
  */
 public interface MenuService extends IService<Menu> {
 
+	List<Menu> findByPid(String id);
 }
