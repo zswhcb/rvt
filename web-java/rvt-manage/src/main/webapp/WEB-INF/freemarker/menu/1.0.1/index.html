@@ -4,6 +4,8 @@
 <head>
 <#include "/_pagelet/header.html"/>
 <title>菜单管理</title>
+<link rel='stylesheet' type='text/css' media='screen'
+	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
 <link rel='stylesheet' type='text/css'
 	href='${(conf_html_cdn)!}js/ztree/3.5.15/css/zTreeStyle/zTreeStyle.css'
 	media='screen' />
@@ -95,7 +97,9 @@ ul.ztree * {
 			</div>
 		</div>
 	</div>
-	<#include "/_pagelet/js.html"/> <#include "/_pagelet/iframe.html"/>
+	<#include "/_pagelet/js.html"/>
+	<script type='text/javascript'
+		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
 	<script type="text/javascript"
 		src="${(conf_html_cdn)!}js/ztree/3.5.15/js/jquery.ztree.core-3.5.js"></script>
 	<script>
