@@ -1,6 +1,7 @@
 package net.foreworld.manage.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import tk.mybatis.mapper.entity.Example;
 
 /**
  *
@@ -27,6 +30,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	private String index_ftl = "user/1.0.1/index";
 	private String login_ftl = "user/1.0.1/login";
 	private String changePwd_ftl = "user/1.0.1/changePwd";
 
@@ -71,6 +75,14 @@ public class UserController {
 		session.setAttribute("session.time", (new Date()).toString());
 		// TODO
 		result.addObject("success", true);
+		return result;
+	}
+
+	@RequestMapping(value = { "/user/" }, method = RequestMethod.GET)
+	public ModelAndView indexUI() {
+		ModelAndView result = new ModelAndView(index_ftl);
+		List<User> list = userService.selectByExample(new Example(User.class));
+		result.addObject("data_users", list);
 		return result;
 	}
 }

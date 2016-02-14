@@ -1,6 +1,7 @@
 package net.foreworld.manage.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -27,6 +28,24 @@ public class User implements Serializable {
 	private String user_pass;
 
 	private String email;
+	private Date create_time;
+	private Integer status;
+
+	public Date getCreate_time() {
+		return create_time;
+	}
+
+	public void setCreate_time(Date create_time) {
+		this.create_time = create_time;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
 	public String getId() {
 		return id;
