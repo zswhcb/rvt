@@ -27,6 +27,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
 		Example example = new Example(Menu.class);
 		Example.Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("pid", pid);
+		example.setOrderByClause("sort asc");
 		return selectByExample(example);
 	}
 }

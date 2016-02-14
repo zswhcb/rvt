@@ -100,6 +100,17 @@ ul.ztree * {
 		src="${(conf_html_cdn)!}js/ztree/3.5.15/js/jquery.ztree.core-3.5.js"></script>
 	<script>
 		$(function() {
+			var ajax = function(params, cb){
+				$ .ajax({
+					url: '${(conf_html_virtualPath)!}menu/list',
+					type: 'POST',
+					dataType: 'JSON',
+					data: params
+				}).done(function (data){
+					cb(data);
+				});
+			};
+
 			var setting = {
 				data : {
 					simpleData : {
@@ -110,19 +121,30 @@ ul.ztree * {
 					beforeExpand: function(treeId, treeNode){
 						if(treeNode.children) return;
 						// TODO
-						$ .ajax({
-							url: '${(conf_html_virtualPath)!}menu/list',
-							type: 'POST',
-							dataType: 'JSON',
-							data: {
-								pid: treeNode.id
-							}
-						}).done(function (data){
-
+						ajax({ pid: treeNode.id }, function (data){
+							if(!data.success) return;
+							// TODO
+							var zTree = $.fn.zTree.getZTreeObj(treeId);
+							for(var i in data.data){
+								var doc = data.data[i];
+								// TODO
+								zTree.addNodes(treeNode, {
+									id: doc.id,
+									pId: treeNode.id,
+									isParent: !!doc.is_parent,
+									name: doc.menu_name
+								});
+							} // END
 						});
 					},
 					onClick: function(event, treeId, treeNode, clickFlag){
-						console.log(arguments)
+						ajax({ pid: treeNode.id, json: 0 }, function (data){
+							if(!data.success) return;
+							// TODO
+							var _data = data.data;
+							if(!_data) return;
+							$('#table1').html(_data);
+						});
 					}
 				}
 			};
