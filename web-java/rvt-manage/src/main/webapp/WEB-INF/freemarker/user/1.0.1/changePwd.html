@@ -14,37 +14,41 @@
 					<li class='active'><a href='javascript:location.reload();'>修改密码</a>
 					</li>
 				</ol>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default'>
 					<div class='panel-body'>
-						<form class='form-horizontal' id='chpwdFrm' role='form'
+						<form class='form-horizontal' id='editFrm' role='form'
 							onsubmit='return false;' data-url='changePwd'>
 							<div class='form-group'>
-								<label class='col-sm-4 hidden-xs control-label'
-									for='chpwdFrm_OldPass'>旧的登录密码</label>
+								<label class='col-sm-2 hidden-xs control-label'
+									for='editFrm_old_pass'><span class='olx-form-required'>*</span>旧的登录密码</label>
 								<div class='col-sm-4'>
-									<input type='password' class='form-control' name='OldPass'
-										id='chpwdFrm_OldPass' placeholder='旧的登录密码'>
+									<input type='password' class='form-control' name='old_pass'
+										id='editFrm_old_pass' placeholder='旧的登录密码'>
 								</div>
 							</div>
 							<div class='form-group'>
-								<label class='col-sm-4 hidden-xs control-label'
-									for='chpwdFrm_NewPass'>新密码</label>
+								<label class='col-sm-2 hidden-xs control-label'
+									for='editFrm_new_pass'><span class='olx-form-required'>*</span>新密码</label>
 								<div class='col-sm-4'>
-									<input type='password' class='form-control' name='NewPass'
-										id='chpwdFrm_NewPass' placeholder='新密码'>
+									<input type='password' class='form-control' name='new_pass'
+										id='editFrm_new_pass' placeholder='新密码'>
 								</div>
 							</div>
 							<div class='form-group'>
-								<label class='col-sm-4 hidden-xs control-label'
-									for='chpwdFrm_NewPass2'>再次输入新密码</label>
+								<label class='col-sm-2 hidden-xs control-label'
+									for='editFrm_new_pass2'><span class='olx-form-required'>*</span>再次输入新密码</label>
 								<div class='col-sm-4'>
 									<input type='password' class='form-control'
-										id='chpwdFrm_NewPass2' placeholder='再次输入新密码'>
+										id='editFrm_new_pass2' placeholder='再次输入新密码'>
 								</div>
 							</div>
 							<div class='form-group'>
-								<div class='col-sm-offset-4 col-sm-4'>
-									<button id='chpwdFrm_btn_sub' type='button'
+								<div class='col-sm-offset-2 col-sm-4'>
+									<button id='editFrm_btn_submit' type='button'
 										class='btn btn-primary'>修改密码</button>
 								</div>
 							</div>

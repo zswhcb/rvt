@@ -85,4 +85,10 @@ public class UserController {
 		result.addObject("data_users", list);
 		return result;
 	}
+
+	@RequestMapping(value = { "/user/add" }, method = RequestMethod.GET)
+	public ModelAndView addUI() {
+		ModelAndView result = new ModelAndView("user/1.0.1/add");
+		return result;
+	}
 }

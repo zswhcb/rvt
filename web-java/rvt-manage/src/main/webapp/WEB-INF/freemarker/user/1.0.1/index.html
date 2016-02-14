@@ -14,10 +14,6 @@
 					<li class='active'><a href='javascript:location.reload();'>用户管理</a>
 					</li>
 				</ol>
-				<div id='info_alert' class='alert alert-info'>
-					<button type='button' class='close' data-dismiss='alert'>&times;</button>
-					<strong>提示：</strong>查询设置用户信息。
-				</div>
 				<div class='panel panel-info'>
 					<div class='panel-heading'>
 						<h3 class='panel-title'>
@@ -40,7 +36,7 @@
 					<div class='panel-heading'>
 						<div class='btn-group btn-group-xs'>
 							<button class='btn btn-primary glyphicon glyphicon-plus-sign'
-								data-toggle='modal' data-target='#addModal'>新增</button>
+								onclick='parent.location.href="/manage/#page/user/add"'>新增</button>
 							<button id='btn_edit'
 								class='btn btn-default glyphicon glyphicon-edit'
 								data-toggle='modal' data-target='#editModal'>编辑</button>
