@@ -38,10 +38,9 @@
 					<div class='panel-heading'>
 						<div class='btn-group btn-group-xs'>
 							<button class='btn btn-primary glyphicon glyphicon-plus-sign'
-								onclick='parent.location.href="/manage/#page/user/add"'>新增</button>
+								onclick='parent.location.href="${(conf_html_virtualPath)!}#page/user/add"'>新增</button>
 							<button id='btn_edit'
-								class='btn btn-default glyphicon glyphicon-edit'
-								data-toggle='modal' data-target='#editModal'>编辑</button>
+								class='btn btn-default glyphicon glyphicon-edit'>编辑</button>
 							<button id='btn_del'
 								class='btn btn-danger glyphicon glyphicon-remove-sign'>删除</button>
 						</div>
@@ -65,5 +64,20 @@
 	<#include "/_pagelet/js.html"/>
 	<script type='text/javascript'
 		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+	<script>
+		$(function() {
+			$('#btn_edit')
+					.click(
+							function() {
+								var selIds = $('#table1').olxGrid(
+										'getCheckedRowsValue', 1);
+								if (1 !== selIds.length)
+									return;
+								var selId = selIds[0];
+								parent.location.href = '${(conf_html_virtualPath)!}#page/user/edit?id='
+										+ selId;
+							});
+		});
+	</script>
 </body>
 </html>

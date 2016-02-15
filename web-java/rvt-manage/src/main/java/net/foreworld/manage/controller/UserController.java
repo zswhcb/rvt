@@ -91,4 +91,24 @@ public class UserController {
 		ModelAndView result = new ModelAndView("user/1.0.1/add");
 		return result;
 	}
+
+	@RequestMapping(value = { "/user/add" }, method = RequestMethod.POST, produces = "application/json")
+	public ModelAndView add() {
+		ModelAndView result = new ModelAndView();
+		result.addObject("success", true);
+		return result;
+	}
+
+	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.GET)
+	public ModelAndView editUI() {
+		ModelAndView result = new ModelAndView("user/1.0.1/edit");
+		return result;
+	}
+
+	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.POST, produces = "application/json")
+	public ModelAndView edit() {
+		ModelAndView result = new ModelAndView();
+		result.addObject("success", true);
+		return result;
+	}
 }
