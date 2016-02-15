@@ -95,8 +95,14 @@ public class UserController {
 	}
 
 	@RequestMapping(value = { "/user/add" }, method = RequestMethod.POST, produces = "application/json")
-	public ModelAndView add() {
+	public ModelAndView add(User user) {
 		ModelAndView result = new ModelAndView();
+		// TODO
+		user.setId(null);
+		user.setCreate_time(new Date());
+		user.setUser_pass(MD5.encode("123456"));
+		// TODO
+		userService.save(user);
 		result.addObject("success", true);
 		return result;
 	}
