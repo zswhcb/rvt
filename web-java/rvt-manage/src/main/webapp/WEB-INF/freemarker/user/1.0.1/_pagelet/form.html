@@ -1,3 +1,4 @@
+<#import "/_macro/select_option.html" as select_option>
 <form class='form-horizontal' id='addFrm' role='form'
 	onsubmit='return false;' data-url=''>
 	<input type='hidden' name='id' id='addFrm_id'
@@ -23,10 +24,8 @@
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_status'>状态</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='status' id='addFrm_status'>
-				<#list dict_status as doc>
-				<option value='${(doc[0])!}'<#if
-					"${(data_user.status)!}"="${(doc[0])!}">
-					selected</#if>>${(doc[1])!}</option> </#list>
+				<@select_option.m list=dict_status key="key" value="value"
+				selValue="${(data_user.status)!}"/>
 			</select>
 		</div>
 	</div>
