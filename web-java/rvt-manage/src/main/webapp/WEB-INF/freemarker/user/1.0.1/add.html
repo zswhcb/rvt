@@ -41,7 +41,8 @@
 					dataType : 'JSON',
 					data : $('#addFrm').serializeObjectForm()
 				}).done(function(data) {
-					if(data.success) return parent.location.href = '${(conf_html_virtualPath)!}#page/user/';
+					if(!data.success) return alert(data.msg[0]);
+					parent.location.href = '${(conf_html_virtualPath)!}#page/user/';
 				});
 			});
 		});
