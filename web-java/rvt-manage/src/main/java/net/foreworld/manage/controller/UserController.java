@@ -2,6 +2,7 @@ package net.foreworld.manage.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import tk.mybatis.mapper.entity.Example;
@@ -100,9 +102,15 @@ public class UserController {
 	}
 
 	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.GET)
-	public ModelAndView editUI() {
-		ModelAndView result = new ModelAndView("user/1.0.1/edit");
-		return result;
+	public String editUI(Map<String, Object> map,
+			@RequestParam(required = true) String id) {
+		User user = userService.selectByKey(id);
+
+		if (null == user)
+			return "redirect:/user/";
+
+		map.put("data_user", user);
+		return "user/1.0.1/edit";
 	}
 
 	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.POST, produces = "application/json")
