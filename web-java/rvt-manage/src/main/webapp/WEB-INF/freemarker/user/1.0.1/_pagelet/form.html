@@ -23,7 +23,7 @@
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_status'>状态</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='status' id='addFrm_status'>
-				<#list [["1", "启用"], ["2", "禁用"]] as doc>
+				<#list dict_status as doc>
 				<option value='${(doc[0])!}'<#if
 					"${(data_user.status)!}"="${(doc[0])!}">
 					selected</#if>>${(doc[1])!}</option> </#list>
