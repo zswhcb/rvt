@@ -1,11 +1,14 @@
 <form class='form-horizontal' id='addFrm' role='form'
 	onsubmit='return false;' data-url=''>
+	<input type='hidden' name='id' id='addFrm_id'
+		value='${(data_user.id)!}'>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_user_name'><span
 			class='olx-form-required'>*</span>用户名</label>
 		<div class='col-sm-4'>
 			<input type='text' class='form-control' name='user_name'
-				id='addFrm_user_name' placeholder='用户名' value='${(data_user.user_name)!}'>
+				id='addFrm_user_name' placeholder='用户名'
+				value='${(data_user.user_name)!}'>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -20,8 +23,10 @@
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_status'>状态</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='status' id='addFrm_status'>
-				<option value='1'>启用</option>
-				<option value='2'>禁用</option>
+				<#list [["1", "启用"], ["2", "禁用"]] as doc>
+				<option value='${(doc[0])!}'<#if
+					"${(data_user.status)!}"="${(doc[0])!}">
+					selected</#if>>${(doc[1])!}</option> </#list>
 			</select>
 		</div>
 	</div>
