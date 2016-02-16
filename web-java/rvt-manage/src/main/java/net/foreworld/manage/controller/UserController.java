@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.manage.model.User;
 import net.foreworld.manage.service.UserService;
-import net.foreworld.util.StringUtil;
 import net.foreworld.util.encryptUtil.MD5;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,6 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
-	private static final String DEFAULT_USER_PASS = "123456";
 
 	private String index_ftl = "user/1.0.1/index";
 	private String login_ftl = "user/1.0.1/login";
@@ -100,29 +97,15 @@ public class UserController {
 	@RequestMapping(value = { "/user/add" }, method = RequestMethod.POST, produces = "application/json")
 	public ModelAndView add(User user) {
 		ModelAndView result = new ModelAndView();
-		result.addObject("success", false);
 
 		// TODO
-		String user_name = StringUtil.isEmpty(user.getUser_name());
-		if (null == user_name) {
-			result.addObject("msg", new String[] { "用户名不能为空", "user_name" });
+		String[] msg = userService.saveNew(user);
+		if (null != msg) {
+			result.addObject("msg", msg);
+			result.addObject("success", false);
 			return result;
 		}
 
-		// TODO
-		User _user = userService.findByName(user_name);
-		if (null != _user) {
-			result.addObject("msg", new String[] { "用户名已存在", "user_name" });
-			return result;
-		}
-
-		// TODO
-		user.setUser_name(user_name);
-		user.setId(null);
-		user.setCreate_time(new Date());
-		user.setUser_pass(MD5.encode(DEFAULT_USER_PASS));
-		// TODO
-		userService.save(user);
 		result.addObject("success", true);
 		return result;
 	}
@@ -144,9 +127,6 @@ public class UserController {
 		ModelAndView result = new ModelAndView();
 
 		// TODO
-		user.setUser_name(null);
-		user.setUser_pass(null);
-		user.setCreate_time(null);
 		userService.updateNotNull(user);
 
 		result.addObject("success", true);

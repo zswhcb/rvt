@@ -18,4 +18,6 @@ public interface UserService extends IService<User> {
 	List<User> findByUser(User user, int page, int rows);
 
 	int resetPwdByKeys(String keys);
+
+	String[] saveNew(User user);
 }
