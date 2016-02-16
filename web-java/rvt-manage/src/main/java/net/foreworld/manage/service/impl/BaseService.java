@@ -50,4 +50,11 @@ public abstract class BaseService<T> implements IService<T> {
 		return mapper.selectByExample(example);
 	}
 
+	public void removeByIds(String ids) {
+		String[] _ids = ids.split(",");
+		// TODO
+		for (String id : _ids) {
+			delete(id);
+		}
+	}
 }

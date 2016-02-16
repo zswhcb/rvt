@@ -80,7 +80,9 @@
 			var selIds = $('#table1').olxGrid('getCheckedRowsValue', 1);
 			if (0 === selIds.length)
 				return;
-			console.log(selIds);
+			if (confirm('你确定要执行该操作吗？')) {
+				console.log(selIds);
+			}
 		}
 
 		$(function() {
@@ -100,7 +102,18 @@
 				var selIds = $('#table1').olxGrid('getCheckedRowsValue', 1);
 				if (0 === selIds.length)
 					return;
-				console.log(selIds);
+				if (confirm('你确定要执行该操作吗？')) {
+					$.ajax({
+						url : '${(conf_html_virtualPath)!}user/remove',
+						type : 'POST',
+						dataType : 'JSON',
+						data : {
+							ids : selIds.join(',')
+						}
+					}).done(function(data) {
+						location.reload();
+					});
+				}
 			});
 		});
 	</script>
