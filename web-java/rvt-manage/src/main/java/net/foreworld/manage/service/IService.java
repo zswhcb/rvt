@@ -29,5 +29,5 @@ public interface IService<T> {
 	List<T> selectByExample(Object example);
 
 	@Transactional
-	void removeByIds(String ids);
+	void deleteByKeys(String keys);
 }

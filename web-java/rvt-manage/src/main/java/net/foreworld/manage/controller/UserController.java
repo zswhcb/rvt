@@ -157,7 +157,7 @@ public class UserController {
 	public ModelAndView remove(@RequestParam(required = true) String ids) {
 		ModelAndView result = new ModelAndView();
 		// TODO
-		userService.removeByIds(ids);
+		userService.deleteByKeys(ids);
 		result.addObject("success", true);
 		return result;
 	}
