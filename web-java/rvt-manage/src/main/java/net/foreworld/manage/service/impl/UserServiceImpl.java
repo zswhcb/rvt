@@ -46,7 +46,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 			User user = new User();
 			user.setId(key);
 			user.setUser_pass(DEFAULT_USER_PASS);
-			result += updateNotNull(user);
+			result += super.updateNotNull(user);
 		}
 		return result;
 	}
