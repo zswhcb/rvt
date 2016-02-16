@@ -67,7 +67,8 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		user.setUser_name(user_name);
 		user.setId(null);
 		user.setCreate_time(new Date());
-		user.setUser_pass(DEFAULT_USER_PASS);
+		user.setUser_pass(null == user.getUser_pass() ? DEFAULT_USER_PASS : MD5
+				.encode(user.getUser_pass()));
 
 		// TODO
 		save(user);
