@@ -43,6 +43,17 @@
 								class='btn btn-default glyphicon glyphicon-edit'>编辑</button>
 							<button id='btn_del'
 								class='btn btn-danger glyphicon glyphicon-remove-sign'>删除</button>
+							<div role="group" class="btn-group btn-group-xs">
+								<button aria-expanded="false" aria-haspopup="true"
+									data-toggle="dropdown"
+									class="btn btn-default dropdown-toggle glyphicon glyphicon-plus"
+									type="button" id="btn_group_more">
+									更多 <span class="caret"></span>
+								</button>
+								<ul aria-labelledby="btn_group_more" class="dropdown-menu">
+									<li><a href='javascript:resetUserPass();'>重置密码</a></li>
+								</ul>
+							</div>
 						</div>
 					</div>
 					<#include "_pagelet/list.html"/>
@@ -65,6 +76,13 @@
 	<script type='text/javascript'
 		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
 	<script>
+		function resetUserPass() {
+			var selIds = $('#table1').olxGrid('getCheckedRowsValue', 1);
+			if (0 === selIds.length)
+				return;
+			console.log(selIds);
+		}
+
 		$(function() {
 			$('#btn_edit')
 					.click(
@@ -77,6 +95,13 @@
 								parent.location.href = '${(conf_html_virtualPath)!}#page/user/edit?id='
 										+ selId;
 							});
+
+			$('#btn_del').click(function() {
+				var selIds = $('#table1').olxGrid('getCheckedRowsValue', 1);
+				if (0 === selIds.length)
+					return;
+				console.log(selIds);
+			});
 		});
 	</script>
 </body>
