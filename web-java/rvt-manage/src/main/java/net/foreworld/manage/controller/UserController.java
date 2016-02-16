@@ -161,4 +161,13 @@ public class UserController {
 		result.addObject("success", true);
 		return result;
 	}
+
+	@RequestMapping(value = { "/user/resetPwd" }, method = RequestMethod.POST, produces = "application/json")
+	public ModelAndView resetPwd(@RequestParam(required = true) String ids) {
+		ModelAndView result = new ModelAndView();
+		// TODO
+		userService.resetPwdByKeys(ids);
+		result.addObject("success", true);
+		return result;
+	}
 }

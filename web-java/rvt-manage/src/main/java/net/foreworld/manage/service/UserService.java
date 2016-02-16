@@ -16,4 +16,6 @@ public interface UserService extends IService<User> {
 	User findByName(String user_name);
 
 	List<User> findByUser(User user, int page, int rows);
+
+	int resetPwdByKeys(String keys);
 }

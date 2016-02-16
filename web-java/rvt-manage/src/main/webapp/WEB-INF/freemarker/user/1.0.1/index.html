@@ -81,7 +81,17 @@
 			if (0 === selIds.length)
 				return;
 			if (confirm('你确定要执行该操作吗？')) {
-				console.log(selIds);
+				$.ajax({
+					url : '${(conf_html_virtualPath)!}user/resetPwd',
+					type : 'POST',
+					dataType : 'JSON',
+					data : {
+						ids : selIds.join(',')
+					}
+				}).done(function(data) {
+					if (data.success)
+						return alert('操作成功');
+				});
 			}
 		}
 
