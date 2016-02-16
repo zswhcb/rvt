@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import tk.mybatis.mapper.entity.Example;
-
 /**
  *
  * @author huangxin (3203317@qq.com)
@@ -84,9 +82,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = { "/user/" }, method = RequestMethod.GET)
-	public ModelAndView indexUI() {
+	public ModelAndView indexUI(User user,
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "20") int rows) {
 		ModelAndView result = new ModelAndView(index_ftl);
-		List<User> list = userService.selectByExample(new Example(User.class));
+		List<User> list = userService.findByUser(user, page, rows);
 		result.addObject("data_users", list);
 		return result;
 	}
@@ -140,8 +140,15 @@ public class UserController {
 	}
 
 	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.POST, produces = "application/json")
-	public ModelAndView edit() {
+	public ModelAndView edit(User user) {
 		ModelAndView result = new ModelAndView();
+
+		// TODO
+		user.setUser_name(null);
+		user.setUser_pass(null);
+		user.setCreate_time(null);
+		userService.updateNotNull(user);
+
 		result.addObject("success", true);
 		return result;
 	}

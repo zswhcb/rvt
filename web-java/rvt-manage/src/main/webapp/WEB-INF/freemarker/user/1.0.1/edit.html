@@ -14,7 +14,8 @@
 				<ol class='breadcrumb'>
 					<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
 					<li class='active'><a href='javascript:;'
-						onclick='parent.location.href="/manage/#page/user/"'>用户管理</a></li>
+						onclick='parent.location.href="${(conf_html_virtualPath)!}#page/user/"'>用户管理</a>
+					</li>
 					<li class='active'><a href='javascript:location.reload();'>编辑</a>
 					</li>
 				</ol>
@@ -31,5 +32,20 @@
 	<#include "/_pagelet/js.html"/>
 	<script type='text/javascript'
 		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+	<script>
+		$(function() {
+			$('#addFrm_btn_submit').click(function() {
+				$.ajax({
+					url : '${(conf_html_virtualPath)!}user/edit',
+					type : 'POST',
+					dataType : 'JSON',
+					data : $('#addFrm').serializeObjectForm()
+				}).done(function(data) {
+					if(!data.success) return alert(data.msg[0]);
+					parent.location.href = '${(conf_html_virtualPath)!}#page/user/';
+				});
+			});
+		});
+	</script>
 </body>
 </html>
