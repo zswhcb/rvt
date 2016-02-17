@@ -31,6 +31,19 @@ public class User implements Serializable {
 	private Date create_time;
 	private Integer status;
 
+	/**
+	 * 推荐人
+	 */
+	private String referee_id;
+
+	public String getReferee_id() {
+		return referee_id;
+	}
+
+	public void setReferee_id(String referee_id) {
+		this.referee_id = referee_id;
+	}
+
 	public Date getCreate_time() {
 		return create_time;
 	}
