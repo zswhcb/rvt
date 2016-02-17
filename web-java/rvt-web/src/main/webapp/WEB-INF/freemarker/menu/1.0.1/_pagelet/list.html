@@ -1,0 +1,23 @@
+<table id='table1' data-olx-type='olx.grid'
+	class='table table-bordered table-hover table-condensed table-striped'
+	data-url='' data-current='1' data-pagesize='20' data-count='561'>
+	<thead>
+		<tr>
+			<th class='ta'><input type='checkbox' title='全选/取消'></th>
+			<th>菜单名称</th>
+			<th>菜单地址</th>
+			<th>排序</th>
+		</tr>
+	</thead>
+	<tbody>
+		<#list data_menus as doc>
+		<tr>
+			<td class='ta'><input type='checkbox' value='${(doc.id)!}'>
+			</td>
+			<td>${(doc.menu_name)!}</td>
+			<td>${(doc.menu_url)!}</td>
+			<td>${(doc.sort)!}</td>
+		</tr>
+		</#list>
+	</tbody>
+</table>
