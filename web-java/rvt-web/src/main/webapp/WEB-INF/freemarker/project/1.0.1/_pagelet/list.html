@@ -1,22 +1,23 @@
+<#import "/_macro/status.html" as status>
 <table id='table1' data-olx-type='olx.grid'
 	class='table table-bordered table-hover table-condensed table-striped'
 	data-url='' data-current='1' data-pagesize='20' data-count='561'>
 	<thead>
 		<tr>
 			<th class='ta'><input type='checkbox' title='全选/取消'></th>
-			<th>菜单名称</th>
-			<th>菜单地址</th>
-			<th>排序</th>
+			<th>项目名称</th>
+			<th>创建时间</th>
+			<th>状态</th>
 		</tr>
 	</thead>
 	<tbody>
-		<#list data_menus as doc>
+		<#list data_projects as doc>
 		<tr>
 			<td class='ta'><input type='checkbox' value='${(doc.id)!}'>
 			</td>
-			<td>${(doc.menu_name)!}</td>
-			<td>${(doc.menu_url)!}</td>
-			<td>${(doc.sort)!}</td>
+			<td>${(doc.project_name)!}</td>
+			<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+			<td><@status.m status="${(doc.status)!}"/></td>
 		</tr>
 		</#list>
 	</tbody>

@@ -1,6 +1,6 @@
 package net.foreworld.manage.mapper;
 
-import net.foreworld.manage.model.Menu;
+import net.foreworld.manage.model.Project;
 import net.foreworld.manage.util.MyMapper;
 
 /**
@@ -10,6 +10,6 @@ import net.foreworld.manage.util.MyMapper;
  * @copyright FOREWORLD.NET
  *
  */
-public interface MenuMapper extends MyMapper<Menu> {
+public interface ProjectMapper extends MyMapper<Project> {
 
 }

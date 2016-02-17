@@ -2,8 +2,8 @@ package net.foreworld.manage.controller;
 
 import java.util.List;
 
-import net.foreworld.manage.model.Role;
-import net.foreworld.manage.service.RoleService;
+import net.foreworld.manage.model.Project;
+import net.foreworld.manage.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,19 +21,20 @@ import tk.mybatis.mapper.entity.Example;
  *
  */
 @Controller
-public class RoleController {
+public class ProjectController {
 
 	@Autowired
-	private RoleService roleService;
+	private ProjectService projectService;
 
-	private String index_ftl = "role/1.0.1/index";
+	private String index_ftl = "project/1.0.1/index";
 
-	@RequestMapping(value = { "/role/" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/project/" }, method = RequestMethod.GET)
 	public ModelAndView indexUI() {
 		ModelAndView result = new ModelAndView(index_ftl);
-
-		List<Role> list = roleService.selectByExample(new Example(Role.class));
-		result.addObject("data_roles", list);
+		// TODO
+		List<Project> list = projectService.selectByExample(new Example(
+				Project.class));
+		result.addObject("data_projects", list);
 
 		return result;
 	}

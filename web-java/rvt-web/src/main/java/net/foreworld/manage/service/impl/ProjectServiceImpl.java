@@ -1,7 +1,7 @@
 package net.foreworld.manage.service.impl;
 
-import net.foreworld.manage.model.Role;
-import net.foreworld.manage.service.RoleService;
+import net.foreworld.manage.model.Project;
+import net.foreworld.manage.service.ProjectService;
 
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
  * @copyright FOREWORLD.NET
  *
  */
-@Service("roleService")
-public class RoleServiceImpl extends BaseService<Role> implements RoleService {
+@Service("projectService")
+public class ProjectServiceImpl extends BaseService<Project> implements
+		ProjectService {
 
 }

@@ -3,7 +3,7 @@
 <html>
 <head>
 <#include "/_pagelet/header.html"/>
-<title>角色管理</title>
+<title>项目管理</title>
 <link rel='stylesheet' type='text/css' media='screen'
 	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
 </head>
@@ -13,12 +13,12 @@
 			<div class='col-sm-12 col-md-12'>
 				<ol class='breadcrumb'>
 					<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
-					<li class='active'><a href='javascript:location.reload();'>角色管理</a>
+					<li class='active'><a href='javascript:location.reload();'>项目管理</a>
 					</li>
 				</ol>
 				<div id='info_alert' class='alert alert-info'>
 					<button type='button' class='close' data-dismiss='alert'>&times;</button>
-					<strong>提示：</strong>查询设置角色信息。
+					<strong>提示：</strong>查询设置项目信息。
 				</div>
 				<div class='panel panel-info'>
 					<div class='panel-heading'>
@@ -30,7 +30,7 @@
 						<form id='searchFrm' class='form-inline' role='form'
 							onsubmit='return false;'>
 							<div class='form-group'>
-								<input type='text' class='form-control' placeholder='角色名称'>
+								<input type='text' class='form-control' placeholder='项目名称'>
 							</div>
 							<button type='button'
 								class='btn btn-default glyphicon glyphicon-search'
