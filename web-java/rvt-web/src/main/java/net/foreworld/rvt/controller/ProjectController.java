@@ -1,9 +1,9 @@
-package net.foreworld.manage.controller;
+package net.foreworld.rvt.controller;
 
 import java.util.List;
 
-import net.foreworld.manage.model.Project;
-import net.foreworld.manage.service.ProjectService;
+import net.foreworld.rvt.model.Project;
+import net.foreworld.rvt.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

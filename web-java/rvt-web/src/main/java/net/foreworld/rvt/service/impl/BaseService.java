@@ -1,8 +1,8 @@
-package net.foreworld.manage.service.impl;
+package net.foreworld.rvt.service.impl;
 
 import java.util.List;
 
-import net.foreworld.manage.service.IService;
+import net.foreworld.rvt.service.IService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

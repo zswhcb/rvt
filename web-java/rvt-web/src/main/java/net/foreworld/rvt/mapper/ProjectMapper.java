@@ -1,7 +1,7 @@
-package net.foreworld.manage.mapper;
+package net.foreworld.rvt.mapper;
 
-import net.foreworld.manage.model.Project;
-import net.foreworld.manage.util.MyMapper;
+import net.foreworld.rvt.model.Project;
+import net.foreworld.rvt.util.MyMapper;
 
 /**
  *

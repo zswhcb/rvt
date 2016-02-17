@@ -1,4 +1,4 @@
-package net.foreworld.manage.service;
+package net.foreworld.rvt.service;
 
 import java.util.List;
 

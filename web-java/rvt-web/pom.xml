@@ -14,8 +14,8 @@
 		<!-- MyBatis Generator -->
 		<!-- Java接口和实体类 -->
 		<targetJavaProject>${basedir}/src/main/java</targetJavaProject>
-		<targetMapperPackage>net.foreworld.manage.mapper</targetMapperPackage>
-		<targetModelPackage>net.foreworld.manage.model</targetModelPackage>
+		<targetMapperPackage>net.foreworld.rvt.mapper</targetMapperPackage>
+		<targetModelPackage>net.foreworld.rvt.model</targetModelPackage>
 		<!-- XML生成路径 -->
 		<targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
 		<targetXMLPackage>mapper</targetXMLPackage>

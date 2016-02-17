@@ -1,4 +1,4 @@
-package net.foreworld.manage.test;
+package net.foreworld.rvt.test;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

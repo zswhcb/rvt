@@ -1,4 +1,4 @@
-package net.foreworld.manage.model;
+package net.foreworld.rvt.model;
 
 /**
  *

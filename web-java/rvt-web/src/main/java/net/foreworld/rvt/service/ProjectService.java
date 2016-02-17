@@ -1,6 +1,6 @@
-package net.foreworld.manage.service;
+package net.foreworld.rvt.service;
 
-import net.foreworld.manage.model.Project;
+import net.foreworld.rvt.model.Project;
 
 /**
  *

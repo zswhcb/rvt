@@ -1,7 +1,7 @@
-package net.foreworld.manage.service.impl;
+package net.foreworld.rvt.service.impl;
 
-import net.foreworld.manage.model.Project;
-import net.foreworld.manage.service.ProjectService;
+import net.foreworld.rvt.model.Project;
+import net.foreworld.rvt.service.ProjectService;
 
 import org.springframework.stereotype.Service;
 

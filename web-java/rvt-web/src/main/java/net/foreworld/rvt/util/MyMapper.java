@@ -1,4 +1,4 @@
-package net.foreworld.manage.util;
+package net.foreworld.rvt.util;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
