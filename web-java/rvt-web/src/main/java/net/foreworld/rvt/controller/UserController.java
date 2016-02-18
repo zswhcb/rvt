@@ -1,6 +1,7 @@
 package net.foreworld.rvt.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -52,29 +54,30 @@ public class UserController {
 		return "redirect:/user/login";
 	}
 
+	@ResponseBody
 	@RequestMapping(value = { "/user/login" }, method = RequestMethod.POST, produces = "application/json")
-	public ModelAndView login(User user, HttpSession session) {
-		ModelAndView result = new ModelAndView();
-		result.addObject("success", false);
+	public Map<String, Object> login(User user, HttpSession session) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("success", false);
 
 		User _user = userService.findByName(user.getUser_name());
 
 		if (null == _user) {
-			result.addObject("msg", new String[] { "用户名或密码输入错误", "user_name" });
+			result.put("msg", new String[] { "用户名或密码输入错误", "user_name" });
 			return result;
 		} // END
 
 		String user_pass = MD5.encode(user.getUser_pass());
 
 		if (!user_pass.equals(_user.getUser_pass())) {
-			result.addObject("msg", new String[] { "用户名或密码输入错误", "user_pass" });
+			result.put("msg", new String[] { "用户名或密码输入错误", "user_pass" });
 			return result;
 		} // END
 
 		session.setAttribute("session.user", _user);
 		session.setAttribute("session.time", (new Date()).toString());
 		// TODO
-		result.addObject("success", true);
+		result.put("success", true);
 		return result;
 	}
 
@@ -94,19 +97,20 @@ public class UserController {
 		return result;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = { "/user/add" }, method = RequestMethod.POST, produces = "application/json")
-	public ModelAndView add(User user) {
-		ModelAndView result = new ModelAndView();
+	public Map<String, Object> add(User user) {
+		Map<String, Object> result = new HashMap<String, Object>();
 
 		// TODO
 		String[] msg = userService.saveNew(user);
 		if (null != msg) {
-			result.addObject("msg", msg);
-			result.addObject("success", false);
+			result.put("msg", msg);
+			result.put("success", false);
 			return result;
 		}
 
-		result.addObject("success", true);
+		result.put("success", true);
 		return result;
 	}
 
@@ -122,32 +126,36 @@ public class UserController {
 		return "user/1.0.1/edit";
 	}
 
+	@ResponseBody
 	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.POST, produces = "application/json")
-	public ModelAndView edit(User user) {
-		ModelAndView result = new ModelAndView();
+	public Map<String, Object> edit(User user) {
+		Map<String, Object> result = new HashMap<String, Object>();
 
 		// TODO
 		userService.updateNotNull(user);
 
-		result.addObject("success", true);
+		result.put("success", true);
 		return result;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = { "/user/remove" }, method = RequestMethod.POST, produces = "application/json")
-	public ModelAndView remove(@RequestParam(required = true) String ids) {
-		ModelAndView result = new ModelAndView();
+	public Map<String, Object> remove(@RequestParam(required = true) String ids) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		// TODO
 		userService.deleteByKeys(ids);
-		result.addObject("success", true);
+		result.put("success", true);
 		return result;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = { "/user/resetPwd" }, method = RequestMethod.POST, produces = "application/json")
-	public ModelAndView resetPwd(@RequestParam(required = true) String ids) {
-		ModelAndView result = new ModelAndView();
+	public Map<String, Object> resetPwd(
+			@RequestParam(required = true) String ids) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		// TODO
 		userService.resetPwdByKeys(ids);
-		result.addObject("success", true);
+		result.put("success", true);
 		return result;
 	}
 }

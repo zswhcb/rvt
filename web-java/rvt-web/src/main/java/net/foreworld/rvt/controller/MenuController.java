@@ -13,6 +13,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
@@ -48,16 +49,17 @@ public class MenuController {
 		return result;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = { "/menu/list" }, method = RequestMethod.POST, produces = "application/json")
-	public ModelAndView list(Menu menu,
+	public Map<String, Object> list(Menu menu,
 			@RequestParam(required = false, defaultValue = "1") int json) {
-		ModelAndView result = new ModelAndView();
-		result.addObject("success", true);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("success", true);
 		// TODO
 		List<Menu> list = menuService.findByPid(menu.getPid());
 		// TODO
 		if (1 == json) {
-			result.addObject("data", list);
+			result.put("data", list);
 		} else {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("data_menus", list);
@@ -65,10 +67,10 @@ public class MenuController {
 			try {
 				Template template = freemarkerConfigurer.getConfiguration()
 						.getTemplate(menu_list_ftl);
-				result.addObject("data", FreeMarkerTemplateUtils
+				result.put("data", FreeMarkerTemplateUtils
 						.processTemplateIntoString(template, map));
 			} catch (Exception ignore) {
-				result.addObject("success", false);
+				result.put("success", false);
 			} // END
 		} // END
 		return result;
