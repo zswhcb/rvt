@@ -31,7 +31,7 @@ public class Task implements Serializable {
 	private String project_id;
 
 	private Integer talk_timeout;
-	private Integer talk_time_len;
+	private Integer talk_time_min;
 	private Date start_time;
 	private Date end_time;
 
@@ -87,12 +87,12 @@ public class Task implements Serializable {
 		this.talk_timeout = talk_timeout;
 	}
 
-	public Integer getTalk_time_len() {
-		return talk_time_len;
+	public Integer getTalk_time_min() {
+		return talk_time_min;
 	}
 
-	public void setTalk_time_len(Integer talk_time_len) {
-		this.talk_time_len = talk_time_len;
+	public void setTalk_time_min(Integer talk_time_min) {
+		this.talk_time_min = talk_time_min;
 	}
 
 	public Date getStart_time() {
