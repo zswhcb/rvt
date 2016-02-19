@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import net.foreworld.rvt.model.Project;
-import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,11 +62,10 @@ public class ProjectController {
 	@RequestMapping(value = { "/project/add" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> add(Project project, HttpSession session) {
 		Map<String, Object> result = new HashMap<String, Object>();
-
 		// TODO
-		User _user = (User) session.getAttribute("session.user");
-		project.setCreate_user_id(_user.getId());
-
+		project.setCreate_user_id(session.getAttribute("session.user.id")
+				.toString());
+		// TODO
 		projectService.save(project);
 		result.put("success", true);
 		return result;

@@ -75,6 +75,7 @@ public class UserController {
 		} // END
 
 		session.setAttribute("session.user", _user);
+		session.setAttribute("session.user.id", _user.getId());
 		session.setAttribute("session.time", (new Date()).toString());
 		// TODO
 		result.put("success", true);

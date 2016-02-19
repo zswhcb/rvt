@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.rvt.model.Project;
 import net.foreworld.rvt.model.Task;
-import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.ProjectService;
 import net.foreworld.rvt.service.TaskService;
 
@@ -60,10 +59,10 @@ public class TaskController {
 	public String editUI(Map<String, Object> map,
 			@RequestParam(required = true) String id) {
 		Task task = taskService.selectByKey(id);
-
+		// TODO
 		if (null == task)
 			return "redirect:/task/";
-
+		// TODO
 		map.put("data_task", task);
 		return "task/1.0.1/edit";
 	}
@@ -72,11 +71,10 @@ public class TaskController {
 	@RequestMapping(value = { "/task/add" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> add(Task task, HttpSession session) {
 		Map<String, Object> result = new HashMap<String, Object>();
-
 		// TODO
-		User _user = (User) session.getAttribute("session.user");
-		task.setCreate_user_id(_user.getId());
-
+		task.setCreate_user_id(session.getAttribute("session.user.id")
+				.toString());
+		// TODO
 		taskService.save(task);
 		result.put("success", true);
 		return result;
