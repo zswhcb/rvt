@@ -25,15 +25,20 @@
 					<div class='panel-body'>
 						<form id='searchFrm' class='form-inline' role='form'
 							onsubmit='return false;'>
-							<div class='form-group'>
-								<input type='text' class='form-control' placeholder='任务名称'>
-							</div>
+							<select class='form-control' name='project_id'
+								id='searchFrm_project_id'>
+								<option value=''></option> <#list data_projects as doc>
+								<option value='${(doc.id)!}'>${(doc.project_name)!}</option>
+								</#list>
+							</select>
 							<button type='button'
 								class='btn btn-default glyphicon glyphicon-search'
 								id='searchFrm_btn_search'>&#8201;查询</button>
 						</form>
 					</div>
 				</div>
+			</div>
+			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default table-responsive'>
 					<div class='panel-heading'>
 						<div class='btn-group btn-group-xs'>
