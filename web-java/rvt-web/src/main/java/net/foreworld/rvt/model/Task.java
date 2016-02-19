@@ -16,7 +16,7 @@ import javax.persistence.Table;
  *
  */
 @Table(name = "r_project_task")
-public class Project_Task implements Serializable {
+public class Task implements Serializable {
 	private static final long serialVersionUID = -9168663455251260357L;
 
 	@Id
