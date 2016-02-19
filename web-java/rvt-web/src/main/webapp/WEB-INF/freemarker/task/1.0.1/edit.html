@@ -3,7 +3,7 @@
 <html>
 <head>
 <#include "/_pagelet/header.html"/>
-<title>项目管理 | 修改</title>
+<title>任务管理 | 修改</title>
 <link rel='stylesheet' type='text/css' media='screen'
 	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
 </head>
@@ -14,7 +14,7 @@
 				<ol class='breadcrumb'>
 					<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
 					<li class='active'><a href='javascript:;'
-						onclick='parent.location.href="${(conf_html_virtualPath)!}#page/project/"'>项目管理</a>
+						onclick='parent.location.href="${(conf_html_virtualPath)!}#page/task/"'>任务管理</a>
 					</li>
 					<li class='active'><a href='javascript:location.reload();'>编辑</a>
 					</li>
@@ -34,17 +34,25 @@
 		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
 	<script>
 		$(function() {
-			$('#addFrm_btn_submit').click(function() {
-				$.ajax({
-					url : '${(conf_html_virtualPath)!}project/edit',
-					type : 'POST',
-					dataType : 'JSON',
-					data : $('#addFrm').serializeObjectForm()
-				}).done(function(data) {
-					if(!data.success) return alert(data.msg[0]);
-					parent.location.href = '${(conf_html_virtualPath)!}#page/project/';
-				});
-			});
+			$('#addFrm_btn_submit')
+					.click(
+							function() {
+								$
+										.ajax(
+												{
+													url : '${(conf_html_virtualPath)!}task/edit',
+													type : 'POST',
+													dataType : 'JSON',
+													data : $('#addFrm')
+															.serializeObjectForm()
+												})
+										.done(
+												function(data) {
+													if (!data.success)
+														return alert(data.msg[0]);
+													parent.location.href = '${(conf_html_virtualPath)!}#page/task/';
+												});
+							});
 		});
 	</script>
 </body>
