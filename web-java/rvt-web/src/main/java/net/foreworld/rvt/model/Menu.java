@@ -16,8 +16,7 @@ import javax.persistence.Table;
  */
 @Table(name = "s_menu")
 public class Menu implements Serializable {
-
-	private static final long serialVersionUID = 4674082233956593175L;
+	private static final long serialVersionUID = -3226413974302037039L;
 
 	@Id
 	@Column(name = "id")
