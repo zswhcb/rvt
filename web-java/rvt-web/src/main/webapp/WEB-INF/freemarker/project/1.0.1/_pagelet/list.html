@@ -1,4 +1,5 @@
 <#import "/_macro/status.html" as status>
+<#import "/_macro/project_type.html" as project_type>
 <table id='table1' data-olx-type='olx.grid'
 	class='table table-bordered table-hover table-condensed table-striped'
 	data-url='' data-current='1' data-pagesize='20' data-count='561'>
@@ -19,7 +20,7 @@
 			</td>
 			<td>${(doc.project_name)!}</td>
 			<td>${(doc.tel_num)!}</td>
-			<td></td>
+			<td><@project_type.m type="${(doc.project_type_id)!}"/></td>
 			<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
 			<td><@status.m status="${(doc.status)!}"/></td>
 		</tr>

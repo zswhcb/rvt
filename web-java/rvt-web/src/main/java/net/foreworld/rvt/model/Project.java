@@ -27,7 +27,7 @@ public class Project implements Serializable {
 
 	private String project_name;
 	private String project_intro;
-	private String project_type_id;
+	private Integer project_type_id;
 	private String tel_num;
 
 	private Date create_time;
@@ -49,11 +49,11 @@ public class Project implements Serializable {
 		this.project_intro = project_intro;
 	}
 
-	public String getProject_type_id() {
+	public Integer getProject_type_id() {
 		return project_type_id;
 	}
 
-	public void setProject_type_id(String project_type_id) {
+	public void setProject_type_id(Integer project_type_id) {
 		this.project_type_id = project_type_id;
 	}
 
