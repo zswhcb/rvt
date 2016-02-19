@@ -1,9 +1,14 @@
 package net.foreworld.rvt.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import net.foreworld.rvt.model.Project;
 import net.foreworld.rvt.service.ProjectService;
 
 import org.springframework.stereotype.Service;
+
+import tk.mybatis.mapper.entity.Example;
 
 /**
  *
@@ -16,4 +21,17 @@ import org.springframework.stereotype.Service;
 public class ProjectServiceImpl extends BaseService<Project> implements
 		ProjectService {
 
+	@Override
+	public int save(Project project) {
+		project.setId(null);
+		project.setCreate_time(new Date());
+		return super.save(project);
+	}
+
+	@Override
+	public List<Project> findByProject(Project project, int page, int rows) {
+		Example example = new Example(Project.class);
+		example.setOrderByClause("create_time desc");
+		return selectByExample(example);
+	}
 }

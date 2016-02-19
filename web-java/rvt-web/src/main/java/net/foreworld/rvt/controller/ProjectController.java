@@ -1,5 +1,6 @@
 package net.foreworld.rvt.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import tk.mybatis.mapper.entity.Example;
 
 /**
  *
@@ -29,13 +29,12 @@ public class ProjectController {
 	private ProjectService projectService;
 
 	@RequestMapping(value = { "/project/" }, method = RequestMethod.GET)
-	public ModelAndView indexUI() {
+	public ModelAndView indexUI(Project project,
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "20") int rows) {
 		ModelAndView result = new ModelAndView("project/1.0.1/index");
-		// TODO
-		List<Project> list = projectService.selectByExample(new Example(
-				Project.class));
+		List<Project> list = projectService.findByProject(project, page, rows);
 		result.addObject("data_projects", list);
-
 		return result;
 	}
 
@@ -55,5 +54,35 @@ public class ProjectController {
 
 		map.put("data_project", project);
 		return "project/1.0.1/edit";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = { "/project/add" }, method = RequestMethod.POST, produces = "application/json")
+	public Map<String, Object> add(Project project) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		projectService.save(project);
+		result.put("success", true);
+		return result;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = { "/project/edit" }, method = RequestMethod.POST, produces = "application/json")
+	public Map<String, Object> edit(Project project) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		// TODO
+		projectService.updateNotNull(project);
+		// TODO
+		result.put("success", true);
+		return result;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = { "/project/remove" }, method = RequestMethod.POST, produces = "application/json")
+	public Map<String, Object> remove(@RequestParam(required = true) String ids) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		// TODO
+		projectService.deleteByKeys(ids);
+		result.put("success", true);
+		return result;
 	}
 }

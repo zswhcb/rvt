@@ -1,5 +1,7 @@
 package net.foreworld.rvt.service;
 
+import java.util.List;
+
 import net.foreworld.rvt.model.Project;
 
 /**
@@ -11,4 +13,5 @@ import net.foreworld.rvt.model.Project;
  */
 public interface ProjectService extends IService<Project> {
 
+	List<Project> findByProject(Project project, int page, int rows);
 }

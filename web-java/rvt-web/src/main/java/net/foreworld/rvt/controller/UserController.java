@@ -118,10 +118,10 @@ public class UserController {
 	public String editUI(Map<String, Object> map,
 			@RequestParam(required = true) String id) {
 		User user = userService.selectByKey(id);
-
+		// TODO
 		if (null == user)
 			return "redirect:/user/";
-
+		// TODO
 		map.put("data_user", user);
 		return "user/1.0.1/edit";
 	}
@@ -130,10 +130,9 @@ public class UserController {
 	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> edit(User user) {
 		Map<String, Object> result = new HashMap<String, Object>();
-
 		// TODO
 		userService.updateNotNull(user);
-
+		// TODO
 		result.put("success", true);
 		return result;
 	}
