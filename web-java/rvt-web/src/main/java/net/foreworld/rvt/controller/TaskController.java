@@ -64,7 +64,7 @@ public class TaskController {
 		if (null == task)
 			return "redirect:/task/";
 
-		map.put("data_project", task);
+		map.put("data_task", task);
 		return "task/1.0.1/edit";
 	}
 
