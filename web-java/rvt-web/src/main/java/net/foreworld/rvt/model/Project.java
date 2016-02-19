@@ -33,6 +33,16 @@ public class Project implements Serializable {
 	private Date create_time;
 	private Integer status;
 
+	private String create_user_id;
+
+	public String getCreate_user_id() {
+		return create_user_id;
+	}
+
+	public void setCreate_user_id(String create_user_id) {
+		this.create_user_id = create_user_id;
+	}
+
 	public String getProject_name() {
 		return project_name;
 	}

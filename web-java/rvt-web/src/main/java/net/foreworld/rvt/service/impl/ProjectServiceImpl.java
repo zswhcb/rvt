@@ -34,4 +34,11 @@ public class ProjectServiceImpl extends BaseService<Project> implements
 		example.setOrderByClause("create_time desc");
 		return selectByExample(example);
 	}
+
+	@Override
+	public int updateNotNull(Project project) {
+		project.setCreate_time(null);
+		project.setCreate_user_id(null);
+		return super.updateNotNull(project);
+	}
 }
