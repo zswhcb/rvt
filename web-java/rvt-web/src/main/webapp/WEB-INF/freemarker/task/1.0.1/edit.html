@@ -34,25 +34,23 @@
 		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
 	<script>
 		$(function() {
-			$('#addFrm_btn_submit')
-					.click(
-							function() {
-								$
-										.ajax(
-												{
-													url : '${(conf_html_virtualPath)!}task/edit',
-													type : 'POST',
-													dataType : 'JSON',
-													data : $('#addFrm')
-															.serializeObjectForm()
-												})
-										.done(
-												function(data) {
-													if (!data.success)
-														return alert(data.msg[0]);
-													parent.location.href = '${(conf_html_virtualPath)!}#page/task/';
-												});
-							});
+			$('#addFrm_btn_submit').click(function() {
+				$.ajax({
+					url : '${(conf_html_virtualPath)!}task/edit',
+					type : 'POST',
+					dataType : 'JSON',
+					data : $('#addFrm').serializeObjectForm(),
+					success : function(data) {
+						if (!data.success)
+							return alert(data.msg[0]);
+						var url = '${(conf_html_virtualPath)!}#page/task/';
+						parent.location.href = url;
+					},
+					error : function() {
+						alert(arguments[2]);
+					}
+				});
+			});
 		});
 	</script>
 </body>
