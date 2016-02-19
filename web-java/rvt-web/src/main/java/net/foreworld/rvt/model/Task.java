@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  *
  * @author huangxin (3203317@qq.com)
@@ -32,7 +34,10 @@ public class Task implements Serializable {
 
 	private Integer talk_timeout;
 	private Integer talk_time_min;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date start_time;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date end_time;
 
 	private String create_user_id;
