@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import tk.mybatis.mapper.entity.Example;
 
+import com.github.pagehelper.PageHelper;
+
 /**
  *
  * @author huangxin (3203317@qq.com)
@@ -34,6 +36,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	public List<User> findByUser(User user, int page, int rows) {
 		Example example = new Example(User.class);
 		example.setOrderByClause("create_time desc");
+		PageHelper.startPage(page, rows);
 		return selectByExample(example);
 	}
 
