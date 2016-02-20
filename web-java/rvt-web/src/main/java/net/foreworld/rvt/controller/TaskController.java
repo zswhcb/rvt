@@ -68,6 +68,15 @@ public class TaskController {
 		// TODO
 		if (null == task)
 			return "redirect:/task/";
+
+		Project project = projectService.selectByKey(task.getProject_id());
+
+		// TODO
+		if (null == project)
+			return "redirect:/task/";
+
+		map.put("data_project", project);
+
 		// TODO
 		map.put("data_task", task);
 		return "task/1.0.1/edit";

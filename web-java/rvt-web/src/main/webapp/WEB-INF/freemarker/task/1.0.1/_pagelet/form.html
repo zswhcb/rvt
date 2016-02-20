@@ -14,11 +14,13 @@
 		<label class='col-sm-2 hidden-xs control-label'
 			for='addFrm_project_id'><span class='olx-form-required'>*</span>项目名称</label>
 		<div class='col-sm-4'>
-			<select class='form-control' name='project_id' id='addFrm_project_id'>
+			<#if data_project??> <input type='text' class='form-control'
+				value='${(data_project.project_name)!}' readonly> <#else> <select
+				class='form-control' name='project_id' id='addFrm_project_id'>
 				<#list data_projects! as doc>
 				<option value='${(doc.id)!}'>${(doc.project_name)!}</option>
 				</#list>
-			</select>
+			</select> </#if>
 		</div>
 	</div>
 	<div class='form-group'>
