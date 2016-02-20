@@ -35,10 +35,12 @@ public class TaskController {
 	private ProjectService projectService;
 
 	@RequestMapping(value = { "/task/" }, method = RequestMethod.GET)
-	public ModelAndView indexUI(Task task) {
+	public ModelAndView indexUI(Task task,
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "20") int rows) {
 		ModelAndView result = new ModelAndView("task/1.0.1/index");
 		// TODO
-		List<Task> list = taskService.findByTask(task);
+		List<Task> list = taskService.findByTask(task, page, rows);
 		result.addObject("data_tasks", list);
 		// TODO
 		List<Project> list_project = projectService.findByProject(null, 1,

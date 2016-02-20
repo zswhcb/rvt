@@ -72,12 +72,14 @@
 
 	<script>
 		$(function() {
-			$('#searchFrm_btn_search')
-					.click(
-							function() {
-								parent.location.href = '${(conf_html_virtualPath)!}#page/task/?project_id='
-										+ $('#searchFrm_project_id').val();
-							});
+			$('#searchFrm_btn_search').click(
+					function() {
+						var project_id = $('#searchFrm_project_id').val();
+						var url = '${(conf_html_virtualPath)!}#page/task/'
+								+ (!project_id ? '' : '?project_id='
+										+ project_id);
+						parent.location.href = url;
+					});
 
 			$('#btn_edit')
 					.click(

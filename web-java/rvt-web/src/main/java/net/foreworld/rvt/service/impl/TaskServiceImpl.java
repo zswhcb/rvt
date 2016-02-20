@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import tk.mybatis.mapper.entity.Example;
 
+import com.github.pagehelper.PageHelper;
+
 /**
  *
  * @author huangxin (3203317@qq.com)
@@ -22,18 +24,18 @@ import tk.mybatis.mapper.entity.Example;
 public class TaskServiceImpl extends BaseService<Task> implements TaskService {
 
 	@Override
-	public List<Task> findByTask(Task task) {
+	public List<Task> findByTask(Task task, int page, int rows) {
 		Example example = new Example(Task.class);
 		example.setOrderByClause("create_time desc");
 		if (null != task) {
 			Example.Criteria criteria = example.createCriteria();
-
 			// TODO
 			String project_id = StringUtil.isEmpty(task.getProject_id());
 			if (null != project_id) {
 				criteria.andEqualTo("project_id", project_id);
 			}
 		}
+		PageHelper.startPage(page, rows);
 		return selectByExample(example);
 	}
 
