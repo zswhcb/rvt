@@ -57,15 +57,18 @@ body {
 					url : '${(conf_html_virtualPath)!}user/login',
 					type : 'POST',
 					dataType : 'JSON',
-					data : {
-						user_name : $('#loginFrm_user_name').val(),
-						user_pass : $('#loginFrm_user_pass').val()
+					data : $('#loginFrm').serializeObjectForm(),
+					success : function(data) {
+						if (data.success) {
+							location.href = '${(conf_html_virtualPath)!}';
+							return;
+						} // END
+						if (data.msg)
+							alert(data.msg[0]);
+					},
+					error : function() {
+						alert(arguments[2]);
 					}
-				}).done(function(data) {
-					if (data.success)
-						return location.href = '${(conf_html_virtualPath)!}';
-					if (data.msg)
-						alert(data.msg[0]);
 				});
 			});
 		});

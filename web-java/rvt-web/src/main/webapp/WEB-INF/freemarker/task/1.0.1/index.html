@@ -97,9 +97,13 @@
 						dataType : 'JSON',
 						data : {
 							ids : selIds.join(',')
+						},
+						success : function(data) {
+							location.reload();
+						},
+						error : function() {
+							alert(arguments[2]);
 						}
-					}).done(function(data) {
-						location.reload();
 					});
 				}
 			});
