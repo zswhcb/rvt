@@ -46,6 +46,8 @@ public class TaskController {
 		List<Project> list_project = projectService.findByProject(null, 1,
 				Integer.MAX_VALUE);
 		result.addObject("data_projects", list_project);
+		// TODO
+		result.addObject("data_task", task);
 		return result;
 	}
 

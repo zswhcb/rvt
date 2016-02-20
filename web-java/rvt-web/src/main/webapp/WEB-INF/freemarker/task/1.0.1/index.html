@@ -23,13 +23,14 @@
 						</h3>
 					</div>
 					<div class='panel-body'>
+						<#import "/_macro/select_option.html" as select_option>
 						<form id='searchFrm' class='form-inline' role='form'
 							onsubmit='return false;'>
 							<select class='form-control' name='project_id'
 								id='searchFrm_project_id'>
-								<option value=''></option> <#list data_projects as doc>
-								<option value='${(doc.id)!}'>${(doc.project_name)!}</option>
-								</#list>
+								<option value=''></option> <@select_option.m list=data_projects
+								key="id" value="project_name"
+								selValue="${(data_task.project_id)!}"/>
 							</select>
 							<button type='button'
 								class='btn btn-default glyphicon glyphicon-search'
