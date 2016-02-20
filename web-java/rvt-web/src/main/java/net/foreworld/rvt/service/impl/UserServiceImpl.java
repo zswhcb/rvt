@@ -84,4 +84,25 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		// TODO
 		return super.updateNotNull(user);
 	}
+
+	@Override
+	public String[] changePwd(String user_id, String old_pass, String new_pass) {
+		old_pass = StringUtil.isEmpty(old_pass);
+
+		// TODO
+		User user = selectByKey(user_id);
+		if (null == user)
+			return new String[] { "用户不存在" };
+
+		// TODO
+		if (!MD5.encode(old_pass).equals(user.getUser_pass()))
+			return new String[] { "原始密码错误" };
+
+		User _user = new User();
+		_user.setId(user_id);
+		_user.setUser_pass(MD5.encode(new_pass));
+		super.updateNotNull(_user);
+
+		return null;
+	}
 }

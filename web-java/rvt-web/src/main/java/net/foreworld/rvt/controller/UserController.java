@@ -48,6 +48,26 @@ public class UserController {
 		return result;
 	}
 
+	@RequestMapping(value = { "/user/changePwd" }, method = RequestMethod.POST, produces = "application/json")
+	public Map<String, Object> changePwd(HttpSession session,
+			@RequestParam(required = true) String old_pass,
+			@RequestParam(required = true) String new_pass) {
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		// TODO
+		String[] msg = userService.changePwd(
+				session.getAttribute("session.user.id").toString(), old_pass,
+				new_pass);
+		if (null != msg) {
+			result.put("msg", msg);
+			result.put("success", false);
+			return result;
+		}
+
+		result.put("success", true);
+		return result;
+	}
+
 	@RequestMapping(value = { "/user/logout" }, method = RequestMethod.GET)
 	public String logoutUI(HttpSession session) {
 		session.invalidate();

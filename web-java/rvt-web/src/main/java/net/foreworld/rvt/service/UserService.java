@@ -20,4 +20,6 @@ public interface UserService extends IService<User> {
 	int resetPwdByKeys(String keys);
 
 	String[] saveNew(User user);
+
+	String[] changePwd(String user_id, String old_pass, String new_pass);
 }

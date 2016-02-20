@@ -63,5 +63,31 @@
 	<#include "/_pagelet/js.html"/>
 	<script type='text/javascript'
 		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+	<script>
+		$(function() {
+			$('#editFrm_btn_submit').click(
+					function() {
+						if ($('#editFrm_new_pass').val() !== $(
+								'#editFrm_new_pass2').val()) {
+							return alert('两次输入的密码不一致');
+						}
+
+						$.ajax({
+							url : '${(conf_html_virtualPath)!}user/changePwd',
+							type : 'POST',
+							dataType : 'JSON',
+							data : $('#editFrm').serializeObjectForm(),
+							success : function(data) {
+								if (data.success)
+									return alert('操作成功');
+								alert(data.msg[0]);
+							},
+							error : function() {
+								alert(arguments[2]);
+							}
+						});
+					});
+		});
+	</script>
 </body>
 </html>
