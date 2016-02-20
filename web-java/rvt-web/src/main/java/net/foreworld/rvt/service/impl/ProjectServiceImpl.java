@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import tk.mybatis.mapper.entity.Example;
 
+import com.github.pagehelper.PageHelper;
+
 /**
  *
  * @author huangxin (3203317@qq.com)
@@ -38,6 +40,7 @@ public class ProjectServiceImpl extends BaseService<Project> implements
 				criteria.andEqualTo("status", project.getStatus());
 			}
 		}
+		PageHelper.startPage(page, rows);
 		return selectByExample(example);
 	}
 

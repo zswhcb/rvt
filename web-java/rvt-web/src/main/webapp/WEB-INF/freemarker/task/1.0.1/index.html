@@ -72,7 +72,12 @@
 
 	<script>
 		$(function() {
-			$('#searchFrm_project_id').val('');
+			$('#searchFrm_btn_search')
+					.click(
+							function() {
+								parent.location.href = '${(conf_html_virtualPath)!}#page/task/?project_id='
+										+ $('#searchFrm_project_id').val();
+							});
 
 			$('#btn_edit')
 					.click(

@@ -12,5 +12,5 @@ import net.foreworld.rvt.model.Task;
  *
  */
 public interface TaskService extends IService<Task> {
-	List<Task> findByTask(Task task, int page, int rows);
+	List<Task> findByTask(Task task);
 }
