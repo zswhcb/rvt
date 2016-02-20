@@ -36,6 +36,7 @@ public class ProjectServiceImpl extends BaseService<Project> implements
 		example.setOrderByClause("create_time desc");
 		if (null != project) {
 			Example.Criteria criteria = example.createCriteria();
+			// TODO
 			if (null != project.getStatus()) {
 				criteria.andEqualTo("status", project.getStatus());
 			}
