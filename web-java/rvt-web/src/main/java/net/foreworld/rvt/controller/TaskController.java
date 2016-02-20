@@ -52,6 +52,9 @@ public class TaskController {
 	@RequestMapping(value = { "/task/add" }, method = RequestMethod.GET)
 	public ModelAndView addUI() {
 		ModelAndView result = new ModelAndView("task/1.0.1/add");
+		List<Project> list_project = projectService.findByProject(null, 1,
+				Integer.MAX_VALUE);
+		result.addObject("data_projects", list_project);
 		return result;
 	}
 
