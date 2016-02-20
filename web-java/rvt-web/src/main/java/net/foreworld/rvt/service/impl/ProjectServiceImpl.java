@@ -32,6 +32,12 @@ public class ProjectServiceImpl extends BaseService<Project> implements
 	public List<Project> findByProject(Project project, int page, int rows) {
 		Example example = new Example(Project.class);
 		example.setOrderByClause("create_time desc");
+		if (null != project) {
+			Example.Criteria criteria = example.createCriteria();
+			if (null != project.getStatus()) {
+				criteria.andEqualTo("status", project.getStatus());
+			}
+		}
 		return selectByExample(example);
 	}
 
