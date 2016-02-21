@@ -25,11 +25,13 @@
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_create_user_id'><span class='olx-form-required'>*</span>创建人</label>
+			for='addFrm_create_user_id'><span class='olx-form-required'>*</span>发布人</label>
 		<div class='col-sm-4'>
+			<#if data_user??> <input type='text' class='form-control'
+				value='${(data_user.user_name)!}' readonly><#else>
 			<div class="input-group">
 				<input type="text" aria-label="Text input with dropdown button"
-					class="form-control" id='addFrm_create_user_name' placeholder='创建人'>
+					class="form-control" id='addFrm_create_user_name' placeholder='发布人'>
 				<input type="hidden" aria-label="Text input with dropdown button"
 					class="form-control" name='create_user_id'
 					id='addFrm_create_user_id'>
@@ -47,6 +49,7 @@
 					</ul>
 				</div>
 			</div>
+			</#if>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -138,6 +141,7 @@
 </form>
 <script type='text/javascript'
 	src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
+<#if data_users??>
 <script>
 	$('#addFrm_create_user_name')
 			.bind(
@@ -169,7 +173,10 @@
 										var parent = $(obj.target).parent();
 
 										var ul = parent.find('ul')[0];
-										$(ul).html(html);
+										$(ul)
+												.html(
+														'' === html ? '<li><a href="javascript:;">没找到</li>'
+																: html);
 
 										var btn = parent.find('button')[0];
 										$(btn).trigger('click');
@@ -184,3 +191,4 @@
 		$('#addFrm_create_user_name').val(user_name);
 	}
 </script>
+</#if>

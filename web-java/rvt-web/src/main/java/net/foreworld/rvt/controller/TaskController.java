@@ -55,6 +55,12 @@ public class TaskController {
 		return result;
 	}
 
+	@RequestMapping(value = { "/task/monitor/" }, method = RequestMethod.GET)
+	public ModelAndView monitorUI() {
+		ModelAndView result = new ModelAndView("task/monitor/1.0.1/index");
+		return result;
+	}
+
 	@RequestMapping(value = { "/task/add" }, method = RequestMethod.GET)
 	public ModelAndView addUI() {
 		ModelAndView result = new ModelAndView("task/1.0.1/add");
@@ -78,13 +84,18 @@ public class TaskController {
 		if (null == task)
 			return "redirect:/task/";
 
-		Project project = projectService.selectByKey(task.getProject_id());
-
 		// TODO
+		Project project = projectService.selectByKey(task.getProject_id());
 		if (null == project)
 			return "redirect:/task/";
 
+		// TODO
+		User user = userService.selectByKey(task.getCreate_user_id());
+		if (null == user)
+			return "redirect:/task/";
+
 		map.put("data_project", project);
+		map.put("data_user", user);
 
 		// TODO
 		map.put("data_task", task);
@@ -96,9 +107,11 @@ public class TaskController {
 	public Map<String, Object> add(Task task, HttpSession session) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		// TODO
-		task.setCreate_user_id(session.getAttribute("session.user.id")
-				.toString());
-		// TODO
+		if (null == task.getCreate_user_id()) {
+			result.put("msg", new String[] { "请选择发布人" });
+			result.put("success", false);
+			return result;
+		} // END
 		taskService.save(task);
 		result.put("success", true);
 		return result;
