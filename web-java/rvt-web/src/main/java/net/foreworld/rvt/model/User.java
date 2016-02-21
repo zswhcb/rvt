@@ -31,6 +31,44 @@ public class User implements Serializable {
 	private Date create_time;
 	private Integer status;
 
+	private String apikey;
+	private String seckey;
+	private String real_name;
+
+	private String alipay_account;
+
+	public String getAlipay_account() {
+		return alipay_account;
+	}
+
+	public void setAlipay_account(String alipay_account) {
+		this.alipay_account = alipay_account;
+	}
+
+	public String getApikey() {
+		return apikey;
+	}
+
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
+	}
+
+	public String getSeckey() {
+		return seckey;
+	}
+
+	public void setSeckey(String seckey) {
+		this.seckey = seckey;
+	}
+
+	public String getReal_name() {
+		return real_name;
+	}
+
+	public void setReal_name(String real_name) {
+		this.real_name = real_name;
+	}
+
 	/**
 	 * 推荐人
 	 */
