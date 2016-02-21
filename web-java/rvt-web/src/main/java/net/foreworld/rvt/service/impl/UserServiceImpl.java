@@ -6,6 +6,7 @@ import java.util.List;
 import net.foreworld.rvt.mapper.UserMapper;
 import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.UserService;
+import net.foreworld.util.RestUtil;
 import net.foreworld.util.StringUtil;
 import net.foreworld.util.encryptUtil.MD5;
 
@@ -73,6 +74,9 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		user.setUser_pass(null == user.getUser_pass() ? DEFAULT_USER_PASS : MD5
 				.encode(user.getUser_pass()));
 
+		user.setApikey(genUserApiKey());
+		user.setSeckey(genUserSecKey());
+
 		// TODO
 		save(user);
 
@@ -84,6 +88,10 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		user.setUser_name(null);
 		user.setUser_pass(null);
 		user.setCreate_time(null);
+
+		user.setApikey(genUserApiKey());
+		user.setSeckey(genUserSecKey());
+
 		// TODO
 		return super.updateNotNull(user);
 	}
@@ -107,5 +115,61 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		super.updateNotNull(_user);
 
 		return null;
+	}
+
+	private String genUserApiKey() {
+		String encodedKey = null;
+		User user = null;
+		do {
+			encodedKey = RestUtil.genApiKey();
+			user = findByApiKey(encodedKey);
+		} while (user != null);
+		return encodedKey;
+	}
+
+	private String genUserSecKey() {
+		String encodedKey = null;
+		User user = null;
+		do {
+			encodedKey = RestUtil.genApiKey();
+			user = findBySecKey(encodedKey);
+		} while (user != null);
+		return encodedKey;
+	}
+
+	@Override
+	public User findByApiKey(String apikey) {
+		apikey = StringUtil.isEmpty(apikey);
+		if (null == apikey)
+			return null;
+
+		Example example = new Example(User.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("apikey", apikey);
+
+		List<User> list = selectByExample(example);
+
+		if (1 != list.size())
+			return null;
+
+		return list.get(0);
+	}
+
+	@Override
+	public User findBySecKey(String seckey) {
+		seckey = StringUtil.isEmpty(seckey);
+		if (null == seckey)
+			return null;
+
+		Example example = new Example(User.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("seckey", seckey);
+
+		List<User> list = selectByExample(example);
+
+		if (1 != list.size())
+			return null;
+
+		return list.get(0);
 	}
 }

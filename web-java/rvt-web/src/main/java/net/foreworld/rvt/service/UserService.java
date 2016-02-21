@@ -22,4 +22,8 @@ public interface UserService extends IService<User> {
 	String[] saveNew(User user);
 
 	String[] changePwd(String user_id, String old_pass, String new_pass);
+
+	User findByApiKey(String apikey);
+
+	User findBySecKey(String seckey);
 }
