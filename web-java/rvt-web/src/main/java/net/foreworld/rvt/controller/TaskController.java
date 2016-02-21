@@ -8,8 +8,10 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.rvt.model.Project;
 import net.foreworld.rvt.model.Task;
+import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.ProjectService;
 import net.foreworld.rvt.service.TaskService;
+import net.foreworld.rvt.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,8 @@ public class TaskController {
 	private TaskService taskService;
 	@Autowired
 	private ProjectService projectService;
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(value = { "/task/" }, method = RequestMethod.GET)
 	public ModelAndView indexUI(Task task,
@@ -60,6 +64,9 @@ public class TaskController {
 		List<Project> list_project = projectService.findByProject(project, 1,
 				Integer.MAX_VALUE);
 		result.addObject("data_projects", list_project);
+		// TODO
+		List<User> list = userService.findByUser(null, 1, 10);
+		result.addObject("data_users", list);
 		return result;
 	}
 

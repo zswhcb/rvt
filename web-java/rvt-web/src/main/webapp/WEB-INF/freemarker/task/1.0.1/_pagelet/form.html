@@ -29,8 +29,10 @@
 		<div class='col-sm-4'>
 			<div class="input-group">
 				<input type="text" aria-label="Text input with dropdown button"
+					class="form-control" id='addFrm_create_user_name' placeholder='创建人'>
+				<input type="hidden" aria-label="Text input with dropdown button"
 					class="form-control" name='create_user_id'
-					id='addFrm_create_user_id' placeholder='创建人'>
+					id='addFrm_create_user_id'>
 				<div class="input-group-btn">
 					<button aria-expanded="false" aria-haspopup="true"
 						data-toggle="dropdown" class="btn btn-default dropdown-toggle"
@@ -38,14 +40,10 @@
 						选择 <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li class="divider" role="separator"></li>
-						<li><a href="#">Separated link</a></li>
-						<li><a href="#">Separated link</a></li>
-						<li><a href="#">Separated link</a></li>
-						<li><a href="#">Separated link</a></li>
+						<#list data_users! as doc>
+						<li><a
+							href='javascript:selItem("${(doc.id)!}", "${(doc.user_name)!}");'>${(doc.user_name)!}</a>
+						</li></#list>
 					</ul>
 				</div>
 			</div>
@@ -141,7 +139,13 @@
 <script type='text/javascript'
 	src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
 <script>
-	$('#addFrm_create_user_id').bind('input propertychange', function(obj) {
-		console.log(obj.target.value);
+	$('#addFrm_create_user_name').bind('input propertychange', function(obj) {
+		//console.log(obj.target.value);
+		var btn = $(obj.target).parent().find('button')[0];
+		$(btn).trigger('click');
 	});
+	function selItem(id, user_name) {
+		$('#addFrm_create_user_id').val(id);
+		$('#addFrm_create_user_name').val(user_name);
+	}
 </script>
