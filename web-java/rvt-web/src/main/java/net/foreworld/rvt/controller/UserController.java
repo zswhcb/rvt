@@ -135,6 +135,20 @@ public class UserController {
 		return result;
 	}
 
+	@ResponseBody
+	@RequestMapping(value = { "/user/list" }, method = RequestMethod.POST, produces = "application/json")
+	public Map<String, Object> list(User user,
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "10") int rows) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		// TODO
+		List<User> list = userService.findByUser(user, page, rows);
+
+		result.put("data", list);
+		result.put("success", true);
+		return result;
+	}
+
 	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.GET)
 	public String editUI(Map<String, Object> map,
 			@RequestParam(required = true) String id) {

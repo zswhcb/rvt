@@ -37,6 +37,11 @@ public class User implements Serializable {
 
 	private String alipay_account;
 
+	/**
+	 * 推荐人
+	 */
+	private String referee_id;
+
 	public String getAlipay_account() {
 		return alipay_account;
 	}
@@ -68,11 +73,6 @@ public class User implements Serializable {
 	public void setReal_name(String real_name) {
 		this.real_name = real_name;
 	}
-
-	/**
-	 * 推荐人
-	 */
-	private String referee_id;
 
 	public String getReferee_id() {
 		return referee_id;

@@ -37,6 +37,18 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	public List<User> findByUser(User user, int page, int rows) {
 		Example example = new Example(User.class);
 		example.setOrderByClause("create_time desc");
+		example.selectProperties("id", "user_name", "email", "create_time",
+				"status", "apikey", "seckey", "real_name", "alipay_account",
+				"referee_id");
+		// TODO
+		if (null != user) {
+			Example.Criteria criteria = example.createCriteria();
+			// TODO
+			String user_name = StringUtil.isEmpty(user.getUser_name());
+			if (null != user_name) {
+				criteria.andLike("user_name", "%" + user_name + "%");
+			}
+		}
 		PageHelper.startPage(page, rows);
 		return selectByExample(example);
 	}

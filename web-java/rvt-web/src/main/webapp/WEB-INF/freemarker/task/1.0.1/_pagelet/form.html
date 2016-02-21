@@ -41,8 +41,8 @@
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right">
 						<#list data_users! as doc>
-						<li><a
-							href='javascript:selItem("${(doc.id)!}", "${(doc.user_name)!}");'>${(doc.user_name)!}</a>
+						<li><a href='javascript:;'
+							onclick='selItem("${(doc.id)!}", "${(doc.user_name)!}");'>${(doc.user_name)!}</a>
 						</li></#list>
 					</ul>
 				</div>
@@ -139,11 +139,46 @@
 <script type='text/javascript'
 	src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
 <script>
-	$('#addFrm_create_user_name').bind('input propertychange', function(obj) {
-		//console.log(obj.target.value);
-		var btn = $(obj.target).parent().find('button')[0];
-		$(btn).trigger('click');
-	});
+	$('#addFrm_create_user_name')
+			.bind(
+					'input propertychange',
+					function(obj) {
+						$
+								.ajax({
+									url : '${(conf_html_virtualPath)!}user/list',
+									type : 'POST',
+									dataType : 'JSON',
+									data : {
+										user_name : obj.target.value
+									},
+									success : function(data) {
+										if (!data.success)
+											return;
+										var html = '';
+
+										for ( var i in data.data) {
+											var _data = data.data[i];
+											html += '<li><a href="javascript:;" onclick="selItem(\''
+													+ _data.id
+													+ '\', \''
+													+ _data.user_name
+													+ '\');">'
+													+ _data.user_name + '</li>';
+										} // END
+
+										var parent = $(obj.target).parent();
+
+										var ul = parent.find('ul')[0];
+										$(ul).html(html);
+
+										var btn = parent.find('button')[0];
+										$(btn).trigger('click');
+									},
+									error : function() {
+										alert(arguments[2]);
+									}
+								});
+					});
 	function selItem(id, user_name) {
 		$('#addFrm_create_user_id').val(id);
 		$('#addFrm_create_user_name').val(user_name);
