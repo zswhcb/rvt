@@ -40,7 +40,7 @@ public class User implements Serializable {
 	/**
 	 * 推荐人
 	 */
-	private String referee_id;
+	private String invite_user_id;
 
 	public String getAlipay_account() {
 		return alipay_account;
@@ -74,12 +74,12 @@ public class User implements Serializable {
 		this.real_name = real_name;
 	}
 
-	public String getReferee_id() {
-		return referee_id;
+	public String getInvite_user_id() {
+		return invite_user_id;
 	}
 
-	public void setReferee_id(String referee_id) {
-		this.referee_id = referee_id;
+	public void setInvite_user_id(String invite_user_id) {
+		this.invite_user_id = invite_user_id;
 	}
 
 	public Date getCreate_time() {

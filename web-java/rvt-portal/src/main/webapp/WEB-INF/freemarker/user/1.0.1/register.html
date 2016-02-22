@@ -28,19 +28,19 @@ body {
 							<form class='form-horizontal' role='form' id='regFrm'
 								onsubmit='return false;' data-url=''>
 								<div class='form-group'>
-									<label for='regFrm_email' class='col-sm-3 control-label'>电子邮箱</label>
+									<label for='regFrm_user_name' class='col-sm-3 control-label'>手机号</label>
 									<div class='col-sm-9'>
-										<input type='text' class='form-control' name='email'
-											id='regFrm_email' placeholder='电子邮箱' required
-											data-original-title='电子邮箱不能为空'>
+										<input type='text' class='form-control' name='user_name'
+											id='regFrm_user_name' placeholder='手机号' required
+											data-original-title='手机号不能为空'>
 									</div>
 								</div>
 								<div class='form-group'>
-									<label for='regFrm_referee_id' class='col-sm-3 control-label'>推荐码</label>
+									<label for='regFrm_referee_id' class='col-sm-3 control-label'>邀请码</label>
 									<div class='col-sm-9'>
 										<input type='text' class='form-control' name='referee_id'
-											id='regFrm_referee_id' placeholder='推荐码' required
-											data-original-title='推荐码不能为空'>
+											id='regFrm_referee_id' placeholder='邀请码' required
+											data-original-title='邀请码不能为空'>
 									</div>
 								</div>
 								<div class='form-group'>
@@ -88,17 +88,7 @@ body {
 	<script>
 		$(function() {
 			$('#regFrm_btn_submit').click(function(obj) {
-				$.ajax({
-					url : '${(conf_html_virtualPath)!}user/register',
-					type : 'POST',
-					dataType : 'JSON',
-					data : $('#regFrm').serializeObjectForm(),
-					success : function(data) {
-					},
-					error : function() {
-						alert(arguments[2]);
-					}
-				});
+				console.log();
 			});
 		});
 	</script>

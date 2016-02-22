@@ -39,7 +39,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		example.setOrderByClause("create_time desc");
 		example.selectProperties("id", "user_name", "email", "create_time",
 				"status", "apikey", "seckey", "real_name", "alipay_account",
-				"referee_id");
+				"invite_user_id");
 		// TODO
 		if (null != user) {
 			Example.Criteria criteria = example.createCriteria();

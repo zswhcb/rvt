@@ -1,6 +1,5 @@
 package net.foreworld.rvt.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import net.foreworld.rvt.model.User;
@@ -45,20 +44,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 	@Override
 	public String[] register(User user) {
-		User _user = null;
-
-		// TODO
-		_user = findByEmail(user.getEmail());
-		if (null == _user)
-			return new String[] { "电子邮箱不能为空" };
-
-		_user = findByRefereeId(user.getReferee_id());
-		if (null == _user)
-			return new String[] { "推荐码不能为空" };
-
-		user.setId(null);
-		user.setCreate_time(new Date());
-
 		return null;
 	}
 
