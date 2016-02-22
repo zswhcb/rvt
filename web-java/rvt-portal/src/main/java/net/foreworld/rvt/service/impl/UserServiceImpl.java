@@ -3,18 +3,14 @@ package net.foreworld.rvt.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import net.foreworld.rvt.mapper.UserMapper;
 import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.UserService;
-import net.foreworld.util.RestUtil;
 import net.foreworld.util.StringUtil;
 import net.foreworld.util.encryptUtil.MD5;
 
 import org.springframework.stereotype.Service;
 
 import tk.mybatis.mapper.entity.Example;
-
-import com.github.pagehelper.PageHelper;
 
 /**
  *
@@ -25,88 +21,6 @@ import com.github.pagehelper.PageHelper;
  */
 @Service("userService")
 public class UserServiceImpl extends BaseService<User> implements UserService {
-
-	private static final String DEFAULT_USER_PASS = MD5.encode("123456");
-
-	@Override
-	public User findByName(String user_name) {
-		return ((UserMapper) getMapper()).findByName(user_name);
-	}
-
-	@Override
-	public List<User> findByUser(User user, int page, int rows) {
-		Example example = new Example(User.class);
-		example.setOrderByClause("create_time desc");
-		example.selectProperties("id", "user_name", "email", "create_time",
-				"status", "apikey", "seckey", "real_name", "alipay_account",
-				"referee_id");
-		// TODO
-		if (null != user) {
-			Example.Criteria criteria = example.createCriteria();
-			// TODO
-			String user_name = StringUtil.isEmpty(user.getUser_name());
-			if (null != user_name) {
-				criteria.andLike("user_name", "%" + user_name + "%");
-			}
-		}
-		PageHelper.startPage(page, rows);
-		return selectByExample(example);
-	}
-
-	@Override
-	public int resetPwdByKeys(String keys) {
-		String[] _keys = keys.split(",");
-		int result = 0;
-		// TODO
-		for (String key : _keys) {
-			User user = new User();
-			user.setId(key);
-			user.setUser_pass(DEFAULT_USER_PASS);
-			result += super.updateNotNull(user);
-		}
-		return result;
-	}
-
-	@Override
-	public String[] saveNew(User user) {
-		// TODO
-		String user_name = StringUtil.isEmpty(user.getUser_name());
-		if (null == user_name)
-			return new String[] { "用户名不能为空", "user_name" };
-
-		// TODO
-		User _user = findByName(user_name);
-		if (null != _user)
-			return new String[] { "用户名已经存在", "user_name" };
-
-		// TODO
-		user.setUser_name(user_name);
-		user.setId(null);
-		user.setCreate_time(new Date());
-		user.setUser_pass(null == user.getUser_pass() ? DEFAULT_USER_PASS : MD5
-				.encode(user.getUser_pass()));
-
-		user.setApikey(genUserApiKey());
-		user.setSeckey(genUserSecKey());
-
-		// TODO
-		save(user);
-
-		return null;
-	}
-
-	@Override
-	public int updateNotNull(User user) {
-		user.setUser_name(null);
-		user.setUser_pass(null);
-		user.setCreate_time(null);
-
-		user.setApikey(genUserApiKey());
-		user.setSeckey(genUserSecKey());
-
-		// TODO
-		return super.updateNotNull(user);
-	}
 
 	@Override
 	public String[] changePwd(String user_id, String old_pass, String new_pass) {
@@ -129,35 +43,34 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		return null;
 	}
 
-	private String genUserApiKey() {
-		String encodedKey = null;
-		User user = null;
-		do {
-			encodedKey = RestUtil.genApiKey();
-			user = findByApiKey(encodedKey);
-		} while (user != null);
-		return encodedKey;
-	}
+	@Override
+	public String[] register(User user) {
+		User _user = null;
 
-	private String genUserSecKey() {
-		String encodedKey = null;
-		User user = null;
-		do {
-			encodedKey = RestUtil.genApiKey();
-			user = findBySecKey(encodedKey);
-		} while (user != null);
-		return encodedKey;
+		// TODO
+		_user = findByEmail(user.getEmail());
+		if (null == _user)
+			return new String[] { "电子邮箱不能为空" };
+
+		_user = findByRefereeId(user.getReferee_id());
+		if (null == _user)
+			return new String[] { "推荐码不能为空" };
+
+		user.setId(null);
+		user.setCreate_time(new Date());
+
+		return null;
 	}
 
 	@Override
-	public User findByApiKey(String apikey) {
-		apikey = StringUtil.isEmpty(apikey);
-		if (null == apikey)
+	public User findByEmail(String email) {
+		email = StringUtil.isEmpty(email);
+		if (null == email)
 			return null;
 
 		Example example = new Example(User.class);
 		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("apikey", apikey);
+		criteria.andEqualTo("email", email);
 
 		List<User> list = selectByExample(example);
 
@@ -168,14 +81,14 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	}
 
 	@Override
-	public User findBySecKey(String seckey) {
-		seckey = StringUtil.isEmpty(seckey);
-		if (null == seckey)
+	public User findByRefereeId(String referee_id) {
+		referee_id = StringUtil.isEmpty(referee_id);
+		if (null == referee_id)
 			return null;
 
 		Example example = new Example(User.class);
 		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("seckey", seckey);
+		criteria.andEqualTo("referee_id", referee_id);
 
 		List<User> list = selectByExample(example);
 
