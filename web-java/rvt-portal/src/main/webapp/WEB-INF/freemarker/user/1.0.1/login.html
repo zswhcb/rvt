@@ -91,7 +91,23 @@ body {
 	<script>
 		$(function() {
 			$('#logFrm_btn_submit').click(function() {
-				console.log();
+				$.ajax({
+					url : '${(conf_html_virtualPath)!}user/login',
+					type : 'POST',
+					dataType : 'JSON',
+					data : $('#logFrm').serializeObjectForm(),
+					success : function(data) {
+						if (data.success) {
+							location.href = '${(conf_html_virtualPath)!}';
+							return;
+						} // END
+						if (data.msg)
+							alert(data.msg[0]);
+					},
+					error : function() {
+						alert(arguments[2]);
+					}
+				});
 			});
 		});
 	</script>

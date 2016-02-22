@@ -10,6 +10,7 @@ import net.foreworld.rvt.model.User;
  *
  */
 public interface UserService extends IService<User> {
+	User findByName(String user_name);
 
 	String[] changePwd(String user_id, String old_pass, String new_pass);
 

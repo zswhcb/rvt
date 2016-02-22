@@ -82,4 +82,22 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 		return list.get(0);
 	}
+
+	@Override
+	public User findByName(String user_name) {
+		user_name = StringUtil.isEmpty(user_name);
+		if (null == user_name)
+			return null;
+
+		Example example = new Example(User.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("user_name", user_name);
+
+		List<User> list = selectByExample(example);
+
+		if (1 != list.size())
+			return null;
+
+		return list.get(0);
+	}
 }

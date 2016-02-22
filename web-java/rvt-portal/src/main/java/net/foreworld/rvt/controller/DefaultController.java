@@ -17,16 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class DefaultController {
 
-	private String index_ftl = "default/1.0.2/index";
-	private String welcome_ftl = "default/1.0.2/welcome";
-
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView indexUI(HttpSession session) {
 		Object obj = session.getAttribute("session.user");
 		if (null == obj) {
 			return new ModelAndView("redirect:/user/login");
 		} // END
-		ModelAndView result = new ModelAndView(index_ftl);
+		ModelAndView result = new ModelAndView("default/1.0.2/index");
 		// TODO
 		result.addObject("data_session_user", obj);
 		result.addObject("data_session_time",
@@ -36,7 +33,7 @@ public class DefaultController {
 
 	@RequestMapping(value = { "/welcome" }, method = RequestMethod.GET)
 	public ModelAndView welcomeUI(HttpSession session) {
-		ModelAndView result = new ModelAndView(welcome_ftl);
+		ModelAndView result = new ModelAndView("default/1.0.2/welcome");
 		return result;
 	}
 }

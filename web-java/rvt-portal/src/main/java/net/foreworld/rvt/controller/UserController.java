@@ -1,5 +1,6 @@
 package net.foreworld.rvt.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.UserService;
+import net.foreworld.util.encryptUtil.MD5;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -88,6 +90,25 @@ public class UserController {
 	@RequestMapping(value = { "/user/login" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> login(User user, HttpSession session) {
 		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("success", false);
+
+		User _user = userService.findByName(user.getUser_name());
+
+		if (null == _user) {
+			result.put("msg", new String[] { "用户名或密码输入错误", "user_name" });
+			return result;
+		} // END
+
+		String user_pass = MD5.encode(user.getUser_pass());
+
+		if (!user_pass.equals(_user.getUser_pass())) {
+			result.put("msg", new String[] { "用户名或密码输入错误", "user_pass" });
+			return result;
+		} // END
+
+		session.setAttribute("session.user", _user);
+		session.setAttribute("session.user.id", _user.getId());
+		session.setAttribute("session.time", (new Date()).toString());
 		// TODO
 		result.put("success", true);
 		return result;
