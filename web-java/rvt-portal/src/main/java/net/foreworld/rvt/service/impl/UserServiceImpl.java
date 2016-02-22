@@ -100,4 +100,19 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 		return list.get(0);
 	}
+
+	@Override
+	public int updateNotNull(User user) {
+		user.setUser_name(null);
+		user.setUser_pass(null);
+		user.setCreate_time(null);
+
+		user.setStatus(null);
+		user.setApikey(null);
+		user.setSeckey(null);
+		user.setInvite_user_id(null);
+
+		// TODO
+		return super.updateNotNull(user);
+	}
 }

@@ -74,9 +74,15 @@ public class UserController {
 	}
 
 	@RequestMapping(value = { "/user/info" }, method = RequestMethod.POST, produces = "application/json")
-	public Map<String, Object> info(User user) {
+	public Map<String, Object> info(HttpSession session, User user) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("success", false);
+
+		// TODO
+		User _user = (User) session.getAttribute("session.user");
+		user.setId(_user.getId());
+
+		userService.updateNotNull(user);
+		result.put("success", true);
 		return result;
 	}
 

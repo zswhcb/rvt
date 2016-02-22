@@ -69,7 +69,21 @@
 	<script>
 		$(function() {
 			$('#editFrm_btn_submit').click(function() {
-				console.log();
+				$.ajax({
+					url : '${(conf_html_virtualPath)!}user/info',
+					type : 'POST',
+					dataType : 'JSON',
+					data : $('#editFrm').serializeObjectForm(),
+					success : function(data) {
+						if (!data.success)
+							return alert(data.msg[0]);
+						alert('修改成功');
+						location.reload();
+					},
+					error : function() {
+						alert(arguments[2]);
+					}
+				});
 			});
 		});
 	</script>
