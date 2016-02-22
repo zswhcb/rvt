@@ -39,10 +39,16 @@
 					url : '${(conf_html_virtualPath)!}user/edit',
 					type : 'POST',
 					dataType : 'JSON',
-					data : $('#addFrm').serializeObjectForm()
-				}).done(function(data) {
-					if(!data.success) return alert(data.msg[0]);
-					parent.location.href = '${(conf_html_virtualPath)!}#page/user/';
+					data : $('#addFrm').serializeObjectForm(),
+					success : function(data) {
+						if (!data.success)
+							return alert(data.msg[0]);
+						var url = '${(conf_html_virtualPath)!}#page/user/';
+						parent.location.href = url;
+					},
+					error : function() {
+						alert(arguments[2]);
+					}
 				});
 			});
 		});

@@ -22,7 +22,7 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 <!-- 如果这个配置扫描  -->
-	<context:component-scan base-package="net.foreworld.manage.controller" />
+	<context:component-scan base-package="net.foreworld.rvt.controller" />
 	<bean
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
 	<bean id="stringHttpMessageConverter"

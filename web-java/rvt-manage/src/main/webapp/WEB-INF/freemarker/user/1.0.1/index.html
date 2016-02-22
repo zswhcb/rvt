@@ -88,10 +88,14 @@
 					dataType : 'JSON',
 					data : {
 						ids : selIds.join(',')
+					},
+					success : function(data) {
+						if (data.success)
+							return alert('操作成功');
+					},
+					error : function() {
+						alert(arguments[2]);
 					}
-				}).done(function(data) {
-					if (data.success)
-						return alert('操作成功');
 				});
 			}
 		}
@@ -120,9 +124,13 @@
 						dataType : 'JSON',
 						data : {
 							ids : selIds.join(',')
+						},
+						success : function(data) {
+							location.reload();
+						},
+						error : function() {
+							alert(arguments[2]);
 						}
-					}).done(function(data) {
-						location.reload();
 					});
 				}
 			});
