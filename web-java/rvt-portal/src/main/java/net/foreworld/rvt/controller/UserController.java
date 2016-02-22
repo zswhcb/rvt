@@ -42,6 +42,12 @@ public class UserController {
 		return result;
 	}
 
+	@RequestMapping(value = { "/user/register" }, method = RequestMethod.GET)
+	public ModelAndView registerUI() {
+		ModelAndView result = new ModelAndView("user/1.0.1/register");
+		return result;
+	}
+
 	@RequestMapping(value = { "/user/changePwd" }, method = RequestMethod.GET)
 	public ModelAndView changePwdUI() {
 		ModelAndView result = new ModelAndView(changePwd_ftl);
