@@ -1,0 +1,77 @@
+<#include "/_pagelet/constant.html"/>
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/_pagelet/header.html"/>
+<title>我的信息</title>
+<link rel='stylesheet' type='text/css' media='screen'
+	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+</head>
+<body>
+	<div class='container'>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
+				<ol class='breadcrumb'>
+					<li class='active'><i class='fa fa-home fa-fw'></i> 用户中心</li>
+					<li class='active'><a href='javascript:location.reload();'>我的信息</a>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
+				<div class='panel panel-default'>
+					<div class='panel-body'>
+						<form class='form-horizontal' id='editFrm' role='form'
+							onsubmit='return false;' data-url='changePwd'>
+							<div class='form-group'>
+								<label class='col-sm-2 hidden-xs control-label'
+									for='editFrm_email'>电子邮箱</label>
+								<div class='col-sm-4'>
+									<input type='text' class='form-control' name='email'
+										id='editFrm_email' placeholder='电子邮箱'
+										value='${(data_user.email)!}'>
+								</div>
+							</div>
+							<div class='form-group'>
+								<label class='col-sm-2 hidden-xs control-label'
+									for='editFrm_real_name'>真实姓名</label>
+								<div class='col-sm-4'>
+									<input type='text' class='form-control' name='real_name'
+										id='editFrm_real_name' placeholder='真实姓名'
+										value='${(data_user.real_name)!}'>
+								</div>
+							</div>
+							<div class='form-group'>
+								<label class='col-sm-2 hidden-xs control-label'
+									for='editFrm_alipay_account'>支付宝</label>
+								<div class='col-sm-4'>
+									<input type='text' class='form-control' name='alipay_account'
+										id='editFrm_alipay_account' placeholder='支付宝'
+										value='${(data_user.alipay_account)!}'>
+								</div>
+							</div>
+							<div class='form-group'>
+								<div class='col-sm-offset-2 col-sm-4'>
+									<button id='editFrm_btn_submit' type='button'
+										class='btn btn-primary'>修改</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<#include "/_pagelet/js.html"/>
+	<script type='text/javascript'
+		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+	<script>
+		$(function() {
+			$('#editFrm_btn_submit').click(function() {
+				console.log();
+			});
+		});
+	</script>
+</body>
+</html>

@@ -62,6 +62,24 @@ public class UserController {
 		return result;
 	}
 
+	@RequestMapping(value = { "/user/info" }, method = RequestMethod.GET)
+	public ModelAndView infoUI(HttpSession session) {
+		ModelAndView result = new ModelAndView("user/1.0.1/info");
+		// TODO
+		String id = session.getAttribute("session.user.id").toString();
+		User user = userService.selectByKey(id);
+
+		result.addObject("data_user", user);
+		return result;
+	}
+
+	@RequestMapping(value = { "/user/info" }, method = RequestMethod.POST, produces = "application/json")
+	public Map<String, Object> info(User user) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("success", false);
+		return result;
+	}
+
 	@RequestMapping(value = { "/user/changePwd" }, method = RequestMethod.GET)
 	public ModelAndView changePwdUI() {
 		ModelAndView result = new ModelAndView("user/1.0.1/changePwd");
