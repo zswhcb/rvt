@@ -31,12 +31,20 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	private String login_ftl = "user/1.0.1/login";
-	private String changePwd_ftl = "user/1.0.1/changePwd";
-
 	@RequestMapping(value = { "/user/login" }, method = RequestMethod.GET)
 	public ModelAndView loginUI() {
-		ModelAndView result = new ModelAndView(login_ftl);
+		ModelAndView result = new ModelAndView("user/1.0.1/login");
+		return result;
+	}
+
+	@RequestMapping(value = { "/user/invite" }, method = RequestMethod.GET)
+	public ModelAndView inviteUI(HttpSession session) {
+		ModelAndView result = new ModelAndView("user/1.0.1/invite");
+
+		// TODO
+		Object obj = session.getAttribute("session.user");
+		result.addObject("data_session_user", obj);
+
 		return result;
 	}
 
@@ -56,7 +64,7 @@ public class UserController {
 
 	@RequestMapping(value = { "/user/changePwd" }, method = RequestMethod.GET)
 	public ModelAndView changePwdUI() {
-		ModelAndView result = new ModelAndView(changePwd_ftl);
+		ModelAndView result = new ModelAndView("user/1.0.1/changePwd");
 		return result;
 	}
 
