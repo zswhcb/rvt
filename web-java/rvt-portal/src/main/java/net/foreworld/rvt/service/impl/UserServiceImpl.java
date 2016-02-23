@@ -59,28 +59,22 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 		List<User> list = selectByExample(example);
 
-		if (1 != list.size())
-			return null;
-
-		return list.get(0);
+		return (null == list || 1 != list.size()) ? null : list.get(0);
 	}
 
 	@Override
-	public User findByRefereeId(String referee_id) {
-		referee_id = StringUtil.isEmpty(referee_id);
-		if (null == referee_id)
+	public List<User> findByInviteUserId(String invite_user_id) {
+		invite_user_id = StringUtil.isEmpty(invite_user_id);
+		if (null == invite_user_id)
 			return null;
 
 		Example example = new Example(User.class);
 		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("referee_id", referee_id);
+		criteria.andEqualTo("invite_user_id", invite_user_id);
 
 		List<User> list = selectByExample(example);
 
-		if (1 != list.size())
-			return null;
-
-		return list.get(0);
+		return list;
 	}
 
 	@Override
@@ -95,10 +89,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 		List<User> list = selectByExample(example);
 
-		if (1 != list.size())
-			return null;
-
-		return list.get(0);
+		return (null == list || 1 != list.size()) ? null : list.get(0);
 	}
 
 	@Override

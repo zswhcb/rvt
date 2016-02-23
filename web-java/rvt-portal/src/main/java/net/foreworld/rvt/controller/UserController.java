@@ -2,6 +2,7 @@ package net.foreworld.rvt.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -42,8 +43,11 @@ public class UserController {
 		ModelAndView result = new ModelAndView("user/1.0.1/invite");
 
 		// TODO
-		Object obj = session.getAttribute("session.user");
-		result.addObject("data_session_user", obj);
+		User user = (User) session.getAttribute("session.user");
+		result.addObject("data_session_user", user);
+
+		List<User> list = userService.findByInviteUserId(user.getId());
+		result.addObject("data_users", list);
 
 		return result;
 	}

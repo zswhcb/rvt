@@ -1,5 +1,7 @@
 package net.foreworld.rvt.service;
 
+import java.util.List;
+
 import net.foreworld.rvt.model.User;
 
 /**
@@ -18,5 +20,5 @@ public interface UserService extends IService<User> {
 
 	User findByEmail(String email);
 
-	User findByRefereeId(String referee_id);
+	List<User> findByInviteUserId(String invite_user_id);
 }

@@ -161,10 +161,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 		List<User> list = selectByExample(example);
 
-		if (1 != list.size())
-			return null;
-
-		return list.get(0);
+		return (null == list || 1 != list.size()) ? null : list.get(0);
 	}
 
 	@Override
@@ -179,9 +176,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 		List<User> list = selectByExample(example);
 
-		if (1 != list.size())
-			return null;
-
-		return list.get(0);
+		return (null == list || 1 != list.size()) ? null : list.get(0);
 	}
 }
