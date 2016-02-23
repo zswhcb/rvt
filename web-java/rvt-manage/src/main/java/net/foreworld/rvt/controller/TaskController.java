@@ -1,5 +1,6 @@
 package net.foreworld.rvt.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.ProjectService;
 import net.foreworld.rvt.service.TaskService;
 import net.foreworld.rvt.service.UserService;
+import net.foreworld.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,8 +58,23 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = { "/task/monitor" }, method = RequestMethod.GET)
-	public ModelAndView monitorUI() {
+	public ModelAndView monitorUI(
+			@RequestParam(required = false) String start_time) {
 		ModelAndView result = new ModelAndView("task/1.0.1/monitor");
+
+		Date date = DateUtil.checkDateFormat(null, start_time);
+
+		if (null == date) {
+			date = new Date();
+		} // END
+
+		// TODO
+		result.addObject("data_start_time", DateUtil.date2Str(null, date));
+
+		// TODO
+		List<Task> list = taskService.findByStartTime(date);
+		result.addObject("data_tasks", list);
+
 		return result;
 	}
 

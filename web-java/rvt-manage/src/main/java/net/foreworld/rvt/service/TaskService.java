@@ -1,5 +1,6 @@
 package net.foreworld.rvt.service;
 
+import java.util.Date;
 import java.util.List;
 
 import net.foreworld.rvt.model.Task;
@@ -13,4 +14,6 @@ import net.foreworld.rvt.model.Task;
  */
 public interface TaskService extends IService<Task> {
 	List<Task> findByTask(Task task, int page, int rows);
+
+	List<Task> findByStartTime(Date start_time);
 }

@@ -1,10 +1,12 @@
 package net.foreworld.rvt.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import net.foreworld.rvt.model.Task;
 import net.foreworld.rvt.service.TaskService;
+import net.foreworld.util.DateUtil;
 import net.foreworld.util.StringUtil;
 
 import org.springframework.stereotype.Service;
@@ -51,5 +53,23 @@ public class TaskServiceImpl extends BaseService<Task> implements TaskService {
 		task.setCreate_time(null);
 		task.setCreate_user_id(null);
 		return super.updateNotNull(task);
+	}
+
+	@Override
+	public List<Task> findByStartTime(Date start_time) {
+		Example example = new Example(Task.class);
+		example.setOrderByClause("create_time desc");
+
+		// TODO
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andGreaterThan("start_time",
+				DateUtil.date2Str(null, start_time));
+		criteria.andLessThan(
+				"start_time",
+				DateUtil.date2Str(null,
+						DateUtil.getRelativeDate(start_time, Calendar.DATE, 1)));
+
+		// TODO
+		return selectByExample(example);
 	}
 }
