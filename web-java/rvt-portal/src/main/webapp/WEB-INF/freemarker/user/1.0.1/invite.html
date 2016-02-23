@@ -12,7 +12,9 @@
 		<div class='row'>
 			<div class='col-sm-12 col-md-12'>
 				<ol class='breadcrumb'>
-					<li class='active'><i class='fa fa-home fa-fw'></i> 用户中心</li>
+					<li class='active'><i class='fa fa-home fa-fw'></i> <a
+						href='javascript:parent.location.href="${(conf_html_virtualPath)!}"'>用户中心</a>
+					</li>
 					<li class='active'><a href='javascript:location.reload();'>邀请好友</a>
 					</li>
 				</ol>
@@ -25,7 +27,7 @@
 						<form class='form-horizontal' id='frm' role='form'
 							onsubmit='return false;' data-url='changePwd'>
 							<div class='form-group'>
-								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>邀请码</label>
+								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>我的邀请码</label>
 								<div class='col-sm-4'>
 									<input type='text' class='form-control' id='frm_invite'
 										readonly value='${(data_session_user.id)!}'>
@@ -39,6 +41,39 @@
 							</div>
 						</form>
 					</div>
+				</div>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
+				<div class='panel panel-default table-responsive'>
+					<table id='table1' data-olx-type='olx.grid'
+						class='table table-bordered table-hover table-condensed table-striped'
+						data-url='' data-current='1' data-pagesize='20' data-count='561'>
+						<thead>
+							<tr>
+								<th class='ta'><input type='checkbox' title='全选/取消'>
+								</th>
+								<th>用户名</th>
+								<th>电子邮箱</th>
+								<th>真实姓名</th>
+								<th>支付宝</th>
+								<th>注册时间</th>
+							</tr>
+						</thead>
+						<tbody>
+							<#list data_users as doc>
+							<tr>
+								<td class='ta'><input type='checkbox'></td>
+								<td>${(doc.user_name)!}</td>
+								<td>${(doc.email)!}</td>
+								<td>${(doc.real_name)!}</td>
+								<td>${(doc.alipay_account)!}</td>
+								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+							</tr>
+							</#list>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
