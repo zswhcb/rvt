@@ -1,0 +1,53 @@
+<#include "/_pagelet/constant.html"/>
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/_pagelet/header.html"/>
+<title>任务监控</title>
+<link rel='stylesheet' type='text/css' media='screen'
+	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+<style>
+.WdatePicker {
+	background: #fff
+		url('${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/skin/datePicker.gif')
+		no-repeat right;
+}
+</style>
+</head>
+<body>
+	<div class='container'>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
+				<ol class='breadcrumb'>
+					<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
+					<li class='active'><a href='javascript:location.reload();'>任务监控</a>
+					</li>
+				</ol>
+				<div class='panel panel-info'>
+					<div class='panel-heading'>
+						<h3 class='panel-title'>
+							<strong>查询条件</strong>
+						</h3>
+					</div>
+					<div class='panel-body'>
+						<form id='searchFrm' class='form-inline' role='form'
+							onsubmit='return false;'>
+							<input type='text' class='form-control WdatePicker'
+								placeholder='选择日期'
+								onClick="WdatePicker({dateFmt:'yyyy-MM-dd'});">
+							<button type='button'
+								class='btn btn-default glyphicon glyphicon-search'
+								id='searchFrm_btn_search'>&#8201;查询</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<#include "/_pagelet/js.html"/>
+	<script type='text/javascript'
+		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+	<script type='text/javascript'
+		src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
+</body>
+</html>

@@ -57,7 +57,7 @@ public class TaskController {
 
 	@RequestMapping(value = { "/task/monitor" }, method = RequestMethod.GET)
 	public ModelAndView monitorUI() {
-		ModelAndView result = new ModelAndView("task/monitor/1.0.1/index");
+		ModelAndView result = new ModelAndView("task/1.0.1/monitor");
 		return result;
 	}
 
