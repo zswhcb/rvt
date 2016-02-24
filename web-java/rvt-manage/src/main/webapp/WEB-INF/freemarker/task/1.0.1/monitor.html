@@ -36,8 +36,16 @@
 								<input type='text' class='form-control WdatePicker'
 									id='searchfrm_start_time' placeholder='选择日期'
 									value='${(data_start_time)!}'
-									onClick="WdatePicker({dateFmt:'yyyy-MM-dd'});">
+									onClick="WdatePicker({onpicking:onpicking,dateFmt:'yyyy-MM-dd'});">
 							</div>
+							<#if (data_tasks?? && data_tasks?size>0)>
+							<div class='form-group'>
+								<select class='form-control' id='searchFrm_task_id'><#list
+									data_tasks! as doc>
+									<option value='${(doc.id)!}'>${(doc.task_name)!}</option></#list>
+								</select>
+							</div>
+							</#if>
 							<div class='form-group'>
 								<button type='button'
 									class='btn btn-default glyphicon glyphicon-search'
@@ -48,13 +56,8 @@
 				</div>
 			</div>
 		</div>
-		<#list data_tasks! as doc>
 		<div class='row'>
 			<div class='col-sm-12 col-md-12'>
-				<div id='info_alert' class='alert alert-info'>
-					<button type='button' class='close' data-dismiss='alert'>&times;</button>
-					<strong>任务名称：</strong>${(doc.task_name)!}
-				</div>
 				<div class='panel panel-default table-responsive'>
 					<table id='table1' data-olx-type='olx.grid'
 						class='table table-bordered table-hover table-condensed table-striped'
@@ -72,42 +75,22 @@
 							</tr>
 						</thead>
 						<tbody>
+							<#list data_tasktakes! as doc>
 							<tr>
-								<td class='ta'><input type='checkbox'
-									value='4c3d558a2a954e0cbaea5565dcebf28c'></td>
-								<td>2016-02-21 22:41:03</td>
-								<td>2016-02-21 22:41:05</td>
-								<td>30</td>
-								<td>黄鑫</td>
-								<td>2016-02-21 22:16:28</td>
-								<td>成功</td>
+								<td class='ta'><input type='checkbox'></td>
+								<td>${(doc.upload_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+								<td>${(doc.talk_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+								<td>${(doc.talk_time_len)!}</td>
+								<td>${(doc.user_id)!}</td>
+								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+								<td>${(doc.status)!}</td>
 							</tr>
-							<tr>
-								<td class='ta'><input type='checkbox'
-									value='4c3d558a2a954e0cbaea5565dcebf28c'></td>
-								<td>2016-02-21 22:41:03</td>
-								<td>2016-02-21 22:41:05</td>
-								<td>30</td>
-								<td>黄鑫</td>
-								<td>2016-02-21 22:16:28</td>
-								<td>成功</td>
-							</tr>
-							<tr>
-								<td class='ta'><input type='checkbox'
-									value='4c3d558a2a954e0cbaea5565dcebf28c'></td>
-								<td>2016-02-21 22:41:03</td>
-								<td>2016-02-21 22:41:05</td>
-								<td>30</td>
-								<td>黄鑫</td>
-								<td>2016-02-21 22:16:28</td>
-								<td>成功</td>
-							</tr>
+							</#list>
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
-		</#list>
 	</div>
 	<#include "/_pagelet/js.html"/>
 	<script type='text/javascript'
@@ -115,18 +98,25 @@
 	<script type='text/javascript'
 		src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
 	<script>
-		$(function() {
-			$('#searchFrm_btn_search')
-					.click(
-							function() {
-								var start_time = $('#searchfrm_start_time')
-										.val();
-								var url = '${(conf_html_virtualPath)!}#page/task/monitor'
-										+ (!start_time ? '' : '?start_time='
-												+ start_time);
-								parent.location.href = url;
-							});
-		});
+		function onpicking(dp) {
+			var start_time = dp.cal.getNewDateStr();
+			var url = '${(conf_html_virtualPath)!}#page/task/monitor'
+					+ (!start_time ? '' : '?start_time=' + start_time);
+			parent.location.href = url;
+		}
+
+		$('#searchFrm_btn_search')
+				.click(
+						function() {
+							var task_id = $('#searchFrm_task_id').val();
+							if (!task_id)
+								return;
+							// TODO
+							var start_time = $('#searchfrm_start_time').val();
+							var url = '${(conf_html_virtualPath)!}#page/task/monitor?start_time='
+									+ start_time + '&task_id=' + task_id;
+							parent.location.href = url;
+						});
 	</script>
 </body>
 </html>

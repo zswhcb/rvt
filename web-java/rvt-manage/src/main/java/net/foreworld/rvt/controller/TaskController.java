@@ -12,6 +12,7 @@ import net.foreworld.rvt.model.Task;
 import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.ProjectService;
 import net.foreworld.rvt.service.TaskService;
+import net.foreworld.rvt.service.TaskTakeService;
 import net.foreworld.rvt.service.UserService;
 import net.foreworld.util.DateUtil;
 
@@ -36,6 +37,8 @@ public class TaskController {
 	@Autowired
 	private TaskService taskService;
 	@Autowired
+	private TaskTakeService taskTakeService;
+	@Autowired
 	private ProjectService projectService;
 	@Autowired
 	private UserService userService;
@@ -59,21 +62,22 @@ public class TaskController {
 
 	@RequestMapping(value = { "/task/monitor" }, method = RequestMethod.GET)
 	public ModelAndView monitorUI(
+			@RequestParam(required = false) String task_id,
 			@RequestParam(required = false) String start_time) {
 		ModelAndView result = new ModelAndView("task/1.0.1/monitor");
 
 		Date date = DateUtil.checkDateFormat(null, start_time);
 
-		if (null == date) {
+		if (null == date)
 			date = new Date();
-		} // END
 
 		// TODO
 		result.addObject("data_start_time", DateUtil.date2Str(null, date));
-
 		// TODO
-		List<Task> list = taskService.findByStartTime(date);
-		result.addObject("data_tasks", list);
+		result.addObject("data_tasks", taskService.findByStartTime(date));
+
+		result.addObject("data_tasktakes",
+				taskTakeService.findByTaskId(task_id));
 
 		return result;
 	}
