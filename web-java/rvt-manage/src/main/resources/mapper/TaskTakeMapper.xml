@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="net.foreworld.rvt.mapper.TaskTakeMapper">
+	<resultMap id="baseResultMap" type="net.foreworld.rvt.model.TaskTake">
+		<id column="id" property="id" jdbcType="VARCHAR" />
 
+		<result column="upload_time" property="upload_time" jdbcType="DATE" />
+		<result column="talk_time" property="talk_time" jdbcType="DATE" />
+		<result column="talk_time_len" property="talk_time_len"
+			jdbcType="INTEGER" />
+
+		<result column="task_id" property="task_id" jdbcType="VARCHAR" />
+		<result column="user_id" property="user_id" jdbcType="VARCHAR" />
+		<result column="create_time" property="create_time" jdbcType="DATE" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+
+		<association property="user" javaType="net.foreworld.rvt.model.User">
+			<result property="user_name" column="user_name" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<select id="findByTaskId" resultMap="baseResultMap">
+		SELECT b.USER_NAME, a.* FROM
+		(SELECT * FROM r_project_task_take WHERE TASK_ID=#{task_id}) a LEFT
+		JOIN s_user b ON (a.USER_ID=b.id) AND b.id IS NOT NULL ORDER BY
+		a.CREATE_TIME DESC
+	</select>
 </mapper>

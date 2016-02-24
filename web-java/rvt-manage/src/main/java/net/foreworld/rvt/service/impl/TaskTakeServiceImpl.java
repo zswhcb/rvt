@@ -2,13 +2,12 @@ package net.foreworld.rvt.service.impl;
 
 import java.util.List;
 
+import net.foreworld.rvt.mapper.TaskTakeMapper;
 import net.foreworld.rvt.model.TaskTake;
 import net.foreworld.rvt.service.TaskTakeService;
 import net.foreworld.util.StringUtil;
 
 import org.springframework.stereotype.Service;
-
-import tk.mybatis.mapper.entity.Example;
 
 /**
  *
@@ -24,16 +23,7 @@ public class TaskTakeServiceImpl extends BaseService<TaskTake> implements
 	@Override
 	public List<TaskTake> findByTaskId(String task_id) {
 		task_id = StringUtil.isEmpty(task_id);
-		if (null == task_id)
-			return null;
-
-		Example example = new Example(TaskTake.class);
-		example.setOrderByClause("create_time desc");
-		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("task_id", task_id);
-
-		List<TaskTake> list = selectByExample(example);
-
-		return list;
+		return null == task_id ? null : ((TaskTakeMapper) getMapper())
+				.findByTaskId(task_id);
 	}
 }

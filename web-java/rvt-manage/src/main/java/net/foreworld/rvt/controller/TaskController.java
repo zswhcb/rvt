@@ -72,6 +72,7 @@ public class TaskController {
 			date = new Date();
 
 		// TODO
+		result.addObject("data_task_id", task_id);
 		result.addObject("data_start_time", DateUtil.date2Str(null, date));
 		// TODO
 		result.addObject("data_tasks", taskService.findByStartTime(date));

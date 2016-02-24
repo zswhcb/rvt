@@ -1,5 +1,7 @@
 package net.foreworld.rvt.mapper;
 
+import java.util.List;
+
 import net.foreworld.rvt.model.TaskTake;
 import net.foreworld.rvt.util.MyMapper;
 
@@ -11,5 +13,5 @@ import net.foreworld.rvt.util.MyMapper;
  *
  */
 public interface TaskTakeMapper extends MyMapper<TaskTake> {
-
+	List<TaskTake> findByTaskId(String task_id);
 }

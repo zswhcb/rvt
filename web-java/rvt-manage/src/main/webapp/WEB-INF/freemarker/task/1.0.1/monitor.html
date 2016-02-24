@@ -30,6 +30,7 @@
 						</h3>
 					</div>
 					<div class='panel-body'>
+						<#import "/_macro/select_option.html" as select_option>
 						<form id='searchFrm' class='form-inline' role='form'
 							onsubmit='return false;'>
 							<div class='form-group'>
@@ -40,9 +41,9 @@
 							</div>
 							<#if (data_tasks?? && data_tasks?size>0)>
 							<div class='form-group'>
-								<select class='form-control' id='searchFrm_task_id'><#list
-									data_tasks! as doc>
-									<option value='${(doc.id)!}'>${(doc.task_name)!}</option></#list>
+								<select class='form-control' id='searchFrm_task_id'>
+									<@select_option.m list=data_tasks key="id" value="task_name"
+									selValue="${(data_task_id)!}"/>
 								</select>
 							</div>
 							</#if>
@@ -81,7 +82,7 @@
 								<td>${(doc.upload_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
 								<td>${(doc.talk_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
 								<td>${(doc.talk_time_len)!}</td>
-								<td>${(doc.user_id)!}</td>
+								<td>${(doc.user.user_name)!}</td>
 								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
 								<td>${(doc.status)!}</td>
 							</tr>
