@@ -8,8 +8,9 @@
 	href='${(conf_html_cdn)!}public/user/css/login.css' />
 <style>
 body {
-	background: rgba(0, 0, 0, 0) url('/static/images/bg.jpg') repeat scroll
-		0 0;
+	background: rgba(0, 0, 0, 0)
+		url('${(conf_html_virtualPath)!}static/images/bg.jpg') repeat scroll 0
+		0;
 }
 </style>
 </head>
@@ -65,7 +66,7 @@ body {
 						<div id='help_tip'
 							class='col-md-offset-3 col-sm-offset-3 col-md-4 col-sm-3'>
 							<div>
-								没有帐号？<a href='/user/register'>注册新会员</a>
+								没有帐号？<a href='${(conf_html_virtualPath)!}register'>注册新会员</a>
 							</div>
 							<div>&nbsp;</div>
 							<div>
@@ -79,7 +80,7 @@ body {
 						<div class='col-md-offset-3 col-sm-offset-3 col-md-4 col-sm-3'>
 							<div>
 								<img alt='扫二维码下载' title='扫二维码下载' style='width: 100px'
-									src='/static/images/app.jpg'>
+									src='${(conf_html_virtualPath)!}static/images/app.jpg'>
 							</div>
 						</div>
 					</div>
@@ -92,7 +93,7 @@ body {
 		$(function() {
 			$('#logFrm_btn_submit').click(function() {
 				$.ajax({
-					url : '${(conf_html_virtualPath)!}user/login',
+					url : '${(conf_html_virtualPath)!}login',
 					type : 'POST',
 					dataType : 'JSON',
 					data : $('#logFrm').serializeObjectForm(),

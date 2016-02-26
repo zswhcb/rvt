@@ -119,7 +119,7 @@ public class UserController {
 	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
 	public String logoutUI(HttpSession session) {
 		session.invalidate();
-		return "redirect:/user/login";
+		return "redirect:/login";
 	}
 
 	@ResponseBody
