@@ -7,7 +7,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import net.foreworld.rvt.model.Task;
 import net.foreworld.rvt.model.User;
+import net.foreworld.rvt.service.TaskService;
+import net.foreworld.rvt.service.TaskTakeService;
 import net.foreworld.rvt.service.UserService;
 import net.foreworld.util.encryptUtil.MD5;
 
@@ -31,6 +34,10 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private TaskService taskService;
+	@Autowired
+	public TaskTakeService taskTakeService;
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public ModelAndView loginUI() {
@@ -41,6 +48,21 @@ public class UserController {
 	@RequestMapping(value = { "/task" }, method = RequestMethod.GET)
 	public ModelAndView taskUI(HttpSession session) {
 		ModelAndView result = new ModelAndView("user/1.0.1/task");
+
+		// TODO
+		Task task = new Task();
+		task.setCreate_user_id(session.getAttribute("session.user.id")
+				.toString());
+
+		List<Task> list = taskService.findByTask(task, 1, Integer.MAX_VALUE);
+		result.addObject("data_tasks", list);
+
+		if (null != list && 0 < list.size()) {
+			Task _task = list.get(0);
+			result.addObject("data_tasktakes",
+					taskTakeService.findByTaskId(_task.getId()));
+		}
+
 		return result;
 	}
 

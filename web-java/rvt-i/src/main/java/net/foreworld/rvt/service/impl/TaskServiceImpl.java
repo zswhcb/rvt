@@ -1,6 +1,5 @@
 package net.foreworld.rvt.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import net.foreworld.rvt.model.Task;
@@ -34,22 +33,14 @@ public class TaskServiceImpl extends BaseService<Task> implements TaskService {
 			if (null != project_id) {
 				criteria.andEqualTo("project_id", project_id);
 			}
+			// TODO
+			String create_user_id = StringUtil
+					.isEmpty(task.getCreate_user_id());
+			if (null != create_user_id) {
+				criteria.andEqualTo("create_user_id", create_user_id);
+			}
 		}
 		PageHelper.startPage(page, rows);
 		return selectByExample(example);
-	}
-
-	@Override
-	public int save(Task task) {
-		task.setId(null);
-		task.setCreate_time(new Date());
-		return super.save(task);
-	}
-
-	@Override
-	public int updateNotNull(Task task) {
-		task.setCreate_time(null);
-		task.setCreate_user_id(null);
-		return super.updateNotNull(task);
 	}
 }

@@ -24,19 +24,16 @@
 			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default'>
 					<div class='panel-body'>
+						<#import "/_macro/select_option.html" as select_option>
 						<form class='form-horizontal' id='frm' role='form'
 							onsubmit='return false;' data-url='changePwd'>
 							<div class='form-group'>
-								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>我的邀请码</label>
+								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>我的任务</label>
 								<div class='col-sm-4'>
-									<input type='text' class='form-control' id='frm_invite'
-										readonly value='${(data_session_user.id)!}'>
-								</div>
-							</div>
-							<div class='form-group'>
-								<div class='col-sm-offset-2 col-sm-4'>
-									<button id='frm_btn_submit' type='button'
-										data-clipboard-target="frm_invite" class='btn btn-primary'>复制</button>
+									<select class='form-control' id='searchFrm_task_id'>
+										<@select_option.m list=data_tasks key="id" value="task_name"
+										selValue="${(data_task_id)!}"/>
+									</select>
 								</div>
 							</div>
 						</form>
@@ -54,22 +51,24 @@
 							<tr>
 								<th class='ta'><input type='checkbox' title='全选/取消'>
 								</th>
+								<th>上传时间</th>
+								<th>通话时间</th>
+								<th>通话时长</th>
 								<th>用户名</th>
-								<th>电子邮箱</th>
-								<th>真实姓名</th>
-								<th>支付宝</th>
-								<th>注册时间</th>
+								<th>创建时间</th>
+								<th>状态</th>
 							</tr>
 						</thead>
 						<tbody>
-							<#list data_users! as doc>
+							<#list data_tasktakes! as doc>
 							<tr>
 								<td class='ta'><input type='checkbox'></td>
-								<td>${(doc.user_name)!}</td>
-								<td>${(doc.email)!}</td>
-								<td>${(doc.real_name)!}</td>
-								<td>${(doc.alipay_account)!}</td>
+								<td>${(doc.upload_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+								<td>${(doc.talk_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+								<td>${(doc.talk_time_len)!}</td>
+								<td>${(doc.user.user_name)!}</td>
 								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+								<td>${(doc.status)!}</td>
 							</tr>
 							</#list>
 						</tbody>
