@@ -30,35 +30,16 @@
 		</div>
 		<div class='row'>
 			<div class='col-sm-12 col-md-12'>
-				<div class='panel panel-default table-responsive'>
-					<table id='table1' data-olx-type='olx.grid'
-						class='table table-bordered table-hover table-condensed table-striped'
-						data-url='' data-current='1' data-pagesize='20' data-count='561'>
-						<thead>
-							<tr>
-								<th class='ta'><input type='checkbox' title='全选/取消'>
-								</th>
-								<th>用户名</th>
-								<th>电子邮箱</th>
-								<th>真实姓名</th>
-								<th>支付宝</th>
-								<th>注册时间</th>
-							</tr>
-						</thead>
-						<tbody>
-							<#list data_users! as doc>
-							<tr>
-								<td class='ta'><input type='checkbox'></td>
-								<td>${(doc.user_name)!}</td>
-								<td>${(doc.email)!}</td>
-								<td>${(doc.real_name)!}</td>
-								<td>${(doc.alipay_account)!}</td>
-								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-							</tr>
-							</#list>
-						</tbody>
-					</table>
+				<div id='info_alert' class='alert alert-info'>
+					<button type='button' class='close' data-dismiss='alert'>&times;</button>
+					<strong>提示：</strong>邀请人信息
 				</div>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
+				<div class='panel panel-default table-responsive'><#include
+					"_pagelet/list.html"/></div>
 			</div>
 		</div>
 	</div>

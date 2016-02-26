@@ -156,6 +156,10 @@ public class UserController {
 		// TODO
 		if (null == user)
 			return "redirect:/user/";
+
+		List<User> list = userService.findByInviteUserId(user.getId());
+		map.put("data_users", list);
+
 		// TODO
 		map.put("data_user", user);
 		return "user/1.0.1/edit";

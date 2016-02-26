@@ -26,4 +26,6 @@ public interface UserService extends IService<User> {
 	User findByApiKey(String apikey);
 
 	User findBySecKey(String seckey);
+
+	List<User> findByInviteUserId(String invite_user_id);
 }

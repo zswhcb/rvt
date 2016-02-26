@@ -60,6 +60,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 			if (null != seckey) {
 				criteria.andEqualTo("seckey", seckey);
 			}
+
+			String invite_user_id = StringUtil
+					.isEmpty(user.getInvite_user_id());
+			if (null != invite_user_id) {
+				criteria.andEqualTo("invite_user_id", invite_user_id);
+			}
 		}
 		PageHelper.startPage(page, rows);
 		return selectByExample(example);
@@ -187,5 +193,17 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		List<User> list = findByUser(user, 1, Integer.MAX_VALUE);
 
 		return (null == list || 1 != list.size()) ? null : list.get(0);
+	}
+
+	@Override
+	public List<User> findByInviteUserId(String invite_user_id) {
+		invite_user_id = StringUtil.isEmpty(invite_user_id);
+		if (null == invite_user_id)
+			return null;
+
+		User user = new User();
+		user.setInvite_user_id(invite_user_id);
+
+		return findByUser(user, 1, Integer.MAX_VALUE);
 	}
 }
