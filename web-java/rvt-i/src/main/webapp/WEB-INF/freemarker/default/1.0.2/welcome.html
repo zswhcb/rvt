@@ -4,6 +4,13 @@
 <head>
 <#include "/_pagelet/header.html"/>
 <title>欢迎页</title>
+<style>
+.WdatePicker {
+	background: #fff
+		url('${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/skin/datePicker.gif')
+		no-repeat right;
+}
+</style>
 </head>
 <body>
 	<div class='container'>
@@ -23,6 +30,27 @@
 					<li class='active'><a href='javascript:location.reload();'>欢迎页
 					</a></li>
 				</ol>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
+				<div class='panel panel-default'>
+					<div class='panel-body'>
+						<#import "/_macro/select_option.html" as select_option>
+						<form class='form-horizontal' id='frm' role='form'
+							onsubmit='return false;' data-url='changePwd'>
+							<div class='form-group'>
+								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>选择月份</label>
+								<div class='col-sm-2'>
+									<input type='text' class='form-control WdatePicker'
+										placeholder='选择月份'
+										value='${(data_datetime?string("yyyy-MM"))!}'
+										onClick="WdatePicker({onpicking:onpicking,dateFmt:'yyyy-MM'});">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class='row'>
@@ -60,5 +88,13 @@
 		</div>
 	</div>
 	<#include "/_pagelet/js.html"/> <#include "/_pagelet/iframe.html"/>
+	<script type='text/javascript'
+		src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
+	<script>
+		function onpicking(dp) {
+			var create_time = dp.cal.getNewDateStr();
+			alert(create_time);
+		}
+	</script>
 </body>
 </html>
