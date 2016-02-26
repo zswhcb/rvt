@@ -84,7 +84,14 @@
 		src='${(conf_html_cdn)!}js/zeroclipboard/2.2.0/ZeroClipboard.min.js'></script>
 	<script>
 		$(function() {
-			console.log();
+			$('#searchFrm_task_id')
+					.change(
+							function() {
+								var selId = $(this).children('option:selected')
+										.val();
+								parent.location.href = '${(conf_html_virtualPath)!}#page/task?id='
+										+ selId;
+							});
 		});
 	</script>
 </body>

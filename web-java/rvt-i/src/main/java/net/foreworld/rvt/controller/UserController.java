@@ -12,6 +12,7 @@ import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.TaskService;
 import net.foreworld.rvt.service.TaskTakeService;
 import net.foreworld.rvt.service.UserService;
+import net.foreworld.util.StringUtil;
 import net.foreworld.util.encryptUtil.MD5;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = { "/task" }, method = RequestMethod.GET)
-	public ModelAndView taskUI(HttpSession session) {
+	public ModelAndView taskUI(HttpSession session,
+			@RequestParam(required = false) String id) {
 		ModelAndView result = new ModelAndView("user/1.0.1/task");
 
 		// TODO
@@ -59,8 +61,11 @@ public class UserController {
 
 		if (null != list && 0 < list.size()) {
 			Task _task = list.get(0);
-			result.addObject("data_tasktakes",
-					taskTakeService.findByTaskId(_task.getId()));
+			// TODO
+			id = StringUtil.isEmpty(id);
+			result.addObject("data_task_id", id);
+			result.addObject("data_tasktakes", taskTakeService
+					.findByTaskId((null == id) ? _task.getId() : id));
 		}
 
 		return result;
