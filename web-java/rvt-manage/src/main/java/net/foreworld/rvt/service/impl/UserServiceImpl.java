@@ -48,6 +48,18 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 			if (null != user_name) {
 				criteria.andLike("user_name", "%" + user_name + "%");
 			}
+
+			// TODO
+			String apikey = StringUtil.isEmpty(user.getApikey());
+			if (null != apikey) {
+				criteria.andEqualTo("apikey", apikey);
+			}
+
+			// TODO
+			String seckey = StringUtil.isEmpty(user.getSeckey());
+			if (null != seckey) {
+				criteria.andEqualTo("seckey", seckey);
+			}
 		}
 		PageHelper.startPage(page, rows);
 		return selectByExample(example);
@@ -155,11 +167,10 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		if (null == apikey)
 			return null;
 
-		Example example = new Example(User.class);
-		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("apikey", apikey);
+		User user = new User();
+		user.setApikey(apikey);
 
-		List<User> list = selectByExample(example);
+		List<User> list = findByUser(user, 1, Integer.MAX_VALUE);
 
 		return (null == list || 1 != list.size()) ? null : list.get(0);
 	}
@@ -170,11 +181,10 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		if (null == seckey)
 			return null;
 
-		Example example = new Example(User.class);
-		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("seckey", seckey);
+		User user = new User();
+		user.setSeckey(seckey);
 
-		List<User> list = selectByExample(example);
+		List<User> list = findByUser(user, 1, Integer.MAX_VALUE);
 
 		return (null == list || 1 != list.size()) ? null : list.get(0);
 	}

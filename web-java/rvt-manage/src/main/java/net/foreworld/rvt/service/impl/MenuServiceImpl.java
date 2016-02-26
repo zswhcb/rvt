@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.foreworld.rvt.model.Menu;
 import net.foreworld.rvt.service.MenuService;
+import net.foreworld.util.StringUtil;
 
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
 
 	@Override
 	public List<Menu> findByPid(String pid) {
+		pid = StringUtil.isEmpty(pid);
 		if (null == pid)
 			pid = "0";
 		// TODO
