@@ -1,5 +1,7 @@
 package net.foreworld.rvt.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,7 @@ public class DefaultController {
 	@RequestMapping(value = { "/welcome" }, method = RequestMethod.GET)
 	public ModelAndView welcomeUI(HttpSession session) {
 		ModelAndView result = new ModelAndView("default/1.0.2/welcome");
+		result.addObject("data_datetime", new Date());
 		return result;
 	}
 }
