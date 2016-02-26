@@ -4,6 +4,10 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
+import net.foreworld.rvt.model.TaskTake;
+import net.foreworld.rvt.service.TaskTakeService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class DefaultController {
+
+	@Autowired
+	public TaskTakeService taskTakeService;
 
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView indexUI(HttpSession session) {
@@ -37,6 +44,12 @@ public class DefaultController {
 	public ModelAndView welcomeUI(HttpSession session) {
 		ModelAndView result = new ModelAndView("default/1.0.2/welcome");
 		result.addObject("data_datetime", new Date());
+
+		TaskTake taskTake = new TaskTake();
+		taskTake.setUser_id(session.getAttribute("session.user.id").toString());
+
+		result.addObject("data_tasktakes",
+				taskTakeService.findByTaskTake(taskTake, 1, Integer.MAX_VALUE));
 		return result;
 	}
 }

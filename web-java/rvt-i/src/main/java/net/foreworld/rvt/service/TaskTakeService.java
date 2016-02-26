@@ -13,4 +13,6 @@ import net.foreworld.rvt.model.TaskTake;
  */
 public interface TaskTakeService extends IService<TaskTake> {
 	List<TaskTake> findByTaskId(String task_id);
+
+	List<TaskTake> findByTaskTake(TaskTake taskTake, int page, int rows);
 }
