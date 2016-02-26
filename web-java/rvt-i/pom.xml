@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.foreworld</groupId>
-	<artifactId>rvt-portal</artifactId>
+	<artifactId>rvt-i</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.1</version>
 	<name>foreworld :: rvt :: web</name>
@@ -27,19 +27,23 @@
 		<pagehelper.version>4.0.3</pagehelper.version>
 		<mysql.version>5.1.29</mysql.version>
 		<spring.version>4.2.4.RELEASE</spring.version>
-		<foreworld-util.version>1.0.5</foreworld-util.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.foreworld</groupId>
-			<artifactId>foreworld-util</artifactId>
-			<version>${foreworld-util.version}</version>
+			<artifactId>foreworld-dsession</artifactId>
+			<version>1.0.10</version>
 		</dependency>
 		<dependency>
 			<groupId>net.foreworld</groupId>
-			<artifactId>foreworld-dsession</artifactId>
-			<version>1.0.3</version>
+			<artifactId>foreworld-util</artifactId>
+			<version>1.0.9</version>
+		</dependency>
+		<dependency>
+			<groupId>net.foreworld</groupId>
+			<artifactId>foreworld-util-redis</artifactId>
+			<version>1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
