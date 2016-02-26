@@ -3,7 +3,7 @@
 <html>
 <head>
 <#include "/_pagelet/header.html"/>
-<title>邀请好友</title>
+<title>我的任务</title>
 <link rel='stylesheet' type='text/css' media='screen'
 	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
 </head>
@@ -15,7 +15,7 @@
 					<li class='active'><i class='fa fa-home fa-fw'></i> <a
 						href='javascript:parent.location.href="${(conf_html_virtualPath)!}"'>用户中心</a>
 					</li>
-					<li class='active'><a href='javascript:location.reload();'>邀请好友</a>
+					<li class='active'><a href='javascript:location.reload();'>我的任务</a>
 					</li>
 				</ol>
 			</div>
@@ -62,7 +62,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<#list data_users as doc>
+							<#list data_users! as doc>
 							<tr>
 								<td class='ta'><input type='checkbox'></td>
 								<td>${(doc.user_name)!}</td>
@@ -85,12 +85,7 @@
 		src='${(conf_html_cdn)!}js/zeroclipboard/2.2.0/ZeroClipboard.min.js'></script>
 	<script>
 		$(function() {
-			var clip = new ZeroClipboard($('#frm_btn_submit'));
-			clip.on('ready', function() {
-				this.on('aftercopy', function(event) {
-					alert('复制成功');
-				});
-			});
+			console.log();
 		});
 	</script>
 </body>

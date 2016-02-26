@@ -38,6 +38,12 @@ public class UserController {
 		return result;
 	}
 
+	@RequestMapping(value = { "/task" }, method = RequestMethod.GET)
+	public ModelAndView taskUI(HttpSession session) {
+		ModelAndView result = new ModelAndView("user/1.0.1/task");
+		return result;
+	}
+
 	@RequestMapping(value = { "/invite" }, method = RequestMethod.GET)
 	public ModelAndView inviteUI(HttpSession session) {
 		ModelAndView result = new ModelAndView("user/1.0.1/invite");
