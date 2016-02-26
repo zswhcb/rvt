@@ -32,13 +32,13 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = { "/user/login" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public ModelAndView loginUI() {
 		ModelAndView result = new ModelAndView("user/1.0.1/login");
 		return result;
 	}
 
-	@RequestMapping(value = { "/user/invite" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/invite" }, method = RequestMethod.GET)
 	public ModelAndView inviteUI(HttpSession session) {
 		ModelAndView result = new ModelAndView("user/1.0.1/invite");
 
@@ -52,13 +52,13 @@ public class UserController {
 		return result;
 	}
 
-	@RequestMapping(value = { "/user/register" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/register" }, method = RequestMethod.GET)
 	public ModelAndView registerUI() {
 		ModelAndView result = new ModelAndView("user/1.0.1/register");
 		return result;
 	}
 
-	@RequestMapping(value = { "/user/register" }, method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = { "/register" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> register(User user) {
 		Map<String, Object> result = new HashMap<String, Object>();
 
@@ -66,7 +66,7 @@ public class UserController {
 		return result;
 	}
 
-	@RequestMapping(value = { "/user/info" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/info" }, method = RequestMethod.GET)
 	public ModelAndView infoUI(HttpSession session) {
 		ModelAndView result = new ModelAndView("user/1.0.1/info");
 		// TODO
@@ -77,7 +77,7 @@ public class UserController {
 		return result;
 	}
 
-	@RequestMapping(value = { "/user/info" }, method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = { "/info" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> info(HttpSession session, User user) {
 		Map<String, Object> result = new HashMap<String, Object>();
 
@@ -90,13 +90,13 @@ public class UserController {
 		return result;
 	}
 
-	@RequestMapping(value = { "/user/changePwd" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/changePwd" }, method = RequestMethod.GET)
 	public ModelAndView changePwdUI() {
 		ModelAndView result = new ModelAndView("user/1.0.1/changePwd");
 		return result;
 	}
 
-	@RequestMapping(value = { "/user/changePwd" }, method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = { "/changePwd" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> changePwd(HttpSession session,
 			@RequestParam(required = true) String old_pass,
 			@RequestParam(required = true) String new_pass) {
@@ -116,14 +116,14 @@ public class UserController {
 		return result;
 	}
 
-	@RequestMapping(value = { "/user/logout" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
 	public String logoutUI(HttpSession session) {
 		session.invalidate();
 		return "redirect:/user/login";
 	}
 
 	@ResponseBody
-	@RequestMapping(value = { "/user/login" }, method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = { "/login" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> login(User user, HttpSession session) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("success", false);
