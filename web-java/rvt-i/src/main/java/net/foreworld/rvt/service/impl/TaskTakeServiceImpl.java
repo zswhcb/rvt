@@ -1,10 +1,13 @@
 package net.foreworld.rvt.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import net.foreworld.rvt.mapper.TaskTakeMapper;
 import net.foreworld.rvt.model.TaskTake;
 import net.foreworld.rvt.service.TaskTakeService;
+import net.foreworld.util.DateUtil;
 import net.foreworld.util.StringUtil;
 
 import org.springframework.stereotype.Service;
@@ -38,10 +41,19 @@ public class TaskTakeServiceImpl extends BaseService<TaskTake> implements
 		if (null != taskTake) {
 			Example.Criteria criteria = example.createCriteria();
 
-			String user_id = StringUtil.isEmpty(taskTake.getUser_id());
 			// TODO
+			String user_id = StringUtil.isEmpty(taskTake.getUser_id());
 			if (null != user_id) {
 				criteria.andEqualTo("user_id", user_id);
+			}
+
+			Date create_time = taskTake.getCreate_time();
+			if (null != create_time) {
+				criteria.andGreaterThan("create_time",
+						DateUtil.date2Str("yyyy-MM", create_time));
+				criteria.andLessThan("create_time", DateUtil.date2Str(
+						"yyyy-MM", DateUtil.getRelativeDate(create_time,
+								Calendar.MONTH, 1)));
 			}
 		}
 		PageHelper.startPage(page, rows);

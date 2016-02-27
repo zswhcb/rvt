@@ -6,11 +6,13 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.rvt.model.TaskTake;
 import net.foreworld.rvt.service.TaskTakeService;
+import net.foreworld.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -41,12 +43,20 @@ public class DefaultController {
 	}
 
 	@RequestMapping(value = { "/welcome" }, method = RequestMethod.GET)
-	public ModelAndView welcomeUI(HttpSession session) {
+	public ModelAndView welcomeUI(HttpSession session,
+			@RequestParam(required = false) String create_time) {
 		ModelAndView result = new ModelAndView("default/1.0.2/welcome");
-		result.addObject("data_datetime", new Date());
+
+		Date date = DateUtil.checkDateFormat("yyyy-MM", create_time);
+		if (null == date)
+			date = new Date();
+
+		result.addObject("data_current_time", new Date());
+		result.addObject("data_create_time", date);
 
 		TaskTake taskTake = new TaskTake();
 		taskTake.setUser_id(session.getAttribute("session.user.id").toString());
+		taskTake.setCreate_time(date);
 
 		result.addObject("data_tasktakes",
 				taskTakeService.findByTaskTake(taskTake, 1, Integer.MAX_VALUE));

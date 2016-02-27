@@ -19,7 +19,7 @@
 				<div id='info_alert' class='alert alert-info'>
 					<button type='button' class='close' data-dismiss='alert'>&times;</button>
 					<strong>[<span style='color: #d43f3a'>置顶</span>]</strong>
-					欢迎您。今天是${(data_datetime?string("yyyy年MM月dd日"))!}。
+					欢迎您。今天是${(data_current_time?string("yyyy年MM月dd日"))!}。
 				</div>
 			</div>
 		</div>
@@ -44,8 +44,8 @@
 								<div class='col-sm-2'>
 									<input type='text' class='form-control WdatePicker'
 										placeholder='选择月份'
-										value='${(data_datetime?string("yyyy-MM"))!}'
-										onClick="WdatePicker({onpicking:onpicking,dateFmt:'yyyy-MM'});">
+										value='${(data_create_time?string("yyyy-MM"))!}'
+										onClick="WdatePicker({readOnly:true,onpicking:onpicking,dateFmt:'yyyy-MM'});">
 								</div>
 							</div>
 						</form>
@@ -93,7 +93,9 @@
 	<script>
 		function onpicking(dp) {
 			var create_time = dp.cal.getNewDateStr();
-			alert(create_time);
+			var url = '${(conf_html_virtualPath)!}#page/welcome'
+					+ (!create_time ? '' : '?create_time=' + create_time);
+			parent.location.href = url;
 		}
 	</script>
 </body>
