@@ -7,10 +7,7 @@
   },
   "dependencies": {
     "express": "3.5.0",
-    "mongodb": "1.4.20",
-    "mongoose": "3.8.19",
     "velocityjs": "0.4.6",
-    "connect-mongo": "0.4.1",
     "connect-flash": "0.1.1",
     "node-uuid": "1.4.1",
     "async": "0.9.0",
