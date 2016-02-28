@@ -12,8 +12,7 @@ var util = require('speedt-utils'),
 	fs = require('fs'),
 	cwd = process.cwd();
 
-var conf = require('../settings'),
-	macros = require('../lib/macro');
+var conf = require('../settings');
 
 var biz = {
 	task: require('../../biz/task'),
@@ -40,27 +39,33 @@ var exports = module.exports;
 		var result = { success: false },
 			data = req._data;
 
-		// TODO
-		req.body.command = isEmtpy(req.body.command);
-		if(!req.body.command) return res.send(result);
+		var body = req.body;
 
 		// TODO
-		if('login' === req.body.command) return next();
-
-		req.body.ts = isEmtpy(req.body.ts);
-		if(!req.body.ts) return res.send(result);
-
-		req.body.apikey = isEmtpy(req.body.apikey);
-		if(!req.body.apikey) return res.send(result);
-
-		req.body.signature = isEmtpy(req.body.signature);
-		if(!req.body.signature) return res.send(result);
+		body.command = isEmtpy(body.command);
+		if(!body.command) return res.send(result);
 
 		// TODO
-		biz.user.findByApiKey(req.body.apikey, function (err, doc){
+		if('login' === body.command) return next();
+
+		body.ts = isEmtpy(body.ts);
+		if(!body.ts) return res.send(result);
+
+		body.apikey = isEmtpy(body.apikey);
+		if(!body.apikey) return res.send(result);
+
+		body.signature = isEmtpy(body.signature);
+		if(!body.signature) return res.send(result);
+
+		// TODO
+		biz.user.findByApiKey(body.apikey, function (err, doc){
 			if(err) return next(err);
 			// TODO
 			if(!doc) return res.send(result);
+
+			// TODO
+			if(1 !== doc.STATUS) return res.send(result);
+
 			// TODO
 			if(!rest.validate(data, doc.SECKEY)) return res.send(result);
 			// TODO
@@ -94,7 +99,7 @@ var exports = module.exports;
 				apikey: doc.APIKEY,
 				seckey: doc.SECKEY,
 				ver: conf.app.ver,
-				ts: new Date().getTime()
+				ts: (new Date()).getTime()
 			};
 			result.success = true;
 			res.send(result);

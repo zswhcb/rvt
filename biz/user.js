@@ -28,16 +28,13 @@ function isEmtpy(str){
  * @params
  * @return
  */
-(function (exports){
-	var sql = 'SELECT * FROM s_user WHERE STATUS=1 AND APIKEY=?';
+exports.findByApiKey = function(apiKey, cb){
 	// TODO
-	exports.findByApiKey = function(apiKey, cb){
-		mysql.query(sql, [apiKey], function (err, docs){
-			if(err) return cb(err);
-			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
-		});
-	};
-})(exports);
+	mysql_util.find(null, 's_user', [['APIKEY', '=', apiKey]], null, null, function (err, docs){
+		if(err) return cb(err);
+		cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+	});
+};
 
 /**
  * 通过父Id查询子用户
