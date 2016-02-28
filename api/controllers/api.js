@@ -107,14 +107,14 @@ var exports = module.exports;
 	}
 
 	function applyTask(req, res, next){
-		var result = { success: false, ver: conf.app.ver },
+		var result = { success: false },
 			data = req._data,
 			user = req.flash('user')[0];
 		// TODO
-		biz.task.apply(user.id, data.TASK_ID, function (err, msg, doc){
+		biz.task.apply(user.id, function (err, msg, doc){
 			if(err) return next(err);
 			// TODO
-			if(!!msg){
+			if(msg){
 				result.msg = msg;
 				return res.send(result);
 			}
@@ -126,14 +126,14 @@ var exports = module.exports;
 	}
 
 	function commitTask(req, res, next){
-		var result = { success: false, ver: conf.app.ver },
+		var result = { success: false },
 			data = req._data,
 			user = req.flash('user')[0];
 		// TODO
 		biz.task.commit(user.id, data, function (err, msg, status){
 			if(err) return next(err);
 			// TODO
-			if(!!msg) result.msg = msg;
+			if(msg) result.msg = msg;
 			result.success = true;
 			res.send(result);
 		});
