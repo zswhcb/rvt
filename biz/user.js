@@ -17,6 +17,12 @@ var biz = {
 	authcode: require('./authcode')
 };
 
+function isEmtpy(str){
+	if(!str) return;
+	str = str.trim();
+	return '' === str ? null : str;
+}
+
 /**
  *
  * @params
@@ -105,18 +111,22 @@ var biz = {
 	 * @return
 	 */
 	exports.login = function(logInfo, cb){
-		var sql = sql_1 +' AND a.USER_NAME=?';
-		// TODO
-		mysql.query(sql, [logInfo.USER_NAME], function (err, docs){
+		logInfo.USER_NAME = isEmtpy(logInfo.USER_NAME);
+		if(!logInfo.USER_NAME) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
+
+		this.findByName(logInfo.USER_NAME, function (err, doc){
 			if(err) return cb(err);
 			// TODO
-			if(!mysql.checkOnly(docs)) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
+			if(!doc) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
+
 			// TODO
-			var doc = docs[0];
 			if(1 !== doc.STATUS) return cb(null, ['禁用状态']);
+
 			// TODO
 			if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
-				return cb(null, ['用户名或密码输入错误', 'USER_PASS'], doc);
+				return cb(null, ['用户名或密码输入错误'], doc);
+
+			// TODO
 			cb(null, null, doc);
 		});
 	};
@@ -169,6 +179,7 @@ exports.register = function(newInfo, cb){
  * @return
  */
 exports.findByName = function(name, cb){
+	// TODO
 	mysql_util.find(null, 's_user', [['USER_NAME', '=', name]], null, null, function (err, docs){
 		if(err) return cb(err);
 		cb(null, mysql.checkOnly(docs) ? docs[0] : null);
