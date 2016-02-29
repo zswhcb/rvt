@@ -1,131 +1,180 @@
 <!DOCTYPE html>
 <html lang='zh-CN'>
-	<head>
-		<title>API测试</title>
-		<meta charset='utf-8' />
-	</head>
-	<body>
-		<ol>
-			<li>
-				<table border='1'>
-					<thead>
-						<tr>
-							<th colspan='2'>登陆</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>用户名：</td>
-							<td><input id='F_1_USER_NAME' value='bushuo'></td>
-						</tr>
-						<tr>
-							<td>密码：</td>
-							<td><input id='F_1_USER_PASS' type='password' value='1'></td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan='2'>
-								<button id='F_1_BTN'>用户登陆</button>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-			</li>
-			<li>
-				<table border='1'>
-					<thead>
-						<tr>
-							<th colspan='2'>结果</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>apikey：</td>
-							<td><input id='F_2_APIKEY' type='text'></td>
-						</tr>
-						<tr>
-							<td>seckey：</td>
-							<td><input id='F_2_SECKEY' type='text'></td>
-						</tr>
-						<tr>
-							<td>ver：</td>
-							<td><input id='F_2_VER' type='text'></td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan='2'>
-								<button id='F_2_BTN'>申请任务</button>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-			</li>
-			<li><a href='javascript:commitTask();'>commitTask</a></li>
-		</ol>
+  <head>
+    <title>API测试</title>
+    <meta charset='utf-8' />
+  </head>
+  <body>
+    <ol>
+      <li>
+	<table>
+	  <tr>
+	    <td>
+	      <table border='1'>
+		<thead>
+		  <tr>
+		    <th colspan='2'>登陆</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <td>用户名：</td>
+		    <td><input id='F_1_USER_NAME' value='bushuo'></td>
+		  </tr>
+		  <tr>
+		    <td>密码：</td>
+		    <td><input id='F_1_USER_PASS' type='password' value='1'></td>
+		  </tr>
+		</tbody>
+		<tfoot>
+		  <tr>
+		    <td colspan='2'>
+		      <button id='F_1_BTN'>用户登陆</button>
+		    </td>
+		  </tr>
+		</tfoot>
+	      </table>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+	      <table border='1'>
+		<thead>
+		  <tr>
+		    <th colspan='2'>结果</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <td>apikey：</td>
+		    <td><input id='F_2_APIKEY' type='text'></td>
+		  </tr>
+		  <tr>
+		    <td>seckey：</td>
+		    <td><input id='F_2_SECKEY' type='text'></td>
+		  </tr>
+		  <tr>
+		    <td>ver：</td>
+		    <td><input id='F_2_VER' type='text'></td>
+		  </tr>
+		</tbody>
+	      </table>
+	    </td>
+	  </tr>
+	</table>
+      </li>
+      <li>
+	<table>
+	  <tbody>
+	    <tr>
+	      <td>
+		<table border='1'>
+		  <tbody>
+		    <tr>
+		      <td>apikey：</td>
+		      <td>
+			<input id='F_3_APIKEY' type='text' readonly>
+		      </td>
+		    </tr>
+		    <tr>
+		      <td>command：</td>
+		      <td><input type='text' id='F_3_COMMAND' value='applyTask' readonly></td>
+		    </tr>
+		    <tr>
+		      <td>data：</td>
+		      <td><input readonly></td>
+		    </tr>
+		    <tr>
+		      <td>ts：</td>
+		      <td><input type='text' id='F_3_TS' readonly></td>
+		    </tr>
+		    <tr>
+		      <td>signature：</td>
+		      <td><input readonly id='F_3_SIGNATURE'></td>
+		    </tr>
+		  </tbody>
+		  <tfoot>
+		    <tr>
+		      <td colspan='2'>
+			<button id='F_3_BTN'>生成签名</button>
+		      </td>
+		    </tr>
+		  </tfoot>
+		</table>
+	      </td>
+	    </tr>
+	  </tbody>
+	</table>
+      </li>
+      <li><a href='javascript:commitTask();'>commitTask</a></li>
+    </ol>
 
-		<script type='text/javascript' src='$!{conf.html.cdn}js/jquery/2.0.2/jquery.min.js'></script>
-		<!-- Own -->
-		<script type='text/javascript'>
+    <script type='text/javascript' src='$!{conf.html.cdn}js/jquery/2.0.2/jquery.min.js'></script>
+    <!-- Own -->
+    <script type='text/javascript'>
+      $(function(){
+          $('#F_3_SIGNATURE').val('$!data.signature');
+          $('#F_3_APIKEY').val('$!data.apikey');
+          $('#F_3_TS').val('$!data.ts');
+          $('#F_2_SECKEY').val('$!data.seckey');
 
-		$(function(){
-			$('#F_2_BTN').attr('disabled', true);
+      function F_3_BTN(){
+      $('#F_3_BTN').attr('disabled', ('' === $('#F_3_APIKEY').val()));
+      }
 
-			$('#F_1_BTN').click(function(){
-				ajax({
-					command: 'login',
-					data: {
-						USER_NAME: $('#F_1_USER_NAME').val(),
-						USER_PASS: $('#F_1_USER_PASS').val()
-					}
-				}, function (data){
-					$('#F_2_BTN').attr('disabled', !data.success);
-					// TODO
-					data = data || {};
-					// TODO
-					var data = data.data || {};
-					$('#F_2_APIKEY').val(data.apikey || '');
-					$('#F_2_SECKEY').val(data.seckey || '');
-					$('#F_2_VER').val(data.ver || '');
-				});
-			});
+      F_3_BTN();
 
-			$('#F_2_BTN').click(function(){
-				ajax({
-					command: 'applyTask',
-					ts: (new Date()).getTime(),
-					apikey: $('#F_2_APIKEY').val(),
-					signature: '',
-					data: {}
-				}, function (data){
-					// TODO
-				});
-			});
-		});
+      $('#F_1_BTN').click(function(){
+      ajax({
+      command: 'login',
+      data: {
+      USER_NAME: $('#F_1_USER_NAME').val(),
+      USER_PASS: $('#F_1_USER_PASS').val()
+      }
+      }, function (data){
+      $('#F_2_BTN').attr('disabled', !data.success);
+      // TODO
+      data = data || {};
+      // TODO
+      var data = data.data || {};
+      $('#F_2_APIKEY').val(data.apikey || '');
+      $('#F_3_APIKEY').val(data.apikey || '');
+      $('#F_2_SECKEY').val(data.seckey || '');
+      $('#F_2_VER').val(data.ver || '');
 
-		function commitTask(){
-			console.log('commitTask');
-		}
+      $('#F_3_TS').val((new Date()).getTime());
+      F_3_BTN();
+      });
+      });
 
-		/**
-		 *
-		 */
-		function ajax(postData, cb){
-			postData.data = JSON.stringify(postData.data);
-			// TODO
-			$.ajax({
-				url: '/api/',
-				type: 'POST',
-				dataType: 'JSON',
-				data: postData,
-				success: function(data){
-					cb(data);
-				}, error: function(){
-					alert(arguments[2]);
-				}
-			});
-		}
-		</script>
-	</body>
+      $('#F_3_BTN').click(function(){
+          location.href = '?apikey='+  $('#F_3_APIKEY').val() +'&command=applyTask&seckey='+ $('#F_2_SECKEY').val() +'&ts='+ $('#F_3_TS').val();
+      });
+
+      });
+
+      function commitTask(){
+      console.log('commitTask');
+      }
+
+      /**
+      *
+      */
+      function ajax(postData, cb){
+      postData.data = JSON.stringify(postData.data);
+      // TODO
+      $.ajax({
+      url: '/api/',
+      type: 'POST',
+      dataType: 'JSON',
+      data: postData,
+      success: function(data){
+      cb(data);
+      }, error: function(){
+      alert(arguments[2]);
+      }
+      });
+      }
+    </script>
+  </body>
 </html>

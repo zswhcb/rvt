@@ -156,9 +156,19 @@ var exports = module.exports;
  * @return
  */
 exports.testUI = function(req, res, next){
+    var query = req.query;
+    if(query.seckey){
+        var seckey = query.seckey;
+        delete query.seckey;
+        var signature = rest.genSignature(query, seckey);
+        query.signature = signature;
+        query.seckey = seckey;
+    }
+
     res.render('test', {
 	conf: conf,
 	description: '',
-	keywords: ',html5'
+	keywords: ',html5',
+        data: query
     });
 };
