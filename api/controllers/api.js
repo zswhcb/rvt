@@ -107,22 +107,22 @@ var exports = module.exports;
     }
 
     function applyTask(req, res, next){
-	var result = { success: false };
-	var data = req._data;
-	var user = req.flash('user')[0];
-	// TODO
-	biz.task.apply(user.id, function (err, msg, doc){
-	    if(err) return next(err);
-	    // TODO
-	    if(msg){
-		result.msg = msg;
-		return res.send(result);
-	    }
-	    // TODO
-	    result.data = doc;
-	    result.success = true;
-	    res.send(result);
-	});
+        var result = { success: false };
+        var data = req._data;
+        var user = req.flash('user')[0];
+        // TODO
+        biz.task.apply(user.id, function (err, msg, doc){
+            if(err) return next(err);
+            // TODO
+            if(msg){
+                result.msg = msg;
+                return res.send(result);
+            }
+            // TODO
+            result.data = doc;
+            result.success = true;
+            res.send(result);
+        });
     }
 
     function commitTask(req, res, next){

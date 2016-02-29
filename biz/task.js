@@ -12,7 +12,8 @@ mysql = util.mysql;
 var exports = module.exports;
 
 var biz = {
-    handtask: require('./handtask')
+    handtask: require('./handtask'),
+    tasktake: require('./tasktake')
 };
 
 /**
@@ -58,38 +59,46 @@ var biz = {
  * @params
  * @return
  */
-exports.apply = function(user_id, task_id, cb){
+exports.apply = function(user_id, cb){
     var that = this;
-    // TODO 清理超时数据
-    biz.handtask.clearTimeout(function (err, status){
-	if(err) return cb(err);
-	// TODO 获取之前申请的任务（未过期）
-	biz.handtask.getMyHandTask(user_id, function (err, msg, doc){
-	    if(err) return cb(err);
-	    if(!!msg) return cb(null, msg);
-	    if(!!doc) return cb(null, null, doc);
-	    // TODO 获取任务状态信息
-	    that.getTaskStatus(user_id, task_id, function (err, msg, doc){
-		if(err) return cb(err);
-		if(!!msg) return cb(null, msg);
-		if(!doc) return cb(null, ['此任务不存在，请重新申请']);
-		// TODO
-		if(!!doc.HANDTASK_ID) return cb(null, ['同一项目下的任务只能申请一次']);
-		// TODO 检测任务状态
-		if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['下手晚了']);
-		// TODO
-		var newTask = doc;
-		// TODO 开始新的申请
-		biz.handtask.saveNew({ TASK_ID: task_id, USER_ID: user_id }, function (err, doc){
-		    if(err) return cb(err);
-		    // TODO 返回抢任务的ID
-		    newTask.HANDTASK_ID = doc.id;
-		    newTask.HANDTASK_CREATE_TIME = doc.CREATE_TIME;
-		    cb(null, null, newTask);
-		});
-	    });
-	});
+    // TODO
+    biz.tasktake.findLast(user_id, function (err, doc){
+        if(err) return cb(err);
+        cb(null, doc);
     });
+
+
+
+ //    // TODO 清理超时数据
+ //    biz.handtask.clearTimeout(function (err, status){
+	// if(err) return cb(err);
+	// // TODO 获取之前申请的任务（未过期）
+	// biz.handtask.getMyHandTask(user_id, function (err, msg, doc){
+	//     if(err) return cb(err);
+	//     if(!!msg) return cb(null, msg);
+	//     if(!!doc) return cb(null, null, doc);
+	//     // TODO 获取任务状态信息
+	//     that.getTaskStatus(user_id, task_id, function (err, msg, doc){
+	// 	if(err) return cb(err);
+	// 	if(!!msg) return cb(null, msg);
+	// 	if(!doc) return cb(null, ['此任务不存在，请重新申请']);
+	// 	// TODO
+	// 	if(!!doc.HANDTASK_ID) return cb(null, ['同一项目下的任务只能申请一次']);
+	// 	// TODO 检测任务状态
+	// 	if((doc.INIT_TASK_SUM + doc.SUCCESS_TASK_SUM) >= doc.TASK_SUM) return cb(null, ['下手晚了']);
+	// 	// TODO
+	// 	var newTask = doc;
+	// 	// TODO 开始新的申请
+	// 	biz.handtask.saveNew({ TASK_ID: task_id, USER_ID: user_id }, function (err, doc){
+	// 	    if(err) return cb(err);
+	// 	    // TODO 返回抢任务的ID
+	// 	    newTask.HANDTASK_ID = doc.id;
+	// 	    newTask.HANDTASK_CREATE_TIME = doc.CREATE_TIME;
+	// 	    cb(null, null, newTask);
+	// 	});
+	//     });
+	// });
+ //    });
 };
 
 /**

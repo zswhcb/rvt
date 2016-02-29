@@ -5,32 +5,113 @@
 		<meta charset='utf-8' />
 	</head>
 	<body>
-		<div>
-			<a href='javascript:login();'>login</a>
-		</div>
-		<div>
-		</div>
+		<ol>
+			<li>
+				<table>
+					<tbody>
+						<tr>
+							<td>
+								<table border='1'>
+									<thead>
+										<tr>
+											<th colspan='2'>登陆</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>用户名：</td>
+											<td><input id='F_1_USER_NAME' value='bushuo'></td>
+										</tr>
+										<tr>
+											<td>密码：</td>
+											<td><input id='F_1_USER_PASS' type='password' value='1'></td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan='2'>
+												<button id='F_1_BTN'>Login</button>
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</td>
+							<td>==></td>
+							<td>
+								<table border='1'>
+									<thead>
+										<tr>
+											<th colspan='2'>Result</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>apikey：</td>
+											<td><input id='F_1_APIKEY' type='text'></td>
+										</tr>
+										<tr>
+											<td>seckey：</td>
+											<td><input id='F_1_SECKEY' type='text'></td>
+										</tr>
+										<tr>
+											<td>ver：</td>
+											<td><input id='F_1_VER' type='text'></td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</li>
+			<li><a href='javascript:applyTask();'>applyTask</a></li>
+			<li><a href='javascript:commitTask();'>commitTask</a></li>
+		</ol>
+
 		<script type='text/javascript' src='$!{conf.html.cdn}js/jquery/2.0.2/jquery.min.js'></script>
 		<!-- Own -->
 		<script type='text/javascript'>
-		function login(){
-			ajax('login', {
-				USER_NAME: 'bushuo',
-				USER_PASS: '1'
+
+		$(function(){
+			$('#F_1_BTN').click(function(){
+				ajax({
+					command: 'login',
+					data: {
+						USER_NAME: $('#F_1_USER_NAME').val(),
+						USER_PASS: $('#F_1_USER_PASS').val()
+					}
+				}, function (data){
+					data = data || {};
+					// TODO
+					var data = data.data || {};
+					$('#F_1_APIKEY').val(data.apikey || '');
+					$('#F_1_SECKEY').val(data.seckey || '');
+					$('#F_1_VER').val(data.ver || '');
+				});
 			});
+		});
+
+		function applyTask(){
+			console.log('applyTask');
 		}
+
+		function commitTask(){
+			console.log('commitTask');
+		}
+
 		/**
 		 *
 		 */
-		function ajax(command, postData){
+		function ajax(postData, cb){
+			postData.data = JSON.stringify(postData.data);
+			// TODO
 			$.ajax({
-				url: '/api',
+				url: '/api/',
 				type: 'POST',
 				dataType: 'JSON',
-				data: {
-					command: command,
-					data: JSON.stringify(postData)
-				}, success: function(data){
+				data: postData,
+				success: function(data){
+					cb(data);
 				}, error: function(){
 					alert(arguments[2]);
 				}

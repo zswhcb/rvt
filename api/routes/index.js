@@ -16,6 +16,6 @@ var api = require('../controllers/api');
  * @return
  */
 module.exports = function(app){
-	app.post('/api$', express.valiPostData, api.signature_validate, api.index);
+	app.post('/', express.valiPostData, api.signature_validate, api.index);
 	app.get('/test$', api.testUI);
 };
