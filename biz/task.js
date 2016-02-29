@@ -66,24 +66,21 @@ var biz = {
 	 */
 	exports.apply = function(user_id, cb){
 	    var that = this;
-	    // TODO
-	    biz.tasktake.findLast(user_id, function (err, doc){
-	        if(err) return cb(err);
+		// TODO
+		biz.tasktake.clearTimeout(function (err, status){
+			if(err) return cb(err);
+			// TODO
+		    biz.tasktake.findLast(user_id, function (err, doc){
+		        if(err) return cb(err);
 
-	        // 首次
-	        if(!doc) return apply(user_id, cb);
+		        if(!doc) return apply(user_id, cb);
 
-	        if(0 < doc.STATUS) return apply(user_id, cb);
+		        // 除未完成任务外
+		        if(0 < doc.STATUS) return apply(user_id, cb);
 
-			var timeout = biz.tasktake.checkTimeout(doc);
-			if(!timeout) return cb(null, null, doc);
-
-			// 超时处理
-			biz.tasktake.clearTimeout(doc.id, function (err, status){
-				if(err) return cb(err);
-				apply(user_id, cb);
-			});
-	    });
+		        cb(null, null, doc);
+		    });
+		});
 	};
 })(exports);
 
