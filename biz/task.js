@@ -64,6 +64,9 @@ exports.apply = function(user_id, cb){
     // TODO
     biz.tasktake.findLast(user_id, function (err, doc){
         if(err) return cb(err);
+
+        var timeout = biz.tasktake.checkTimeout(doc);
+
         cb(null, doc);
     });
 

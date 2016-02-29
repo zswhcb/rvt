@@ -19,7 +19,7 @@ var exports = module.exports;
  */
 (function (exports){
     var sql = 'SELECT d.PROJECT_NAME, d.TEL_NUM, c.*'+
-                ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, a.*'+
+                ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, b.TASK_INTRO, b.SMS_INTRO, b.TASK_SUM, b.TALK_TIMEOUT, b.TALK_TIME_MIN, b.START_TIME, b.END_TIME, a.*'+
                     ' FROM (SELECT * FROM r_project_task_take WHERE USER_ID=? ORDER BY CREATE_TIME DESC LIMIT 1) a'+
                     ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id) AND b.id IS NOT NULL) c'+
                     ' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) AND d.id IS NOT NULL';
@@ -31,3 +31,15 @@ var exports = module.exports;
         });
     };
 })(exports);
+
+exports.checkTimeout = function(data){
+    var curTime = (new Date).getTime();
+    var createTime = data.CREATE_TIME.getTime();
+
+    
+
+    console.log(curTime);
+    console.log(createTime);
+
+    return true;
+};

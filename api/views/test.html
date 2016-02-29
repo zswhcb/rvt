@@ -106,17 +106,20 @@
 	  </tbody>
 	</table>
       </li>
-      <li><a href='javascript:commitTask();'>commitTask</a></li>
+      <li>
+	<a href='javascript:applyTask();'>申请任务</a>
+      </li>
+      <li><a href='javascript:commitTask();'>提交任务</a></li>
     </ol>
 
     <script type='text/javascript' src='$!{conf.html.cdn}js/jquery/2.0.2/jquery.min.js'></script>
     <!-- Own -->
     <script type='text/javascript'>
       $(function(){
-          $('#F_3_SIGNATURE').val('$!data.signature');
-          $('#F_3_APIKEY').val('$!data.apikey');
-          $('#F_3_TS').val('$!data.ts');
-          $('#F_2_SECKEY').val('$!data.seckey');
+      $('#F_3_SIGNATURE').val('$!data.signature');
+      $('#F_3_APIKEY').val('$!data.apikey');
+      $('#F_3_TS').val('$!data.ts');
+      $('#F_2_SECKEY').val('$!data.seckey');
 
       function F_3_BTN(){
       $('#F_3_BTN').attr('disabled', ('' === $('#F_3_APIKEY').val()));
@@ -148,10 +151,21 @@
       });
 
       $('#F_3_BTN').click(function(){
-          location.href = '?apikey='+  $('#F_3_APIKEY').val() +'&command=applyTask&seckey='+ $('#F_2_SECKEY').val() +'&ts='+ $('#F_3_TS').val();
+      location.href = '?apikey='+ $('#F_3_APIKEY').val() +'&command=applyTask&seckey='+ $('#F_2_SECKEY').val() +'&ts='+ $('#F_3_TS').val();
       });
 
       });
+
+      function applyTask(){
+      ajax({
+      command: 'applyTask',
+      apikey: $('#F_3_APIKEY').val(),
+      ts: $('#F_3_TS').val(),
+      signature: $('#F_3_SIGNATURE').val(),
+      data: {}
+      }, function (data){
+      });
+      }
 
       function commitTask(){
       console.log('commitTask');

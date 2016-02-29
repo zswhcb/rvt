@@ -37,8 +37,6 @@ var exports = module.exports;
 
     exports.signature_validate = function(req, res, next){
 	var result = { success: false };
-	var data = req._data;
-
 	var body = req.body;
 
 	// TODO
@@ -66,8 +64,9 @@ var exports = module.exports;
 	    // TODO
 	    if(1 !== doc.STATUS) return res.send(result);
 
+            if(body.data) delete body.data;
 	    // TODO
-	    if(!rest.validate(data, doc.SECKEY)) return res.send(result);
+	    if(!rest.validate(body, doc.SECKEY)) return res.send(result);
 	    // TODO
 	    req.flash('user', doc);
 	    next();
