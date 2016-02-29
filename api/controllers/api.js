@@ -89,8 +89,8 @@ var exports = module.exports;
 	biz.user.login(data, function (err, msg, doc){
 	    if(err) return next(err);
 	    if(msg){
-		result.msg = msg;
-		return res.send(result);
+			result.msg = msg;
+			return res.send(result);
 	    }
 
 	    /* result */

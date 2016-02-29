@@ -32,14 +32,26 @@ var exports = module.exports;
     };
 })(exports);
 
+/**
+ * 检测数据是否超时
+ *
+ * @params
+ * @return 超时则 true
+ */
 exports.checkTimeout = function(data){
-    var curTime = (new Date).getTime();
     var createTime = data.CREATE_TIME.getTime();
-
-    
-
-    console.log(curTime);
-    console.log(createTime);
-
-    return true;
+    var curTime = (new Date).getTime();
+    return curTime > (createTime + 1000 * (data.TALK_TIMEOUT - 60));
 };
+
+(function (exports){
+    var sql = 'UPDATE r_project_task_take SET STATUS=3 WHERE id=?';
+    // TODO
+    exports.clearTimeout = function(id, cb){
+        // TODO
+        mysql.query(sql, [id], function (err, status){
+            if(err) return cb(err);
+            cb(null, status);
+        });
+    };
+})(exports);

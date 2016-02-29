@@ -53,22 +53,39 @@ var biz = {
     };
 })(exports);
 
-/**
- * 申请任务
- *
- * @params
- * @return
- */
-exports.apply = function(user_id, cb){
-    var that = this;
-    // TODO
-    biz.tasktake.findLast(user_id, function (err, doc){
-        if(err) return cb(err);
+(function (exports){
+	function apply(user_id, cb){
+		cb(null, null, {});
+	}
 
-        var timeout = biz.tasktake.checkTimeout(doc);
+	/**
+	 * 申请任务
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.apply = function(user_id, cb){
+	    var that = this;
+	    // TODO
+	    biz.tasktake.findLast(user_id, function (err, doc){
+	        if(err) return cb(err);
 
-        cb(null, doc);
-    });
+	        // 首次
+	        if(!doc) return apply(user_id, cb);
+
+	        if(0 < doc.STATUS) return apply(user_id, cb);
+
+			var timeout = biz.tasktake.checkTimeout(doc);
+			if(!timeout) return cb(null, null, doc);
+
+			// 超时处理
+			biz.tasktake.clearTimeout(doc.id, function (err, status){
+				if(err) return cb(err);
+				apply(user_id, cb);
+			});
+	    });
+	};
+})(exports);
 
 
 
@@ -102,7 +119,9 @@ exports.apply = function(user_id, cb){
 	//     });
 	// });
  //    });
-};
+
+
+
 
 /**
  * 当前可接的任务信息
