@@ -95,11 +95,11 @@ var exports = module.exports;
 
 	    /* result */
 	    result.data = {
-		apikey: doc.APIKEY,
-		seckey: doc.SECKEY,
-		ver: conf.app.ver,
-		ts: (new Date()).getTime()
+			apikey: doc.APIKEY,
+			seckey: doc.SECKEY,
+			ts: (new Date()).getTime()
 	    };
+	    result.ver = conf.app.ver;
 	    result.success = true;
 	    res.send(result);
 	});
@@ -107,7 +107,6 @@ var exports = module.exports;
 
     function applyTask(req, res, next){
         var result = { success: false };
-        var data = req._data;
         var user = req.flash('user')[0];
         // TODO
         biz.task.apply(user.id, function (err, msg, doc){
@@ -119,6 +118,7 @@ var exports = module.exports;
             }
             // TODO
             result.data = doc;
+	    	result.ver = conf.app.ver;
             result.success = true;
             res.send(result);
         });
@@ -133,6 +133,7 @@ var exports = module.exports;
 		    if(err) return next(err);
 		    // TODO
 		    if(msg) result.msg = msg;
+	    	result.ver = conf.app.ver;
 		    result.success = true;
 		    res.send(result);
 		});
@@ -145,6 +146,7 @@ var exports = module.exports;
 		    if(err) return next(err);
 		    // TODO
 		    result.data = count;
+	    	result.ver = conf.app.ver;
 		    result.success = true;
 		    res.send(result);
 		});
@@ -178,9 +180,9 @@ exports.testUI = function(req, res, next){
     }
 
     res.render('test', {
-	conf: conf,
-	description: '',
-	keywords: ',html5',
+        conf: conf,
+        description: '',
+        keywords: ',html5',
         data: query
     });
 };
