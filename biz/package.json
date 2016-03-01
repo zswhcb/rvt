@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "speedt-utils": "0.1.45",
+    "node-uuid": "1.4.7",
     "eventproxy": "0.3.1"
   }
 }

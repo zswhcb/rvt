@@ -6,6 +6,7 @@
 'use strict';
 
 var util = require('speedt-utils'),
+    uuid = require('node-uuid'),
     mysql_util = util.mysql_util,
     mysql = util.mysql;
 
@@ -49,11 +50,11 @@ exports.checkTimeout = function(data){
                 ' WHERE id in (SELECT a.id FROM'+
                     ' (SELECT id, TASK_ID, CREATE_TIME FROM r_project_task_take WHERE STATUS=0) a'+
                     ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id)'+
-                    ' WHERE b.id IS NOT NULL AND DATE_ADD(a.CREATE_TIME, INTERVAL (b.TALK_TIMEOUT - 60) second)<?)';
+                    ' WHERE b.id IS NOT NULL AND DATE_ADD(a.CREATE_TIME, INTERVAL (b.TALK_TIMEOUT - ?) second)<?)';
     // TODO
     exports.clearTimeout = function(cb){
         // TODO
-        mysql.query(sql, [new Date()], function (err, status){
+        mysql.query(sql, [60, new Date()], function (err, status){
             if(err) return cb(err);
             cb(null, status);
         });
@@ -72,7 +73,7 @@ exports.checkTimeout = function(data){
 	// TODO
 	exports.saveNew = function(newInfo, cb){
 		var postData = [
-			util.genObjectId(),
+			util.replaceAll(uuid.v1(), '-', ''),
 			newInfo.TASK_ID,
 			newInfo.USER_ID,
 			new Date(),

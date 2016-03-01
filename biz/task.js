@@ -71,8 +71,8 @@ var biz = {
                            ' FROM ('+ sql +') d) e WHERE e.FINISH_STATUS=0 LIMIT 1';
 	    // TODO
 	    mysql.query(_sql, [user_id], function (err, docs){
-		if(err) return cb(err);
-		cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+            if(err) return cb(err);
+            cb(null, mysql.checkOnly(docs) ? docs[0] : null);
 	    });
 	};
 
@@ -82,32 +82,32 @@ var biz = {
 	 * @params
 	 * @return
 	 */
-        exports.getSurplusCount = function(cb){
-	    var _sql = 'SELECT SUM(d.SURPLUS_COUNT) SURPLUS_COUNT FROM ('+ sql +') d';
-	    mysql.query(_sql, [], function (err, docs){
-		if(err) return cb(err);
-		// TODO
-		var doc = mysql.checkOnly(docs) ? docs[0] : null;
-		cb(null, !doc ? 0 : doc.SURPLUS_COUNT);
+    exports.getSurplusCount = function(cb){
+        var _sql = 'SELECT SUM(d.SURPLUS_COUNT) SURPLUS_COUNT FROM ('+ sql +') d';
+        mysql.query(_sql, [], function (err, docs){
+            if(err) return cb(err);
+            // TODO
+	        var doc = mysql.checkOnly(docs) ? docs[0] : null;
+	        cb(null, !doc ? 0 : doc.SURPLUS_COUNT);
 	    });
 	};
 })(exports);
 
 (function (exports){
 	function apply(user_id, cb){
-            this.findNormal(user_id, function (err, doc){
-		if(err) return cb(err);
-		if(!doc) return cb(null, ['没有合适的任务了']);
-
-		var task = doc;
-
-		biz.tasktake.saveNew({ TASK_ID: doc.id, USER_ID: user_id }, function (err, doc){
+        this.findNormal(user_id, function (err, doc){
 		    if(err) return cb(err);
-		    // TODO
-		    task.TASKTAKE_ID = doc.id;
-		    task.TASKTAKE_CREATE_TIME = doc.CREATE_TIME;
-		    cb(null, null, task);
-		});
+		    if(!doc) return cb(null, ['没有合适的任务了']);
+
+		    var task = doc;
+
+		    biz.tasktake.saveNew({ TASK_ID: doc.id, USER_ID: user_id }, function (err, doc){
+		        if(err) return cb(err);
+		        // TODO
+		        task.TASKTAKE_ID = doc.id;
+		        task.TASKTAKE_CREATE_TIME = doc.CREATE_TIME;
+		        cb(null, null, task);
+		    });
 	    });
 	}
 
