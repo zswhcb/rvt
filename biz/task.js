@@ -56,7 +56,8 @@ var biz = {
 (function (exports){
 	var sql = 'SELECT c.* FROM'+
                     ' (SELECT (b.TASK_SUM-b.INIT_COUNT-b.FINISH_COUNT) SURPLUS_COUNT, b.* FROM'+
-                      ' (SELECT (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=0 AND TASK_ID=a.id) INIT_COUNT,'+
+                      ' (SELECT'+
+                        ' (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=0 AND TASK_ID=a.id) INIT_COUNT,'+
                         ' (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=1 AND TASK_ID=a.id) FINISH_COUNT, a.*'+
                           ' FROM r_project_task a WHERE a.STATUS=1 AND NOW() BETWEEN a.START_TIME AND a.END_TIME ORDER BY a.CREATE_TIME) b) c WHERE c.SURPLUS_COUNT>0';
 	/**
@@ -66,9 +67,11 @@ var biz = {
 	 * @return
 	 */
 	exports.findNormal = function(user_id, cb){
-	    var _sql = 'SELECT e.* FROM'+
-		         ' (SELECT (SELECT COUNT(1) FROM r_project_task_take WHERE TASK_ID in (SELECT id FROM r_project_task WHERE PROJECT_ID=d.PROJECT_ID) AND (STATUS=0 OR STATUS=1) AND USER_ID=?) FINISH_STATUS, d.*'+
-                           ' FROM ('+ sql +') d) e WHERE e.FINISH_STATUS=0 LIMIT 1';
+        var _sql = 'SELECT f.PROJECT_NAME, f.TEL_NUM, e.* FROM'+
+                     ' (SELECT'+
+                       ' (SELECT COUNT(1) FROM r_project_task_take WHERE TASK_ID in (SELECT id FROM r_project_task WHERE PROJECT_ID=d.PROJECT_ID) AND (STATUS=0 OR STATUS=1) AND USER_ID=?) FINISH_STATUS, d.*'+
+                         ' FROM ('+ sql +' LIMIT 1) d) e'+
+                           ' LEFT JOIN r_project f ON (e.PROJECT_ID=f.id) AND f.id IS NOT NULL AND e.FINISH_STATUS=0';
 	    // TODO
 	    mysql.query(_sql, [user_id], function (err, docs){
             if(err) return cb(err);
@@ -101,15 +104,15 @@ var biz = {
 
 		    var task = doc;
 
-		    biz.tasktake.saveNew({ TASK_ID: doc.id, USER_ID: user_id }, function (err, doc){
-		        if(err) return cb(err);
-		        // TODO
-		        task.TASKTAKE_ID = doc.id;
-		        task.TASKTAKE_CREATE_TIME = doc.CREATE_TIME;
-		        cb(null, null, task);
-		    });
-	    });
-	}
+            biz.tasktake.saveNew({ TASK_ID: doc.id, USER_ID: user_id }, function (err, doc){
+                if(err) return cb(err);
+                // TODO
+                task.TASKTAKE_ID = doc.id;
+                task.TASKTAKE_CREATE_TIME = doc.CREATE_TIME;
+                cb(null, null, task);
+            });
+        });
+    }
 
 	/**
 	 * 申请任务

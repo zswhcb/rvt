@@ -28,7 +28,16 @@ var exports = module.exports;
     exports.findLast = function(user_id, cb){
         mysql.query(sql, [user_id], function (err, docs){
             if(err) return cb(err);
-            cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+            var doc = null;
+
+            if(mysql.checkOnly(docs)){
+                doc = docs[0];
+                doc.TASKTAKE_ID = doc.id;
+                doc.TASKTAKE_CREATE_TIME = doc.CREATE_TIME;
+                doc.id = doc.TASK_ID;
+            }
+
+            cb(null, doc);
         });
     };
 })(exports);
