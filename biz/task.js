@@ -54,6 +54,19 @@ var biz = {
 })(exports);
 
 (function (exports){
+	var sql = 'SELECT * FROM r_project_task WHERE NOW() BETWEEN START_TIME AND END_TIME AND STATUS=1';
+	/**
+	 * 正常的任务（例如合理的时间区间）
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.findNormal = function(user_id, cb){
+
+	};
+})(exports);
+
+(function (exports){
 	function apply(user_id, cb){
 		cb(null, null, {});
 	}
