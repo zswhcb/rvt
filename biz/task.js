@@ -54,7 +54,11 @@ var biz = {
 })(exports);
 
 (function (exports){
-	var sql = 'SELECT * FROM r_project_task WHERE NOW() BETWEEN START_TIME AND END_TIME AND STATUS=1';
+		var sql = 'SELECT c.* FROM'+
+                      ' (SELECT (b.TASK_SUM-b.INIT_COUNT-b.FINISH_COUNT) SURPLUS_COUNT, b.* FROM'+
+                          ' (SELECT (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=0 AND TASK_ID=a.id) INIT_COUNT,'+
+                              ' (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=1 AND TASK_ID=a.id) FINISH_COUNT, a.*'+
+                                  ' FROM r_project_task a WHERE a.STATUS=1 AND NOW() BETWEEN a.START_TIME AND a.END_TIME ORDER BY a.CREATE_TIME) b) c WHERE c.SURPLUS_COUNT>0';
 	/**
 	 * 正常的任务（例如合理的时间区间）
 	 *
@@ -62,13 +66,40 @@ var biz = {
 	 * @return
 	 */
 	exports.findNormal = function(user_id, cb){
+	    var _sql = 'SELECT e.* FROM'+
+		         ' (SELECT (SELECT COUNT(1) FROM r_project_task_take WHERE TASK_ID in (SELECT id FROM r_project_task WHERE PROJECT_ID=d.PROJECT_ID) AND (STATUS=0 OR STATUS=1) AND USER_ID=?) FINISH_STATUS, d.*'+
+                           ' FROM ('+ sql +') d) e WHERE e.FINISH_STATUS=0 LIMIT 1';
+	    // TODO
+	    mysql.query(_sql, [user_id], function (err, docs){
+		if(err) return cb(err);
+		cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+	    });
+	};
 
+	/**
+	 * 获取剩余的人物总数
+	 *
+	 * @params
+	 * @return
+	 */
+        exports.getSurplusCount = function(cb){
+	    var _sql = 'SELECT SUM(d.SURPLUS_COUNT) SURPLUS_COUNT FROM ('+ sql +') d';
+	    mysql.query(_sql, [], function (err, docs){
+		if(err) return cb(err);
+		// TODO
+		var doc = mysql.checkOnly(docs) ? docs[0] : null;
+		cb(null, !doc ? 0 : doc.SURPLUS_COUNT);
+	    });
 	};
 })(exports);
 
 (function (exports){
 	function apply(user_id, cb){
-		cb(null, null, {});
+            this.findNormal(user_id, function (err, doc){
+		if(err) return cb(err);
+		if(!doc) return cb(null, ['没有合适的任务了']);
+		cb(null, null, doc);
+	    });
 	}
 
 	/**
@@ -86,10 +117,10 @@ var biz = {
 		    biz.tasktake.findLast(user_id, function (err, doc){
 		        if(err) return cb(err);
 
-		        if(!doc) return apply(user_id, cb);
+		        if(!doc) return apply.call(that, user_id, cb);
 
 		        // 除未完成任务外
-		        if(0 < doc.STATUS) return apply(user_id, cb);
+		        if(0 < doc.STATUS) return apply.call(that, user_id, cb);
 
 		        cb(null, null, doc);
 		    });
