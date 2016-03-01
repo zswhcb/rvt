@@ -54,11 +54,11 @@ var biz = {
 })(exports);
 
 (function (exports){
-		var sql = 'SELECT c.* FROM'+
-                      ' (SELECT (b.TASK_SUM-b.INIT_COUNT-b.FINISH_COUNT) SURPLUS_COUNT, b.* FROM'+
-                          ' (SELECT (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=0 AND TASK_ID=a.id) INIT_COUNT,'+
-                              ' (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=1 AND TASK_ID=a.id) FINISH_COUNT, a.*'+
-                                  ' FROM r_project_task a WHERE a.STATUS=1 AND NOW() BETWEEN a.START_TIME AND a.END_TIME ORDER BY a.CREATE_TIME) b) c WHERE c.SURPLUS_COUNT>0';
+	var sql = 'SELECT c.* FROM'+
+                    ' (SELECT (b.TASK_SUM-b.INIT_COUNT-b.FINISH_COUNT) SURPLUS_COUNT, b.* FROM'+
+                      ' (SELECT (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=0 AND TASK_ID=a.id) INIT_COUNT,'+
+                        ' (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=1 AND TASK_ID=a.id) FINISH_COUNT, a.*'+
+                          ' FROM r_project_task a WHERE a.STATUS=1 AND NOW() BETWEEN a.START_TIME AND a.END_TIME ORDER BY a.CREATE_TIME) b) c WHERE c.SURPLUS_COUNT>0';
 	/**
 	 * 正常的任务（例如合理的时间区间）
 	 *
@@ -77,7 +77,7 @@ var biz = {
 	};
 
 	/**
-	 * 获取剩余的人物总数
+	 * 获取剩余的任务总数
 	 *
 	 * @params
 	 * @return
@@ -98,7 +98,16 @@ var biz = {
             this.findNormal(user_id, function (err, doc){
 		if(err) return cb(err);
 		if(!doc) return cb(null, ['没有合适的任务了']);
-		cb(null, null, doc);
+
+		var task = doc;
+
+		biz.tasktake.saveNew({ TASK_ID: doc.id, USER_ID: user_id }, function (err, doc){
+		    if(err) return cb(err);
+		    // TODO
+		    task.TASKTAKE_ID = doc.id;
+		    task.TASKTAKE_CREATE_TIME = doc.CREATE_TIME;
+		    cb(null, null, task);
+		});
 	    });
 	}
 
@@ -112,16 +121,13 @@ var biz = {
 	    var that = this;
 		// TODO
 		biz.tasktake.clearTimeout(function (err, status){
-			if(err) return cb(err);
-			// TODO
+		    if(err) return cb(err);
+		    // TODO
 		    biz.tasktake.findLast(user_id, function (err, doc){
 		        if(err) return cb(err);
-
 		        if(!doc) return apply.call(that, user_id, cb);
-
 		        // 除未完成任务外
 		        if(0 < doc.STATUS) return apply.call(that, user_id, cb);
-
 		        cb(null, null, doc);
 		    });
 		});

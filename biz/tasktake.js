@@ -59,3 +59,28 @@ exports.checkTimeout = function(data){
         });
     };
 })(exports);
+
+
+/**
+ * 新的申请
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+	var sql = 'INSERT INTO r_project_task_take (id, TASK_ID, USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?)';
+	// TODO
+	exports.saveNew = function(newInfo, cb){
+		var postData = [
+			util.genObjectId(),
+			newInfo.TASK_ID,
+			newInfo.USER_ID,
+			new Date(),
+			0
+		];
+		mysql.query(sql, postData, function (err, status){
+			if(err) return cb(err);
+			cb(null, { id: postData[0], CREATE_TIME: postData[3] });
+		});
+	};
+})(exports);
