@@ -125,27 +125,40 @@ var exports = module.exports;
     }
 
     function commitTask(req, res, next){
-	var result = { success: false };
-	var data = req._data;
-	var user = req.flash('user')[0];
-	// TODO
-	biz.task.commit(user.id, data, function (err, msg, status){
-	    if(err) return next(err);
-	    // TODO
-	    if(msg) result.msg = msg;
-	    result.success = true;
-	    res.send(result);
-	});
+		var result = { success: false };
+		var data = req._data;
+		var user = req.flash('user')[0];
+		// TODO
+		biz.task.commit(user.id, data, function (err, msg, status){
+		    if(err) return next(err);
+		    // TODO
+		    if(msg) result.msg = msg;
+		    result.success = true;
+		    res.send(result);
+		});
+    }
+
+    function getSurplusCount(req, res, next){
+		var result = { success: false };
+		// TODO
+		biz.task.getSurplusCount(function (err, count){
+		    if(err) return next(err);
+		    // TODO
+		    result.data = count;
+		    result.success = true;
+		    res.send(result);
+		});
     }
 
     exports.index = function(req, res, next){
 	// TODO
-	switch(req.body.command){
-	case 'login': login(req, res, next); break;
-	case 'applyTask': applyTask(req, res, next); break;
-	case 'commitTask': commitTask(req, res, next); break;
-	default: res.send({ success: false }); break;
-	}
+		switch(req.body.command){
+			case 'login': login(req, res, next); break;
+			case 'applyTask': applyTask(req, res, next); break;
+			case 'commitTask': commitTask(req, res, next); break;
+			case 'getSurplusCount': getSurplusCount(req, res, next); break;
+			default: res.send({ success: false }); break;
+		}
     };
 })(exports);
 

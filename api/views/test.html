@@ -78,7 +78,7 @@
 		    </tr>
 		    <tr>
 		      <td>command：</td>
-		      <td><input type='text' id='F_3_COMMAND' value='applyTask' readonly></td>
+		      <td><input type='text' id='F_3_COMMAND' value='applyTask'></td>
 		    </tr>
 		    <tr>
 		      <td>data：</td>
@@ -107,7 +107,10 @@
 	</table>
       </li>
       <li>
-	<a href='javascript:applyTask();'>申请任务</a>
+		<a href='javascript:getSurplusCount();'>getSurplusCount</a>
+      </li>
+      <li>
+		<a href='javascript:applyTask();'>申请任务</a>
       </li>
       <li><a href='javascript:commitTask();'>提交任务</a></li>
     </ol>
@@ -151,7 +154,7 @@
       });
 
       $('#F_3_BTN').click(function(){
-      location.href = '?apikey='+ $('#F_3_APIKEY').val() +'&command=applyTask&seckey='+ $('#F_2_SECKEY').val() +'&ts='+ $('#F_3_TS').val();
+      location.href = '?apikey='+ $('#F_3_APIKEY').val() +'&command='+ $('#F_3_COMMAND').val() +'&seckey='+ $('#F_2_SECKEY').val() +'&ts='+ $('#F_3_TS').val();
       });
 
       });
@@ -165,6 +168,17 @@
       data: {}
       }, function (data){
       });
+      }
+
+      function getSurplusCount(){
+		ajax({
+			command: 'getSurplusCount',
+			apikey: $('#F_3_APIKEY').val(),
+			ts: $('#F_3_TS').val(),
+			signature: $('#F_3_SIGNATURE').val(),
+			data: {}
+		}, function (data){
+		});
       }
 
       function commitTask(){

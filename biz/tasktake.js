@@ -85,3 +85,28 @@ exports.checkTimeout = function(data){
 		});
 	};
 })(exports);
+
+/**
+ * 提交
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+    var sql = 'UPDATE r_project_task_take SET TEL_NUM=?, UPLOAD_TIME=?, TALK_TIME=?, TALK_TIME_LEN=?, STATUS=? WHERE id=?';
+    // TODO
+    exports.editInfo = function(newInfo, cb){
+        var postData = [
+            newInfo.TEL_NUM,
+            new Date(),
+            new Date(newInfo.TALK_TIME),
+            newInfo.TALK_TIME_LEN,
+            newInfo.STATUS,
+            newInfo.id
+        ];
+        mysql.query(sql, postData, function (err, status){
+            if(err) return cb(err);
+            cb(null, status);
+        });
+    };
+})(exports);
