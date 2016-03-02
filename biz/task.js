@@ -100,9 +100,9 @@ var biz = {
 	function apply(user_id, cb){
         this.findNormal(user_id, function (err, doc){
             if(err) return cb(err);
-	    if(!doc) return cb(null, ['没有合适的任务了']);
+            if(!doc) return cb(null, ['没有合适的任务了']);
 
-	    var task = doc;
+            var task = doc;
 
             biz.tasktake.saveNew({ TASK_ID: doc.id, USER_ID: user_id }, function (err, doc){
                 if(err) return cb(err);
