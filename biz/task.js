@@ -70,7 +70,7 @@ var biz = {
             var _sql = 'SELECT g.PROJECT_NAME, g.TEL_NUM, f.* FROM (SELECT e.* FROM'+
                      ' (SELECT'+
                        ' (SELECT COUNT(1) FROM r_project_task_take WHERE TASK_ID in (SELECT id FROM r_project_task WHERE PROJECT_ID=d.PROJECT_ID) AND (STATUS=0 OR STATUS=1) AND USER_ID=?) FINISH_STATUS, d.*'+
-                         ' FROM ('+ sql +' LIMIT 1) d) e WHERE e.FINISH_STATUS=0) f'+
+                         ' FROM ('+ sql +') d) e WHERE e.FINISH_STATUS=0) f'+
                            ' LEFT JOIN r_project g ON (f.PROJECT_ID=g.id) AND g.id IS NOT NULL';
 	    // TODO
 	    mysql.query(_sql, [user_id], function (err, docs){
