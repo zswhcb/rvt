@@ -133,6 +133,7 @@ var exports = module.exports;
 		    if(err) return next(err);
 		    // TODO
 		    if(msg) result.msg = msg;
+		    result.data = status;
 	    	result.ver = conf.app.ver;
 		    result.success = true;
 		    res.send(result);

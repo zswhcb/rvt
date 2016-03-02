@@ -27,9 +27,9 @@ var biz = {
     exports.commit = function(user_id, newInfo, cb){
         // TODO 检查是否为数字
         var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
-        if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['参数异常']);
+        // if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['参数异常']);
         // TODO
-        biz.tasktake.getById(user_id, newInfo.TASKTAKE_ID, function (err, doc){
+        biz.tasktake.getById(newInfo.TASKTAKE_ID, user_id, function (err, doc){
             if(err) return cb(err);
             if(!doc) return cb(null, ['没有找到该任务']);
             cb(null, null, doc);

@@ -64,10 +64,6 @@
 	</table>
       </li>
       <li>
-	<table>
-	  <tbody>
-	    <tr>
-	      <td>
 		<table border='1'>
 		  <tbody>
 		    <tr>
@@ -101,10 +97,6 @@
 		    </tr>
 		  </tfoot>
 		</table>
-	      </td>
-	    </tr>
-	  </tbody>
-	</table>
       </li>
       <li>
 		<a href='javascript:getSurplusCount();'>getSurplusCount</a>
@@ -112,10 +104,27 @@
       <li>
 		<a href='javascript:applyTask();'>申请任务</a>
       </li>
-      <li><a href='javascript:commitTask();'>提交任务</a></li>
+      <li>
+          <div><a href='javascript:commitTask();'>commitTask</a></div>
+
+		<form id='frm'>
+			<table border='1'>
+			  <tbody>
+			    <tr>
+			      <td>TASKTAKE_ID：</td>
+			      <td>
+				<input type='text' name='TASKTAKE_ID'>
+			      </td>
+			    </tr>
+			  </tbody>
+			</table>
+		</form>
+      </li>
     </ol>
 
     <script type='text/javascript' src='$!{conf.html.cdn}js/jquery/2.0.2/jquery.min.js'></script>
+    <script type='text/javascript' src='$!{conf.html.cdn}js/jquery/ext/ext.form.js'></script>
+    <script type='text/javascript' src='$!{conf.html.cdn}js/underscore/1.5.1/underscore.min.js'></script>
     <!-- Own -->
     <script type='text/javascript'>
       $(function(){
@@ -182,7 +191,14 @@
       }
 
       function commitTask(){
-      console.log('commitTask');
+         ajax({
+             command: 'commitTask',
+             apikey: $('#F_3_APIKEY').val(),
+             ts: $('#F_3_TS').val(),
+             signature: $('#F_3_SIGNATURE').val(),
+             data: $('#frm').serializeObjectForm()
+         }, function (data){
+         });
       }
 
       /**
