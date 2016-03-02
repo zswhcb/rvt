@@ -86,10 +86,10 @@ var biz = {
 	 * @return
 	 */
     exports.getSurplusCount = function(cb){
-        var _sql = 'SELECT SUM(d.SURPLUS_COUNT) SURPLUS_COUNT FROM ('+ sql +') d';
-        mysql.query(_sql, [], function (err, docs){
-            if(err) return cb(err);
-            // TODO
+            var _sql = 'SELECT SUM(d.SURPLUS_COUNT) SURPLUS_COUNT FROM ('+ sql +') d';
+            mysql.query(_sql, [], function (err, docs){
+                if(err) return cb(err);
+                // TODO
 	        var doc = mysql.checkOnly(docs) ? docs[0] : null;
 	        cb(null, !doc ? 0 : doc.SURPLUS_COUNT);
 	    });
