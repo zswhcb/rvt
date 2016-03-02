@@ -67,15 +67,15 @@ var biz = {
 	 * @return
 	 */
 	exports.findNormal = function(user_id, cb){
-        var _sql = 'SELECT f.PROJECT_NAME, f.TEL_NUM, e.* FROM'+
+            var _sql = 'SELECT g.PROJECT_NAME, g.TEL_NUM, f.* FROM (SELECT e.* FROM'+
                      ' (SELECT'+
                        ' (SELECT COUNT(1) FROM r_project_task_take WHERE TASK_ID in (SELECT id FROM r_project_task WHERE PROJECT_ID=d.PROJECT_ID) AND (STATUS=0 OR STATUS=1) AND USER_ID=?) FINISH_STATUS, d.*'+
-                         ' FROM ('+ sql +' LIMIT 1) d) e'+
-                           ' LEFT JOIN r_project f ON (e.PROJECT_ID=f.id) AND f.id IS NOT NULL AND e.FINISH_STATUS=0';
+                         ' FROM ('+ sql +' LIMIT 1) d) e WHERE e.FINISH_STATUS=0) f'+
+                           ' LEFT JOIN r_project g ON (f.PROJECT_ID=g.id) AND g.id IS NOT NULL';
 	    // TODO
 	    mysql.query(_sql, [user_id], function (err, docs){
-            if(err) return cb(err);
-            cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+                if(err) return cb(err);
+                cb(null, mysql.checkOnly(docs) ? docs[0] : null);
 	    });
 	};
 
@@ -99,16 +99,17 @@ var biz = {
 (function (exports){
 	function apply(user_id, cb){
         this.findNormal(user_id, function (err, doc){
-		    if(err) return cb(err);
-		    if(!doc) return cb(null, ['没有合适的任务了']);
+            if(err) return cb(err);
+	    if(!doc) return cb(null, ['没有合适的任务了']);
 
-		    var task = doc;
+	    var task = doc;
 
             biz.tasktake.saveNew({ TASK_ID: doc.id, USER_ID: user_id }, function (err, doc){
                 if(err) return cb(err);
                 // TODO
                 task.TASKTAKE_ID = doc.id;
                 task.TASKTAKE_CREATE_TIME = doc.CREATE_TIME;
+                task.STATUS = doc.STATUS;
                 cb(null, null, task);
             });
         });

@@ -90,7 +90,7 @@ exports.checkTimeout = function(data){
 		];
 		mysql.query(sql, postData, function (err, status){
 			if(err) return cb(err);
-			cb(null, { id: postData[0], CREATE_TIME: postData[3] });
+                        cb(null, { id: postData[0], CREATE_TIME: postData[3], STATUS: postData[4] });
 		});
 	};
 })(exports);
