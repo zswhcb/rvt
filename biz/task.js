@@ -25,36 +25,36 @@ var biz = {
 (function (exports){
     // TODO
     exports.commit = function(user_id, newInfo, cb){
-	// TODO 检查是否为数字
-	var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
-	if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['参数异常']);
-	// TODO
-	biz.handtask.getById(newInfo.id, function (err, doc){
-	    if(err) return cb(err);
-	    if(!doc ||
-	       (1 === doc.HANDTASK_STATUS) ||
-	       (user_id !== doc.HANDTASK_USER_ID) ||
-	       (newInfo.TEL_NUM !== doc.TEL_NUM)) return cb(null, ['非法操作']);
-	    // TODO 通话时长不达标
-	    if(TALK_TIME_LEN < doc.TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_LEN +' 秒']);
-	    // TODO 当前时间
-	    var curTime = new Date();
-	    // TODO 超时截止时间
-	    var timeout = new Date(doc.HANDTASK_CREATE_TIME.getTime() + (doc.TALK_TIMEOUT * 1000));
-	    // TODO
-	    newInfo.STATUS = timeout.getTime() > curTime.getTime() ? 1 : 2;
-	    newInfo.TALK_TIME_LEN = TALK_TIME_LEN;
-	    // TODO
-	    biz.handtask.editInfo(newInfo, function (err, status){
-		if(err) return cb(err);
-		cb(null, null, status);
-	    });
-	});
+        // TODO 检查是否为数字
+        var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
+        if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['参数异常']);
+        // TODO
+        biz.tasktake.getById(user_id, newInfo.TASKTAKE_ID, function (err, doc){
+            if(err) return cb(err);
+            if(!doc) return cb(null, ['没有找到该任务']);
+            cb(null, null, doc);
+        });
     };
 })(exports);
 
+            // if(!doc || (1 === doc.HANDTASK_STATUS) || (user_id !== doc.HANDTASK_USER_ID) ||  (newInfo.TEL_NUM !== doc.TEL_NUM)) return cb(null, ['非法操作']);
+            // // TODO 通话时长不达标
+            // if(TALK_TIME_LEN < doc.TALK_TIME_LEN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_LEN +' 秒']);
+            // // TODO 当前时间
+            // var curTime = new Date();
+            // // TODO 超时截止时间
+            // var timeout = new Date(doc.HANDTASK_CREATE_TIME.getTime() + (doc.TALK_TIMEOUT * 1000));
+            // // TODO
+            // newInfo.STATUS = timeout.getTime() > curTime.getTime() ? 1 : 2;
+            // newInfo.TALK_TIME_LEN = TALK_TIME_LEN;
+            // // TODO
+            // biz.tasktake.editInfo(newInfo, function (err, status){
+            //     if(err) return cb(err);
+            //     cb(null, null, status);
+            // });
+
 (function (exports){
-	var sql = 'SELECT c.* FROM'+
+    var sql = 'SELECT c.* FROM'+
                     ' (SELECT (b.TASK_SUM-b.INIT_COUNT-b.FINISH_COUNT) SURPLUS_COUNT, b.* FROM'+
                       ' (SELECT'+
                         ' (SELECT COUNT(1) FROM r_project_task_take WHERE STATUS=0 AND TASK_ID=a.id) INIT_COUNT,'+

@@ -12,6 +12,25 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
+(function (exports){
+    var sql = 'SELECT d.PROJECT_NAME, d.TEL_NUM, c.*'+
+                ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, b.TASK_INTRO, b.SMS_INTRO, b.TASK_SUM, b.TALK_TIMEOUT, b.TALK_TIME_MIN, b.START_TIME, b.END_TIME, a.*'+
+                    ' FROM (SELECT * FROM r_project_task_take WHERE id=? AND USER_ID=?) a'+
+                    ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id) AND b.id IS NOT NULL) c'+
+                    ' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) AND d.id IS NOT NULL';
+    /**
+     *
+     * @params
+     * @return
+     */
+    exports.getById = function(id, user_id, cb){
+        mysql.query(sql, [id, user_id], function (err, docs){
+            if(err) return cb(err);
+            cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+        });
+    };
+})(exports);
+
 /**
  * 获取用户最后一次的任务信息
  *
