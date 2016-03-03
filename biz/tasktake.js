@@ -15,7 +15,7 @@ var exports = module.exports;
 (function (exports){
     var sql = 'SELECT d.PROJECT_NAME, d.TEL_NUM, c.*'+
                 ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, b.TASK_INTRO, b.SMS_INTRO, b.TASK_SUM, b.TALK_TIMEOUT, b.TALK_TIME_MIN, b.START_TIME, b.END_TIME, a.*'+
-                    ' FROM (SELECT * FROM r_project_task_take WHERE id=? AND USER_ID=?) a'+
+                    ' FROM (SELECT * FROM r_project_task_take WHERE id=?) a'+
                     ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id) AND b.id IS NOT NULL) c'+
                     ' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) AND d.id IS NOT NULL';
     /**
@@ -23,10 +23,19 @@ var exports = module.exports;
      * @params
      * @return
      */
-    exports.getById = function(id, user_id, cb){
-        mysql.query(sql, [id, user_id], function (err, docs){
+    exports.getById = function(id, cb){
+        mysql.query(sql, [id], function (err, docs){
             if(err) return cb(err);
-            cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+            var doc = null;
+
+            if(mysql.checkOnly(docs)){
+                doc = docs[0];
+                doc.TASKTAKE_ID = doc.id;
+                doc.TASKTAKE_CREATE_TIME = doc.CREATE_TIME;
+                doc.id = doc.TASK_ID;
+            }
+
+            cb(null, doc);
         });
     };
 })(exports);
@@ -108,8 +117,8 @@ exports.checkTimeout = function(data){
 			0
 		];
 		mysql.query(sql, postData, function (err, status){
-			if(err) return cb(err);
-                        cb(null, { id: postData[0], CREATE_TIME: postData[3], STATUS: postData[4] });
+            if(err) return cb(err);
+            cb(null, { id: postData[0], CREATE_TIME: postData[3], STATUS: postData[4] });
 		});
 	};
 })(exports);
@@ -121,12 +130,11 @@ exports.checkTimeout = function(data){
  * @return
  */
 (function (exports){
-    var sql = 'UPDATE r_project_task_take SET TEL_NUM=?, UPLOAD_TIME=?, TALK_TIME=?, TALK_TIME_LEN=?, STATUS=? WHERE id=?';
+    var sql = 'UPDATE r_project_task_take SET UPLOAD_TIME=?, TALK_TIME=?, TALK_TIME_LEN=?, STATUS=? WHERE id=?';
     // TODO
     exports.editInfo = function(newInfo, cb){
         var postData = [
-            newInfo.TEL_NUM,
-            new Date(),
+            newInfo.UPLOAD_TIME,
             new Date(newInfo.TALK_TIME),
             newInfo.TALK_TIME_LEN,
             newInfo.STATUS,

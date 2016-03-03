@@ -27,12 +27,27 @@ var biz = {
     exports.commit = function(user_id, newInfo, cb){
         // TODO 检查是否为数字
         var TALK_TIME_LEN = util.checkNum(newInfo.TALK_TIME_LEN);
-        // if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['参数异常']);
+        if(null === TALK_TIME_LEN || 0 === TALK_TIME_LEN) return cb(null, ['数据异常']);
         // TODO
-        biz.tasktake.getById(newInfo.TASKTAKE_ID, user_id, function (err, doc){
+        biz.tasktake.getById(newInfo.TASKTAKE_ID, function (err, doc){
             if(err) return cb(err);
             if(!doc) return cb(null, ['没有找到该任务']);
-            cb(null, null, doc);
+            if(user_id !== doc.USER_ID) return cb(null, ['非法操作']);
+            if(TALK_TIME_LEN < doc.TALK_TIME_MIN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_MIN +' 秒']);
+            
+            // TODO 当前时间
+            var curTime = new Date();
+            // TODO 超时截止时间
+            var timeout = new Date(doc.TASKTAKE_CREATE_TIME.getTime() + (doc.TALK_TIMEOUT * 1000));
+            newInfo.STATUS = timeout.getTime() > curTime.getTime() ? 1 : 2;
+            
+            newInfo.TALK_TIME_LEN = TALK_TIME_LEN;
+            newInfo.UPLOAD_TIME = curTime;
+            
+            biz.tasktake.editInfo(newInfo, function (err, status){
+            	if(err) return cb(err);
+            	cb(null, null, status);
+            });
         });
     };
 })(exports);
