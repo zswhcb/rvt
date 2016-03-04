@@ -43,6 +43,7 @@ var biz = {
             
             newInfo.TALK_TIME_LEN = TALK_TIME_LEN;
             newInfo.UPLOAD_TIME = curTime;
+            newInfo.id = doc.TASKTAKE_ID;
             
             biz.tasktake.editInfo(newInfo, function (err, status){
             	if(err) return cb(err);
