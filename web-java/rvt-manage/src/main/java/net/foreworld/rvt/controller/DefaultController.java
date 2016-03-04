@@ -2,8 +2,6 @@ package net.foreworld.rvt.controller;
 
 import javax.servlet.http.HttpSession;
 
-import net.foreworld.rvt.util.WebContext;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,8 +24,7 @@ public class DefaultController {
 	public ModelAndView indexUI(HttpSession session) {
 		Object obj = session.getAttribute("session.user");
 		if (null == obj) {
-			return new ModelAndView("redirect:"
-					+ WebContext.CONF_HTML_VIRTUALPATH + "user/login");
+			return new ModelAndView("redirect:/user/login");
 		} // END
 		ModelAndView result = new ModelAndView(index_ftl);
 		// TODO

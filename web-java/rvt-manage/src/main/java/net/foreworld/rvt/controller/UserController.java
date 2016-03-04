@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.UserService;
-import net.foreworld.rvt.util.WebContext;
 import net.foreworld.util.encryptUtil.MD5;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +71,7 @@ public class UserController {
 	@RequestMapping(value = { "/user/logout" }, method = RequestMethod.GET)
 	public String logoutUI(HttpSession session) {
 		session.invalidate();
-		return "redirect:" + WebContext.CONF_HTML_VIRTUALPATH + "user/login";
+		return "redirect:/user/login";
 	}
 
 	@ResponseBody
@@ -156,7 +155,7 @@ public class UserController {
 		User user = userService.selectByKey(id);
 		// TODO
 		if (null == user)
-			return "redirect:" + WebContext.CONF_HTML_VIRTUALPATH + "user/";
+			return "redirect:/user/";
 
 		List<User> list = userService.findByInviteUserId(user.getId());
 		map.put("data_users", list);

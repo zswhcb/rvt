@@ -14,7 +14,6 @@ import net.foreworld.rvt.service.ProjectService;
 import net.foreworld.rvt.service.TaskService;
 import net.foreworld.rvt.service.TaskTakeService;
 import net.foreworld.rvt.service.UserService;
-import net.foreworld.rvt.util.WebContext;
 import net.foreworld.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,17 +104,17 @@ public class TaskController {
 		Task task = taskService.selectByKey(id);
 		// TODO
 		if (null == task)
-			return "redirect:" + WebContext.CONF_HTML_VIRTUALPATH + "task/";
+			return "redirect:/task/";
 
 		// TODO
 		Project project = projectService.selectByKey(task.getProject_id());
 		if (null == project)
-			return "redirect:" + WebContext.CONF_HTML_VIRTUALPATH + "task/";
+			return "redirect:/task/";
 
 		// TODO
 		User user = userService.selectByKey(task.getCreate_user_id());
 		if (null == user)
-			return "redirect:" + WebContext.CONF_HTML_VIRTUALPATH + "task/";
+			return "redirect:/task/";
 
 		map.put("data_project", project);
 		map.put("data_user", user);
