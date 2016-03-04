@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.rvt.model.TaskTake;
 import net.foreworld.rvt.service.TaskTakeService;
+import net.foreworld.rvt.util.WebContext;
 import net.foreworld.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,8 @@ public class DefaultController {
 	public ModelAndView indexUI(HttpSession session) {
 		Object obj = session.getAttribute("session.user");
 		if (null == obj) {
-			return new ModelAndView("redirect:/login");
+			return new ModelAndView("redirect:"
+					+ WebContext.CONF_HTML_VIRTUALPATH + "login");
 		} // END
 		ModelAndView result = new ModelAndView("default/1.0.2/index");
 		// TODO

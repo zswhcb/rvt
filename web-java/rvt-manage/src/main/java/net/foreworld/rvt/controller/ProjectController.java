@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import net.foreworld.rvt.model.Project;
 import net.foreworld.rvt.service.ProjectService;
+import net.foreworld.rvt.util.WebContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,7 +53,7 @@ public class ProjectController {
 		Project project = projectService.selectByKey(id);
 
 		if (null == project)
-			return "redirect:/project/";
+			return "redirect:" + WebContext.CONF_HTML_VIRTUALPATH + "project/";
 
 		map.put("data_project", project);
 		return "project/1.0.1/edit";

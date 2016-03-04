@@ -12,6 +12,7 @@ import net.foreworld.rvt.model.User;
 import net.foreworld.rvt.service.TaskService;
 import net.foreworld.rvt.service.TaskTakeService;
 import net.foreworld.rvt.service.UserService;
+import net.foreworld.rvt.util.WebContext;
 import net.foreworld.util.StringUtil;
 import net.foreworld.util.encryptUtil.MD5;
 
@@ -152,7 +153,7 @@ public class UserController {
 	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
 	public String logoutUI(HttpSession session) {
 		session.invalidate();
-		return "redirect:/login";
+		return "redirect:" + WebContext.CONF_HTML_VIRTUALPATH + "login";
 	}
 
 	@ResponseBody
