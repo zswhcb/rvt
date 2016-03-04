@@ -95,9 +95,9 @@ var exports = module.exports;
 
 	    /* result */
 	    result.data = {
-			apikey: doc.APIKEY,
-			seckey: doc.SECKEY,
-			ts: (new Date()).getTime()
+			APIKEY: doc.APIKEY,
+			SECKEY: doc.SECKEY,
+			TS: (new Date()).getTime()
 	    };
 	    result.ver = conf.app.ver;
 	    result.success = true;

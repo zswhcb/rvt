@@ -139,32 +139,32 @@
 
       F_3_BTN();
 
-      $('#F_1_BTN').click(function(){
-      ajax({
-      command: 'login',
-      data: {
-      USER_NAME: $('#F_1_USER_NAME').val(),
-      USER_PASS: $('#F_1_USER_PASS').val()
-      }
-      }, function (data){
-      $('#F_2_BTN').attr('disabled', !data.success);
-      // TODO
-      data = data || {};
-      // TODO
-      var data = data.data || {};
-      $('#F_2_APIKEY').val(data.apikey || '');
-      $('#F_3_APIKEY').val(data.apikey || '');
-      $('#F_2_SECKEY').val(data.seckey || '');
-      $('#F_2_VER').val(data.ver || '');
+		$('#F_1_BTN').click(function(){
+			ajax({
+				command: 'login',
+				data: {
+					USER_NAME: $('#F_1_USER_NAME').val(),
+					USER_PASS: $('#F_1_USER_PASS').val()
+				}
+			}, function (data){
+				$('#F_2_BTN').attr('disabled', !data.success);
+				// TODO
+				$('#F_2_VER').val(data.ver || '');
+				data = data || {};
+				// TODO
+				var data = data.data || {};
+				$('#F_2_APIKEY').val(data.APIKEY || '');
+				$('#F_3_APIKEY').val(data.APIKEY || '');
+				$('#F_2_SECKEY').val(data.SECKEY || '');
 
-      $('#F_3_TS').val((new Date()).getTime());
-      F_3_BTN();
-      });
-      });
+				$('#F_3_TS').val((new Date()).getTime());
+				F_3_BTN();
+			});
+		});
 
-      $('#F_3_BTN').click(function(){
-      location.href = '?apikey='+ $('#F_3_APIKEY').val() +'&command='+ $('#F_3_COMMAND').val() +'&seckey='+ $('#F_2_SECKEY').val() +'&ts='+ $('#F_3_TS').val();
-      });
+		$('#F_3_BTN').click(function(){
+			location.href = '?apikey='+ $('#F_3_APIKEY').val() +'&command='+ $('#F_3_COMMAND').val() +'&seckey='+ $('#F_2_SECKEY').val() +'&ts='+ $('#F_3_TS').val();
+		});
 
       });
 
@@ -173,7 +173,7 @@
       command: 'applyTask',
       apikey: $('#F_3_APIKEY').val(),
       ts: $('#F_3_TS').val(),
-      signature: $('#F_3_SIGNATURE').val(),
+      signature: encodeURIComponent($('#F_3_SIGNATURE').val()),
       data: {}
       }, function (data){
       });
@@ -184,7 +184,7 @@
 			command: 'getSurplusCount',
 			apikey: $('#F_3_APIKEY').val(),
 			ts: $('#F_3_TS').val(),
-			signature: $('#F_3_SIGNATURE').val(),
+			signature: encodeURIComponent($('#F_3_SIGNATURE').val()),
 			data: {}
 		}, function (data){
 		});
