@@ -14,6 +14,7 @@ var util = require('speedt-utils'),
 var exports = module.exports;
 
 var biz = {
+	user_role: require('./user_role'),
 	authcode: require('./authcode')
 };
 
@@ -122,9 +123,15 @@ exports.findByApiKey = function(apiKey, cb){
 			// TODO
 			if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
 				return cb(null, ['用户名或密码输入错误'], doc);
-
-			// TODO
-			cb(null, null, doc);
+			
+			var user = doc;
+			
+			biz.user_role.checkExistUserRole(user.id, '566512b49012fb044691ace6', function (err, doc){
+				if(err) return cb(err);
+				if(!doc) return cb(null, ['禁止登陆']);
+				// TODO
+				cb(null, null, user);
+			});
 		});
 	};
 

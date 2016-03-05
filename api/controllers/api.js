@@ -67,12 +67,18 @@ var exports = module.exports;
 			if(!doc) return res.send(result);
 			
 			// TODO
-			if(1 !== doc.STATUS) return res.send(result);
+			if(1 !== doc.STATUS){
+				result.msg = ['禁止登陆'];
+				return res.send(result);
+			}
 			
 			function run(){
 				if(body.data) delete body.data;
 				// TODO
-				if(!rest.validate(body, doc.SECKEY)) return res.send(result);
+				if(!rest.validate(body, doc.SECKEY)){
+					result.msg = ['验证失败'];					
+					return res.send(result);
+				}
 				// TODO
 				req.flash('user', doc);
 				next();
