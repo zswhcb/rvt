@@ -29,48 +29,71 @@ var exports = module.exports;
  */
 (function (exports){
 
-    function isEmtpy(str){
-	if(!str) return;
-	str = str.trim();
-	return '' === str ? null : str;
-    }
+	function isEmtpy(str){
+		if(!str) return;
+		str = str.trim();
+		return '' === str ? null : str;
+	}
 
     exports.signature_validate = function(req, res, next){
-	var result = { success: false };
-	var body = req.body;
-
-	// TODO
-	body.command = isEmtpy(body.command);
-	if(!body.command) return res.send(result);
-
-	// TODO
-	if('login' === body.command) return next();
-
-	body.ts = isEmtpy(body.ts);
-	if(!body.ts) return res.send(result);
-
-	body.apikey = isEmtpy(body.apikey);
-	if(!body.apikey) return res.send(result);
-
-	body.signature = isEmtpy(body.signature);
-	if(!body.signature) return res.send(result);
-
-	// TODO
-	biz.user.findByApiKey(body.apikey, function (err, doc){
-	    if(err) return next(err);
-	    // TODO
-	    if(!doc) return res.send(result);
-
-	    // TODO
-	    if(1 !== doc.STATUS) return res.send(result);
-
-            if(body.data) delete body.data;
-	    // TODO
-	    if(!rest.validate(body, doc.SECKEY)) return res.send(result);
-	    // TODO
-	    req.flash('user', doc);
-	    next();
-	});
+		var result = { success: false };
+		var body = req.body;
+		var data = req._data;
+		
+		// 判断设备号
+		data.DEVICE_CODE = isEmtpy(data.DEVICE_CODE);
+		if(!data.DEVICE_CODE) return res.send(result);
+		
+		// TODO
+		body.command = isEmtpy(body.command);
+		if(!body.command) return res.send(result);
+	
+		// TODO
+		if('login' === body.command) return next();
+	
+		body.ts = isEmtpy(body.ts);
+		if(!body.ts) return res.send(result);
+	
+		body.apikey = isEmtpy(body.apikey);
+		if(!body.apikey) return res.send(result);
+	
+		body.signature = isEmtpy(body.signature);
+		if(!body.signature) return res.send(result);
+	
+		// TODO
+		biz.user.findByApiKey(body.apikey, function (err, doc){
+			if(err) return next(err);
+			// TODO
+			if(!doc) return res.send(result);
+			
+			// TODO
+			if(1 !== doc.STATUS) return res.send(result);
+			
+			function run(){
+				if(body.data) delete body.data;
+				// TODO
+				if(!rest.validate(body, doc.SECKEY)) return res.send(result);
+				// TODO
+				req.flash('user', doc);
+				next();
+			}
+			
+			// 判断设备号
+			if(doc.DEVICE_CODE){
+				if(data.DEVICE_CODE !== doc.DEVICE_CODE){
+					result.msg = ['您的帐号暂时无法登陆，请联系管理员'];
+					return res.send(result);
+				}
+			}else{
+				return biz.user.editDeviceCode({ DEVICE_CODE: data.DEVICE_CODE, id: doc.id }, function (err, status){
+					if(err) return next(err);
+					// TODO
+					run();
+				});
+			}
+			
+			run();
+		});
     };
 })(exports);
 
@@ -83,26 +106,27 @@ var exports = module.exports;
 (function (exports){
 
     function login(req, res, next){
-	var result = { success: false };
-	var data = req._data;
-	// TODO
-	biz.user.login(data, function (err, msg, doc){
-	    if(err) return next(err);
-	    if(msg){
-			result.msg = msg;
-			return res.send(result);
-	    }
-
-	    /* result */
-	    result.data = {
-			APIKEY: doc.APIKEY,
-			SECKEY: doc.SECKEY,
-			TS: (new Date()).getTime()
-	    };
-	    result.ver = conf.app.ver;
-	    result.success = true;
-	    res.send(result);
-	});
+		var result = { success: false };
+		var data = req._data;
+		
+		// TODO
+		biz.user.login(data, function (err, msg, doc){
+		    if(err) return next(err);
+		    if(msg){
+				result.msg = msg;
+				return res.send(result);
+		    }
+	
+		    /* result */
+		    result.data = {
+				APIKEY: doc.APIKEY,
+				SECKEY: doc.SECKEY,
+				TS: (new Date()).getTime()
+		    };
+		    result.ver = conf.app.ver;
+		    result.success = true;
+		    res.send(result);
+		});
     }
 
     function applyTask(req, res, next){

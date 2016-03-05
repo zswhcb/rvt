@@ -33,13 +33,16 @@ var biz = {
             if(err) return cb(err);
             if(!doc) return cb(null, ['没有找到该任务']);
             if(user_id !== doc.USER_ID) return cb(null, ['非法操作']);
-            if(TALK_TIME_LEN < doc.TALK_TIME_MIN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_MIN +' 秒']);
+            // if(TALK_TIME_LEN < doc.TALK_TIME_MIN) return cb(null, ['通话时长不能少于 '+ doc.TALK_TIME_MIN +' 秒']);
             
             // TODO 当前时间
             var curTime = new Date();
             // TODO 超时截止时间
             var timeout = new Date(doc.TASKTAKE_CREATE_TIME.getTime() + (doc.TALK_TIMEOUT * 1000));
             newInfo.STATUS = timeout.getTime() > curTime.getTime() ? 1 : 2;
+            
+            // 判断通话时长是否够
+            if(TALK_TIME_LEN < doc.TALK_TIME_MIN) newInfo.STATUS = 4;
             
             newInfo.TALK_TIME_LEN = TALK_TIME_LEN;
             newInfo.UPLOAD_TIME = curTime;
@@ -85,7 +88,7 @@ var biz = {
 	exports.findNormal = function(user_id, cb){
             var _sql = 'SELECT g.PROJECT_NAME, g.TEL_NUM, f.* FROM (SELECT e.* FROM'+
                      ' (SELECT'+
-                       ' (SELECT COUNT(1) FROM r_project_task_take WHERE TASK_ID in (SELECT id FROM r_project_task WHERE PROJECT_ID=d.PROJECT_ID) AND (STATUS=0 OR STATUS=1) AND USER_ID=?) FINISH_STATUS, d.*'+
+                       ' (SELECT COUNT(1) FROM r_project_task_take WHERE TASK_ID in (SELECT id FROM r_project_task WHERE PROJECT_ID=d.PROJECT_ID) AND (STATUS=0 OR STATUS=1 OR STATUS=4) AND USER_ID=?) FINISH_STATUS, d.*'+
                          ' FROM ('+ sql +') d) e WHERE e.FINISH_STATUS=0 LIMIT 1) f'+
                            ' LEFT JOIN r_project g ON (f.PROJECT_ID=g.id) AND g.id IS NOT NULL';
 	    // TODO

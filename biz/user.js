@@ -265,4 +265,28 @@ exports.findByName = function(name, cb){
 			});
 		};
 	})(exports);
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	(function (exports){
+		var sql = 'UPDATE s_user set DEVICE_CODE=? WHERE id=?';
+		// TODO
+		exports.editDeviceCode = function(newInfo, cb){
+			formVali(newInfo, function (err){
+				if(err) return cb(err);
+				// EDIT
+				var postData = [
+					newInfo.DEVICE_CODE,
+					newInfo.id
+				];
+				mysql.query(sql, postData, function (err, status){
+					if(err) return cb(err);
+					cb(null, status);
+				});
+			});
+		};
+	})(exports);
 })(exports);
