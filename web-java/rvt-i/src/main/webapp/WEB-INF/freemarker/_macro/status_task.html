@@ -1,0 +1,9 @@
+<#macro m status>
+<#if status="0">未完成
+<#elseif status="1">完成
+<#elseif status="2">上传超时
+<#elseif status="3">任务超时
+<#elseif status="4">未达标
+<#else>未知
+</#if>
+</#macro>
