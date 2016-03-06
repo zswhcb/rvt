@@ -42,6 +42,16 @@ public class User implements Serializable {
 	 */
 	private String invite_user_id;
 
+	private String device_code;
+
+	public String getDevice_code() {
+		return device_code;
+	}
+
+	public void setDevice_code(String device_code) {
+		this.device_code = device_code;
+	}
+
 	public String getInvite_user_id() {
 		return invite_user_id;
 	}

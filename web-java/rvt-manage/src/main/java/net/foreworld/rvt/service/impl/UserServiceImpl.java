@@ -107,6 +107,8 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		user.setApikey(genUserApiKey());
 		user.setSeckey(genUserSecKey());
 
+		user.setDevice_code(null);
+
 		// TODO
 		save(user);
 
@@ -121,6 +123,8 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 		user.setApikey(genUserApiKey());
 		user.setSeckey(genUserSecKey());
+
+		user.setDevice_code(null);
 
 		// TODO
 		return super.updateNotNull(user);
