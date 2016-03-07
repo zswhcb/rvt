@@ -40,6 +40,17 @@ public class TaskTake implements Serializable {
 	@Transient
 	private Project project;
 
+	@Transient
+	private Task task;
+
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
+
 	public Project getProject() {
 		return project;
 	}

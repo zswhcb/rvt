@@ -64,6 +64,7 @@
 							<tr>
 								<th class='ta'><input type='checkbox' title='全选/取消'>
 								</th>
+								<th>任务名称</th>
 								<th>电话号码</th>
 								<th>上传时间</th>
 								<th>通话时间</th>
@@ -76,6 +77,7 @@
 							<#list data_tasktakes! as doc>
 							<tr>
 								<td class='ta'><input type='checkbox'></td>
+								<td>${(doc.task.task_name)!}</td>
 								<td>${(doc.project.tel_num)!}</td>
 								<td>${(doc.upload_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
 								<td>${(doc.talk_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>

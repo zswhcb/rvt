@@ -35,6 +35,10 @@
 		<association property="project" javaType="net.foreworld.rvt.model.Project">
 			<result property="tel_num" column="tel_num" jdbcType="VARCHAR" />
 		</association>
+
+		<association property="task" javaType="net.foreworld.rvt.model.Task">
+			<result property="task_name" column="task_name" jdbcType="VARCHAR" />
+		</association>
 	</resultMap>
 
 	<select id="findByTaskId" resultMap="baseResultMap">
