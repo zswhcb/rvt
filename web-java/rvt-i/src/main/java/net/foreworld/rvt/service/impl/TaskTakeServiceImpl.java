@@ -59,4 +59,18 @@ public class TaskTakeServiceImpl extends BaseService<TaskTake> implements
 		PageHelper.startPage(page, rows);
 		return selectByExample(example);
 	}
+
+	@Override
+	public List<TaskTake> findByUserId(String user_id, Date create_time) {
+		if (null == create_time)
+			return null;
+
+		user_id = StringUtil.isEmpty(user_id);
+
+		if (null == user_id)
+			return null;
+
+		return ((TaskTakeMapper) getMapper())
+				.findByUserId(user_id, create_time);
+	}
 }

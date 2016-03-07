@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
-import net.foreworld.rvt.model.TaskTake;
 import net.foreworld.rvt.service.TaskTakeService;
 import net.foreworld.util.DateUtil;
 
@@ -54,12 +53,9 @@ public class DefaultController {
 		result.addObject("data_current_time", new Date());
 		result.addObject("data_create_time", date);
 
-		TaskTake taskTake = new TaskTake();
-		taskTake.setUser_id(session.getAttribute("session.user.id").toString());
-		taskTake.setCreate_time(date);
+		result.addObject("data_tasktakes", taskTakeService.findByUserId(session
+				.getAttribute("session.user.id").toString(), date));
 
-		result.addObject("data_tasktakes",
-				taskTakeService.findByTaskTake(taskTake, 1, Integer.MAX_VALUE));
 		return result;
 	}
 }

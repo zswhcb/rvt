@@ -1,5 +1,6 @@
 package net.foreworld.rvt.mapper;
 
+import java.util.Date;
 import java.util.List;
 
 import net.foreworld.rvt.model.TaskTake;
@@ -14,4 +15,6 @@ import net.foreworld.rvt.util.MyMapper;
  */
 public interface TaskTakeMapper extends MyMapper<TaskTake> {
 	List<TaskTake> findByTaskId(String task_id);
+
+	List<TaskTake> findByUserId(String user_id, Date create_time);
 }

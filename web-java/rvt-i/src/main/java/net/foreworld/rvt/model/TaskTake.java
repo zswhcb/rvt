@@ -37,6 +37,17 @@ public class TaskTake implements Serializable {
 	@Transient
 	private User user;
 
+	@Transient
+	private Project project;
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
 	public User getUser() {
 		return user;
 	}
