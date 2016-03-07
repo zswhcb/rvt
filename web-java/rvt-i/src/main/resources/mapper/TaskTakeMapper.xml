@@ -17,6 +17,10 @@
 		<association property="user" javaType="net.foreworld.rvt.model.User">
 			<result property="user_name" column="user_name" jdbcType="VARCHAR" />
 		</association>
+
+		<association property="project" javaType="net.foreworld.rvt.model.Project">
+			<result property="tel_num" column="tel_num" jdbcType="VARCHAR" />
+		</association>
 	</resultMap>
 
 	<resultMap id="byUserIdResultMap" type="net.foreworld.rvt.model.TaskTake">
@@ -42,10 +46,18 @@
 	</resultMap>
 
 	<select id="findByTaskId" resultMap="baseResultMap">
-		SELECT b.USER_NAME, a.* FROM
-		(SELECT * FROM r_project_task_take WHERE TASK_ID=#{task_id}) a LEFT
-		JOIN s_user b ON (a.USER_ID=b.id) WHERE b.id IS NOT NULL ORDER BY
-		a.CREATE_TIME DESC
+		SELECT f.PROJECT_NAME,
+		f.TEL_NUM, e.* FROM (SELECT d.TASK_NAME,
+		d.PROJECT_ID, c.* FROM (SELECT
+		b.USER_NAME, a.* FROM (SELECT * FROM
+		r_project_task_take WHERE
+		TASK_ID=#{task_id}) a LEFT JOIN s_user b ON
+		(a.USER_ID=b.id) WHERE b.id
+		IS NOT NULL ORDER BY a.CREATE_TIME DESC) c
+		LEFT JOIN r_project_task d
+		ON (c.TASK_ID=d.id) WHERE d.id IS NOT NULL)
+		e LEFT JOIN r_project f ON
+		(e.PROJECT_ID=f.id) WHERE f.id IS NOT NULL
 	</select>
 
 	<select id="findByUserId" resultMap="byUserIdResultMap">
