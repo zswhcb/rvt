@@ -87,7 +87,7 @@ exports.checkTimeout = function(data){
                 ' WHERE id in (SELECT a.id FROM'+
                     ' (SELECT id, TASK_ID, CREATE_TIME FROM r_project_task_take WHERE STATUS=0) a'+
                     ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id)'+
-                    ' WHERE b.id IS NOT NULL AND DATE_ADD(a.CREATE_TIME, INTERVAL(b.TALK_TIMEOUT - ?) second) < ?)';
+                    ' WHERE b.id IS NOT NULL AND DATE_ADD(a.CREATE_TIME, INTERVAL(b.TALK_TIMEOUT - ?) SECOND) < ?)';
     // TODO
     exports.clearTimeout = function(cb){
         // TODO
