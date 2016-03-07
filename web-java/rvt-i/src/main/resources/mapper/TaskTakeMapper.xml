@@ -20,14 +20,9 @@
 	</resultMap>
 
 	<select id="findByTaskId" resultMap="baseResultMap">
-		SELECT c.* FROM (SELECT
-		b.USER_NAME, a.* FROM
-		(SELECT * FROM
-		r_project_task_take WHERE
-		TASK_ID=#{task_id}) a LEFT
-		JOIN s_user b ON
-		(a.USER_ID=b.id)) c WHERE
-		c.USER_NAME IS NOT NULL ORDER BY
-		c.CREATE_TIME DESC
+		SELECT b.USER_NAME, a.* FROM
+		(SELECT * FROM r_project_task_take WHERE TASK_ID=#{task_id}) a LEFT
+		JOIN s_user b ON (a.USER_ID=b.id) WHERE b.id IS NOT NULL ORDER BY
+		a.CREATE_TIME DESC
 	</select>
 </mapper>

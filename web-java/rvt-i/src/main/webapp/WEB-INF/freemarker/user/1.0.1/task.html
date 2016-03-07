@@ -42,6 +42,7 @@
 		<div class='row'>
 			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default table-responsive'>
+					<#import "/_macro/status_task.html" as status_task>
 					<table id='table1' data-olx-type='olx.grid'
 						class='table table-bordered table-hover table-condensed table-striped'
 						data-url='' data-current='1' data-pagesize='20' data-count='561'>
@@ -66,7 +67,7 @@
 								<td>${(doc.talk_time_len)!}</td>
 								<td>${(doc.user.user_name)!}</td>
 								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-								<td>${(doc.status)!}</td>
+								<td><@status_task.m status="${(doc.status)!}"/></td>
 							</tr>
 							</#list>
 						</tbody>
