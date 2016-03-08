@@ -125,6 +125,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		user.setSeckey(genUserSecKey());
 
 		user.setDevice_code(null);
+		user.setInvite_user_id(null);
 
 		// TODO
 		return super.updateNotNull(user);

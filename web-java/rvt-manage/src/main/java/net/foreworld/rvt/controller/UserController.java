@@ -105,7 +105,7 @@ public class UserController {
 	@RequestMapping(value = { "/user/" }, method = RequestMethod.GET)
 	public ModelAndView indexUI(User user,
 			@RequestParam(required = false, defaultValue = "1") int page,
-			@RequestParam(required = false, defaultValue = "20") int rows) {
+			@RequestParam(required = false, defaultValue = "100") int rows) {
 		ModelAndView result = new ModelAndView(index_ftl);
 		List<User> list = userService.findByUser(user, page, rows);
 		result.addObject("data_users", list);
