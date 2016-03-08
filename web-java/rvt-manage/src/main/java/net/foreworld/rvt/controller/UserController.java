@@ -94,6 +94,11 @@ public class UserController {
 			return result;
 		} // END
 
+		if (!"60e97be2148f4d80b65ba7ac29ca9116".equals(_user.getRole_id())) {
+			result.put("msg", new String[] { "无权登陆" });
+			return result;
+		}
+
 		session.setAttribute("session.user", _user);
 		session.setAttribute("session.user.id", _user.getId());
 		session.setAttribute("session.time", (new Date()).toString());
