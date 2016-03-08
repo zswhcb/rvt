@@ -123,15 +123,11 @@ exports.findByApiKey = function(apiKey, cb){
 			// TODO
 			if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
 				return cb(null, ['用户名或密码输入错误'], doc);
+
+			if('e4acb256cafa4cb487fa6abf508df073' !== doc.ROLE_ID)
+				return cb(null, ['无权登陆'], doc);
 			
-			var user = doc;
-			
-			biz.user_role.checkExistUserRole(user.id, '566512b49012fb044691ace6', function (err, doc){
-				if(err) return cb(err);
-				if(!doc) return cb(null, ['禁止登陆']);
-				// TODO
-				cb(null, null, user);
-			});
+			cb(null, null, user);
 		});
 	};
 
