@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -101,6 +102,13 @@ public class UserController {
 		String user_name = StringUtil.isEmpty(user.getUser_name());
 		if (null == user_name) {
 			result.put("msg", new String[] { "手机号不能为空" });
+			return result;
+		}
+
+		String regex = "^1([\\d]{10})$";
+		Pattern p = Pattern.compile(regex);
+		if (!p.matcher(user_name).find()) {
+			result.put("msg", new String[] { "请输入正确的手机号" });
 			return result;
 		}
 		user.setUser_name(user_name);
