@@ -47,7 +47,7 @@ body {
 								<div class='form-group'>
 									<label for='regFrm_referee_id' class='col-sm-3 control-label'>登陆密码</label>
 									<div class='col-sm-9'>
-										<input type='text' class='form-control' name='user_pass'
+										<input type='password' class='form-control' name='user_pass'
 											id='regFrm_user_pass' placeholder='登陆密码' required
 											data-original-title='登陆密码不能为空'>
 									</div>
@@ -55,7 +55,7 @@ body {
 								<div class='form-group'>
 									<label for='regFrm_referee_id' class='col-sm-3 control-label'>确认密码</label>
 									<div class='col-sm-9'>
-										<input type='text' class='form-control'
+										<input type='password' class='form-control'
 											id='regFrm_user_pass_2' placeholder='确认密码' required
 											data-original-title='确认密码不能为空'>
 									</div>
@@ -105,7 +105,17 @@ body {
 	<script>
 		$(function() {
 			$('#regFrm_btn_submit').click(function(obj) {
-				console.log();
+				$.ajax({
+					url : '${(conf_html_virtualPath)!}register',
+					type : 'POST',
+					dataType : 'JSON',
+					data : $('#regFrm').serializeObjectForm(),
+					success : function(data) {
+					},
+					error : function() {
+						alert(arguments[2]);
+					}
+				});
 			});
 		});
 	</script>

@@ -91,11 +91,52 @@ public class UserController {
 		return result;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Object> register(User user) {
 		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("success", false);
 
+		// TODO
+		String user_name = StringUtil.isEmpty(user.getUser_name());
+		if (null == user_name) {
+			result.put("msg", new String[] { "手机号不能为空" });
+			return result;
+		}
+		user.setUser_name(user_name);
+
+		// TODO
+		String invite_user_id = StringUtil.isEmpty(user.getInvite_user_id());
+		if (null == invite_user_id) {
+			result.put("msg", new String[] { "邀请码不能为空" });
+			return result;
+		}
+		user.setInvite_user_id(invite_user_id);
+
+		// TODO
+		String user_pass = StringUtil.isEmpty(user.getUser_pass());
+		if (null == user_pass) {
+			result.put("msg", new String[] { "密码不能为空" });
+			return result;
+		}
+		user.setUser_pass(user_pass);
+
+		User _user = userService.findByName(user.getUser_name());
+		if (null != _user) {
+			result.put("msg", new String[] { "该手机号已经注册过" });
+			return result;
+		}
+
+		User __user = userService.selectByKey(user.getInvite_user_id());
+		if (null == __user) {
+			result.put("msg", new String[] { "请输入正确的邀请码" });
+			return result;
+		}
+
+		// TODO
+		userService.save(user);
 		result.put("success", true);
+
 		return result;
 	}
 
