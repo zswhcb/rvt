@@ -104,19 +104,35 @@ body {
 	<#include "/_pagelet/js.html"/>
 	<script>
 		$(function() {
-			$('#regFrm_btn_submit').click(function(obj) {
-				$.ajax({
-					url : '${(conf_html_virtualPath)!}register',
-					type : 'POST',
-					dataType : 'JSON',
-					data : $('#regFrm').serializeObjectForm(),
-					success : function(data) {
-					},
-					error : function() {
-						alert(arguments[2]);
-					}
-				});
-			});
+			$('#regFrm_btn_submit')
+					.click(
+							function(obj) {
+								if ($('#regFrm_user_pass').val() !== $(
+										'#regFrm_user_pass_2').val()) {
+									return alert('两次输入的密码不一致');
+								}
+
+								$
+										.ajax({
+											url : '${(conf_html_virtualPath)!}register',
+											type : 'POST',
+											dataType : 'JSON',
+											data : $('#regFrm')
+													.serializeObjectForm(),
+											success : function(data) {
+												if (data.success) {
+													alert('注册成功');
+													location.href = '${(conf_html_virtualPath)!}login';
+													return;
+												} // END
+												if (data.msg)
+													alert(data.msg[0]);
+											},
+											error : function() {
+												alert(arguments[2]);
+											}
+										});
+							});
 		});
 	</script>
 </body>
