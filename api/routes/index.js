@@ -13,7 +13,9 @@ var api = {
 };
 
 var i = {};
+
 var manage = {
+	site: require('../controllers/manage/site'),
 	user: require('../controllers/manage/user')
 };
 
@@ -30,9 +32,13 @@ function proc_i(app){
 
 function proc_manage(app){
 	var user = manage.user;
+	var site = manage.site;
 
 	// TODO
 	app.get('/manage/user/login$', user.loginUI);
+	app.post('/manage/user/login$', express.valiPostData, user.login);
+
+	app.get('/manage/', site.indexUI);
 }
 
 /**

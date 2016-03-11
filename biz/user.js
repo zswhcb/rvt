@@ -112,16 +112,13 @@ exports.findByApiKey = function(apiKey, cb){
 			if(!doc) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
 
 			// TODO
-			if(1 !== doc.STATUS) return cb(null, ['禁用状态']);
+			if(1 !== doc.STATUS) return cb(null, ['禁止登陆']);
 
 			// TODO
 			if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
-				return cb(null, ['用户名或密码输入错误'], doc);
-
-			if('e4acb256cafa4cb487fa6abf508df073' !== doc.ROLE_ID)
-				return cb(null, ['无权登陆'], doc);
+				return cb(null, ['用户名或密码输入错误']);
 			
-			cb(null, null, user);
+			cb(null, null, doc);
 		});
 	};
 
