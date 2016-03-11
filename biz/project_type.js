@@ -12,16 +12,15 @@ var util = require('speedt-utils'),
 var exports = module.exports;
 
 (function (exports){
-	var sql_1 = 'SELECT * FROM p_project_type';
-	var sql_orderby = ' ORDER BY CREATE_TIME ASC';
+	var _sql = 'SELECT * FROM r_project_type ORDER BY SORT';
 
 	/**
 	 *
 	 * @params
 	 * @return
 	 */
-	exports.findAll = function(cb){
-		var sql = sql_1 + sql_orderby;
+	exports.findByProjectType = function(cb){
+		var sql = _sql;
 		mysql.query(sql, null, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);

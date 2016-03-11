@@ -10,7 +10,48 @@ var util = require('speedt-utils');
 var conf = require('../../settings');
 
 var biz = {
+	project_type: require('../../../biz/project_type'),
 	project: require('../../../biz/project')
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.editUI = function(req, res, next){
+	biz.project.findByProject(function (err, docs){
+		if(err) return next(err);
+		// TODO
+		res.render('manage/project/1.0.1/index', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				projects: docs
+			}
+		});
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.addUI = function(req, res, next){
+	biz.project_type.findByProjectType(function (err, docs){
+		if(err) return next(err);
+		// TODO
+		res.render('manage/project/1.0.1/add', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				project_types: docs
+			}
+		});
+	});
 };
 
 /**

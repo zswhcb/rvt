@@ -18,6 +18,22 @@ var biz = {
  * @params
  * @return
  */
+exports.editUI = function(req, res, next){
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.addUI = function(req, res, next){
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.indexUI = function(req, res, next){
 	biz.task.findByTask(function (err, docs){
 		if(err) return next(err);

@@ -1,15 +1,14 @@
-<#import "/_macro/select_option.html" as select_option>
 <form class='form-horizontal' id='addFrm' role='form'
 	onsubmit='return false;' data-url=''>
 	<input type='hidden' name='id' id='addFrm_id'
-		value='${(data_project.id)!}'>
+		value='$!{data_project.id}'>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
 			for='addFrm_project_name'><span class='olx-form-required'>*</span>项目名称</label>
 		<div class='col-sm-4'>
 			<input type='text' class='form-control' name='project_name'
 				id='addFrm_project_name' placeholder='项目名称'
-				value='${(data_project.project_name)!}'>
+				value='$!{data_project.project_name}'>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -18,7 +17,7 @@
 		<div class='col-sm-4'>
 			<input type='text' class='form-control' name='tel_num'
 				id='addFrm_tel_num' placeholder='项目电话'
-				value='${(data_project.tel_num)!}'>
+				value='$!{data_project.tel_num}'>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -26,7 +25,7 @@
 			for='addFrm_project_intro'><span class='olx-form-required'>*</span>项目简介</label>
 		<div class='col-sm-4'>
 			<textarea class='form-control' rows='5' name='project_intro'
-				id='addFrm_project_intro' placeholder='项目简介' required='required'>${(data_project.project_intro)!}</textarea>
+				id='addFrm_project_intro' placeholder='项目简介' required='required'>$!{data_project.project_intro}</textarea>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -34,18 +33,14 @@
 			for='addFrm_project_type_id'>项目类型</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='project_type_id'
-				id='addFrm_project_type_id'> <@select_option.m
-				list=dict_project_type key="key" value="value"
-				selValue="${(data_project.project_type_id)!}"/>
+				id='addFrm_project_type_id'>
 			</select>
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_status'>状态</label>
 		<div class='col-sm-4'>
-			<select class='form-control' name='status' id='addFrm_status'>
-				<@select_option.m list=dict_status key="key" value="value"
-				selValue="${(data_project.status)!}"/>
+			<select class='form-control' name='status' id='addFrm_status'>				
 			</select>
 		</div>
 	</div>

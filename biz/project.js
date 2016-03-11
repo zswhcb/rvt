@@ -33,12 +33,8 @@ var exports = module.exports;
 })(exports);
 
 (function (exports){
-	var sql_1 = 'SELECT'+
-					'  c.USER_NAME CREATE_USER_NAME, b.TYPE_NAME PROJECT_TYPE_NAME,'+
-					'  a.*'+
-					' FROM p_project a, p_project_type b, s_user c'+
-					' WHERE a.PROJECT_TYPE_ID=b.id AND a.CREATE_USER_ID=c.id';
-	var sql_orderby = ' ORDER BY a.CREATE_USER_ID, a.CREATE_TIME DESC';
+	var _sql = 'SELECT b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM r_project a LEFT JOIN r_project_type b ON (a.PROJECT_TYPE_ID=b.id) WHERE b.id IS NOT NULL';
+	var _sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
 
 	/**
 	 *
@@ -46,7 +42,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	exports.getById = function(id, cb){
-		var sql = sql_1 +' AND a.id=?';
+		var sql = _sql +' AND a.id=?';
 		mysql.query(sql, [id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
@@ -59,7 +55,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	exports.findByProject = function(cb){
-		var sql = 'SELECT * FROM r_project';
+		var sql = _sql + _sql_orderby;
 		mysql.query(sql, null, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);

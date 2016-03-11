@@ -41,9 +41,13 @@ function proc_manage(app){
 	var task = manage.task;
 
 	/* task */
+	app.get('/manage/task/edit', user.login_validate, task.editUI);
+	app.get('/manage/task/add', user.login_validate, task.addUI);
 	app.get('/manage/task/', user.login_validate, task.indexUI);
 
 	/* project */
+	app.get('/manage/project/edit', user.login_validate, project.editUI);
+	app.get('/manage/project/add', user.login_validate, project.addUI);
 	app.get('/manage/project/', user.login_validate, project.indexUI);
 
 	/* role */

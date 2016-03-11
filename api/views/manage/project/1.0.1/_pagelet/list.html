@@ -1,5 +1,4 @@
 #parse('_macro/status.html')
-#parse('_macro/project_type.html')
 <table id='table1' data-olx-type='olx.grid'
 	class='table table-bordered table-hover table-condensed table-striped'
 	data-url='' data-current='1' data-pagesize='20' data-count='561'>
@@ -18,7 +17,7 @@
 			<td class='ta'><input type='checkbox' value='$!{doc.id}'></td>
 			<td>$!{doc.PROJECT_NAME}</td>
 			<td>$!{doc.TEL_NUM}</td>
-			<td>#m_project_type($!{doc.PROJECT_TYPE_ID})</td>
+			<td>$!{doc.PROJECT_TYPE_NAME}</td>
 			<td>#formatDate($!{doc.CREATE_TIME})</td>
 			<td>#m_status($!{doc.STATUS})</td>
 		</tr>#end

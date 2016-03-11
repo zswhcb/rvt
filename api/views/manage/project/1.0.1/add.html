@@ -1,11 +1,11 @@
-<#include "/_pagelet/constant.html"/>
+#parse('_pagelet/constant.html')
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/_pagelet/header.html"/>
+#parse('_pagelet/header.html')
 <title>项目管理 | 新增</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
 </head>
 <body>
 	<div class='container'>
@@ -14,7 +14,7 @@
 				<ol class='breadcrumb'>
 					<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
 					<li class='active'><a href='javascript:;'
-						onclick='parent.location.href="${(conf_html_virtualPath)!}#page/project/"'>项目管理</a>
+						onclick='parent.location.href="$!{conf.html.virtualPath}manage/#page/project/"'>项目管理</a>
 					</li>
 					<li class='active'><a href='javascript:location.reload();'>新增</a>
 					</li>
@@ -24,26 +24,26 @@
 		<div class='row'>
 			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default'>
-					<div class='panel-body'><#include "_pagelet/form.html"/></div>
+					<div class='panel-body'>#parse('manage/project/1.0.1/_pagelet/form.html')</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<#include "/_pagelet/js.html"/>
+	#parse('_pagelet/js.html')
 	<script type='text/javascript'
-		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+		src='${conf.html.virtualPath}public/assets/js/iframe.js'></script>
 	<script>
 		$(function() {
 			$('#addFrm_btn_submit').click(function() {
 				$.ajax({
-					url : '${(conf_html_virtualPath)!}project/add',
+					url : '$!{conf.html.virtualPath}project/add',
 					type : 'POST',
 					dataType : 'JSON',
 					data : $('#addFrm').serializeObjectForm(),
 					success : function(data) {
 						if (!data.success)
 							return alert(data.msg[0]);
-						var url = '${(conf_html_virtualPath)!}#page/project/';
+						var url = '$!{conf.html.virtualPath}#page/project/';
 						parent.location.href = url;
 					},
 					error : function() {
