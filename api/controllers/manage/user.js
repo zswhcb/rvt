@@ -68,7 +68,7 @@ exports.login = function(req, res, next){
 exports.login_validate = function(req, res, next){
 	if(1 === req.session.lv) return next();
 	if(req.xhr) return res.send({ success: false, status: 408 });
-	res.redirect('/rvt/manage/user/login');
+	res.redirect(conf.html.virtualPath +'manage/user/login');
 };
 
 /**
@@ -79,5 +79,5 @@ exports.login_validate = function(req, res, next){
  */
 exports.logoutUI = function(req, res, next){
 	req.session.destroy();
-	res.redirect('/rvt/manage/');
+	res.redirect(conf.html.virtualPath +'manage/');
 };

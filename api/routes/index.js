@@ -35,10 +35,12 @@ function proc_manage(app){
 	var site = manage.site;
 
 	// TODO
+	app.get('/manage/user/logout$', user.logoutUI);
 	app.get('/manage/user/login$', user.loginUI);
 	app.post('/manage/user/login$', express.valiPostData, user.login);
 
-	app.get('/manage/', site.indexUI);
+	app.get('/manage/welcome', user.login_validate, site.welcomeUI);
+	app.get('/manage/', user.login_validate, site.indexUI);
 }
 
 /**

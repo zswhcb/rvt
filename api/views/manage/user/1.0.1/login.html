@@ -54,13 +54,13 @@ body {
 		$(function() {
 			$('#btn_login').click(function() {
 				$.ajax({
-					url : '${conf_html_virtualPath}user/login',
+					url : '${conf.html.virtualPath}manage/user/login',
 					type : 'POST',
 					dataType : 'JSON',
 					data : { data: JSON.stringify($('#loginFrm').serializeObjectForm()) },
 					success : function(data) {
 						if (data.success) {
-							location.href = '${conf_html_virtualPath}';
+							location.href = '${conf.html.virtualPath}manage/';
 							return;
 						} // END
 						if (data.msg)

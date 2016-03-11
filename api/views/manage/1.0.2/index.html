@@ -5,7 +5,7 @@
 #parse('_pagelet/header.html')
 <title>后台管理</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${conf_html_cdn}public/manage/css/index.css?v3' />
+	href='${conf.html.cdn}public/manage/css/index.css?v3' />
 <style>
 #innerPage {
 	border: 0;
@@ -18,8 +18,7 @@
 	<header id='header'></header>
 	<div class='container'>
 		<div class='row'>
-			<div class='col-sm-12 col-md-2' id='sideNav'><#include
-				"/default/1.0.2/_pagelet/nav.html"/></div>
+			<div class='col-sm-12 col-md-2' id='sideNav'>#parse('manage/1.0.2/_pagelet/nav.html')</div>
 			<div class='col-sm-12 col-md-10'>
 				<iframe id='innerPage' src='' scrolling='no'></iframe>
 			</div>
@@ -27,7 +26,7 @@
 	</div>
 	#parse('_pagelet/js.html')
 	<script type='text/javascript'
-		src='${conf_html_cdn}js/backbone/1.0.0/backbone.min.js?v1.0.0'></script>
+		src='${conf.html.cdn}js/backbone/1.0.0/backbone.min.js?v1.0.0'></script>
 	<script>
 		(function($) {
 			var innerPage = $('#innerPage');

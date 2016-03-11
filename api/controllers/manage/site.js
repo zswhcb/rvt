@@ -24,3 +24,16 @@ exports.indexUI = function(req, res, next){
 		}
 	});
 };
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.welcomeUI = function(req, res, next){
+	res.render('manage/1.0.2/welcome', {
+		conf: conf,
+		description: '',
+		keywords: ',html5,nodejs'
+	});
+};
