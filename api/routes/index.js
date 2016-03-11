@@ -13,7 +13,9 @@ var api = {
 };
 
 var i = {};
-var manage = {};
+var manage = {
+	user: require('../controllers/manage/user')
+};
 
 function proc_api(app){
 	var index = api.index;
@@ -27,6 +29,10 @@ function proc_i(app){
 }
 
 function proc_manage(app){
+	var user = manage.user;
+
+	// TODO
+	app.get('/manage/user/login$', user.loginUI);
 }
 
 /**
