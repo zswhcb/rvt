@@ -29,35 +29,29 @@ var exports = module.exports;
  */
 (function (exports){
 
-	function isEmtpy(str){
-		if(!str) return;
-		str = str.trim();
-		return '' === str ? null : str;
-	}
-
     exports.signature_validate = function(req, res, next){
 		var result = { success: false };
 		var body = req.body;
 		var data = req._data;
 		
 		// 判断设备号
-		data.DEVICE_CODE = isEmtpy(data.DEVICE_CODE);
+		data.DEVICE_CODE = util.isEmpty(data.DEVICE_CODE);
 		if(!data.DEVICE_CODE) return res.send(result);
 		
 		// TODO
-		body.command = isEmtpy(body.command);
+		body.command = util.isEmpty(body.command);
 		if(!body.command) return res.send(result);
 	
 		// TODO
 		if('login' === body.command) return next();
 	
-		body.ts = isEmtpy(body.ts);
+		body.ts = util.isEmpty(body.ts);
 		if(!body.ts) return res.send(result);
 	
-		body.apikey = isEmtpy(body.apikey);
+		body.apikey = util.isEmpty(body.apikey);
 		if(!body.apikey) return res.send(result);
 	
-		body.signature = isEmtpy(body.signature);
+		body.signature = util.isEmpty(body.signature);
 		if(!body.signature) return res.send(result);
 	
 		// TODO

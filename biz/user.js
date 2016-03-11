@@ -18,12 +18,6 @@ var biz = {
 	authcode: require('./authcode')
 };
 
-function isEmtpy(str){
-	if(!str) return;
-	str = str.trim();
-	return '' === str ? null : str;
-}
-
 /**
  *
  * @params
@@ -109,7 +103,7 @@ exports.findByApiKey = function(apiKey, cb){
 	 * @return
 	 */
 	exports.login = function(logInfo, cb){
-		logInfo.USER_NAME = isEmtpy(logInfo.USER_NAME);
+		logInfo.USER_NAME = util.isEmpty(logInfo.USER_NAME);
 		if(!logInfo.USER_NAME) return cb(null, ['用户名或密码输入错误', 'USER_NAME']);
 
 		this.findByName(logInfo.USER_NAME, function (err, doc){
