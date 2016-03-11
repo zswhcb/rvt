@@ -281,19 +281,19 @@ var biz = {
 	});
     };
 
-    /**
-     *
-     * @params
-     * @return
-     */
-    exports.findAll = function(cb){
-	var sql = sql_1 + sql_orderby;
-	// TODO
-	mysql.query(sql, null, function (err, docs){
-	    if(err) return cb(err);
-	    cb(null, docs);
-	});
-    };
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.findByTask = function(cb){
+		var sql = 'SELECT * FROM r_project_task';
+		// TODO
+		mysql.query(sql, null, function (err, docs){
+			if(err) return cb(err);
+			cb(null, docs);
+		});
+	};
 
     /**
      *

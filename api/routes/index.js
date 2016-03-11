@@ -15,6 +15,7 @@ var api = {
 var i = {};
 
 var manage = {
+	task: require('../controllers/manage/task'),
 	project: require('../controllers/manage/project'),
 	role: require('../controllers/manage/role'),
 	site: require('../controllers/manage/site'),
@@ -37,6 +38,10 @@ function proc_manage(app){
 	var site = manage.site;
 	var role = manage.role;
 	var project = manage.project;
+	var task = manage.task;
+
+	/* task */
+	app.get('/manage/task/', user.login_validate, task.indexUI);
 
 	/* project */
 	app.get('/manage/project/', user.login_validate, project.indexUI);

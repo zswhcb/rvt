@@ -1,0 +1,194 @@
+<style>
+.WdatePicker {
+	background: #fff
+		url('${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/skin/datePicker.gif')
+		no-repeat right;
+}
+</style>
+<#import "/_macro/select_option.html" as select_option>
+<form class='form-horizontal' id='addFrm' role='form'
+	onsubmit='return false;' data-url=''>
+	<input type='hidden' name='id' id='addFrm_id'
+		value='${(data_task.id)!}'>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label'
+			for='addFrm_project_id'><span class='olx-form-required'>*</span>项目名称</label>
+		<div class='col-sm-4'>
+			<#if data_project??> <input type='text' class='form-control'
+				value='${(data_project.project_name)!}' readonly> <#else> <select
+				class='form-control' name='project_id' id='addFrm_project_id'>
+				<#list data_projects! as doc>
+				<option value='${(doc.id)!}'>${(doc.project_name)!}</option>
+				</#list>
+			</select> </#if>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label'
+			for='addFrm_create_user_id'><span class='olx-form-required'>*</span>发布人</label>
+		<div class='col-sm-4'>
+			<#if data_user??> <input type='text' class='form-control'
+				value='${(data_user.user_name)!}' readonly><#else>
+			<div class="input-group">
+				<input type="text" aria-label="Text input with dropdown button"
+					class="form-control" id='addFrm_create_user_name' placeholder='发布人'>
+				<input type="hidden" aria-label="Text input with dropdown button"
+					class="form-control" name='create_user_id'
+					id='addFrm_create_user_id'>
+				<div class="input-group-btn">
+					<button aria-expanded="false" aria-haspopup="true"
+						data-toggle="dropdown" class="btn btn-default dropdown-toggle"
+						type="button">
+						选择 <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<#list data_users! as doc>
+						<li><a href='javascript:;'
+							onclick='selItem("${(doc.id)!}", "${(doc.user_name)!}");'>${(doc.user_name)!}</a>
+						</li></#list>
+					</ul>
+				</div>
+			</div>
+			</#if>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_task_name'><span
+			class='olx-form-required'>*</span>任务名称</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='task_name'
+				id='addFrm_task_name' placeholder='任务名称'
+				value='${(data_task.task_name)!}'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_task_sum'><span
+			class='olx-form-required'>*</span>任务数量</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='task_sum'
+				id='addFrm_task_sum' placeholder='任务数量'
+				value='${(data_task.task_sum)!}'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label'
+			for='addFrm_talk_time_min'><span class='olx-form-required'>*</span>最小时长（秒）</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='talk_time_min'
+				id='addFrm_talk_time_min' placeholder='最小时长（秒）'
+				value='${(data_task.talk_time_min)!}'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label'
+			for='addFrm_talk_timeout'><span class='olx-form-required'>*</span>超时时长（秒）</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='talk_timeout'
+				id='addFrm_talk_timeout' placeholder='超时时长（秒）'
+				value='${(data_task.talk_timeout)!}'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label'
+			for='addfrm_start_time'><span class='olx-form-required'>*</span>开始时间</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control WdatePicker' name='start_time'
+				id='addfrm_start_time' placeholder='开始时间'
+				value='${(data_task.start_time?string("yyyy-MM-dd HH:mm:ss"))!}'
+				onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'addfrm_end_time\')}'})">
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addfrm_end_time'><span
+			class='olx-form-required'>*</span>结束时间</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control WdatePicker' name='end_time'
+				id='addfrm_end_time' placeholder='结束时间'
+				value='${(data_task.end_time?string("yyyy-MM-dd HH:mm:ss"))!}'
+				onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'addfrm_start_time\')}'})">
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label'
+			for='addFrm_task_intro'><span class='olx-form-required'>*</span>任务简介</label>
+		<div class='col-sm-4'>
+			<textarea class='form-control' rows='5' name='task_intro'
+				id='addFrm_task_intro' placeholder='任务简介' required='required'>${(data_task.task_intro)!}</textarea>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_sms_intro'><span
+			class='olx-form-required'>*</span>短信内容</label>
+		<div class='col-sm-4'>
+			<textarea class='form-control' rows='5' name='sms_intro'
+				id='addFrm_sms_intro' placeholder='短信内容' required='required'>${(data_task.sms_intro)!}</textarea>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_status'>状态</label>
+		<div class='col-sm-4'>
+			<select class='form-control' name='status' id='addFrm_status'>
+				<@select_option.m list=dict_status key="key" value="value"
+				selValue="${(data_task.status)!}"/>
+			</select>
+		</div>
+	</div>
+	<div class='form-group'>
+		<div class='col-sm-offset-2 col-sm-4'>
+			<button id='addFrm_btn_submit' type='button' class='btn btn-primary'>保存</button>
+		</div>
+	</div>
+</form>
+<script type='text/javascript'
+	src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
+<#if data_users??>
+<script>
+	$('#addFrm_create_user_name')
+			.bind(
+					'input propertychange',
+					function(obj) {
+						$
+								.ajax({
+									url : '${(conf_html_virtualPath)!}user/list',
+									type : 'POST',
+									dataType : 'JSON',
+									data : {
+										user_name : obj.target.value
+									},
+									success : function(data) {
+										if (!data.success)
+											return;
+										var html = '';
+
+										for ( var i in data.data) {
+											var _data = data.data[i];
+											html += '<li><a href="javascript:;" onclick="selItem(\''
+													+ _data.id
+													+ '\', \''
+													+ _data.user_name
+													+ '\');">'
+													+ _data.user_name + '</li>';
+										} // END
+
+										var parent = $(obj.target).parent();
+
+										var ul = parent.find('ul')[0];
+										$(ul)
+												.html(
+														'' === html ? '<li><a href="javascript:;">没找到</li>'
+																: html);
+
+										var btn = parent.find('button')[0];
+										$(btn).trigger('click');
+									},
+									error : function() {
+										alert(arguments[2]);
+									}
+								});
+					});
+	function selItem(id, user_name) {
+		$('#addFrm_create_user_id').val(id);
+		$('#addFrm_create_user_name').val(user_name);
+	}
+</script>
+</#if>
