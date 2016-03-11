@@ -1,8 +1,8 @@
-<#include "/_pagelet/constant.html"/>
+#parse('_pagelet/constant.html')
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/_pagelet/header.html"/>
+#parse('_pagelet/header.html')
 <title>用户登陆</title>
 <style>
 body {
@@ -49,18 +49,18 @@ body {
 			<button id='btn_login' type='button' class='btn btn-primary'>登陆</button>
 		</form>
 	</section>
-	<#include "/_pagelet/js.html"/>
+	#parse('_pagelet/js.html')
 	<script>
 		$(function() {
 			$('#btn_login').click(function() {
 				$.ajax({
-					url : 'user/login',
+					url : '${conf_html_virtualPath}user/login',
 					type : 'POST',
 					dataType : 'JSON',
 					data : $('#loginFrm').serializeObjectForm(),
 					success : function(data) {
 						if (data.success) {
-							location.href = '';
+							location.href = '${conf_html_virtualPath}';
 							return;
 						} // END
 						if (data.msg)
