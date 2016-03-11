@@ -12,11 +12,11 @@ var path = require('path');
 var fs = require('fs');
 var cwd = process.cwd();
 
-var conf = require('../settings');
+var conf = require('../../settings');
 
 var biz = {
-    task: require('../../biz/task'),
-    user: require('../../biz/user')
+    task: require('../../../biz/task'),
+    user: require('../../../biz/user')
 };
 
 var exports = module.exports;
@@ -203,7 +203,7 @@ exports.testUI = function(req, res, next){
         query.seckey = seckey;
     }
 
-    res.render('test', {
+    res.render('api/test', {
         conf: conf,
         description: '',
         keywords: ',html5',

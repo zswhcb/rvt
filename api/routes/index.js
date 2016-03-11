@@ -8,7 +8,26 @@
 var util = require('speedt-utils'),
 	express = util.express;
 
-var api = require('../controllers/api');
+var api = {
+	index: require('../controllers/api/index')
+};
+
+var i = {};
+var manage = {};
+
+function proc_api(app){
+	var index = api.index;
+
+	// TODO
+	app.post('/api/', express.valiPostData, index.signature_validate, index.index);
+	app.get('/api/test$', index.testUI);
+}
+
+function proc_i(app){
+}
+
+function proc_manage(app){
+}
 
 /**
  *
@@ -16,6 +35,7 @@ var api = require('../controllers/api');
  * @return
  */
 module.exports = function(app){
-	app.post('/', express.valiPostData, api.signature_validate, api.index);
-	app.get('/test$', api.testUI);
+	proc_api(app);
+	proc_i(app);
+	proc_manage(app);
 };
