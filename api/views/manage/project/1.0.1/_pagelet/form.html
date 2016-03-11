@@ -2,14 +2,14 @@
 <form class='form-horizontal' id='addFrm' role='form'
 	onsubmit='return false;' data-url=''>
 	<input type='hidden' name='id' id='addFrm_id'
-		value='$!{data_project.id}'>
+		value='$!{data.project.id}'>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
 			for='addFrm_project_name'><span class='olx-form-required'>*</span>项目名称</label>
 		<div class='col-sm-4'>
 			<input type='text' class='form-control' name='project_name'
 				id='addFrm_project_name' placeholder='项目名称'
-				value='$!{data_project.project_name}'>
+				value='$!{data.project.PROJECT_NAME}'>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -18,7 +18,7 @@
 		<div class='col-sm-4'>
 			<input type='text' class='form-control' name='tel_num'
 				id='addFrm_tel_num' placeholder='项目电话'
-				value='$!{data_project.tel_num}'>
+				value='$!{data.project.TEL_NUM}'>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -26,7 +26,7 @@
 			for='addFrm_project_intro'><span class='olx-form-required'>*</span>项目简介</label>
 		<div class='col-sm-4'>
 			<textarea class='form-control' rows='5' name='project_intro'
-				id='addFrm_project_intro' placeholder='项目简介' required='required'>$!{data_project.project_intro}</textarea>
+				id='addFrm_project_intro' placeholder='项目简介' required='required'>$!{data.project.PROJECT_INTRO}</textarea>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -35,7 +35,7 @@
 		<div class='col-sm-4'>
 			<select class='form-control' name='project_type_id'
 				id='addFrm_project_type_id'>
-				#m_select_option($!{data.project_types}, 'id', 'TYPE_NAME')
+				#m_select_option($!{data.project_types}, 'id', 'TYPE_NAME', $!{data.project.PROJECT_TYPE_ID})
 			</select>
 		</div>
 	</div>
@@ -43,7 +43,7 @@
 		<label class='col-sm-2 hidden-xs control-label' for='addFrm_status'>状态</label>
 		<div class='col-sm-4'>
 			<select class='form-control' name='status' id='addFrm_status'>
-				#m_select_option($!{dict_status}, 'key', 'value')
+				#m_select_option($!{dict_status}, 'key', 'value', $!{data.project.STATUS})
 			</select>
 		</div>
 	</div>
