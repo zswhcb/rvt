@@ -79,8 +79,7 @@ exports.findByApiKey = function(apiKey, cb){
 
 (function (exports){
 	// 查询用户 关联用户角色表
-	var sql_1 = 'SELECT b.ROLE_NAME, a.* FROM s_user a LEFT JOIN s_role b ON (a.ROLE_ID=b.id) WHERE b.id IS NOT NULL';
-	var sql_orderby = ' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';
+	var _sql = 'SELECT b.ROLE_NAME, a.* FROM s_user a LEFT JOIN s_role b ON (a.ROLE_ID=b.id) WHERE b.id IS NOT NULL';
 
 	/**
 	 *
@@ -88,8 +87,7 @@ exports.findByApiKey = function(apiKey, cb){
 	 * @return
 	 */
 	exports.findByUser = function(cb){
-		// var sql = sql_1 + sql_orderby;
-		var sql = 'SELECT * FROM s_user';
+		var sql = _sql +' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';
 		mysql.query(sql, null, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
@@ -129,7 +127,7 @@ exports.findByApiKey = function(apiKey, cb){
 	 * @return
 	 */
 	exports.getById = function(id, cb){
-		var sql = sql_1 +' AND a.id=?';
+		var sql = _sql +' AND a.id=?';
 		mysql.query(sql, [id], function (err, docs){
 			if(err) return cb(err);
 			cb(null, mysql.checkOnly(docs) ? docs[0] : null);

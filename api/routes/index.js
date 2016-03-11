@@ -15,6 +15,7 @@ var api = {
 var i = {};
 
 var manage = {
+	role: require('../controllers/manage/role'),
 	site: require('../controllers/manage/site'),
 	user: require('../controllers/manage/user')
 };
@@ -33,6 +34,14 @@ function proc_i(app){
 function proc_manage(app){
 	var user = manage.user;
 	var site = manage.site;
+	var role = manage.role;
+
+	/* role */
+
+	// TODO
+	app.get('/manage/role/', user.login_validate, role.indexUI);
+
+	/* user */
 
 	// TODO
 	app.get('/manage/user/', user.login_validate, user.indexUI);
@@ -45,6 +54,8 @@ function proc_manage(app){
 	app.get('/manage/user/logout$', user.logoutUI);
 	app.get('/manage/user/login$', user.loginUI);
 	app.post('/manage/user/login$', express.valiPostData, user.login);
+
+	/* site */
 
 	// TODO
 	app.get('/manage/welcome', user.login_validate, site.welcomeUI);

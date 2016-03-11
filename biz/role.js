@@ -12,16 +12,15 @@ var util = require('speedt-utils'),
 var exports = module.exports;
 
 (function (exports){
-	var sql_1 = 'SELECT * FROM s_role';
-	var sql_orderby = ' ORDER BY CREATE_TIME DESC';
+	var _sql = 'SELECT * FROM s_role ORDER BY CREATE_TIME DESC';
 
 	/**
 	 *
 	 * @params
 	 * @return
 	 */
-	exports.findAll = function(cb){
-		var sql = sql_1 + sql_orderby;
+	exports.findByRole = function(cb){
+		var sql = _sql;
 		mysql.query(sql, null, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
