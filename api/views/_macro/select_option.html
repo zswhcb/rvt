@@ -1,0 +1,5 @@
+#macro(m_select_option $list $key $value $selValue)
+#foreach($!doc in $!list)
+<option value='$!{doc[$key]}'>$!{doc[$value]}</option>
+#end
+#end

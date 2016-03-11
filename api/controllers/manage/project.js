@@ -20,15 +20,15 @@ var biz = {
  * @return
  */
 exports.editUI = function(req, res, next){
-	biz.project.findByProject(function (err, docs){
+	biz.project_type.findByProjectType(function (err, docs){
 		if(err) return next(err);
 		// TODO
-		res.render('manage/project/1.0.1/index', {
+		res.render('manage/project/1.0.1/edit', {
 			conf: conf,
 			description: '',
 			keywords: ',html5,nodejs',
 			data: {
-				projects: docs
+				project_types: docs
 			}
 		});
 	});
