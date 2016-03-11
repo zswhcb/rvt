@@ -18,6 +18,31 @@ var biz = {
  * @params
  * @return
  */
+exports.changePwd = function(req, res, next){
+	var result = { success: false };
+	var data = req._data;
+
+	return res.send(result);
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.changePwdUI = function(req, res, next){
+	res.render('manage/user/1.0.1/changePwd', {
+		conf: conf,
+		description: '',
+		keywords: ',html5,nodejs'
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.loginUI = function(req, res, next){
 	res.render('manage/user/1.0.1/login', {
 		conf: conf,

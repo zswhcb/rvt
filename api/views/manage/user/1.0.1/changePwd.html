@@ -1,11 +1,11 @@
-<#include "/_pagelet/constant.html"/>
+#parse('_pagelet/constant.html')
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/_pagelet/header.html"/>
+#parse('_pagelet/header.html')
 <title>修改密码</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
 </head>
 <body>
 	<div class='container'>
@@ -60,9 +60,9 @@
 			</div>
 		</div>
 	</div>
-	<#include "/_pagelet/js.html"/>
+	#parse('_pagelet/js.html')
 	<script type='text/javascript'
-		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+		src='${conf.html.virtualPath}public/assets/js/iframe.js'></script>
 	<script>
 		$(function() {
 			$('#editFrm_btn_submit').click(
@@ -73,14 +73,14 @@
 						}
 
 						$.ajax({
-							url : '${(conf_html_virtualPath)!}user/changePwd',
+							url : '${conf.html.virtualPath}manage/user/changePwd',
 							type : 'POST',
 							dataType : 'JSON',
-							data : $('#editFrm').serializeObjectForm(),
+							data : { data: JSON.stringify($('#editFrm').serializeObjectForm()) },
 							success : function(data) {
 								if (data.success)
 									return alert('操作成功');
-								alert(data.msg[0]);
+								if(data.msg) alert(data.msg[0]);
 							},
 							error : function() {
 								alert(arguments[2]);

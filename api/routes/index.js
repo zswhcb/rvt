@@ -35,10 +35,15 @@ function proc_manage(app){
 	var site = manage.site;
 
 	// TODO
+	app.get('/manage/user/changePwd$', user.login_validate, user.changePwdUI);
+	app.post('/manage/user/changePwd$', express.valiPostData, user.login_validate, user.changePwd);
+
+	// TODO
 	app.get('/manage/user/logout$', user.logoutUI);
 	app.get('/manage/user/login$', user.loginUI);
 	app.post('/manage/user/login$', express.valiPostData, user.login);
 
+	// TODO
 	app.get('/manage/welcome', user.login_validate, site.welcomeUI);
 	app.get('/manage/', user.login_validate, site.indexUI);
 }

@@ -4,6 +4,8 @@
 <head>
 #parse('_pagelet/header.html')
 <title>欢迎页</title>
+<link rel='stylesheet' type='text/css' media='screen'
+	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
 </head>
 <body>
 	<div class='container'>
@@ -25,6 +27,7 @@
 		</div>
 	</div>
 	#parse('_pagelet/js.html')
-	#parse('_pagelet/iframe.html')
+	<script type='text/javascript'
+		src='${conf.html.virtualPath}public/assets/js/iframe.js'></script>
 </body>
 </html>
