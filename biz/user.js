@@ -87,8 +87,9 @@ exports.findByApiKey = function(apiKey, cb){
 	 * @params
 	 * @return
 	 */
-	exports.findAll = function(cb){
-		var sql = sql_1 + sql_orderby;
+	exports.findByUser = function(cb){
+		// var sql = sql_1 + sql_orderby;
+		var sql = 'SELECT * FROM s_user';
 		mysql.query(sql, null, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);

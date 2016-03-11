@@ -35,6 +35,9 @@ function proc_manage(app){
 	var site = manage.site;
 
 	// TODO
+	app.get('/manage/user/', user.login_validate, user.indexUI);
+
+	// TODO
 	app.get('/manage/user/changePwd$', user.login_validate, user.changePwdUI);
 	app.post('/manage/user/changePwd$', express.valiPostData, user.login_validate, user.changePwd);
 

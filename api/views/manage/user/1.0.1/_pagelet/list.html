@@ -1,4 +1,4 @@
-<#import "/_macro/status.html" as status>
+#parse('_macro/status.html')
 <table id='table1' data-olx-type='olx.grid'
 	class='table table-bordered table-hover table-condensed table-striped'
 	data-url='' data-current='1' data-pagesize='20' data-count='561'>
@@ -14,17 +14,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		<#list data_users! as doc>
-		<tr>
-			<td class='ta'><input type='checkbox' value='${(doc.id)!}'>
-			</td>
-			<td>${(doc.user_name)!}</td>
-			<td>${(doc.email)!}</td>
-			<td>${(doc.real_name)!}</td>
-			<td>${(doc.alipay_account)!}</td>
-			<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-			<td><@status.m status="${(doc.status)!}"/></td>
-		</tr>
-		</#list>
+		#foreach($!doc in $!data.users)<tr>
+			<td class='ta'><input type='checkbox' value='$!{doc.id}'></td>
+			<td>$!{doc.USER_NAME}</td>
+			<td>$!{doc.EMAIL}</td>
+			<td>$!{doc.REAL_NAME}</td>
+			<td>$!{doc.ALIPAY_ACCOUNT}</td>
+			<td>#formatDate($!{doc.CREATE_TIME})</td>
+			<td>#m_status($!{doc.STATUS})</td>
+		</tr>#end
 	</tbody>
 </table>

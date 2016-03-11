@@ -1,11 +1,11 @@
-<#include "/_pagelet/constant.html"/>
+#parse('_pagelet/constant.html')
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/_pagelet/header.html"/>
+#parse('_pagelet/header.html')
 <title>用户管理</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
 </head>
 <body>
 	<div class='container'>
@@ -40,7 +40,7 @@
 					<div class='panel-heading'>
 						<div class='btn-group btn-group-xs'>
 							<button class='btn btn-primary glyphicon glyphicon-plus-sign'
-								onclick='parent.location.href="${(conf_html_virtualPath)!}#page/user/add"'>新增</button>
+								onclick='parent.location.href="${conf.html.virtualPath}#page/user/add"'>新增</button>
 							<button id='btn_edit'
 								class='btn btn-default glyphicon glyphicon-edit'>编辑</button>
 							<button id='btn_del'
@@ -59,7 +59,7 @@
 							</div>
 						</div>
 					</div>
-					<#include "_pagelet/list.html"/>
+					#parse('manage/user/1.0.1/_pagelet/list.html')
 				</div>
 				<nav>
 					<ul class="pagination pagination-sm">
@@ -75,9 +75,9 @@
 			</div>
 		</div>
 	</div>
-	<#include "/_pagelet/js.html"/>
+	#parse('_pagelet/js.html')
 	<script type='text/javascript'
-		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+		src='${conf.html.virtualPath}public/assets/js/iframe.js'></script>
 	<script>
 		function resetUserPass() {
 			var selIds = $('#table1').olxGrid('getCheckedRowsValue', 1);
@@ -85,7 +85,7 @@
 				return;
 			if (confirm('你确定要执行该操作吗？')) {
 				$.ajax({
-					url : '${(conf_html_virtualPath)!}user/resetPwd',
+					url : '${conf.html.virtualPath}user/resetPwd',
 					type : 'POST',
 					dataType : 'JSON',
 					data : {
@@ -111,7 +111,7 @@
 								if (1 !== selIds.length)
 									return;
 								var selId = selIds[0];
-								parent.location.href = '${(conf_html_virtualPath)!}#page/user/edit?id='
+								parent.location.href = '${conf.html.virtualPath}#page/user/edit?id='
 										+ selId;
 							});
 
@@ -121,7 +121,7 @@
 					return;
 				if (confirm('你确定要执行该操作吗？')) {
 					$.ajax({
-						url : '${(conf_html_virtualPath)!}user/remove',
+						url : '${conf.html.virtualPath}user/remove',
 						type : 'POST',
 						dataType : 'JSON',
 						data : {

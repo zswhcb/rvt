@@ -18,6 +18,26 @@ var biz = {
  * @params
  * @return
  */
+exports.indexUI = function(req, res, next){
+	biz.user.findByUser(function (err, docs){
+		if(err) return next(err);
+		// TODO
+		res.render('manage/user/1.0.1/index', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				users: docs
+			}
+		});
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.changePwd = function(req, res, next){
 	var result = { success: false };
 	var data = req._data;

@@ -21,5 +21,7 @@ module.exports = {
 		return tpl;
 	}, toHtml: function(s){
 		return velocity.render(s);
+	}, formatDate: function(time){
+		return util.format(time, 'YY-MM-dd hh:mm:ss');
 	}
 };
