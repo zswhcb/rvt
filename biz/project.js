@@ -58,8 +58,8 @@ var exports = module.exports;
 	 * @params
 	 * @return
 	 */
-	exports.findAll = function(cb){
-		var sql = sql_1 + sql_orderby;
+	exports.findByProject = function(cb){
+		var sql = 'SELECT * FROM r_project';
 		mysql.query(sql, null, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
