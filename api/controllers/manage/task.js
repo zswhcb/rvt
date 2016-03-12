@@ -176,3 +176,40 @@ exports.indexUI = function(req, res, next){
 		ep.emit('projects', docs);
 	});
 };
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.monitorUI = function(req, res, next){
+	var query = req.query;
+
+	// TODO
+	var ep = EventProxy.create('tasks', 'projects', function (tasks, projects){
+		res.render('manage/task/1.0.1/monitor', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				project_id: query.project_id,
+				projects: projects,
+				tasks: tasks
+			}
+		});
+	});
+
+	ep.fail(function (err, msg){
+		next(err);
+	});
+
+	biz.task.findByTask({ PROJECT_ID: query.project_id }, function (err, docs){
+		if(err) return ep.emit('error', err);
+		ep.emit('tasks', docs);
+	});
+
+	biz.project.findByProject(null, function (err, docs){
+		if(err) return ep.emit('error', err);
+		ep.emit('projects', docs);
+	});
+};

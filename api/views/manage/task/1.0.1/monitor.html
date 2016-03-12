@@ -1,15 +1,15 @@
-<#include "/_pagelet/constant.html"/>
+#parse('_pagelet/constant.html')
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/_pagelet/header.html"/>
+#parse('_pagelet/header.html')
 <title>任务监控</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
 <style>
 .WdatePicker {
 	background: #fff
-		url('${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/skin/datePicker.gif')
+		url('$!{conf.html.cdn}js/My97DatePicker/4.8-Beta4/skin/datePicker.gif')
 		no-repeat right;
 }
 </style>
@@ -30,23 +30,20 @@
 						</h3>
 					</div>
 					<div class='panel-body'>
-						<#import "/_macro/select_option.html" as select_option>
+						#parse('_macro/select_option.html')
 						<form id='searchFrm' class='form-inline' role='form'
 							onsubmit='return false;'>
 							<div class='form-group'>
 								<input type='text' class='form-control WdatePicker'
 									id='searchfrm_start_time' placeholder='选择日期'
-									value='${(data_start_time)!}'
+									value='$!{data.start_time}'
 									onClick="WdatePicker({onpicking:onpicking,dateFmt:'yyyy-MM-dd'});">
 							</div>
-							<#if (data_tasks?? && data_tasks?size>0)>
-							<div class='form-group'>
+							#if($data.tasks)<div class='form-group'>
 								<select class='form-control' id='searchFrm_task_id'>
-									<@select_option.m list=data_tasks key="id" value="task_name"
-									selValue="${(data_task_id)!}"/>
+									#m_select_option($!{data.tasks}, 'id', 'TASK_NAME')
 								</select>
-							</div>
-							</#if>
+							</div>#end
 							<div class='form-group'>
 								<button type='button'
 									class='btn btn-default glyphicon glyphicon-search'
@@ -60,14 +57,12 @@
 		<div class='row'>
 			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default table-responsive'>
-					<#import "/_macro/status_task.html" as status_task>
 					<table id='table1' data-olx-type='olx.grid'
 						class='table table-bordered table-hover table-condensed table-striped'
 						data-url='' data-current='1' data-pagesize='20' data-count='561'>
 						<thead>
 							<tr>
-								<th class='ta'><input type='checkbox' title='全选/取消'>
-								</th>
+								<th class='ta'><input type='checkbox' title='全选/取消'></th>
 								<th>上传时间</th>
 								<th>通话时间</th>
 								<th>通话时长</th>
@@ -77,32 +72,21 @@
 							</tr>
 						</thead>
 						<tbody>
-							<#list data_tasktakes! as doc>
-							<tr>
-								<td class='ta'><input type='checkbox'></td>
-								<td>${(doc.upload_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-								<td>${(doc.talk_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-								<td>${(doc.talk_time_len)!}</td>
-								<td>${(doc.user.user_name)!}</td>
-								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-								<td><@status_task.m status="${(doc.status)!}"/></td>
-							</tr>
-							</#list>
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
 	</div>
-	<#include "/_pagelet/js.html"/>
+	#parse('_pagelet/js.html')
 	<script type='text/javascript'
-		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+		src='${conf.html.virtualPath}public/assets/js/iframe.js'></script>
 	<script type='text/javascript'
-		src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
+		src='$!{conf.html.cdn}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
 	<script>
 		function onpicking(dp) {
 			var start_time = dp.cal.getNewDateStr();
-			var url = '${(conf_html_virtualPath)!}#page/task/monitor'
+			var url = '$!{conf.html.virtualPath}manage/#page/task/monitor'
 					+ (!start_time ? '' : '?start_time=' + start_time);
 			parent.location.href = url;
 		}
@@ -115,7 +99,7 @@
 								return;
 							// TODO
 							var start_time = $('#searchfrm_start_time').val();
-							var url = '${(conf_html_virtualPath)!}#page/task/monitor?start_time='
+							var url = '$!{conf.html.virtualPath}manage/#page/task/monitor?start_time='
 									+ start_time + '&task_id=' + task_id;
 							parent.location.href = url;
 						});

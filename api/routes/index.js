@@ -47,6 +47,7 @@ function proc_manage(app){
 	app.get('/manage/task/edit', user.login_validate, task.editUI);
 	app.get('/manage/task/add', user.login_validate, task.addUI);
 	app.get('/manage/task/', user.login_validate, task.indexUI);
+	app.get('/manage/task/monitor', user.login_validate, task.monitorUI);
 
 	/* project */
 	app.post('/manage/project/remove', express.valiPostData, user.login_validate, project.remove);
