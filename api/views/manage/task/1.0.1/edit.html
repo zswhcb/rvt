@@ -39,7 +39,7 @@
 					url : '$!{conf.html.virtualPath}manage/task/edit',
 					type : 'POST',
 					dataType : 'JSON',
-					data : $('#addFrm').serializeObjectForm(),
+					data : { data: JSON.stringify($('#addFrm').serializeObjectForm()) },
 					success : function(data) {
 						if (!data.success)
 							return alert(data.msg[0]);

@@ -91,7 +91,7 @@
 		<div class='col-sm-4'>
 			<input type='text' class='form-control WdatePicker' name='START_TIME'
 				id='addfrm_START_TIME' placeholder='开始时间'
-				value='$!{task.START_TIME}'
+				value='#formatDate($!{task.START_TIME})'
 				onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'addfrm_END_TIME\')}'})">
 		</div>
 	</div>
@@ -101,7 +101,7 @@
 		<div class='col-sm-4'>
 			<input type='text' class='form-control WdatePicker' name='END_TIME'
 				id='addfrm_END_TIME' placeholder='结束时间'
-				value='$!{task.END_TIME}'
+				value='#formatDate($!{task.END_TIME})'
 				onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'addfrm_START_TIME\')}'})">
 		</div>
 	</div>

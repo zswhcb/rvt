@@ -6,8 +6,9 @@
 'use strict';
 
 var util = require('speedt-utils'),
-mysql_util = util.mysql_util,
-mysql = util.mysql;
+	uuid = require('node-uuid'),
+	mysql_util = util.mysql_util,
+	mysql = util.mysql;
 
 var exports = module.exports;
 
@@ -244,24 +245,6 @@ var biz = {
     };
 })(exports);
 
-/**
- * 删除
- *
- * @params
- * @return
- */
-(function (exports){
-    var sql = 'DELETE FROM p_task WHERE id=?';
-    // TODO
-    exports.remove = function(id, cb){
-	// TODO
-	mysql.query(sql, [id], function (err, status){
-	    if(err) return cb(err);
-	    cb(null, status);
-	});
-    };
-})(exports);
-
 (function (exports){
 
 	var _sql = 'SELECT d.PROJECT_NAME, c.* FROM'+
@@ -321,74 +304,114 @@ var biz = {
  * @return
  */
 (function (exports){
-    function formVali(newInfo, cb){
-	cb(null);
-    }
+	function formVali(newInfo, cb){
+		cb(null);
+	}
 
-    /**
-     * 添加
-     *
-     * @params
-     * @return
-     */
-    (function (exports){
-	var sql = 'INSERT INTO p_task (id, TASK_NAME, TASK_INTRO, SMS_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_LEN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_USER_ID, CREATE_TIME) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-	// TODO
-	exports.saveNew = function(newInfo, cb){
-	    formVali(newInfo, function (err){
-		if(err) return cb(err);
-		// CREATE
-		var postData = [
-		    util.genObjectId(),
-		    newInfo.TASK_NAME,
-		    newInfo.TASK_INTRO,
-		    newInfo.SMS_INTRO,
-		    newInfo.TASK_SUM || 20,
-		    newInfo.PROJECT_ID,
-		    newInfo.TALK_TIME_LEN || 30,
-		    newInfo.TALK_TIMEOUT || 3600,
-		    newInfo.START_TIME || new Date(),
-		    newInfo.END_TIME || new Date(),
-		    newInfo.CREATE_USER_ID,
-		    new Date()
-		];
-		mysql.query(sql, postData, function (err, status){
-		    if(err) return cb(err);
-		    cb(null, null, status);
-		});
-	    });
-	};
-    })(exports);
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	(function (exports){
+		var sql = 'INSERT INTO r_project_task (id, TASK_NAME, TASK_INTRO, SMS_INTRO, TASK_SUM, PROJECT_ID, TALK_TIME_MIN, TALK_TIMEOUT, START_TIME, END_TIME, CREATE_USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		// TODO
+		exports.saveNew = function(newInfo, cb){
+			formVali(newInfo, function (err){
+				if(err) return cb(err);
+				// CREATE
+				var postData = [
+					util.replaceAll(uuid.v1(), '-', ''),
+					newInfo.TASK_NAME,
+					newInfo.TASK_INTRO,
+					newInfo.SMS_INTRO,
+					newInfo.TASK_SUM || 20,
+					newInfo.PROJECT_ID,
+					newInfo.TALK_TIME_MIN || 30,
+					newInfo.TALK_TIMEOUT || 3600,
+					newInfo.START_TIME || new Date(),
+					newInfo.END_TIME || new Date(),
+					newInfo.CREATE_USER_ID,
+					new Date(),
+					newInfo.STATUS || 1
+				];
+				mysql.query(sql, postData, function (err, status){
+					if(err) return cb(err);
+					cb(null, null, status);
+				});
+			});
+		};
+	})(exports);
 
-    /**
-     * 修改
-     *
-     * @params
-     * @return
-     */
-    (function (exports){
-	var sql = 'UPDATE p_task set TASK_NAME=?, TASK_INTRO=?, SMS_INTRO=?, TASK_SUM=?, TALK_TIME_LEN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=? WHERE id=?';
-	// TODO
-	exports.editInfo = function(newInfo, cb){
-	    formVali(newInfo, function (err){
-		if(err) return cb(err);
-		// CREATE
-		var postData = [
-		    newInfo.TASK_NAME,
-		    newInfo.TASK_INTRO,
-		    newInfo.SMS_INTRO,
-		    newInfo.TASK_SUM || 20,
-		    newInfo.TALK_TIME_LEN || 30,
-		    newInfo.TALK_TIMEOUT || 3600,
-		    newInfo.START_TIME || new Date(),
-		    newInfo.END_TIME || new Date(),
-		    newInfo.id
-		];
-		mysql.query(sql, postData, function (err, status){
-		    if(err) return cb(err);
-		    cb(null, null, status);
-		});
-	    });
-	};
-    })(exports);
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	(function (exports){
+		var sql = 'UPDATE r_project_task set TASK_NAME=?, TASK_INTRO=?, SMS_INTRO=?, TASK_SUM=?, TALK_TIME_MIN=?, TALK_TIMEOUT=?, START_TIME=?, END_TIME=?, STATUS=? WHERE id=?';
+		// TODO
+		exports.editInfo = function(newInfo, cb){
+			formVali(newInfo, function (err){
+				if(err) return cb(err);
+				// EDIT
+				var postData = [
+					newInfo.TASK_NAME,
+					newInfo.TASK_INTRO,
+					newInfo.SMS_INTRO,
+					newInfo.TASK_SUM || 20,
+					newInfo.TALK_TIME_MIN || 30,
+					newInfo.TALK_TIMEOUT || 3600,
+					newInfo.START_TIME || new Date(),
+					newInfo.END_TIME || new Date(),
+					newInfo.STATUS || 1,
+					newInfo.id
+				];
+				mysql.query(sql, postData, function (err, status){
+					if(err) return cb(err);
+					cb(null, null, status);
+				});
+			});
+		};
+	})(exports);
+})(exports);
+
+/**
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+
+	function proc_sql_center(ids){
+		var sql = '';
+		for(var i in ids){
+			sql += '?, ';
+		}
+		return sql.substring(0, sql.length - 2);
+	}
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	(function (exports){
+		var _sql_start = 'DELETE FROM r_project_task WHERE id IN (';
+		var _sql_end = ')';
+
+		// TODO
+		exports.remove = function(ids, cb){
+			if(!ids && (0 === ids.length)) return cb(null, ['参数异常']);
+
+			var sql = _sql_start;
+			sql += proc_sql_center(ids);
+			sql += _sql_end;
+
+			mysql.query(sql, ids, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
+			});
+		};
+	})(exports);
 })(exports);
