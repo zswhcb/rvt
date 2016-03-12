@@ -16,10 +16,7 @@ var EventProxy = require('eventproxy');
 
 var exports = module.exports;
 
-var biz = {
-	user_role: require('./user_role'),
-	authcode: require('./authcode')
-};
+var biz = {};
 
 (function (exports){
 	// 查询用户 关联用户角色表
@@ -32,9 +29,10 @@ var biz = {
 	 */
 	exports.findByUser = function(user, cb){
 		var sql = _sql;
-		var postData = [];
+		var postData = null;
 
 		if(user){
+			postData = [];
 			// TODO
 			var INVITE_USER_ID = util.isEmpty(user.INVITE_USER_ID);
 			if(INVITE_USER_ID){
@@ -65,33 +63,6 @@ var biz = {
 	};
 
 	/**
-	 * 用户登陆
-	 *
-	 * @params {Object} logInfo 用户登陆信息
-	 * @params {Function} cb 回调函数
-	 * @return
-	 */
-	exports.login = function(logInfo, cb){
-		logInfo.USER_NAME = util.isEmpty(logInfo.USER_NAME);
-		if(!logInfo.USER_NAME) return cb(null, ['用户名或密码输入错误']);
-
-		this.findByName(logInfo.USER_NAME, function (err, doc){
-			if(err) return cb(err);
-			// TODO
-			if(!doc) return cb(null, ['用户名或密码输入错误']);
-
-			// TODO
-			if(1 !== doc.STATUS) return cb(null, ['禁止登陆']);
-
-			// TODO
-			if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
-				return cb(null, ['用户名或密码输入错误']);
-			
-			cb(null, null, doc);
-		});
-	};
-
-	/**
 	 *
 	 * @params
 	 * @return
@@ -109,9 +80,9 @@ var biz = {
 	 * @params
 	 * @return
 	 */
-	exports.findByName = function(user_name, cb){
+	exports.findByName = function(USER_NAME, cb){
 		var sql = _sql +' AND a.USER_NAME=?';
-		mysql.query(sql, [user_name], function (err, docs){
+		mysql.query(sql, [USER_NAME], function (err, docs){
 			if(err) return cb(err);
 			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
 		});
@@ -122,9 +93,9 @@ var biz = {
 	 * @params
 	 * @return
 	 */
-	exports.findByApiKey = function(apiKey, cb){
+	exports.findByApiKey = function(APIKEY, cb){
 		var sql = _sql +' AND a.APIKEY=?';
-		mysql.query(sql, [apiKey], function (err, docs){
+		mysql.query(sql, [APIKEY], function (err, docs){
 			if(err) return cb(err);
 			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
 		});
@@ -132,13 +103,40 @@ var biz = {
 })(exports);
 
 /**
+ * 用户登陆
+ *
+ * @params {Object} logInfo 用户登陆信息
+ * @params {Function} cb 回调函数
+ * @return
+ */
+exports.login = function(logInfo, cb){
+	logInfo.USER_NAME = util.isEmpty(logInfo.USER_NAME);
+	if(!logInfo.USER_NAME) return cb(null, ['用户名或密码输入错误']);
+
+	this.findByName(logInfo.USER_NAME, function (err, doc){
+		if(err) return cb(err);
+		// TODO
+		if(!doc) return cb(null, ['用户名或密码输入错误']);
+
+		// TODO
+		if(1 !== doc.STATUS) return cb(null, ['禁止登陆']);
+
+		// TODO
+		if(md5.hex(logInfo.USER_PASS) !== doc.USER_PASS)
+			return cb(null, ['用户名或密码输入错误']);
+
+		cb(null, null, doc);
+	});
+};
+
+/**
  *
  * @params
  * @return
  */
-exports.findBySecKey = function(secKey, cb){
+exports.findBySecKey = function(SECKEY, cb){
 	// TODO
-	mysql_util.find(null, 's_user', [['SECKEY', '=', secKey]], null, null, function (err, docs){
+	mysql_util.find(null, 's_user', [['SECKEY', '=', SECKEY]], null, null, function (err, docs){
 		if(err) return cb(err);
 		cb(null, mysql.checkOnly(docs) ? docs[0] : null);
 	});
@@ -308,6 +306,7 @@ exports.findBySecKey = function(secKey, cb){
 
 		this.getById(newInfo.id, function (err, doc){
 			if(err) return cb(err);
+			if(!doc) return cb(null, ['修改密码失败']);
 			// TODO
 			if(md5.hex(newInfo.OLD_PASS) !== doc.USER_PASS){
 				return cb(null, ['原始密码错误']);

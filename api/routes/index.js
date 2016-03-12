@@ -41,33 +41,33 @@ function proc_manage(app){
 	var task = manage.task;
 
 	/* task */
-	app.post('/manage/task/remove', express.valiPostData, user.login_validate, task.remove);
-	app.post('/manage/task/edit', express.valiPostData, user.login_validate, task.edit);
-	app.post('/manage/task/add', express.valiPostData, user.login_validate, task.add);
-	app.get('/manage/task/edit', user.login_validate, task.editUI);
-	app.get('/manage/task/add', user.login_validate, task.addUI);
+	app.post('/manage/task/remove$', express.valiPostData, user.login_validate, task.remove);
+	app.post('/manage/task/edit$', express.valiPostData, user.login_validate, task.edit);
+	app.post('/manage/task/add$', express.valiPostData, user.login_validate, task.add);
+	app.get('/manage/task/edit$', user.login_validate, task.editUI);
+	app.get('/manage/task/add$', user.login_validate, task.addUI);
 	app.get('/manage/task/', user.login_validate, task.indexUI);
-	app.get('/manage/task/monitor', user.login_validate, task.monitorUI);
+	app.get('/manage/task/monitor$', user.login_validate, task.monitorUI);
 
 	/* project */
-	app.post('/manage/project/remove', express.valiPostData, user.login_validate, project.remove);
-	app.post('/manage/project/edit', express.valiPostData, user.login_validate, project.edit);
-	app.post('/manage/project/add', express.valiPostData, user.login_validate, project.add);
-	app.get('/manage/project/edit', user.login_validate, project.editUI);
-	app.get('/manage/project/add', user.login_validate, project.addUI);
+	app.post('/manage/project/remove$', express.valiPostData, user.login_validate, project.remove);
+	app.post('/manage/project/edit$', express.valiPostData, user.login_validate, project.edit);
+	app.post('/manage/project/add$', express.valiPostData, user.login_validate, project.add);
+	app.get('/manage/project/edit$', user.login_validate, project.editUI);
+	app.get('/manage/project/add$', user.login_validate, project.addUI);
 	app.get('/manage/project/', user.login_validate, project.indexUI);
 
 	/* role */
 	app.get('/manage/role/', user.login_validate, role.indexUI);
 
 	/* user */
-	app.post('/manage/user/list', express.valiPostData, user.login_validate, user.list);
-	app.post('/manage/user/resetPwd', express.valiPostData, user.login_validate, user.resetPwd);
-	app.post('/manage/user/remove', express.valiPostData, user.login_validate, user.remove);
-	app.post('/manage/user/edit', express.valiPostData, user.login_validate, user.edit);
-	app.post('/manage/user/add', express.valiPostData, user.login_validate, user.add);
-	app.get('/manage/user/edit', user.login_validate, user.editUI);
-	app.get('/manage/user/add', user.login_validate, user.addUI);
+	app.post('/manage/user/list$', express.valiPostData, user.login_validate, user.list);
+	app.post('/manage/user/resetPwd$', express.valiPostData, user.login_validate, user.resetPwd);
+	app.post('/manage/user/remove$', express.valiPostData, user.login_validate, user.remove);
+	app.post('/manage/user/edit$', express.valiPostData, user.login_validate, user.edit);
+	app.post('/manage/user/add$', express.valiPostData, user.login_validate, user.add);
+	app.get('/manage/user/edit$', user.login_validate, user.editUI);
+	app.get('/manage/user/add$', user.login_validate, user.addUI);
 	app.get('/manage/user/', user.login_validate, user.indexUI);
 
 	// TODO
@@ -80,8 +80,7 @@ function proc_manage(app){
 	app.post('/manage/user/login$', express.valiPostData, user.login);
 
 	/* site */
-	// TODO
-	app.get('/manage/welcome', user.login_validate, site.welcomeUI);
+	app.get('/manage/welcome$', user.login_validate, site.welcomeUI);
 	app.get('/manage/', user.login_validate, site.indexUI);
 }
 
