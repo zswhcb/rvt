@@ -186,6 +186,9 @@ exports.findBySecKey = function(SECKEY, cb){
 		var sql = 'INSERT INTO s_user (id, ROLE_ID, INVITE_USER_ID, USER_NAME, USER_PASS, EMAIL, MOBILE, APIKEY, SECKEY, REAL_NAME, ALIPAY_ACCOUNT, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
+			newInfo.USER_NAME = util.isEmpty(newInfo.USER_NAME);
+			if(!newInfo.USER_NAME) return cb(null, ['手机号不能为空']);
+
 			var that = this;
 
 			formVali(newInfo, function (err){
