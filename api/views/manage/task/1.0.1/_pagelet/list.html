@@ -11,6 +11,7 @@
 			<th>超时时长（秒）</th>
 			<th>开始时间</th>
 			<th>结束时间</th>
+			<th>创建人</th>
 			<th>创建时间</th>
 			<th>状态</th>
 		</tr>
@@ -24,6 +25,7 @@
 			<td>$!{doc.TALK_TIMEOUT}</td>
 			<td>#formatDate($!{doc.START_TIME})</td>
 			<td>#formatDate($!{doc.END_TIME})</td>
+			<td>$!{doc.CREATE_USER_NAME}</td>
 			<td>#formatDate($!{doc.CREATE_TIME})</td>
 			<td>#m_status($!{doc.STATUS})</td>
 		</tr>#end

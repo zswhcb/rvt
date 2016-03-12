@@ -41,6 +41,12 @@ var biz = {
 				sql += ' AND a.INVITE_USER_ID=?';
 				postData.push(INVITE_USER_ID);
 			}
+			// TODO
+			var ROLE_ID = util.isEmpty(user.ROLE_ID);
+			if(ROLE_ID){
+				sql += ' AND a.ROLE_ID=?';
+				postData.push(ROLE_ID);
+			}
 		}
 
 		sql += ' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';

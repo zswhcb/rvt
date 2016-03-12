@@ -1,34 +1,33 @@
 <style>
 .WdatePicker {
 	background: #fff
-		url('${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/skin/datePicker.gif')
+		url('$!{conf.html.cdn}js/My97DatePicker/4.8-Beta4/skin/datePicker.gif')
 		no-repeat right;
 }
 </style>
-<#import "/_macro/select_option.html" as select_option>
+#parse('_macro/select_option.html')
+#set($task=$!{data.task})
 <form class='form-horizontal' id='addFrm' role='form'
 	onsubmit='return false;' data-url=''>
 	<input type='hidden' name='id' id='addFrm_id'
-		value='${(data_task.id)!}'>
+		value='$!{task.id}'>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_project_id'><span class='olx-form-required'>*</span>项目名称</label>
+			for='addFrm_PROJECT_ID'><span class='olx-form-required'>*</span>项目名称</label>
 		<div class='col-sm-4'>
-			<#if data_project??> <input type='text' class='form-control'
-				value='${(data_project.project_name)!}' readonly> <#else> <select
-				class='form-control' name='project_id' id='addFrm_project_id'>
-				<#list data_projects! as doc>
-				<option value='${(doc.id)!}'>${(doc.project_name)!}</option>
-				</#list>
-			</select> </#if>
+			#if(!$data.projects) <input type='text' class='form-control'
+				value='$!{task.PROJECT_NAME}' readonly> #else <select
+				class='form-control' name='PROJECT_ID' id='addFrm_PROJECT_ID'>
+				#m_select_option($!{data.projects}, 'id', 'PROJECT_NAME')
+			</select> #end
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
 			for='addFrm_create_user_id'><span class='olx-form-required'>*</span>发布人</label>
 		<div class='col-sm-4'>
-			<#if data_user??> <input type='text' class='form-control'
-				value='${(data_user.user_name)!}' readonly><#else>
+			#if(!$data.users) <input type='text' class='form-control'
+				value='$!{task.CREATE_USER_NAME}' readonly> #else
 			<div class="input-group">
 				<input type="text" aria-label="Text input with dropdown button"
 					class="form-control" id='addFrm_create_user_name' placeholder='发布人'>
@@ -42,94 +41,91 @@
 						选择 <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right">
-						<#list data_users! as doc>
-						<li><a href='javascript:;'
-							onclick='selItem("${(doc.id)!}", "${(doc.user_name)!}");'>${(doc.user_name)!}</a>
-						</li></#list>
+						#foreach($!doc in $!data.users)<li><a href='javascript:;'
+							onclick='selItem("$!{doc.id}", "$!{doc.USER_NAME}");'>$!{doc.USER_NAME}</a>
+						</li>#end
 					</ul>
 				</div>
-			</div>
-			</#if>
+			</div>#end
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_task_name'><span
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TASK_NAME'><span
 			class='olx-form-required'>*</span>任务名称</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='task_name'
-				id='addFrm_task_name' placeholder='任务名称'
-				value='${(data_task.task_name)!}'>
+			<input type='text' class='form-control' name='TASK_NAME'
+				id='addFrm_TASK_NAME' placeholder='任务名称'
+				value='$!{task.TASK_NAME}'>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_task_sum'><span
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_TASK_SUM'><span
 			class='olx-form-required'>*</span>任务数量</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='task_sum'
-				id='addFrm_task_sum' placeholder='任务数量'
-				value='${(data_task.task_sum)!}'>
+			<input type='text' class='form-control' name='TASK_SUM'
+				id='addFrm_TASK_SUM' placeholder='任务数量'
+				value='$!{task.TASK_SUM}'>
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_talk_time_min'><span class='olx-form-required'>*</span>最小时长（秒）</label>
+			for='addFrm_TALK_TIME_MIN'><span class='olx-form-required'>*</span>最小时长（秒）</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='talk_time_min'
-				id='addFrm_talk_time_min' placeholder='最小时长（秒）'
-				value='${(data_task.talk_time_min)!}'>
+			<input type='text' class='form-control' name='TALK_TIME_MIN'
+				id='addFrm_TALK_TIME_MIN' placeholder='最小时长（秒）'
+				value='$!{task.TALK_TIME_MIN}'>
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_talk_timeout'><span class='olx-form-required'>*</span>超时时长（秒）</label>
+			for='addFrm_TALK_TIMEOUT'><span class='olx-form-required'>*</span>超时时长（秒）</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='talk_timeout'
-				id='addFrm_talk_timeout' placeholder='超时时长（秒）'
-				value='${(data_task.talk_timeout)!}'>
+			<input type='text' class='form-control' name='TALK_TIMEOUT'
+				id='addFrm_TALK_TIMEOUT' placeholder='超时时长（秒）'
+				value='$!{task.TALK_TIMEOUT}'>
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addfrm_start_time'><span class='olx-form-required'>*</span>开始时间</label>
+			for='addfrm_START_TIME'><span class='olx-form-required'>*</span>开始时间</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control WdatePicker' name='start_time'
-				id='addfrm_start_time' placeholder='开始时间'
-				value='${(data_task.start_time?string("yyyy-MM-dd HH:mm:ss"))!}'
-				onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'addfrm_end_time\')}'})">
+			<input type='text' class='form-control WdatePicker' name='START_TIME'
+				id='addfrm_START_TIME' placeholder='开始时间'
+				value='$!{task.START_TIME}'
+				onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'addfrm_END_TIME\')}'})">
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addfrm_end_time'><span
+		<label class='col-sm-2 hidden-xs control-label' for='addfrm_END_TIME'><span
 			class='olx-form-required'>*</span>结束时间</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control WdatePicker' name='end_time'
-				id='addfrm_end_time' placeholder='结束时间'
-				value='${(data_task.end_time?string("yyyy-MM-dd HH:mm:ss"))!}'
-				onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'addfrm_start_time\')}'})">
+			<input type='text' class='form-control WdatePicker' name='END_TIME'
+				id='addfrm_END_TIME' placeholder='结束时间'
+				value='$!{task.END_TIME}'
+				onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'addfrm_START_TIME\')}'})">
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_task_intro'><span class='olx-form-required'>*</span>任务简介</label>
+			for='addFrm_TASK_INTRO'><span class='olx-form-required'>*</span>任务简介</label>
 		<div class='col-sm-4'>
-			<textarea class='form-control' rows='5' name='task_intro'
-				id='addFrm_task_intro' placeholder='任务简介' required='required'>${(data_task.task_intro)!}</textarea>
+			<textarea class='form-control' rows='5' name='TASK_INTRO'
+				id='addFrm_TASK_INTRO' placeholder='任务简介' required='required'>$!{task.TASK_INTRO}</textarea>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_sms_intro'><span
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_SMS_INTRO'><span
 			class='olx-form-required'>*</span>短信内容</label>
 		<div class='col-sm-4'>
-			<textarea class='form-control' rows='5' name='sms_intro'
-				id='addFrm_sms_intro' placeholder='短信内容' required='required'>${(data_task.sms_intro)!}</textarea>
+			<textarea class='form-control' rows='5' name='SMS_INTRO'
+				id='addFrm_SMS_INTRO' placeholder='短信内容' required='required'>$!{task.SMS_INTRO}</textarea>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_status'>状态</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_STATUS'>状态</label>
 		<div class='col-sm-4'>
-			<select class='form-control' name='status' id='addFrm_status'>
-				<@select_option.m list=dict_status key="key" value="value"
-				selValue="${(data_task.status)!}"/>
+			<select class='form-control' name='STATUS' id='addFrm_STATUS'>
+				#m_select_option($!{dict_status}, 'key', 'value', $!{task.STATUS})
 			</select>
 		</div>
 	</div>
@@ -140,8 +136,8 @@
 	</div>
 </form>
 <script type='text/javascript'
-	src='${(conf_html_cdn)!}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
-<#if data_users??>
+	src='$!{conf.html.cdn}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
+
 <script>
 	$('#addFrm_create_user_name')
 			.bind(
@@ -149,7 +145,7 @@
 					function(obj) {
 						$
 								.ajax({
-									url : '${(conf_html_virtualPath)!}user/list',
+									url : '$!{conf.html.virtualPath}manage/user/list',
 									type : 'POST',
 									dataType : 'JSON',
 									data : {
@@ -191,4 +187,3 @@
 		$('#addFrm_create_user_name').val(user_name);
 	}
 </script>
-</#if>

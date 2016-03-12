@@ -262,52 +262,56 @@ var biz = {
     };
 })(exports);
 
-
 (function (exports){
-    var sql_1 = 'SELECT c.USER_NAME, b.PROJECT_NAME, a.* FROM p_task a LEFT JOIN p_project b ON (a.PROJECT_ID=b.id) LEFT JOIN s_user c ON (a.CREATE_USER_ID=c.id) WHERE b.id IS NOT NULL AND c.id IS NOT NULL';
-    var sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
 
-    /**
-     *
-     * @params
-     * @return
-     */
-    exports.getById = function(id, cb){
-	var sql = sql_1 +' AND a.id=?';
-	// TODO
-	mysql.query(sql, [id], function (err, docs){
-	    if(err) return cb(err);
-	    cb(null, mysql.checkOnly(docs) ? docs[0] : null);
-	});
-    };
+	var _sql = 'SELECT d.PROJECT_NAME, c.* FROM'+
+				' (SELECT b.USER_NAME CREATE_USER_NAME, a.* FROM r_project_task a LEFT JOIN s_user b ON (a.CREATE_USER_ID=b.id) WHERE b.id IS NOT NULL) c'+
+				' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) WHERE d.id IS NOT NULL';
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.getById = function(id, cb){
+		var sql = _sql +' AND c.id=?';
+		mysql.query(sql, [id], function (err, docs){
+			if(err) return cb(err);
+			cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+		});
+	};
 
 	/**
 	 *
 	 * @params
 	 * @return
 	 */
-	exports.findByTask = function(cb){
-		var sql = 'SELECT * FROM r_project_task';
+	exports.findByTask = function(task, cb){
+		var sql = _sql;
+		var postData = [];
+
+		if(task){
+			// TODO
+			var CREATE_USER_ID = util.isEmpty(task.CREATE_USER_ID);
+			if(CREATE_USER_ID){
+				sql += ' AND c.CREATE_USER_ID=?';
+				postData.push(CREATE_USER_ID);
+			}
+			// TODO
+			var PROJECT_ID = util.isEmpty(task.PROJECT_ID);
+			if(PROJECT_ID){
+				sql += ' AND c.PROJECT_ID=?';
+				postData.push(PROJECT_ID);
+			}
+		}
+
+		sql += ' ORDER BY c.CREATE_TIME DESC';
+
 		// TODO
-		mysql.query(sql, null, function (err, docs){
+		mysql.query(sql, postData, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
 		});
 	};
-
-    /**
-     *
-     * @params
-     * @return
-     */
-    exports.findByProjectId = function(project_id, cb){
-	var sql = sql_1 +' AND a.PROJECT_ID=?'+ sql_orderby;
-	// TODO
-	mysql.query(sql, [project_id], function (err, docs){
-	    if(err) return cb(err);
-	    cb(null, docs);
-	});
-    };
 })(exports);
 
 /**

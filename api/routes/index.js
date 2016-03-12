@@ -41,6 +41,9 @@ function proc_manage(app){
 	var task = manage.task;
 
 	/* task */
+	app.post('/manage/task/remove', express.valiPostData, user.login_validate, task.remove);
+	app.post('/manage/task/edit', express.valiPostData, user.login_validate, task.edit);
+	app.post('/manage/task/add', express.valiPostData, user.login_validate, task.add);
 	app.get('/manage/task/edit', user.login_validate, task.editUI);
 	app.get('/manage/task/add', user.login_validate, task.addUI);
 	app.get('/manage/task/', user.login_validate, task.indexUI);

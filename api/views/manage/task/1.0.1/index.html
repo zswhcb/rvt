@@ -23,13 +23,14 @@
 						</h3>
 					</div>
 					<div class='panel-body'>
-						<#import "/_macro/select_option.html" as select_option>
+						#parse('_macro/select_option.html')
 						<form id='searchFrm' class='form-inline' role='form'
 							onsubmit='return false;'>
 							<div class='form-group'>
 								<select class='form-control' name='project_id'
 									id='searchFrm_project_id'>
 									<option value=''></option>
+									#m_select_option($!{data.projects}, 'id', 'PROJECT_NAME', $!{data.project_id})
 								</select>
 							</div>
 							<div class='form-group'>
@@ -46,7 +47,7 @@
 					<div class='panel-heading'>
 						<div class='btn-group btn-group-xs'>
 							<button class='btn btn-primary glyphicon glyphicon-plus-sign'
-								onclick='parent.location.href="$!{conf.html.virtualPath}#page/task/add"'>新增</button>
+								onclick='parent.location.href="$!{conf.html.virtualPath}manage/#page/task/add"'>新增</button>
 							<button id='btn_edit'
 								class='btn btn-default glyphicon glyphicon-edit'>编辑</button>
 							<button id='btn_del'
@@ -77,7 +78,7 @@
 			$('#searchFrm_btn_search').click(
 					function() {
 						var project_id = $('#searchFrm_project_id').val();
-						var url = '$!{conf.html.virtualPath}#page/task/'
+						var url = '$!{conf.html.virtualPath}manage/#page/task/'
 								+ (!project_id ? '' : '?project_id='
 										+ project_id);
 						parent.location.href = url;
@@ -91,7 +92,7 @@
 								if (1 !== selIds.length)
 									return;
 								var selId = selIds[0];
-								parent.location.href = '$!{conf.html.virtualPath}#page/task/edit?id='
+								parent.location.href = '$!{conf.html.virtualPath}manage/#page/task/edit?id='
 										+ selId;
 							});
 
