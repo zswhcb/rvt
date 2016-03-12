@@ -87,9 +87,23 @@ exports.findByApiKey = function(apiKey, cb){
 	 * @params
 	 * @return
 	 */
-	exports.findByUser = function(cb){
-		var sql = _sql +' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';
-		mysql.query(sql, null, function (err, docs){
+	exports.findByUser = function(user, cb){
+		var sql = _sql;
+		var postData = [];
+
+		if(user){
+			// TODO
+			var INVITE_USER_ID = util.isEmpty(user.INVITE_USER_ID);
+			if(INVITE_USER_ID){
+				sql += ' AND a.INVITE_USER_ID=?';
+				postData.push(INVITE_USER_ID);
+			}
+		}
+
+		sql += ' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';
+
+		// TODO
+		mysql.query(sql, postData, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
 		});
@@ -207,7 +221,7 @@ exports.findByName = function(name, cb){
 					// CREATE
 					var postData = [
 						util.replaceAll(uuid.v1(), '-', ''),
-						newInfo.ROLE_ID,
+						newInfo.ROLE_ID || 'e4acb256cafa4cb487fa6abf508df073',
 						newInfo.INVITE_USER_ID,
 						newInfo.USER_NAME,
 						md5.hex(newInfo.USER_PASS || '123456'),
@@ -235,14 +249,13 @@ exports.findByName = function(name, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE s_user set ROLE_ID=?, USER_PASS=?, APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, DEVICE_CODE=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE s_user set USER_PASS=?, APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, DEVICE_CODE=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
 				// EDIT
 				var postData = [
-					newInfo.ROLE_ID,
 					md5.hex(newInfo.USER_PASS || '123456'),
 					rest.genApiKey(),
 					rest.genSecKey(),
