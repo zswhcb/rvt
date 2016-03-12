@@ -208,21 +208,60 @@ var biz = {
  * @return
  */
 (function (exports){
-	var _sql_start = 'DELETE FROM s_user WHERE id IN (';
-	var _sql_end = ')';
 
-	// TODO
-	exports.remove = function(ids, cb){
-		if(!ids && (0 === ids.length)) return cb(null, ['参数异常']);
+	function proc_sql_center(ids){
+		var sql = '';
+		for(var i in ids){
+			sql += '?, ';
+		}
+		return sql.substring(0, sql.length - 2);
+	}
 
-		var sql = _sql_start;
-		for(var i in ids){ sql += '?, '; }
-		sql = sql.substring(0, sql.length-2);
-		sql += _sql_end;
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	(function (exports){
+		var _sql_start = 'UPDATE s_user set USER_PASS="e10adc3949ba59abbe56e057f20f883e" WHERE id IN (';
+		var _sql_end = ')';
 
-		mysql.query(sql, ids, function (err, status){
-			if(err) return cb(err);
-			cb(null, null, status);
-		});
-	};
+		// TODO
+		exports.resetPwd = function(ids, cb){
+			if(!ids && (0 === ids.length)) return cb(null, ['参数异常']);
+
+			var sql = _sql_start;
+			sql += proc_sql_center(ids);
+			sql += _sql_end;
+
+			mysql.query(sql, ids, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
+			});
+		};
+	})(exports);
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	(function (exports){
+		var _sql_start = 'DELETE FROM s_user WHERE id IN (';
+		var _sql_end = ')';
+
+		// TODO
+		exports.remove = function(ids, cb){
+			if(!ids && (0 === ids.length)) return cb(null, ['参数异常']);
+
+			var sql = _sql_start;
+			sql += proc_sql_center(ids);
+			sql += _sql_end;
+
+			mysql.query(sql, ids, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
+			});
+		};
+	})(exports);
 })(exports);
