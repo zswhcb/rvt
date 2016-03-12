@@ -234,6 +234,11 @@ exports.login = function(req, res, next){
 			return res.send(result);
 		}
 
+		if('60e97be2148f4d80b65ba7ac29ca9116' !== doc.ROLE_ID){
+			result.msg = ['无权登陆'];
+			return res.send(result);
+		}
+
 		// session
 		req.session.lv = 1;
 		req.session.userId = doc.id;

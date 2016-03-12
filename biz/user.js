@@ -12,6 +12,8 @@ var util = require('speedt-utils'),
 	mysql_util = util.mysql_util,
 	mysql = util.mysql;
 
+var EventProxy = require('eventproxy');
+
 var exports = module.exports;
 
 var biz = {
@@ -118,6 +120,19 @@ var biz = {
 })(exports);
 
 /**
+ *
+ * @params
+ * @return
+ */
+exports.findBySecKey = function(secKey, cb){
+	// TODO
+	mysql_util.find(null, 's_user', [['SECKEY', '=', secKey]], null, null, function (err, docs){
+		if(err) return cb(err);
+		cb(null, mysql.checkOnly(docs) ? docs[0] : null);
+	});
+};
+
+/**
  * 表单
  *
  * @params
@@ -126,6 +141,30 @@ var biz = {
 (function (exports){
 	function formVali(newInfo, cb){
 		cb(null);
+	}
+
+	function genApiKey(cb){
+		var that = this;
+		var apiKey = rest.genApiKey();
+
+		that.findByApiKey(apiKey, function (err, doc){
+			if(err) return cb(err);
+			// TODO
+			if(doc) return genApiKey.call(that, cb);
+			cb(null, apiKey);
+		});
+	}
+
+	function genSecKey(cb){
+		var that = this;
+		var secKey = rest.genSecKey();
+
+		that.findBySecKey(secKey, function (err, doc){
+			if(err) return cb(err);
+			// TODO
+			if(doc) return genSecKey.call(that, cb);
+			cb(null, secKey);
+		});
 	}
 
 	/**
@@ -137,32 +176,52 @@ var biz = {
 		var sql = 'INSERT INTO s_user (id, ROLE_ID, INVITE_USER_ID, USER_NAME, USER_PASS, EMAIL, MOBILE, APIKEY, SECKEY, REAL_NAME, ALIPAY_ACCOUNT, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
+			var that = this;
+
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
 				// TODO
-				exports.findByName(newInfo.USER_NAME, function (err, doc){
+				that.findByName(newInfo.USER_NAME, function (err, doc){
 					if(err) return cb(err);
 					// TODO
 					if(doc) return cb(null, ['手机号已经存在']);
-					// CREATE
-					var postData = [
-						util.replaceAll(uuid.v1(), '-', ''),
-						newInfo.ROLE_ID || 'e4acb256cafa4cb487fa6abf508df073',
-						newInfo.INVITE_USER_ID,
-						newInfo.USER_NAME,
-						md5.hex(newInfo.USER_PASS || '123456'),
-						newInfo.EMAIL,
-						newInfo.MOBILE,
-						rest.genApiKey(),
-						rest.genSecKey(),
-						newInfo.REAL_NAME,
-						newInfo.ALIPAY_ACCOUNT,
-						new Date(),
-						newInfo.STATUS || 1
-					];
-					mysql.query(sql, postData, function (err, status){
-						if(err) return cb(err);
-						cb(null, null, status);
+
+					// TODO
+					var ep = EventProxy.create('apiKey', 'secKey', function (apiKey, secKey){
+						// CREATE
+						var postData = [
+							util.replaceAll(uuid.v1(), '-', ''),
+							newInfo.ROLE_ID || 'e4acb256cafa4cb487fa6abf508df073',
+							newInfo.INVITE_USER_ID,
+							newInfo.USER_NAME,
+							md5.hex(newInfo.USER_PASS || '123456'),
+							newInfo.EMAIL,
+							newInfo.MOBILE,
+							apiKey,
+							secKey,
+							newInfo.REAL_NAME,
+							newInfo.ALIPAY_ACCOUNT,
+							new Date(),
+							newInfo.STATUS || 1
+						];
+						mysql.query(sql, postData, function (err, status){
+							if(err) return cb(err);
+							cb(null, null, status);
+						});
+					});
+
+					ep.fail(function (err, msg){
+						cb(err);
+					});
+
+					genApiKey.call(that, function (err, apiKey){
+						if(err) return ep.emit('error', err);
+						ep.emit('apiKey', apiKey);
+					});
+
+					genSecKey.call(that, function (err, secKey){
+						if(err) return ep.emit('error', err);
+						ep.emit('secKey', secKey);
 					});
 				});
 			});
@@ -178,24 +237,43 @@ var biz = {
 		var sql = 'UPDATE s_user set USER_PASS=?, APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, DEVICE_CODE=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
+			var that = this;
+
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
 				// EDIT
-				var postData = [
-					md5.hex(newInfo.USER_PASS || '123456'),
-					rest.genApiKey(),
-					rest.genSecKey(),
-					newInfo.EMAIL,
-					newInfo.MOBILE,
-					newInfo.REAL_NAME,
-					newInfo.ALIPAY_ACCOUNT,
-					newInfo.DEVICE_CODE,
-					newInfo.STATUS || 1,
-					newInfo.id
-				];
-				mysql.query(sql, postData, function (err, status){
-					if(err) return cb(err);
-					cb(null, null, status);
+				var ep = EventProxy.create('apiKey', 'secKey', function (apiKey, secKey){
+					// CREATE
+					var postData = [
+						md5.hex(newInfo.USER_PASS || '123456'),
+						apiKey,
+						secKey,
+						newInfo.EMAIL,
+						newInfo.MOBILE,
+						newInfo.REAL_NAME,
+						newInfo.ALIPAY_ACCOUNT,
+						newInfo.DEVICE_CODE,
+						newInfo.STATUS || 1,
+						newInfo.id
+					];
+					mysql.query(sql, postData, function (err, status){
+						if(err) return cb(err);
+						cb(null, null, status);
+					});
+				});
+
+				ep.fail(function (err, msg){
+					cb(err);
+				});
+
+				genApiKey.call(that, function (err, apiKey){
+					if(err) return ep.emit('error', err);
+					ep.emit('apiKey', apiKey);
+				});
+
+				genSecKey.call(that, function (err, secKey){
+					if(err) return ep.emit('error', err);
+					ep.emit('secKey', secKey);
 				});
 			});
 		};
