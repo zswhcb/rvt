@@ -19,6 +19,28 @@ var biz = {
  * @params
  * @return
  */
+exports.remove = function(req, res, next){
+	var data = req._data;
+	// TODO
+	biz.user.remove(data, function (err, msg, status){
+		if(err) return next(err);
+		var result = { success: false };
+
+		if(msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+
+		result.success = true;
+		res.send(result);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.edit = function(req, res, next){
 	var data = req._data;
 	// TODO

@@ -124,9 +124,7 @@
 						url : '${conf.html.virtualPath}manage/user/remove',
 						type : 'POST',
 						dataType : 'JSON',
-						data : {
-							ids : selIds.join(',')
-						},
+						data : { data: JSON.stringify(selIds) },
 						success : function(data) {
 							location.reload();
 						},
