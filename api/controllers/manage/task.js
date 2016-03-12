@@ -90,24 +90,19 @@ exports.add = function(req, res, next){
 exports.editUI = function(req, res, next){
 	var query = req.query;
 	// TODO
-	var ep = EventProxy.create('task', function (task){
+	biz.task.getById(query.id, function (err, doc){
+		if(err) return next(err);
+		// TODO
+		if(!doc) return res.send('Not Found.');
+		// TODO
 		res.render('manage/task/1.0.1/edit', {
 			conf: conf,
 			description: '',
 			keywords: ',html5,nodejs',
 			data: {
-				task: task
+				task: doc
 			}
 		});
-	});
-
-	ep.fail(function (err, msg){
-		next(err);
-	});
-
-	biz.task.getById(query.id, function (err, doc){
-		if(err) return ep.emit('error', err);
-		ep.emit('task', doc);
 	});
 };
 

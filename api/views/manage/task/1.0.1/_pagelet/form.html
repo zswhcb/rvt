@@ -15,7 +15,7 @@
 		<label class='col-sm-2 hidden-xs control-label'
 			for='addFrm_PROJECT_ID'><span class='olx-form-required'>*</span>项目名称</label>
 		<div class='col-sm-4'>
-			#if(!$data.projects) <input type='text' class='form-control'
+			#if($task) <input type='text' class='form-control'
 				value='$!{task.PROJECT_NAME}' readonly> #else <select
 				class='form-control' name='PROJECT_ID' id='addFrm_PROJECT_ID'>
 				#m_select_option($!{data.projects}, 'id', 'PROJECT_NAME')
@@ -24,16 +24,16 @@
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_create_user_id'><span class='olx-form-required'>*</span>发布人</label>
+			for='addFrm_CREATE_USER_NAME'><span class='olx-form-required'>*</span>发布人</label>
 		<div class='col-sm-4'>
-			#if(!$data.users) <input type='text' class='form-control'
+			#if($task) <input type='text' class='form-control'
 				value='$!{task.CREATE_USER_NAME}' readonly> #else
 			<div class="input-group">
 				<input type="text" aria-label="Text input with dropdown button"
-					class="form-control" id='addFrm_create_user_name' placeholder='发布人'>
+					class="form-control" id='addFrm_CREATE_USER_NAME' placeholder='发布人'>
 				<input type="hidden" aria-label="Text input with dropdown button"
-					class="form-control" name='create_user_id'
-					id='addFrm_create_user_id'>
+					class="form-control" name='CREATE_USER_ID'
+					id='addFrm_CREATE_USER_ID'>
 				<div class="input-group-btn">
 					<button aria-expanded="false" aria-haspopup="true"
 						data-toggle="dropdown" class="btn btn-default dropdown-toggle"
@@ -137,9 +137,9 @@
 </form>
 <script type='text/javascript'
 	src='$!{conf.html.cdn}js/My97DatePicker/4.8-Beta4/WdatePicker.js'></script>
-
+#if($data.users)
 <script>
-	$('#addFrm_create_user_name')
+	$('#addFrm_CREATE_USER_NAME')
 			.bind(
 					'input propertychange',
 					function(obj) {
@@ -183,7 +183,8 @@
 								});
 					});
 	function selItem(id, user_name) {
-		$('#addFrm_create_user_id').val(id);
-		$('#addFrm_create_user_name').val(user_name);
+		$('#addFrm_CREATE_USER_ID').val(id);
+		$('#addFrm_CREATE_USER_NAME').val(user_name);
 	}
 </script>
+#end
