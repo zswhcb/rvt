@@ -197,6 +197,7 @@ exports.monitorUI = function(req, res, next){
 			description: '',
 			keywords: ',html5,nodejs',
 			data: {
+				start_time: util.format(new Date(), 'YY-MM-dd'),
 				project_id: query.project_id,
 				projects: projects,
 				tasks: tasks
