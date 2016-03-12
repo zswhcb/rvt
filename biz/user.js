@@ -47,6 +47,12 @@ var biz = {
 				sql += ' AND a.ROLE_ID=?';
 				postData.push(ROLE_ID);
 			}
+			// TODO
+			var USER_NAME = util.isEmpty(user.USER_NAME);
+			if(USER_NAME){
+				sql += ' AND a.USER_NAME like ?';
+				postData.push(USER_NAME);
+			}
 		}
 
 		sql += ' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';

@@ -148,9 +148,7 @@
 									url : '$!{conf.html.virtualPath}manage/user/list',
 									type : 'POST',
 									dataType : 'JSON',
-									data : {
-										user_name : obj.target.value
-									},
+									data : { data: JSON.stringify({ USER_NAME : obj.target.value }) },
 									success : function(data) {
 										if (!data.success)
 											return;
@@ -161,9 +159,9 @@
 											html += '<li><a href="javascript:;" onclick="selItem(\''
 													+ _data.id
 													+ '\', \''
-													+ _data.user_name
+													+ _data.USER_NAME
 													+ '\');">'
-													+ _data.user_name + '</li>';
+													+ _data.USER_NAME + '</li>';
 										} // END
 
 										var parent = $(obj.target).parent();

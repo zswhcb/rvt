@@ -19,6 +19,20 @@ var biz = {
  * @params
  * @return
  */
+exports.list = function(req, res, next){
+	var data = req._data;
+	// TODO
+	biz.user.findByUser({ USER_NAME: '%'+ data.USER_NAME +'%' }, function (err, docs){
+		if(err) return next(err);
+		res.send({ data: docs, success: true });
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.resetPwd = function(req, res, next){
 	var data = req._data;
 	// TODO
