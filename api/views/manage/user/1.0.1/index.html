@@ -40,7 +40,7 @@
 					<div class='panel-heading'>
 						<div class='btn-group btn-group-xs'>
 							<button class='btn btn-primary glyphicon glyphicon-plus-sign'
-								onclick='parent.location.href="${conf.html.virtualPath}#page/user/add"'>新增</button>
+								onclick='parent.location.href="${conf.html.virtualPath}manage/#page/user/add"'>新增</button>
 							<button id='btn_edit'
 								class='btn btn-default glyphicon glyphicon-edit'>编辑</button>
 							<button id='btn_del'
@@ -111,7 +111,7 @@
 								if (1 !== selIds.length)
 									return;
 								var selId = selIds[0];
-								parent.location.href = '${conf.html.virtualPath}#page/user/edit?id='
+								parent.location.href = '${conf.html.virtualPath}manage/#page/user/edit?id='
 										+ selId;
 							});
 
@@ -121,7 +121,7 @@
 					return;
 				if (confirm('你确定要执行该操作吗？')) {
 					$.ajax({
-						url : '${conf.html.virtualPath}user/remove',
+						url : '${conf.html.virtualPath}manage/user/remove',
 						type : 'POST',
 						dataType : 'JSON',
 						data : {

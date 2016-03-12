@@ -56,7 +56,10 @@ function proc_manage(app){
 	app.get('/manage/role/', user.login_validate, role.indexUI);
 
 	/* user */
-	// TODO
+	app.post('/manage/user/edit', express.valiPostData, user.login_validate, user.edit);
+	app.post('/manage/user/add', express.valiPostData, user.login_validate, user.add);
+	app.get('/manage/user/edit', user.login_validate, user.editUI);
+	app.get('/manage/user/add', user.login_validate, user.addUI);
 	app.get('/manage/user/', user.login_validate, user.indexUI);
 
 	// TODO

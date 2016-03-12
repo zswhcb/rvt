@@ -1,83 +1,82 @@
-<#import "/_macro/select_option.html" as select_option>
+#parse('_macro/select_option.html')
+#set($user=$!{data.user})
 <form class='form-horizontal' id='addFrm' role='form'
 	onsubmit='return false;' data-url=''>
 	<input type='hidden' name='id' id='addFrm_id'
-		value='${(data_user.id)!}'>
+		value='$!{user.id}'>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_user_name'><span
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_USER_NAME'><span
 			class='olx-form-required'>*</span>用户名</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='user_name'
-				id='addFrm_user_name' placeholder='用户名'
-				value='${(data_user.user_name)!}'<#if data_user??>
-			readonly</#if>>
+			<input type='text' class='form-control' name='USER_NAME'
+				id='addFrm_USER_NAME' placeholder='用户名'
+				value='$!{user.USER_NAME}'#if($user) readonly#end>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_email'><span
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_EMAIL'><span
 			class='olx-form-required'>*</span>电子邮箱</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='email'
-				id='addFrm_email' placeholder='电子邮箱' value='${(data_user.email)!}'>
+			<input type='text' class='form-control' name='EMAIL'
+				id='addFrm_EMAIL' placeholder='电子邮箱' value='$!{user.EMAIL}'>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_real_name'>真实姓名</label>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_REAL_NAME'>真实姓名</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='real_name'
-				id='addFrm_real_name' placeholder='真实姓名'
-				value='${(data_user.real_name)!}'>
-		</div>
-	</div>
-	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_alipay_account'>支付宝</label>
-		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='alipay_account'
-				id='addFrm_alipay_account' placeholder='支付宝'
-				value='${(data_user.alipay_account)!}'>
-		</div>
-	</div>
-	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_apikey'>APIKEY</label>
-		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='apikey'
-				id='addFrm_apikey' placeholder='APIKEY'
-				value='${(data_user.apikey)!}'>
-		</div>
-	</div>
-	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_seckey'>SECKEY</label>
-		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='seckey'
-				id='addFrm_seckey' placeholder='SECKEY'
-				value='${(data_user.seckey)!}'>
+			<input type='text' class='form-control' name='REAL_NAME'
+				id='addFrm_REAL_NAME' placeholder='真实姓名'
+				value='$!{user.REAL_NAME}'>
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_device_code'>设备号</label>
+			for='addFrm_ALIPAY_ACCOUNT'>支付宝</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='device_code'
-				id='addFrm_device_code' placeholder='设备号'
-				value='${(data_user.device_code)!}' readonly>
+			<input type='text' class='form-control' name='ALIPAY_ACCOUNT'
+				id='addFrm_ALIPAY_ACCOUNT' placeholder='支付宝'
+				value='$!{user.ALIPAY_ACCOUNT}'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_APIKEY'>APIKEY</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='APIKEY'
+				id='addFrm_APIKEY' placeholder='APIKEY'
+				value='$!{user.APIKEY}' readonly>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_SECKEY'>SECKEY</label>
+		<div class='col-sm-4'>
+			<input type='text' class='form-control' name='SECKEY'
+				id='addFrm_SECKEY' placeholder='SECKEY'
+				value='$!{user.SECKEY}' readonly>
 		</div>
 	</div>
 	<div class='form-group'>
 		<label class='col-sm-2 hidden-xs control-label'
-			for='addFrm_invite_user_id'>邀请人</label>
+			for='addFrm_DEVICE_CODE'>设备号</label>
 		<div class='col-sm-4'>
-			<input type='text' class='form-control' name='invite_user_id'
-				id='addFrm_invite_user_id' placeholder='邀请人'
-				value='${(data_user.invite_user_id)!}'>
+			<input type='text' class='form-control' name='DEVICE_CODE'
+				id='addFrm_DEVICE_CODE' placeholder='设备号'
+				value='$!{user.DEVICE_CODE}' readonly>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label class='col-sm-2 hidden-xs control-label' for='addFrm_status'>状态</label>
+		<label class='col-sm-2 hidden-xs control-label'
+			for='addFrm_INVITE_USER_ID'>邀请人</label>
 		<div class='col-sm-4'>
-			<select class='form-control' name='status' id='addFrm_status'>
-				<@select_option.m list=dict_status key="key" value="value"
-				selValue="${(data_user.status)!}"/>
+			<input type='text' class='form-control' name='INVITE_USER_ID'
+				id='addFrm_INVITE_USER_ID' placeholder='邀请人'
+				value='$!{user.INVITE_USER_ID}'>
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-2 hidden-xs control-label' for='addFrm_STATUS'>状态</label>
+		<div class='col-sm-4'>
+			<select class='form-control' name='STATUS' id='addFrm_STATUS'>
+				#m_select_option($!{dict_status}, 'key', 'value', $!{user.STATUS})
 			</select>
 		</div>
 	</div>

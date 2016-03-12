@@ -95,7 +95,7 @@ var exports = module.exports;
 					newInfo.TEL_NUM,
 					newInfo.CREATE_USER_ID,
 					new Date(),
-					newInfo.STATUS
+					newInfo.STATUS || 1
 				];
 				// TODO
 				mysql.query(sql, postData, function (err, status){

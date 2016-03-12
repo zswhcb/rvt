@@ -6,6 +6,7 @@
 'use strict';
 
 var util = require('speedt-utils'),
+	uuid = require('node-uuid'),
 	rest = util.service.rest,
 	md5 = util.md5,
 	mysql_util = util.mysql_util,
@@ -193,7 +194,7 @@ exports.findByName = function(name, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO s_user (id, ROLE_ID, USER_NAME, USER_PASS, AVATAR_URL, EMAIL, MOBILE, REAL_NAME, ALIPAY_ACCOUNT, APIKEY, SECKEY, AUTH_CODE_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO s_user (id, ROLE_ID, INVITE_USER_ID, USER_NAME, USER_PASS, EMAIL, MOBILE, APIKEY, SECKEY, REAL_NAME, ALIPAY_ACCOUNT, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -202,21 +203,20 @@ exports.findByName = function(name, cb){
 				exports.findByName(newInfo.USER_NAME, function (err, doc){
 					if(err) return cb(err);
 					// TODO
-					if(!!doc) return cb(null, ['用户名或手机号已经存在', 'USER_NAME']);
+					if(doc) return cb(null, ['手机号已经存在']);
 					// CREATE
 					var postData = [
-						util.genObjectId(),
+						util.replaceAll(uuid.v1(), '-', ''),
 						newInfo.ROLE_ID,
+						newInfo.INVITE_USER_ID,
 						newInfo.USER_NAME,
 						md5.hex(newInfo.USER_PASS || '123456'),
-						newInfo.AVATAR_URL,
 						newInfo.EMAIL,
 						newInfo.MOBILE,
-						newInfo.REAL_NAME,
-						newInfo.ALIPAY_ACCOUNT,
 						rest.genApiKey(),
 						rest.genSecKey(),
-						newInfo.AUTH_CODE_ID || '',
+						newInfo.REAL_NAME,
+						newInfo.ALIPAY_ACCOUNT,
 						new Date(),
 						newInfo.STATUS || 1
 					];
@@ -235,49 +235,28 @@ exports.findByName = function(name, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE s_user set APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE s_user set ROLE_ID=?, USER_PASS=?, APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, DEVICE_CODE=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
 				// EDIT
 				var postData = [
+					newInfo.ROLE_ID,
+					md5.hex(newInfo.USER_PASS || '123456'),
 					rest.genApiKey(),
 					rest.genSecKey(),
 					newInfo.EMAIL,
 					newInfo.MOBILE,
 					newInfo.REAL_NAME,
 					newInfo.ALIPAY_ACCOUNT,
+					newInfo.DEVICE_CODE,
 					newInfo.STATUS || 1,
 					newInfo.id
 				];
 				mysql.query(sql, postData, function (err, status){
 					if(err) return cb(err);
 					cb(null, null, status);
-				});
-			});
-		};
-	})(exports);
-
-	/**
-	 *
-	 * @params
-	 * @return
-	 */
-	(function (exports){
-		var sql = 'UPDATE s_user set DEVICE_CODE=? WHERE id=?';
-		// TODO
-		exports.editDeviceCode = function(newInfo, cb){
-			formVali(newInfo, function (err){
-				if(err) return cb(err);
-				// EDIT
-				var postData = [
-					newInfo.DEVICE_CODE,
-					newInfo.id
-				];
-				mysql.query(sql, postData, function (err, status){
-					if(err) return cb(err);
-					cb(null, status);
 				});
 			});
 		};
