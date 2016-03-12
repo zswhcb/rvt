@@ -6,6 +6,7 @@
 'use strict';
 
 var util = require('speedt-utils'),
+	uuid = require('node-uuid'),
 	mysql_util = util.mysql_util,
 	mysql = util.mysql;
 
@@ -21,7 +22,7 @@ var exports = module.exports;
 				'  (SELECT COUNT(1) FROM p_task WHERE PROJECT_ID=a.id) TASK_COUNT,'+
 				'  b.TYPE_NAME PROJECT_TYPE_NAME,'+
 				'  a.*'+
-				' FROM p_project a, p_project_type b'+
+				' FROM r_project a, r_project_type b'+
 				' WHERE a.PROJECT_TYPE_ID=b.id AND a.CREATE_USER_ID=? ORDER BY a.PROJECT_TYPE_ID, a.CREATE_TIME DESC'
 	// TODO
 	exports.getByUserId = function(user_id, cb){
@@ -80,22 +81,21 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO p_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, START_TIME, END_TIME, CREATE_USER_ID, CREATE_TIME) values (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO r_project (id, PROJECT_NAME, PROJECT_INTRO, PROJECT_TYPE_ID, TEL_NUM, CREATE_USER_ID, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
 				// CREATE
 				var postData = [
-					util.genObjectId(),
+					util.replaceAll(uuid.v1(), '-', ''),
 					newInfo.PROJECT_NAME,
 					newInfo.PROJECT_INTRO,
 					newInfo.PROJECT_TYPE_ID,
 					newInfo.TEL_NUM,
-					newInfo.START_TIME,
-					newInfo.END_TIME,
 					newInfo.CREATE_USER_ID,
-					new Date()
+					new Date(),
+					newInfo.STATUS
 				];
 				// TODO
 				mysql.query(sql, postData, function (err, status){
@@ -112,7 +112,7 @@ var exports = module.exports;
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE p_project set PROJECT_NAME=?, PROJECT_INTRO=?, PROJECT_TYPE_ID=?, TEL_NUM=?, START_TIME=?, END_TIME=? WHERE id=?';
+		var sql = 'UPDATE r_project set PROJECT_NAME=?, PROJECT_INTRO=?, PROJECT_TYPE_ID=?, TEL_NUM=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			formVali(newInfo, function (err){
@@ -123,8 +123,7 @@ var exports = module.exports;
 					newInfo.PROJECT_INTRO,
 					newInfo.PROJECT_TYPE_ID,
 					newInfo.TEL_NUM,
-					newInfo.START_TIME,
-					newInfo.END_TIME,
+					newInfo.STATUS,
 					newInfo.id
 				];
 				// TODO

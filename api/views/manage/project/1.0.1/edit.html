@@ -14,7 +14,7 @@
 				<ol class='breadcrumb'>
 					<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
 					<li class='active'><a href='javascript:;'
-						onclick='parent.location.href="$!{conf_html_virtualPath}#page/project/"'>项目管理</a>
+						onclick='parent.location.href="$!{conf.html.virtualPath}manage/#page/project/"'>项目管理</a>
 					</li>
 					<li class='active'><a href='javascript:location.reload();'>编辑</a>
 					</li>
@@ -36,14 +36,14 @@
 		$(function() {
 			$('#addFrm_btn_submit').click(function() {
 				$.ajax({
-					url : '$!{conf_html_virtualPath}project/edit',
+					url : '$!{conf.html.virtualPath}manage/project/edit',
 					type : 'POST',
 					dataType : 'JSON',
-					data : $('#addFrm').serializeObjectForm(),
+					data : { data: JSON.stringify($('#addFrm').serializeObjectForm()) },
 					success : function(data) {
 						if (!data.success)
 							return alert(data.msg[0]);
-						var url = '$!{conf_html_virtualPath}#page/project/';
+						var url = '$!{conf.html.virtualPath}manage/#page/project/';
 						parent.location.href = url;
 					},
 					error : function() {

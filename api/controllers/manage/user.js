@@ -83,11 +83,12 @@ exports.loginUI = function(req, res, next){
  * @return
  */
 exports.login = function(req, res, next){
-	var result = { success: false };
 	var data = req._data;
 
 	biz.user.login(data, function (err, msg, doc){
 		if(err) return next(err);
+		var result = { success: false };
+
 		if(msg){
 			result.msg = msg;
 			return res.send(result);
