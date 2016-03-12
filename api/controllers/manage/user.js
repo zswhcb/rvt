@@ -182,7 +182,21 @@ exports.changePwd = function(req, res, next){
 	var result = { success: false };
 	var data = req._data;
 
-	return res.send(result);
+	data.id = req.session.userId;
+
+	// TODO
+	biz.user.changePwd(data, function (err, msg, doc){
+		if(err) return next(err);
+		var result = { success: false };
+
+		if(msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+
+		result.success = true;
+		res.send(result);
+	});
 };
 
 /**

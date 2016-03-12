@@ -26,26 +26,26 @@
 							onsubmit='return false;' data-url='changePwd'>
 							<div class='form-group'>
 								<label class='col-sm-2 hidden-xs control-label'
-									for='editFrm_old_pass'><span class='olx-form-required'>*</span>旧的登录密码</label>
+									for='editFrm_OLD_PASS'><span class='olx-form-required'>*</span>旧的登录密码</label>
 								<div class='col-sm-4'>
-									<input type='password' class='form-control' name='old_pass'
-										id='editFrm_old_pass' placeholder='旧的登录密码'>
+									<input type='password' class='form-control' name='OLD_PASS'
+										id='editFrm_OLD_PASS' placeholder='旧的登录密码'>
 								</div>
 							</div>
 							<div class='form-group'>
 								<label class='col-sm-2 hidden-xs control-label'
-									for='editFrm_new_pass'><span class='olx-form-required'>*</span>新密码</label>
+									for='editFrm_USER_PASS'><span class='olx-form-required'>*</span>新密码</label>
 								<div class='col-sm-4'>
-									<input type='password' class='form-control' name='new_pass'
-										id='editFrm_new_pass' placeholder='新密码'>
+									<input type='password' class='form-control' name='USER_PASS'
+										id='editFrm_USER_PASS' placeholder='新密码'>
 								</div>
 							</div>
 							<div class='form-group'>
 								<label class='col-sm-2 hidden-xs control-label'
-									for='editFrm_new_pass2'><span class='olx-form-required'>*</span>再次输入新密码</label>
+									for='editFrm_NEW_PASS_2'><span class='olx-form-required'>*</span>再次输入新密码</label>
 								<div class='col-sm-4'>
 									<input type='password' class='form-control'
-										id='editFrm_new_pass2' placeholder='再次输入新密码'>
+										id='editFrm_NEW_PASS_2' placeholder='再次输入新密码'>
 								</div>
 							</div>
 							<div class='form-group'>
@@ -67,8 +67,8 @@
 		$(function() {
 			$('#editFrm_btn_submit').click(
 					function() {
-						if ($('#editFrm_new_pass').val() !== $(
-								'#editFrm_new_pass2').val()) {
+						if ($('#editFrm_USER_PASS').val() !== $(
+								'#editFrm_NEW_PASS_2').val()) {
 							return alert('两次输入的密码不一致');
 						}
 

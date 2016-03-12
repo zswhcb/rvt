@@ -286,6 +286,40 @@ exports.findBySecKey = function(secKey, cb){
  * @return
  */
 (function (exports){
+	var sql = 'UPDATE s_user set USER_PASS=? WHERE id=?';
+	// TODO
+	exports.changePwd = function(newInfo, cb){
+		var USER_PASS = util.isEmpty(newInfo.USER_PASS);
+		if(!USER_PASS) return cb(null, ['新密码不能为空']);
+
+		newInfo.USER_PASS = USER_PASS;
+
+		this.getById(newInfo.id, function (err, doc){
+			if(err) return cb(err);
+			// TODO
+			if(md5.hex(newInfo.OLD_PASS) !== doc.USER_PASS){
+				return cb(null, ['原始密码错误']);
+			}
+
+			// CREATE
+			var postData = [
+				md5.hex(newInfo.USER_PASS || '123456'),
+				newInfo.id
+			];
+			mysql.query(sql, postData, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
+			});
+		});
+	};
+})(exports);
+
+/**
+ *
+ * @params
+ * @return
+ */
+(function (exports){
 
 	function proc_sql_center(ids){
 		var sql = '';
