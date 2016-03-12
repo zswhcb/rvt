@@ -12,27 +12,6 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
-/**
- *
- * @params
- * @return
- */
-(function (exports){
-	var sql = 'SELECT'+
-				'  (SELECT COUNT(1) FROM p_task WHERE PROJECT_ID=a.id) TASK_COUNT,'+
-				'  b.TYPE_NAME PROJECT_TYPE_NAME,'+
-				'  a.*'+
-				' FROM r_project a, r_project_type b'+
-				' WHERE a.PROJECT_TYPE_ID=b.id AND a.CREATE_USER_ID=? ORDER BY a.PROJECT_TYPE_ID, a.CREATE_TIME DESC'
-	// TODO
-	exports.getByUserId = function(user_id, cb){
-		mysql.query(sql, [user_id], function (err, docs){
-			if(err) return cb(err);
-			cb(null, docs);
-		});
-	};
-})(exports);
-
 (function (exports){
 	var _sql = 'SELECT b.TYPE_NAME PROJECT_TYPE_NAME, a.* FROM r_project a LEFT JOIN r_project_type b ON (a.PROJECT_TYPE_ID=b.id) WHERE b.id IS NOT NULL';
 	var _sql_orderby = ' ORDER BY a.CREATE_TIME DESC';
@@ -55,7 +34,7 @@ var exports = module.exports;
 	 * @params
 	 * @return
 	 */
-	exports.findByProject = function(cb){
+	exports.findByProject = function(project, cb){
 		var sql = _sql + _sql_orderby;
 		mysql.query(sql, null, function (err, docs){
 			if(err) return cb(err);
@@ -131,6 +110,46 @@ var exports = module.exports;
 					if(err) return cb(err);
 					cb(null, null, status);
 				});
+			});
+		};
+	})(exports);
+})(exports);
+
+/**
+ *
+ * @params
+ * @return
+ */
+(function (exports){
+
+	function proc_sql_center(ids){
+		var sql = '';
+		for(var i in ids){
+			sql += '?, ';
+		}
+		return sql.substring(0, sql.length - 2);
+	}
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	(function (exports){
+		var _sql_start = 'DELETE FROM r_project WHERE id IN (';
+		var _sql_end = ')';
+
+		// TODO
+		exports.remove = function(ids, cb){
+			if(!ids && (0 === ids.length)) return cb(null, ['参数异常']);
+
+			var sql = _sql_start;
+			sql += proc_sql_center(ids);
+			sql += _sql_end;
+
+			mysql.query(sql, ids, function (err, status){
+				if(err) return cb(err);
+				cb(null, null, status);
 			});
 		};
 	})(exports);

@@ -20,6 +20,28 @@ var biz = {
  * @params
  * @return
  */
+exports.remove = function(req, res, next){
+	var data = req._data;
+	// TODO
+	biz.project.remove(data, function (err, msg, status){
+		if(err) return next(err);
+		var result = { success: false };
+
+		if(msg){
+			result.msg = msg;
+			return res.send(result);
+		}
+
+		result.success = true;
+		res.send(result);
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.edit = function(req, res, next){
 	var data = req._data;
 	// TODO
@@ -123,7 +145,7 @@ exports.addUI = function(req, res, next){
  * @return
  */
 exports.indexUI = function(req, res, next){
-	biz.project.findByProject(function (err, docs){
+	biz.project.findByProject(null, function (err, docs){
 		if(err) return next(err);
 		// TODO
 		res.render('manage/project/1.0.1/index', {
