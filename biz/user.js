@@ -27,7 +27,7 @@ var biz = {};
 	 * @params
 	 * @return
 	 */
-	exports.findByUser = function(user, cb){
+	exports.findByUser = function(pagination, user, cb){
 		var sql = _sql;
 		var postData = null;
 
@@ -54,6 +54,12 @@ var biz = {};
 		}
 
 		sql += ' ORDER BY a.ROLE_ID, a.CREATE_TIME DESC';
+
+		if(pagination){
+			sql += ' LIMIT ?, ?';
+			postData.push((pagination[1] - 1) * pagination[0]);
+			postData.push(pagination[0]);
+		}
 
 		// TODO
 		mysql.query(sql, postData, function (err, docs){

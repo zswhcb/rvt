@@ -270,9 +270,10 @@ var biz = {
 	 */
 	exports.findByTask = function(task, cb){
 		var sql = _sql;
-		var postData = [];
+		var postData = null;
 
 		if(task){
+			postData = [];
 			// TODO
 			var CREATE_USER_ID = util.isEmpty(task.CREATE_USER_ID);
 			if(CREATE_USER_ID){
@@ -319,6 +320,9 @@ var biz = {
 		exports.saveNew = function(newInfo, cb){
 			formVali(newInfo, function (err){
 				if(err) return cb(err);
+				newInfo.CREATE_USER_ID = util.isEmpty(newInfo.CREATE_USER_ID);
+				if(!newInfo.CREATE_USER_ID) return cb(null, ['发布人不能为空']);
+
 				// CREATE
 				var postData = [
 					util.replaceAll(uuid.v1(), '-', ''),

@@ -22,7 +22,7 @@ var biz = {
 exports.list = function(req, res, next){
 	var data = req._data;
 	// TODO
-	biz.user.findByUser({ USER_NAME: '%'+ data.USER_NAME +'%' }, function (err, docs){
+	biz.user.findByUser([5, 1], { USER_NAME: '%'+ data.USER_NAME +'%' }, function (err, docs){
 		if(err) return next(err);
 		res.send({ data: docs, success: true });
 	});
@@ -148,7 +148,7 @@ exports.editUI = function(req, res, next){
 		ep.emit('user', doc);
 	});
 
-	biz.user.findByUser({ INVITE_USER_ID: query.id }, function (err, docs){
+	biz.user.findByUser(null, { INVITE_USER_ID: query.id }, function (err, docs){
 		if(err) return ep.emit('error', err);
 		ep.emit('users', docs);
 	});
@@ -173,7 +173,7 @@ exports.addUI = function(req, res, next){
  * @return
  */
 exports.indexUI = function(req, res, next){
-	biz.user.findByUser(null, function (err, docs){
+	biz.user.findByUser(null, null, function (err, docs){
 		if(err) return next(err);
 		// TODO
 		res.render('manage/user/1.0.1/index', {

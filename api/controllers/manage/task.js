@@ -119,6 +119,11 @@ exports.addUI = function(req, res, next){
 			description: '',
 			keywords: ',html5,nodejs',
 			data: {
+				task: {
+					TASK_SUM: 20,
+					TALK_TIME_MIN: 60,
+					TALK_TIMEOUT: 3600
+				},
 				projects: projects,
 				users: users
 			}
@@ -129,7 +134,7 @@ exports.addUI = function(req, res, next){
 		next(err);
 	});
 
-	biz.user.findByUser({ ROLE_ID: '819b6eca21a74556b96375964f97edaf' }, function (err, docs){
+	biz.user.findByUser(null, { ROLE_ID: '819b6eca21a74556b96375964f97edaf' }, function (err, docs){
 		if(err) return ep.emit('error', err);
 		ep.emit('users', docs);
 	});

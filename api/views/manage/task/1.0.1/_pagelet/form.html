@@ -15,7 +15,7 @@
 		<label class='col-sm-2 hidden-xs control-label'
 			for='addFrm_PROJECT_ID'><span class='olx-form-required'>*</span>项目名称</label>
 		<div class='col-sm-4'>
-			#if($task) <input type='text' class='form-control'
+			#if($task.PROJECT_ID) <input type='text' class='form-control'
 				value='$!{task.PROJECT_NAME}' readonly> #else <select
 				class='form-control' name='PROJECT_ID' id='addFrm_PROJECT_ID'>
 				#m_select_option($!{data.projects}, 'id', 'PROJECT_NAME')
@@ -26,7 +26,7 @@
 		<label class='col-sm-2 hidden-xs control-label'
 			for='addFrm_CREATE_USER_NAME'><span class='olx-form-required'>*</span>发布人</label>
 		<div class='col-sm-4'>
-			#if($task) <input type='text' class='form-control'
+			#if($task.CREATE_USER_ID) <input type='text' class='form-control'
 				value='$!{task.CREATE_USER_NAME}' readonly> #else
 			<div class="input-group">
 				<input type="text" aria-label="Text input with dropdown button"
