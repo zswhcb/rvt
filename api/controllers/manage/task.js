@@ -11,6 +11,7 @@ var EventProxy = require('eventproxy');
 var conf = require('../../settings');
 
 var biz = {
+	tasktake: require('../../../biz/tasktake'),
 	user: require('../../../biz/user'),
 	project: require('../../../biz/project'),
 	task: require('../../../biz/task')
@@ -189,33 +190,19 @@ exports.indexUI = function(req, res, next){
  */
 exports.monitorUI = function(req, res, next){
 	var query = req.query;
+	var start_time = query.start_time || util.format(new Date(), 'YY-MM-dd');
 
-	// TODO
-	var ep = EventProxy.create('tasks', 'projects', function (tasks, projects){
+	biz.tasktake.findByStartTime(start_time, function (err, docs){
+		if(err) return next(err);
+		// TODO
 		res.render('manage/task/1.0.1/monitor', {
 			conf: conf,
 			description: '',
 			keywords: ',html5,nodejs',
 			data: {
-				start_time: util.format(new Date(), 'YY-MM-dd'),
-				project_id: query.project_id,
-				projects: projects,
-				tasks: tasks
+				start_time: start_time,
+				tasktakes: docs
 			}
 		});
-	});
-
-	ep.fail(function (err, msg){
-		next(err);
-	});
-
-	biz.task.findByTask({ PROJECT_ID: query.project_id }, function (err, docs){
-		if(err) return ep.emit('error', err);
-		ep.emit('tasks', docs);
-	});
-
-	biz.project.findByProject(null, function (err, docs){
-		if(err) return ep.emit('error', err);
-		ep.emit('projects', docs);
 	});
 };

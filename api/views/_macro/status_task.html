@@ -1,0 +1,9 @@
+#macro(m_status_task $status)
+#if('0'==$status)未完成
+#elseif('1'==$status)完成
+#elseif('2'==$status)上传超时
+#elseif('3'==$status)任务超时
+#elseif('4'==$status)未达标
+#else 未知
+#end
+#end

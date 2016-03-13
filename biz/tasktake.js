@@ -146,3 +146,26 @@ exports.checkTimeout = function(data){
         });
     };
 })(exports);
+
+(function (exports){
+    var _sql = 'SELECT f.USER_NAME, e.*'+
+                ' FROM (SELECT d.PROJECT_NAME, d.TEL_NUM, c.*'+
+                    ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, a.*'+
+                        ' FROM (SELECT * FROM r_project_task_take WHERE TASK_ID IN (SELECT id FROM r_project_task WHERE DATE(START_TIME) = DATE_FORMAT(?,"%Y-%m-%d"))) a'+
+                        ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL) c'+
+                        ' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) WHERE d.id IS NOT NULL) e'+
+                        ' LEFT JOIN s_user f ON (e.USER_ID=f.id)'+
+                        ' WHERE f.id IS NOT NULL ORDER BY e.PROJECT_ID, e.TASK_ID, e.CREATE_TIME DESC';
+    /**
+     *
+     * @params
+     * @return
+     */
+    exports.findByStartTime = function(start_time, cb){
+        var sql = _sql;
+        mysql.query(sql, [start_time], function (err, docs){
+            if(err) return cb(err);
+            cb(null, docs);
+        });
+    };
+})(exports);
