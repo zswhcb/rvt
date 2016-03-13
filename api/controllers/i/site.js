@@ -9,6 +9,10 @@ var util = require('speedt-utils');
 
 var conf = require('../../settings');
 
+var biz = {
+	tasktake: require('../../../biz/tasktake')
+};
+
 /**
  *
  * @params
@@ -31,13 +35,18 @@ exports.indexUI = function(req, res, next){
  * @return
  */
 exports.welcomeUI = function(req, res, next){
-	res.render('i/1.0.2/welcome', {
-		conf: conf,
-		description: '',
-		keywords: ',html5,nodejs',
-		data: {
-			current_time: util.format(new Date(), 'YY年MM月dd日'),
-			create_time: util.format(new Date(), 'YY-MM')
-		}
+	biz.tasktake.findByUserId(req.session.userId, new Date(), function (err, docs){
+		if(err) return next(err);
+		// TODO
+		res.render('i/1.0.2/welcome', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				tasktakes: docs,
+				current_time: util.format(new Date(), 'YY年MM月dd日'),
+				create_time: util.format(new Date(), 'YY-MM')
+			}
+		});
 	});
 };

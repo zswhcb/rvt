@@ -148,10 +148,12 @@ exports.checkTimeout = function(data){
 })(exports);
 
 (function (exports){
-    var _sql = 'SELECT f.USER_NAME, e.*'+
+    var _sql_start = 'SELECT f.USER_NAME, e.*'+
                 ' FROM (SELECT d.PROJECT_NAME, d.TEL_NUM, c.*'+
                     ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, a.*'+
-                        ' FROM (SELECT * FROM r_project_task_take WHERE TASK_ID IN (SELECT id FROM r_project_task WHERE DATE(START_TIME) = DATE_FORMAT(?,"%Y-%m-%d"))) a'+
+                        ' FROM (';
+
+    var _sql_end = ') a'+
                         ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL) c'+
                         ' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) WHERE d.id IS NOT NULL) e'+
                         ' LEFT JOIN s_user f ON (e.USER_ID=f.id)'+
@@ -162,8 +164,27 @@ exports.checkTimeout = function(data){
      * @return
      */
     exports.findByStartTime = function(start_time, cb){
-        var sql = _sql;
+        var sql = _sql_start;
+        sql += 'SELECT * FROM r_project_task_take WHERE TASK_ID IN (SELECT id FROM r_project_task WHERE DATE(START_TIME) = DATE_FORMAT(?, "%Y-%m-%d"))';
+        sql += _sql_end;
+
         mysql.query(sql, [start_time], function (err, docs){
+            if(err) return cb(err);
+            cb(null, docs);
+        });
+    };
+
+    /**
+     *
+     * @params
+     * @return
+     */
+    exports.findByUserId = function(user_id, create_time, cb){
+        var sql = _sql_start;
+        sql += 'SELECT * FROM r_project_task_take WHERE USER_ID=? AND DATE_FORMAT(CREATE_TIME, "%Y-%m") = DATE_FORMAT(?, "%Y-%m")';
+        sql += _sql_end;
+
+        mysql.query(sql, [user_id, create_time], function (err, docs){
             if(err) return cb(err);
             cb(null, docs);
         });
