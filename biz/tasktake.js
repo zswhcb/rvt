@@ -137,7 +137,7 @@ exports.checkTimeout = function(data){
             newInfo.UPLOAD_TIME,
             new Date(newInfo.TALK_TIME),
             newInfo.TALK_TIME_LEN,
-            newInfo.STATUS,
+            newInfo.STATUS || 4,
             newInfo.id
         ];
         mysql.query(sql, postData, function (err, status){
