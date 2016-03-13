@@ -20,8 +20,7 @@
 			<div class='col-sm-12 col-md-12'>
 				<ol class='breadcrumb'>
 					<li class='active'><i class='fa fa-home fa-fw'></i> 后台管理</li>
-					<li class='active'><a href='javascript:location.reload();'>任务监控</a>
-					</li>
+					<li class='active'><a href='javascript:location.reload();'>任务监控</a></li>
 				</ol>
 				<div class='panel panel-info'>
 					<div class='panel-heading'>
@@ -31,13 +30,11 @@
 					</div>
 					<div class='panel-body'>
 						#parse('_macro/select_option.html')
-						<form id='searchFrm' class='form-inline' role='form'
-							onsubmit='return false;'>
+						<form id='searchFrm' class='form-inline' role='form' onsubmit='return false;'>
 							<div class='form-group'>
-								<input type='text' class='form-control WdatePicker'
-									id='searchfrm_start_time' placeholder='选择日期'
+								<input type='text' class='form-control WdatePicker' placeholder='选择日期'
 									value='$!{data.start_time}'
-									onClick="WdatePicker({onpicking:onpicking,dateFmt:'yyyy-MM-dd'});">
+									onClick="WdatePicker({readOnly:true,onpicking:onpicking,dateFmt:'yyyy-MM-dd'});">
 							</div>
 						</form>
 					</div>
