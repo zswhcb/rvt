@@ -12,7 +12,10 @@ var api = {
 	index: require('../controllers/api/index')
 };
 
-var i = {};
+var i = {
+	site: require('../controllers/i/site'),
+	user: require('../controllers/i/user')
+};
 
 var manage = {
 	task: require('../controllers/manage/task'),
@@ -31,6 +34,20 @@ function proc_api(app){
 }
 
 function proc_i(app){
+	var user = i.user;
+	var site = i.site;
+
+	// TODO
+	app.get('/i/user/logout$', user.logoutUI);
+	app.get('/i/user/login$', user.loginUI);
+	app.post('/i/user/login$', express.valiPostData, user.login);
+	// TODO
+	app.get('/i/user/changePwd$', user.login_validate, user.changePwdUI);
+	app.post('/i/user/changePwd$', express.valiPostData, user.login_validate, user.changePwd);
+
+	/* site */
+	app.get('/i/welcome$', user.login_validate, site.welcomeUI);
+	app.get('/i/', user.login_validate, site.indexUI);
 }
 
 function proc_manage(app){

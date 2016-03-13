@@ -1,0 +1,116 @@
+#parse('_pagelet/constant.html')
+<!DOCTYPE html>
+<html>
+<head>
+#parse('_pagelet/header.html')
+<title>用户登陆</title>
+<link rel='stylesheet' type='text/css' media='screen'
+	href='$!{conf.html.cdn}public/user/css/login.css' />
+<style>
+body {
+	background: rgba(0, 0, 0, 0)
+		url('$!{conf.html.virtualPath}public/assets/images/bg.jpg') repeat scroll 0
+		0;
+}
+</style>
+</head>
+<body>
+	#parse('i/1.0.2/_pagelet/banner.html')
+	<header id='header'></header>
+	<div class='container'>
+		<div class='row'>
+			<div class='col-md-12'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<b>用户登陆</b>
+					</div>
+					<div class='panel-body'>
+						<div class='col-md-5 col-sm-6'>
+							<form class='form-horizontal' role='form' id='logFrm'
+								onsubmit='return false;' data-url='login'>
+								<div class='form-group'>
+									<label for='logFrm_USER_NAME' class='col-sm-3 control-label'>手机号</label>
+									<div class='col-sm-9'>
+										<input type='text' class='form-control' name='USER_NAME'
+											id='logFrm_USER_NAME' placeholder='手机号' required
+											data-original-title='手机号不能为空' value=''>
+									</div>
+								</div>
+								<div class='form-group'>
+									<label for='logFrm_USER_PASS' class='col-sm-3 control-label'>登陆密码</label>
+									<div class='col-sm-9'>
+										<input type='password' class='form-control' name='USER_PASS'
+											id='logFrm_USER_PASS' placeholder='登陆密码' required
+											data-original-title='登陆密码不能为空' value=''>
+									</div>
+								</div>
+								<div class='form-group'>
+									<div class='col-sm-offset-3 col-sm-9'>
+										<div class='checkbox'>
+											<label> <input type='checkbox' checked>
+												记住我的登录信息<span style='color: #A00;'>（请勿在公用电脑或者网吧内使用此项）</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class='form-group'>
+									<div class='col-sm-offset-3 col-sm-4'>
+										<button id='logFrm_btn_submit' type='button'
+											class='btn btn-primary'>立即登陆</button>
+									</div>
+									<label class='col-sm-5 control-label'><a
+										href='javascript:;'>忘记登陆密码？</a> </label>
+								</div>
+							</form>
+						</div>
+						<div id='help_tip'
+							class='col-md-offset-3 col-sm-offset-3 col-md-4 col-sm-3'>
+							<div>
+								没有帐号？<a href='$!{conf.html.virtualPath}i/user/register'>注册新会员</a>
+							</div>
+							<div>&nbsp;</div>
+							<div>
+								<b>为什么总提示登陆失败？</b>
+							</div>
+							<ol>
+								<li>首先请确定浏览器已经启用Cookie。</li>
+								<li>实在不行，请联系管理员。</li>
+							</ol>
+						</div>
+						<div class='col-md-offset-3 col-sm-offset-3 col-md-4 col-sm-3'>
+							<div>
+								<img alt='扫二维码下载' title='扫二维码下载' style='width: 100px'
+									src='$!{conf.html.virtualPath}public/assets/images/app.jpg'>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	#parse('_pagelet/js.html')
+	<script>
+		$(function() {
+			$('#logFrm_btn_submit').click(function() {
+				$.ajax({
+					url : '$!{conf.html.virtualPath}i/user/login',
+					type : 'POST',
+					dataType : 'JSON',
+					data : { data: JSON.stringify($('#logFrm').serializeObjectForm()) },
+					success : function(data) {
+						if (data.success) {
+							location.href = '$!{conf.html.virtualPath}i/';
+							return;
+						} // END
+						if (data.msg)
+							alert(data.msg[0]);
+					},
+					error : function() {
+						alert(arguments[2]);
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>

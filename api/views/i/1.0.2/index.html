@@ -1,0 +1,55 @@
+#parse('_pagelet/constant.html')
+<!DOCTYPE html>
+<html>
+<head>
+#parse('_pagelet/header.html')
+<title>用户中心</title>
+<style>
+#innerPage {
+	border: 0;
+	width: 100%;
+}
+</style>
+</head>
+<body>
+	#parse('i/1.0.2/_pagelet/banner.html')
+	<header id='header'></header>
+	<div class='container'>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
+				<iframe id='innerPage' src='' scrolling='no'></iframe>
+			</div>
+		</div>
+	</div>
+	#parse('_pagelet/js.html')
+	<script type='text/javascript'
+		src='$!{conf.html.cdn}js/backbone/1.0.0/backbone.min.js?v1.0.0'></script>
+	<script>
+		(function($) {
+			var innerPage = $('#innerPage');
+			var Router = Backbone.Router.extend({
+				routes : {
+					'' : '_showDefPage',
+					'page/*path' : '_showPage'
+				},
+				initialize : function() {
+					/* console.log('initialize'); */
+				},
+				_showDefPage : function() {
+					this._showPage('welcome');
+				},
+				_showPage : function(url) {
+					innerPage.attr('src', url);
+				}
+			});
+			new Router();
+			Backbone.history.start();
+		})($);
+
+		function resizeInnerPage(obj) {
+			document.getElementById('innerPage').height = obj.height();
+		}
+	</script>
+</body>
+</body>
+</html>
