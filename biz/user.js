@@ -29,10 +29,9 @@ var biz = {};
 	 */
 	exports.findByUser = function(pagination, user, cb){
 		var sql = _sql;
-		var postData = null;
+		var postData = [];
 
 		if(user){
-			postData = [];
 			// TODO
 			var INVITE_USER_ID = util.isEmpty(user.INVITE_USER_ID);
 			if(INVITE_USER_ID){
@@ -349,6 +348,11 @@ exports.findBySecKey = function(SECKEY, cb){
 		return sql.substring(0, sql.length - 2);
 	}
 
+	function check(ids, cb){
+		if(!ids && (0 === ids.length)) return cb(null, ['参数异常']);
+		cb();
+	}
+
 	/**
 	 *
 	 * @params
@@ -360,15 +364,18 @@ exports.findBySecKey = function(SECKEY, cb){
 
 		// TODO
 		exports.resetPwd = function(ids, cb){
-			if(!ids && (0 === ids.length)) return cb(null, ['参数异常']);
-
-			var sql = _sql_start;
-			sql += proc_sql_center(ids);
-			sql += _sql_end;
-
-			mysql.query(sql, ids, function (err, status){
+			check(ids, function (err, msg){
 				if(err) return cb(err);
-				cb(null, null, status);
+				if(msg) return cb(null, msg);
+				// TODO
+				var sql = _sql_start;
+				sql += proc_sql_center(ids);
+				sql += _sql_end;
+
+				mysql.query(sql, ids, function (err, status){
+					if(err) return cb(err);
+					cb(null, null, status);
+				});
 			});
 		};
 	})(exports);
@@ -384,15 +391,18 @@ exports.findBySecKey = function(SECKEY, cb){
 
 		// TODO
 		exports.remove = function(ids, cb){
-			if(!ids && (0 === ids.length)) return cb(null, ['参数异常']);
-
-			var sql = _sql_start;
-			sql += proc_sql_center(ids);
-			sql += _sql_end;
-
-			mysql.query(sql, ids, function (err, status){
+			check(ids, function (err, msg){
 				if(err) return cb(err);
-				cb(null, null, status);
+				if(msg) return cb(null, msg);
+				// TODO
+				var sql = _sql_start;
+				sql += proc_sql_center(ids);
+				sql += _sql_end;
+
+				mysql.query(sql, ids, function (err, status){
+					if(err) return cb(err);
+					cb(null, null, status);
+				});
 			});
 		};
 	})(exports);

@@ -34,9 +34,18 @@ var exports = module.exports;
 	 * @params
 	 * @return
 	 */
-	exports.findByProject = function(project, cb){
+	exports.findByProject = function(pagination, project, cb){
 		var sql = _sql + _sql_orderby;
-		mysql.query(sql, null, function (err, docs){
+
+		var postData = [];
+
+		if(pagination){
+			sql += ' LIMIT ?, ?';
+			postData.push((pagination[1] - 1) * pagination[0]);
+			postData.push(pagination[0]);
+		}
+
+		mysql.query(sql, postData, function (err, docs){
 			if(err) return cb(err);
 			cb(null, docs);
 		});

@@ -268,12 +268,11 @@ var biz = {
 	 * @params
 	 * @return
 	 */
-	exports.findByTask = function(task, cb){
+	exports.findByTask = function(pagination, task, cb){
 		var sql = _sql;
-		var postData = null;
+		var postData = [];
 
 		if(task){
-			postData = [];
 			// TODO
 			var CREATE_USER_ID = util.isEmpty(task.CREATE_USER_ID);
 			if(CREATE_USER_ID){
@@ -289,6 +288,12 @@ var biz = {
 		}
 
 		sql += ' ORDER BY c.CREATE_TIME DESC';
+
+		if(pagination){
+			sql += ' LIMIT ?, ?';
+			postData.push((pagination[1] - 1) * pagination[0]);
+			postData.push(pagination[0]);
+		}
 
 		// TODO
 		mysql.query(sql, postData, function (err, docs){

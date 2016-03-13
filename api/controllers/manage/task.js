@@ -140,7 +140,7 @@ exports.addUI = function(req, res, next){
 		ep.emit('users', docs);
 	});
 
-	biz.project.findByProject(null, function (err, docs){
+	biz.project.findByProject(null, null, function (err, docs){
 		if(err) return ep.emit('error', err);
 		ep.emit('projects', docs);
 	});
@@ -172,12 +172,12 @@ exports.indexUI = function(req, res, next){
 		next(err);
 	});
 
-	biz.task.findByTask({ PROJECT_ID: query.project_id }, function (err, docs){
+	biz.task.findByTask(null, { PROJECT_ID: query.project_id }, function (err, docs){
 		if(err) return ep.emit('error', err);
 		ep.emit('tasks', docs);
 	});
 
-	biz.project.findByProject(null, function (err, docs){
+	biz.project.findByProject(null, null, function (err, docs){
 		if(err) return ep.emit('error', err);
 		ep.emit('projects', docs);
 	});

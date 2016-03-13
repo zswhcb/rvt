@@ -145,7 +145,7 @@ exports.addUI = function(req, res, next){
  * @return
  */
 exports.indexUI = function(req, res, next){
-	biz.project.findByProject(null, function (err, docs){
+	biz.project.findByProject(null, null, function (err, docs){
 		if(err) return next(err);
 		// TODO
 		res.render('manage/project/1.0.1/index', {
