@@ -58,7 +58,10 @@ exports.inviteUI = function(req, res, next){
 	res.render('i/1.0.2/invite', {
 		conf: conf,
 		description: '',
-		keywords: ',html5,nodejs'
+		keywords: ',html5,nodejs',
+		data: {
+			user: req.session.user
+		}
 	});
 };
 

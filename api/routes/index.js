@@ -35,6 +35,10 @@ function proc_api(app){
 function proc_i(app){
 	var user = i.user;
 
+	app.get('/i/invite$', user.inviteUI);
+	app.get('/i/task$', user.taskUI);
+	app.get('/i/info$', user.infoUI);
+
 	app.post('/i/register$', express.valiPostData, user.register);
 	app.get('/i/register$', user.registerUI);
 

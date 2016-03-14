@@ -1,11 +1,11 @@
-<#include "/_pagelet/constant.html"/>
+#parse('_pagelet/constant.html')
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/_pagelet/header.html"/>
+#parse('_pagelet/header.html')
 <title>我的任务</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
 </head>
 <body>
 	<div class='container'>
@@ -13,8 +13,7 @@
 			<div class='col-sm-12 col-md-12'>
 				<ol class='breadcrumb'>
 					<li class='active'><i class='fa fa-home fa-fw'></i> 用户中心</li>
-					<li class='active'><a href='javascript:location.reload();'>我的任务</a>
-					</li>
+					<li class='active'><a href='javascript:location.reload();'>我的任务</a></li>
 				</ol>
 			</div>
 		</div>
@@ -22,15 +21,12 @@
 			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default'>
 					<div class='panel-body'>
-						<#import "/_macro/select_option.html" as select_option>
 						<form class='form-horizontal' id='frm' role='form'
 							onsubmit='return false;' data-url='changePwd'>
 							<div class='form-group'>
 								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>我的任务</label>
 								<div class='col-sm-4'>
 									<select class='form-control' id='searchFrm_task_id'>
-										<@select_option.m list=data_tasks key="id" value="task_name"
-										selValue="${(data_task_id)!}"/>
 									</select>
 								</div>
 							</div>
@@ -39,11 +35,9 @@
 				</div>
 			</div>
 		</div>
-		<#if (data_tasktakes?? && data_tasktakes?size>0)>
 		<div class='row'>
 			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default table-responsive'>
-					<#import "/_macro/status_task.html" as status_task>
 					<table id='table1' data-olx-type='olx.grid'
 						class='table table-bordered table-hover table-condensed table-striped'
 						data-url='' data-current='1' data-pagesize='20' data-count='561'>
@@ -61,30 +55,17 @@
 							</tr>
 						</thead>
 						<tbody>
-							<#list data_tasktakes! as doc>
-							<tr>
-								<td class='ta'><input type='checkbox'></td>
-								<td>${(doc.project.tel_num)!}</td>
-								<td>${(doc.upload_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-								<td>${(doc.talk_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-								<td>${(doc.talk_time_len)!}</td>
-								<td>${(doc.user.user_name)!}</td>
-								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-								<td><@status_task.m status="${(doc.status)!}"/></td>
-							</tr>
-							</#list>
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
-		</#if>
 	</div>
-	<#include "/_pagelet/js.html"/>
+	#parse('_pagelet/js.html')
 	<script type='text/javascript'
-		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+		src='${conf.html.virtualPath}public/assets/js/iframe.js'></script>
 	<script type='text/javascript'
-		src='${(conf_html_cdn)!}js/zeroclipboard/2.2.0/ZeroClipboard.min.js'></script>
+		src='$!{conf.html.cdn}js/zeroclipboard/2.2.0/ZeroClipboard.min.js'></script>
 	<script>
 		$(function() {
 			$('#searchFrm_task_id')
@@ -92,7 +73,7 @@
 							function() {
 								var selId = $(this).children('option:selected')
 										.val();
-								parent.location.href = '${(conf_html_virtualPath)!}#page/task?id='
+								parent.location.href = '$!{conf_html_virtualPath}#page/task?id='
 										+ selId;
 							});
 		});

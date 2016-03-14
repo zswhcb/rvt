@@ -70,7 +70,7 @@
 		$(function() {
 			$('#editFrm_btn_submit').click(function() {
 				$.ajax({
-					url : '${conf.html.virtualPath}manage/user/info',
+					url : '${conf.html.virtualPath}i/info',
 					type : 'POST',
 					dataType : 'JSON',
 					data : { data: JSON.stringify($('#editFrm').serializeObjectForm()) },
