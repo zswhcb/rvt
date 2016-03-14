@@ -5,11 +5,11 @@
 #parse('_pagelet/header.html')
 <title>用户登陆</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
+	href='$!{conf.html.cdn}public/user/css/login.css' />
 <style>
 body {
 	background: rgba(0, 0, 0, 0)
-		url('$!{conf.html.virtualPath}static/images/bg.jpg') repeat scroll 0
+		url('$!{conf.html.virtualPath}public/assets/images/bg.jpg') repeat scroll 0
 		0;
 }
 </style>
@@ -79,7 +79,7 @@ body {
 						<div id='help_tip'
 							class='col-md-offset-3 col-sm-offset-3 col-md-4 col-sm-3'>
 							<div>
-								已有帐号？<a href='$!{conf.html.virtualPath}login'>立即登陆</a>
+								已有帐号？<a href='$!{conf.html.virtualPath}i/login'>立即登陆</a>
 							</div>
 							<div>&nbsp;</div>
 							<div>
@@ -93,7 +93,7 @@ body {
 						<div class='col-md-offset-3 col-sm-offset-3 col-md-4 col-sm-3'>
 							<div>
 								<img alt='扫二维码下载' title='扫二维码下载' style='width: 100px'
-									src='$!{conf.html.virtualPath}static/images/app.jpg'>
+									src='$!{conf.html.virtualPath}public/assets/images/app.jpg'>
 							</div>
 						</div>
 					</div>
@@ -114,14 +114,14 @@ body {
 
 								$
 										.ajax({
-											url : '$!{conf.html.virtualPath}register',
+											url : '$!{conf.html.virtualPath}i/register',
 											type : 'POST',
 											dataType : 'JSON',
 											data : { data: JSON.stringify($('#regFrm').serializeObjectForm()) },
 											success : function(data) {
 												if (data.success) {
 													alert('注册成功');
-													location.href = '$!{conf.html.virtualPath}login';
+													location.href = '$!{conf.html.virtualPath}i/login';
 													return;
 												} // END
 												if (data.msg)

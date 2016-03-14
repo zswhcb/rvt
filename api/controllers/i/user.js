@@ -11,6 +11,7 @@ var EventProxy = require('eventproxy');
 var conf = require('../../settings');
 
 var biz = {
+	tasktake: require('../../../biz/tasktake'),
 	user: require('../../../biz/user')
 };
 
@@ -20,7 +21,7 @@ var biz = {
  * @return
  */
 exports.infoUI = function(req, res, next){
-	res.render('i/user/1.0.1/info', {
+	res.render('i/1.0.2/info', {
 		conf: conf,
 		description: '',
 		keywords: ',html5,nodejs'
@@ -32,8 +33,16 @@ exports.infoUI = function(req, res, next){
  * @params
  * @return
  */
+exports.register = function(req, res, next){
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.registerUI = function(req, res, next){
-	res.render('i/user/1.0.1/register', {
+	res.render('i/1.0.2/register', {
 		conf: conf,
 		description: '',
 		keywords: ',html5,nodejs'
@@ -46,7 +55,7 @@ exports.registerUI = function(req, res, next){
  * @return
  */
 exports.inviteUI = function(req, res, next){
-	res.render('i/user/1.0.1/invite', {
+	res.render('i/1.0.2/invite', {
 		conf: conf,
 		description: '',
 		keywords: ',html5,nodejs'
@@ -59,7 +68,7 @@ exports.inviteUI = function(req, res, next){
  * @return
  */
 exports.taskUI = function(req, res, next){
-	res.render('i/user/1.0.1/task', {
+	res.render('i/1.0.2/task', {
 		conf: conf,
 		description: '',
 		keywords: ',html5,nodejs'
@@ -120,7 +129,7 @@ exports.changePwd = function(req, res, next){
  * @return
  */
 exports.changePwdUI = function(req, res, next){
-	res.render('i/user/1.0.1/changePwd', {
+	res.render('i/1.0.2/changePwd', {
 		conf: conf,
 		description: '',
 		keywords: ',html5,nodejs'
@@ -133,7 +142,7 @@ exports.changePwdUI = function(req, res, next){
  * @return
  */
 exports.loginUI = function(req, res, next){
-	res.render('i/user/1.0.1/login', {
+	res.render('i/1.0.2/login', {
 		conf: conf,
 		description: '',
 		keywords: ',html5,nodejs',
@@ -190,4 +199,42 @@ exports.login_validate = function(req, res, next){
 exports.logoutUI = function(req, res, next){
 	req.session.destroy();
 	res.redirect(conf.html.virtualPath +'i/');
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.indexUI = function(req, res, next){
+	res.render('i/1.0.2/index', {
+		conf: conf,
+		description: '',
+		keywords: ',html5,nodejs',
+		data: {
+			user: req.session.user
+		}
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.welcomeUI = function(req, res, next){
+	biz.tasktake.findByUserId(req.session.userId, new Date(), function (err, docs){
+		if(err) return next(err);
+		// TODO
+		res.render('i/1.0.2/welcome', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				tasktakes: docs,
+				current_time: util.format(new Date(), 'YY年MM月dd日'),
+				create_time: util.format(new Date(), 'YY-MM')
+			}
+		});
+	});
 };

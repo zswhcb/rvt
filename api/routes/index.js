@@ -13,7 +13,6 @@ var api = {
 };
 
 var i = {
-	site: require('../controllers/i/site'),
 	user: require('../controllers/i/user')
 };
 
@@ -35,7 +34,9 @@ function proc_api(app){
 
 function proc_i(app){
 	var user = i.user;
-	var site = i.site;
+
+	app.post('/i/register$', express.valiPostData, user.register);
+	app.get('/i/register$', user.registerUI);
 
 	// TODO
 	app.get('/i/logout$', user.logoutUI);
@@ -45,9 +46,8 @@ function proc_i(app){
 	app.get('/i/changePwd$', user.login_validate, user.changePwdUI);
 	app.post('/i/changePwd$', express.valiPostData, user.login_validate, user.changePwd);
 
-	/* site */
-	app.get('/i/welcome$', user.login_validate, site.welcomeUI);
-	app.get('/i/', user.login_validate, site.indexUI);
+	app.get('/i/welcome$', user.login_validate, user.welcomeUI);
+	app.get('/i/', user.login_validate, user.indexUI);
 }
 
 function proc_manage(app){

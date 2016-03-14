@@ -66,7 +66,7 @@ body {
 						<div id='help_tip'
 							class='col-md-offset-3 col-sm-offset-3 col-md-4 col-sm-3'>
 							<div>
-								没有帐号？<a href='$!{conf.html.virtualPath}i/user/register'>注册新会员</a>
+								没有帐号？<a href='$!{conf.html.virtualPath}i/register'>注册新会员</a>
 							</div>
 							<div>&nbsp;</div>
 							<div>
@@ -93,7 +93,7 @@ body {
 		$(function() {
 			$('#logFrm_btn_submit').click(function() {
 				$.ajax({
-					url : '$!{conf.html.virtualPath}i/user/login',
+					url : '$!{conf.html.virtualPath}i/login',
 					type : 'POST',
 					dataType : 'JSON',
 					data : { data: JSON.stringify($('#logFrm').serializeObjectForm()) },
