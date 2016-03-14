@@ -1,11 +1,11 @@
-<#include "/_pagelet/constant.html"/>
+#parse('_pagelet/constant.html')
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/_pagelet/header.html"/>
+#parse('_pagelet/header.html')
 <title>邀请好友</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
 </head>
 <body>
 	<div class='container'>
@@ -28,7 +28,7 @@
 								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>我的邀请码</label>
 								<div class='col-sm-4'>
 									<input type='text' class='form-control' id='frm_invite'
-										readonly value='${(data_session_user.id)!}'>
+										readonly value='$!{data.user.id}'>
 								</div>
 							</div>
 							<div class='form-group'>
@@ -50,8 +50,7 @@
 						data-url='' data-current='1' data-pagesize='20' data-count='561'>
 						<thead>
 							<tr>
-								<th class='ta'><input type='checkbox' title='全选/取消'>
-								</th>
+								<th class='ta'><input type='checkbox' title='全选/取消'></th>
 								<th>用户名</th>
 								<th>电子邮箱</th>
 								<th>真实姓名</th>
@@ -60,27 +59,25 @@
 							</tr>
 						</thead>
 						<tbody>
-							<#list data_users as doc>
-							<tr>
+							#foreach($!doc in $!data.users)<tr>
 								<td class='ta'><input type='checkbox'></td>
-								<td>${(doc.user_name)!}</td>
-								<td>${(doc.email)!}</td>
-								<td>${(doc.real_name)!}</td>
-								<td>${(doc.alipay_account)!}</td>
-								<td>${(doc.create_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-							</tr>
-							</#list>
+								<td>$!{doc.USER_NAME}</td>
+								<td>$!{doc.EMAIL}</td>
+								<td>$!{doc.REAL_NAME}</td>
+								<td>$!{doc.ALIPAY_ACCOUNT}</td>
+								<td>#formatDate($!{doc.CREATE_TIME})</td>
+							</tr>#end
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
 	</div>
-	<#include "/_pagelet/js.html"/>
+	#parse('_pagelet/js.html')
 	<script type='text/javascript'
-		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+		src='${conf.html.virtualPath}public/assets/js/iframe.js'></script>
 	<script type='text/javascript'
-		src='${(conf_html_cdn)!}js/zeroclipboard/2.2.0/ZeroClipboard.min.js'></script>
+		src='$!{conf.html.cdn}js/zeroclipboard/2.2.0/ZeroClipboard.min.js'></script>
 	<script>
 		$(function() {
 			var clip = new ZeroClipboard($('#frm_btn_submit'));

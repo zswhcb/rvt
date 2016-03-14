@@ -19,6 +19,58 @@ var biz = {
  * @params
  * @return
  */
+exports.infoUI = function(req, res, next){
+	res.render('i/user/1.0.1/info', {
+		conf: conf,
+		description: '',
+		keywords: ',html5,nodejs'
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.registerUI = function(req, res, next){
+	res.render('i/user/1.0.1/register', {
+		conf: conf,
+		description: '',
+		keywords: ',html5,nodejs'
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.inviteUI = function(req, res, next){
+	res.render('i/user/1.0.1/invite', {
+		conf: conf,
+		description: '',
+		keywords: ',html5,nodejs'
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
+exports.taskUI = function(req, res, next){
+	res.render('i/user/1.0.1/task', {
+		conf: conf,
+		description: '',
+		keywords: ',html5,nodejs'
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.resetPwd = function(req, res, next){
 	var data = req._data;
 	// TODO
@@ -126,7 +178,7 @@ exports.login = function(req, res, next){
 exports.login_validate = function(req, res, next){
 	if(2 === req.session.lv) return next();
 	if(req.xhr) return res.send({ success: false, status: 408 });
-	res.redirect(conf.html.virtualPath +'i/user/login');
+	res.redirect(conf.html.virtualPath +'i/login');
 };
 
 /**

@@ -38,12 +38,12 @@ function proc_i(app){
 	var site = i.site;
 
 	// TODO
-	app.get('/i/user/logout$', user.logoutUI);
-	app.get('/i/user/login$', user.loginUI);
-	app.post('/i/user/login$', express.valiPostData, user.login);
+	app.get('/i/logout$', user.logoutUI);
+	app.get('/i/login$', user.loginUI);
+	app.post('/i/login$', express.valiPostData, user.login);
 	// TODO
-	app.get('/i/user/changePwd$', user.login_validate, user.changePwdUI);
-	app.post('/i/user/changePwd$', express.valiPostData, user.login_validate, user.changePwd);
+	app.get('/i/changePwd$', user.login_validate, user.changePwdUI);
+	app.post('/i/changePwd$', express.valiPostData, user.login_validate, user.changePwd);
 
 	/* site */
 	app.get('/i/welcome$', user.login_validate, site.welcomeUI);

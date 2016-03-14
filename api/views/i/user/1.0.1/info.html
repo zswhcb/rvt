@@ -1,11 +1,11 @@
-<#include "/_pagelet/constant.html"/>
+#parse('_pagelet/constant.html')
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/_pagelet/header.html"/>
+#parse('_pagelet/header.html')
 <title>我的信息</title>
 <link rel='stylesheet' type='text/css' media='screen'
-	href='${(conf_html_virtualPath)!}static/css/iframe.css' />
+	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
 </head>
 <body>
 	<div class='container'>
@@ -26,29 +26,29 @@
 							onsubmit='return false;' data-url='changePwd'>
 							<div class='form-group'>
 								<label class='col-sm-2 hidden-xs control-label'
-									for='editFrm_email'>电子邮箱</label>
+									for='editFrm_EMAIL'>电子邮箱</label>
 								<div class='col-sm-4'>
-									<input type='text' class='form-control' name='email'
-										id='editFrm_email' placeholder='电子邮箱'
-										value='${(data_user.email)!}'>
+									<input type='text' class='form-control' name='EMAIL'
+										id='editFrm_EMAIL' placeholder='电子邮箱'
+										value='$!{data.user.EMAIL}'>
 								</div>
 							</div>
 							<div class='form-group'>
 								<label class='col-sm-2 hidden-xs control-label'
-									for='editFrm_real_name'>真实姓名</label>
+									for='editFrm_REAL_NAME'>真实姓名</label>
 								<div class='col-sm-4'>
-									<input type='text' class='form-control' name='real_name'
-										id='editFrm_real_name' placeholder='真实姓名'
-										value='${(data_user.real_name)!}'>
+									<input type='text' class='form-control' name='REAL_NAME'
+										id='editFrm_REAL_NAME' placeholder='真实姓名'
+										value='$!{data.user.REAL_NAME}'>
 								</div>
 							</div>
 							<div class='form-group'>
 								<label class='col-sm-2 hidden-xs control-label'
-									for='editFrm_alipay_account'>支付宝</label>
+									for='editFrm_ALIPAY_ACCOUNT'>支付宝</label>
 								<div class='col-sm-4'>
-									<input type='text' class='form-control' name='alipay_account'
-										id='editFrm_alipay_account' placeholder='支付宝'
-										value='${(data_user.alipay_account)!}'>
+									<input type='text' class='form-control' name='ALIPAY_ACCOUNT'
+										id='editFrm_ALIPAY_ACCOUNT' placeholder='支付宝'
+										value='$!{data.user.ALIPAY_ACCOUNT}'>
 								</div>
 							</div>
 							<div class='form-group'>
@@ -63,17 +63,17 @@
 			</div>
 		</div>
 	</div>
-	<#include "/_pagelet/js.html"/>
+	#parse('_pagelet/js.html')
 	<script type='text/javascript'
-		src='${(conf_html_virtualPath)!}static/js/iframe.js'></script>
+		src='${conf.html.virtualPath}public/assets/js/iframe.js'></script>
 	<script>
 		$(function() {
 			$('#editFrm_btn_submit').click(function() {
 				$.ajax({
-					url : '${(conf_html_virtualPath)!}info',
+					url : '${conf.html.virtualPath}manage/user/info',
 					type : 'POST',
 					dataType : 'JSON',
-					data : $('#editFrm').serializeObjectForm(),
+					data : { data: JSON.stringify($('#editFrm').serializeObjectForm()) },
 					success : function(data) {
 						if (!data.success)
 							return alert(data.msg[0]);
