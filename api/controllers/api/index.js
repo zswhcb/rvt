@@ -34,10 +34,6 @@ var exports = module.exports;
 		var body = req.body;
 		var data = req._data;
 		
-		// 判断设备号
-		data.DEVICE_CODE = util.isEmpty(data.DEVICE_CODE);
-		if(!data.DEVICE_CODE) return res.send(result);
-		
 		// TODO
 		body.command = util.isEmpty(body.command);
 		if(!body.command) return res.send(result);
@@ -65,34 +61,22 @@ var exports = module.exports;
 				result.msg = ['禁止登陆'];
 				return res.send(result);
 			}
-			
-			function run(){
-				if(body.data) delete body.data;
-				// TODO
-				if(!rest.validate(body, doc.SECKEY)){
-					result.msg = ['验证失败'];					
-					return res.send(result);
-				}
-				// TODO
-				req.flash('user', doc);
-				next();
+
+			// TODO
+			if(data.DEVICE_CODE !== doc.DEVICE_CODE){
+				result.msg = ['您的帐号暂时无法登陆，请联系管理员'];
+				return res.send(result);
 			}
-			
-			// 判断设备号
-			if(doc.DEVICE_CODE){
-				if(data.DEVICE_CODE !== doc.DEVICE_CODE){
-					result.msg = ['您的帐号暂时无法登陆，请联系管理员'];
-					return res.send(result);
-				}
-			}else{
-				return biz.user.editDeviceCode({ DEVICE_CODE: data.DEVICE_CODE, id: doc.id }, function (err, status){
-					if(err) return next(err);
-					// TODO
-					run();
-				});
+
+			if(body.data) delete body.data;
+			// TODO
+			if(!rest.validate(body, doc.SECKEY)){
+				result.msg = ['验证失败'];
+				return res.send(result);
 			}
-			
-			run();
+			// TODO
+			req.flash('user', doc);
+			next();
 		});
     };
 })(exports);
@@ -105,27 +89,57 @@ var exports = module.exports;
  */
 (function (exports){
 
-    function login(req, res, next){
+	function login(req, res, next){
 		var result = { success: false };
 		var data = req._data;
+
+		// 判断设备号
+		data.DEVICE_CODE = util.isEmpty(data.DEVICE_CODE);
+		if(!data.DEVICE_CODE) return res.send(result);
 		
 		// TODO
 		biz.user.login(data, function (err, msg, doc){
-		    if(err) return next(err);
-		    if(msg){
+			if(err) return next(err);
+			// TODO
+			if(msg){
 				result.msg = msg;
 				return res.send(result);
-		    }
-	
-		    /* result */
-		    result.data = {
-				APIKEY: doc.APIKEY,
-				SECKEY: doc.SECKEY,
-				TS: (new Date()).getTime()
-		    };
-		    result.ver = conf.app.ver;
-		    result.success = true;
-		    res.send(result);
+			}
+
+			function run(){
+				/* result */
+				result.data = {
+					APIKEY: doc.APIKEY,
+					SECKEY: doc.SECKEY,
+					TS: (new Date()).getTime()
+				};
+				result.ver = conf.app.ver;
+				result.success = true;
+				res.send(result);
+			}
+
+			if(doc.DEVICE_CODE){
+				if(data.DEVICE_CODE === doc.DEVICE_CODE){
+					return run();
+				}
+				// TODO
+				result.msg = ['您的帐号暂时无法登陆，请联系管理员'];
+				return res.send(result);
+			}
+
+			biz.user.regDeviceCode({
+				id: doc.id,
+				DEVICE_CODE: data.DEVICE_CODE
+			}, function (err, msg, status){
+				if(err) return next(err);
+				// TODO
+				if(msg){
+					result.msg = msg;
+					return res.send(result);
+				}
+				// TODO
+				run();
+			});
 		});
     }
 

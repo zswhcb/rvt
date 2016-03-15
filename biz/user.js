@@ -338,6 +338,23 @@ exports.findBySecKey = function(SECKEY, cb){
  * @return
  */
 (function (exports){
+	var sql = 'UPDATE s_user set DEVICE_CODE=? WHERE id=?';
+	// TODO
+	exports.regDeviceCode = function(newInfo, cb){
+		// CREATE
+		mysql.query(sql, [newInfo.DEVICE_CODE, newInfo.id], function (err, status){
+			if(err) return cb(err);
+			cb(null, null, status);
+		});
+	};
+})(exports);
+
+/**
+ *
+ * @params
+ * @return
+ */
+(function (exports){
 
 	function proc_sql_center(ids){
 		var sql = '';

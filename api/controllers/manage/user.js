@@ -235,13 +235,7 @@ exports.loginUI = function(req, res, next){
 	res.render('manage/user/1.0.1/login', {
 		conf: conf,
 		description: '',
-		keywords: ',html5,nodejs',
-		data: {
-			user: {
-				USER_NAME: 'bushuo',
-				USER_PASS: '1'
-			}
-		}
+		keywords: ',html5,nodejs'
 	});
 };
 
