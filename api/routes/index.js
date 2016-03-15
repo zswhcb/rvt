@@ -35,20 +35,20 @@ function proc_api(app){
 function proc_i(app){
 	var user = i.user;
 
-	app.get('/i/invite$', user.inviteUI);
-	app.get('/i/task$', user.taskUI);
-	app.get('/i/info$', user.infoUI);
+	app.get('/i/invite$', user.login_validate, user.inviteUI);
+	app.get('/i/task$', user.login_validate, user.taskUI);
+	app.get('/i/info$', user.login_validate, user.infoUI);
 
 	app.post('/i/register$', express.valiPostData, user.register);
 	app.get('/i/register$', user.registerUI);
 
 	// TODO
 	app.get('/i/logout$', user.logoutUI);
-	app.get('/i/login$', user.loginUI);
 	app.post('/i/login$', express.valiPostData, user.login);
+	app.get('/i/login$', user.loginUI);
 	// TODO
-	app.get('/i/changePwd$', user.login_validate, user.changePwdUI);
 	app.post('/i/changePwd$', express.valiPostData, user.login_validate, user.changePwd);
+	app.get('/i/changePwd$', user.login_validate, user.changePwdUI);
 
 	app.get('/i/welcome$', user.login_validate, user.welcomeUI);
 	app.get('/i/', user.login_validate, user.indexUI);
@@ -92,13 +92,13 @@ function proc_manage(app){
 	app.get('/manage/user/', user.login_validate, user.indexUI);
 
 	// TODO
-	app.get('/manage/user/changePwd$', user.login_validate, user.changePwdUI);
 	app.post('/manage/user/changePwd$', express.valiPostData, user.login_validate, user.changePwd);
+	app.get('/manage/user/changePwd$', user.login_validate, user.changePwdUI);
 
 	// TODO
 	app.get('/manage/user/logout$', user.logoutUI);
-	app.get('/manage/user/login$', user.loginUI);
 	app.post('/manage/user/login$', express.valiPostData, user.login);
+	app.get('/manage/user/login$', user.loginUI);
 
 	/* site */
 	app.get('/manage/welcome$', user.login_validate, site.welcomeUI);

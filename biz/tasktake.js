@@ -181,7 +181,7 @@ exports.checkTimeout = function(data){
      */
     exports.findByUserId = function(user_id, create_time, cb){
         var sql = _sql_start;
-        sql += 'SELECT * FROM r_project_task_take WHERE USER_ID=? AND DATE_FORMAT(CREATE_TIME, "%Y-%m") = DATE_FORMAT(?, "%Y-%m")';
+        sql += 'SELECT * FROM r_project_task_take WHERE USER_ID=? AND DATE_FORMAT(CREATE_TIME, "%Y-%m") = ?';
         sql += _sql_end;
 
         mysql.query(sql, [user_id, create_time], function (err, docs){

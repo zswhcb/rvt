@@ -148,8 +148,7 @@ exports.loginUI = function(req, res, next){
 	res.render('i/1.0.2/login', {
 		conf: conf,
 		description: '',
-		keywords: ',html5,nodejs',
-		data: {}
+		keywords: ',html5,nodejs'
 	});
 };
 
@@ -226,7 +225,10 @@ exports.indexUI = function(req, res, next){
  * @return
  */
 exports.welcomeUI = function(req, res, next){
-	biz.tasktake.findByUserId(req.session.userId, new Date(), function (err, docs){
+	var query = req.query;
+	var create_time = query.create_time || util.format(new Date(), 'YY-MM');
+	// TODO
+	biz.tasktake.findByUserId(req.session.userId, create_time, function (err, docs){
 		if(err) return next(err);
 		// TODO
 		res.render('i/1.0.2/welcome', {
@@ -236,7 +238,7 @@ exports.welcomeUI = function(req, res, next){
 			data: {
 				tasktakes: docs,
 				current_time: util.format(new Date(), 'YY年MM月dd日'),
-				create_time: util.format(new Date(), 'YY-MM')
+				create_time: create_time
 			}
 		});
 	});
