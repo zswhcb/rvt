@@ -21,12 +21,14 @@
 			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default'>
 					<div class='panel-body'>
+						#parse('_macro/select_option.html')
 						<form class='form-horizontal' id='frm' role='form'
 							onsubmit='return false;' data-url='changePwd'>
 							<div class='form-group'>
 								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>我的任务</label>
 								<div class='col-sm-4'>
-									<select class='form-control' id='searchFrm_task_id'>
+									<select class='form-control' id='searchFrm_TASK_ID'>
+										#m_select_option($!{data.tasks}, 'id', 'TASK_NAME', $!{data.task_id})
 									</select>
 								</div>
 							</div>
@@ -35,9 +37,10 @@
 				</div>
 			</div>
 		</div>
-		<div class='row'>
+		#if($data.tasktakes && (0 < $data.tasktakes.size()))<div class='row'>
 			<div class='col-sm-12 col-md-12'>
 				<div class='panel panel-default table-responsive'>
+					#parse('_macro/status_task.html')
 					<table id='table1' data-olx-type='olx.grid'
 						class='table table-bordered table-hover table-condensed table-striped'
 						data-url='' data-current='1' data-pagesize='20' data-count='561'>
@@ -55,11 +58,21 @@
 							</tr>
 						</thead>
 						<tbody>
+							#foreach($!doc in $!data.tasktakes)<tr>
+								<td class='ta'><input type='checkbox'></td>
+								<td>$!{doc.TEL_NUM}</td>
+								<td>#formatDate($!{doc.UPLOAD_TIME})</td>
+								<td>#formatDate($!{doc.TALK_TIME})</td>
+								<td>$!{doc.TALK_TIME_LEN}</td>
+								<td>$!{doc.USER_NAME}</td>
+								<td>#formatDate($!{doc.CREATE_TIME})</td>
+								<td>#m_status_task($!{doc.STATUS})</td>
+							</tr>#end
 						</tbody>
 					</table>
 				</div>
 			</div>
-		</div>
+		</div>#end
 	</div>
 	#parse('_pagelet/js.html')
 	<script type='text/javascript'
@@ -68,12 +81,12 @@
 		src='$!{conf.html.cdn}js/zeroclipboard/2.2.0/ZeroClipboard.min.js'></script>
 	<script>
 		$(function() {
-			$('#searchFrm_task_id')
+			$('#searchFrm_TASK_ID')
 					.change(
 							function() {
 								var selId = $(this).children('option:selected')
 										.val();
-								parent.location.href = '$!{conf_html_virtualPath}#page/task?id='
+								parent.location.href = '$!{conf.html.virtualPath}i/#page/task?id='
 										+ selId;
 							});
 		});

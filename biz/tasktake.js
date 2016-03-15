@@ -189,4 +189,20 @@ exports.checkTimeout = function(data){
             cb(null, docs);
         });
     };
+
+    /**
+     *
+     * @params
+     * @return
+     */
+    exports.findByTaskId = function(task_id, cb){
+        var sql = _sql_start;
+        sql += 'SELECT * FROM r_project_task_take WHERE TASK_ID=?';
+        sql += _sql_end;
+
+        mysql.query(sql, [task_id], function (err, docs){
+            if(err) return cb(err);
+            cb(null, docs);
+        });
+    };
 })(exports);

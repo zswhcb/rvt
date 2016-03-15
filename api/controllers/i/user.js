@@ -11,6 +11,7 @@ var EventProxy = require('eventproxy');
 var conf = require('../../settings');
 
 var biz = {
+	task: require('../../../biz/task'),
 	tasktake: require('../../../biz/tasktake'),
 	user: require('../../../biz/user')
 };
@@ -114,18 +115,52 @@ exports.inviteUI = function(req, res, next){
 	});
 };
 
-/**
- *
- * @params
- * @return
- */
-exports.taskUI = function(req, res, next){
-	res.render('i/1.0.2/task', {
-		conf: conf,
-		description: '',
-		keywords: ',html5,nodejs'
-	});
-};
+(function (exports){
+	function render(task_id, tasks, tasktakes, res){
+		res.render('i/1.0.2/task', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				task_id: task_id,
+				tasktakes: tasktakes,
+				tasks: tasks
+			}
+		});
+	}
+
+	/**
+	 *
+	 * @params
+	 * @return
+	 */
+	exports.taskUI = function(req, res, next){
+		biz.task.findByTask(null, { CREATE_USER_ID: req.session.userId }, function (err, docs){
+			if(err) return next(err);
+			// TODO
+			var query = req.query;
+			// 任务ID
+			var task_id = query.id;
+
+			if(!task_id){
+				if(docs && (0 < docs.length)){
+					var doc = docs[0];
+					task_id = doc.id;
+				}
+			}
+
+			if(!task_id) return render(task_id, docs, null, res);
+
+			var tasks = docs;
+			// TODO
+			biz.tasktake.findByTaskId(task_id, function (err, docs){
+				if(err) return next(err);
+				// TODO
+				render(task_id, tasks, docs, res);
+			});
+		});
+	};
+})(exports);
 
 /**
  *
