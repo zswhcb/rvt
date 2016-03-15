@@ -25,16 +25,16 @@
 						<form class='form-horizontal' id='frm' role='form'
 							onsubmit='return false;' data-url='changePwd'>
 							<div class='form-group'>
-								<label class='col-sm-2 hidden-xs control-label' for='frm_invite'>我的邀请码</label>
+								<label class='col-sm-2 hidden-xs control-label' for='FRM_INVITE'>我的邀请码</label>
 								<div class='col-sm-4'>
-									<input type='text' class='form-control' id='frm_invite'
+									<input type='text' class='form-control' id='FRM_INVITE'
 										readonly value='$!{data.user.id}'>
 								</div>
 							</div>
 							<div class='form-group'>
 								<div class='col-sm-offset-2 col-sm-4'>
 									<button id='frm_btn_submit' type='button'
-										data-clipboard-target="frm_invite" class='btn btn-primary'>复制</button>
+										data-clipboard-target="FRM_INVITE" class='btn btn-primary'>复制</button>
 								</div>
 							</div>
 						</form>
@@ -54,6 +54,7 @@
 								<th>用户名</th>
 								<th>电子邮箱</th>
 								<th>真实姓名</th>
+								<th>手机号</th>
 								<th>支付宝</th>
 								<th>注册时间</th>
 							</tr>
@@ -64,6 +65,7 @@
 								<td>$!{doc.USER_NAME}</td>
 								<td>$!{doc.EMAIL}</td>
 								<td>$!{doc.REAL_NAME}</td>
+								<td>$!{doc.MOBILE}</td>
 								<td>$!{doc.ALIPAY_ACCOUNT}</td>
 								<td>#formatDate($!{doc.CREATE_TIME})</td>
 							</tr>#end

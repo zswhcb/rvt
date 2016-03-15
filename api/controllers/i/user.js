@@ -99,13 +99,18 @@ exports.registerUI = function(req, res, next){
  * @return
  */
 exports.inviteUI = function(req, res, next){
-	res.render('i/1.0.2/invite', {
-		conf: conf,
-		description: '',
-		keywords: ',html5,nodejs',
-		data: {
-			user: req.session.user
-		}
+	biz.user.findByUser(null, { INVITE_USER_ID: req.session.userId }, function (err, docs){
+		if(err) return next(err);
+		// TODO
+		res.render('i/1.0.2/invite', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				user: req.session.user,
+				users: docs
+			}
+		});
 	});
 };
 
