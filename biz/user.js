@@ -188,7 +188,7 @@ exports.findBySecKey = function(SECKEY, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO s_user (id, ROLE_ID, INVITE_USER_ID, USER_NAME, USER_PASS, EMAIL, MOBILE, APIKEY, SECKEY, REAL_NAME, ALIPAY_ACCOUNT, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO s_user (id, ROLE_ID, INVITE_USER_ID, USER_NAME, USER_PASS, EMAIL, MOBILE, APIKEY, SECKEY, REAL_NAME, ALIPAY_ACCOUNT, DEVICE_CODE, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			newInfo.USER_NAME = util.isEmpty(newInfo.USER_NAME);
@@ -213,12 +213,13 @@ exports.findBySecKey = function(SECKEY, cb){
 							newInfo.INVITE_USER_ID,
 							newInfo.USER_NAME,
 							md5.hex(newInfo.USER_PASS || '123456'),
-							newInfo.EMAIL,
+							newInfo.EMAIL || '',
 							newInfo.MOBILE,
 							apiKey,
 							secKey,
-							newInfo.REAL_NAME,
-							newInfo.ALIPAY_ACCOUNT,
+							newInfo.REAL_NAME || '',
+							newInfo.ALIPAY_ACCOUNT || '',
+							newInfo.DEVICE_CODE || '',
 							new Date(),
 							newInfo.STATUS || 1
 						];

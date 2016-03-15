@@ -79,6 +79,63 @@ exports.infoUI = function(req, res, next){
  * @return
  */
 exports.register = function(req, res, next){
+	var result = { success: false };
+	var data = req._data;
+
+	var regex = /^1\d{10}$/;
+	if(!regex.test(data.USER_NAME)){
+		result.msg = ['请输入正确的手机号'];
+		return res.send(result);
+	}
+
+	data.INVITE_USER_ID = util.isEmpty(data.INVITE_USER_ID);
+	if(!data.INVITE_USER_ID){
+		result.msg = ['邀请码不能为空'];
+		return res.send(result);
+	}
+
+	data.USER_PASS = util.isEmpty(data.USER_PASS);
+	if(!data.USER_PASS){
+		result.msg = ['密码不能为空'];
+		return res.send(result);
+	}
+
+	// TODO
+	var ep = EventProxy.create('findByName', 'getById', function (findByName, getById){
+		data.MOBILE = data.USER_NAME;
+		// CREATE
+		biz.user.saveNew(data, function (err, msg, status){
+			if(err) return next(err);
+
+			if(msg){
+				result.msg = msg;
+				return res.send(result);
+			}
+
+			result.success = true;
+			res.send(result);
+		});
+	});
+
+	ep.fail(function (err, msg){
+		if(err) return next(err);
+		result.msg = msg;
+		res.send(result);
+	});
+
+	biz.user.findByName(data.USER_NAME, function (err, doc){
+		if(err) return ep.emit('error', err);
+		// TODO
+		if(doc) return ep.emit('error', null, ['该手机号已经注册过']);
+		ep.emit('findByName', null);
+	});
+
+	biz.user.getById(data.INVITE_USER_ID, function (err, doc){
+		if(err) return ep.emit('error', err);
+		// TODO
+		if(!doc) return ep.emit('error', null, ['请输入正确的邀请码']);
+		ep.emit('getById', null);
+	});
 };
 
 /**
