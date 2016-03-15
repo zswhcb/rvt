@@ -252,7 +252,7 @@ exports.findBySecKey = function(SECKEY, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE s_user set USER_PASS=?, APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, DEVICE_CODE=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE s_user set APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, DEVICE_CODE=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			var that = this;
@@ -263,7 +263,6 @@ exports.findBySecKey = function(SECKEY, cb){
 				var ep = EventProxy.create('apiKey', 'secKey', function (apiKey, secKey){
 					// CREATE
 					var postData = [
-						md5.hex(newInfo.USER_PASS || '123456'),
 						apiKey,
 						secKey,
 						newInfo.EMAIL,
@@ -271,7 +270,7 @@ exports.findBySecKey = function(SECKEY, cb){
 						newInfo.REAL_NAME,
 						newInfo.ALIPAY_ACCOUNT,
 						newInfo.DEVICE_CODE,
-						newInfo.STATUS || 1,
+						newInfo.STATUS,
 						newInfo.id
 					];
 					mysql.query(sql, postData, function (err, status){

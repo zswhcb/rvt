@@ -20,11 +20,55 @@ var biz = {
  * @params
  * @return
  */
+exports.info = function(req, res, next){
+	var data = req._data;
+
+	biz.user.getById(req.session.userId, function (err, doc){
+		if(err) return next(err);
+		var result = { success: false };
+		// TODO
+		if(!doc){
+			result.msg = ['操作失败'];
+			return res.send(result);
+		}
+		// TODO
+		doc.EMAIL = data.EMAIL;
+		doc.REAL_NAME = data.REAL_NAME;
+		doc.MOBILE = data.MOBILE;
+		doc.ALIPAY_ACCOUNT = data.ALIPAY_ACCOUNT;
+
+		// TODO
+		biz.user.editInfo(doc, function (err, msg, status){
+			if(err) return next(err);
+
+			if(msg){
+				result.msg = msg;
+				return res.send(result);
+			}
+
+			result.success = true;
+			res.send(result);
+		});
+	});
+};
+
+/**
+ *
+ * @params
+ * @return
+ */
 exports.infoUI = function(req, res, next){
-	res.render('i/1.0.2/info', {
-		conf: conf,
-		description: '',
-		keywords: ',html5,nodejs'
+	biz.user.getById(req.session.userId, function (err, doc){
+		if(err) return next(err);
+		// TODO
+		res.render('i/1.0.2/info', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: {
+				user: doc
+			}
+		});
 	});
 };
 

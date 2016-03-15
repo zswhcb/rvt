@@ -37,6 +37,7 @@ function proc_i(app){
 
 	app.get('/i/invite$', user.login_validate, user.inviteUI);
 	app.get('/i/task$', user.login_validate, user.taskUI);
+	app.post('/i/info$', express.valiPostData, user.login_validate, user.info);
 	app.get('/i/info$', user.login_validate, user.infoUI);
 
 	app.post('/i/register$', express.valiPostData, user.register);
