@@ -299,11 +299,17 @@ exports.loginUI = function(req, res, next){
  * @return
  */
 exports.login = function(req, res, next){
+	var result = { success: false };
 	var data = req._data;
+
+	data.USER_NAME = util.isEmpty(data.USER_NAME);
+	if(!data.USER_NAME){
+		result.msg = ['用户名或密码不能为空'];
+		return res.send(result);
+	}
 
 	biz.user.login(data, function (err, msg, doc){
 		if(err) return next(err);
-		var result = { success: false };
 
 		if(msg){
 			result.msg = msg;

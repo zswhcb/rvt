@@ -307,11 +307,10 @@ exports.findBySecKey = function(SECKEY, cb){
 	var sql = 'UPDATE s_user set USER_PASS=? WHERE id=?';
 	// TODO
 	exports.changePwd = function(newInfo, cb){
-		var USER_PASS = util.isEmpty(newInfo.USER_PASS);
-		if(!USER_PASS) return cb(null, ['新密码不能为空']);
+		newInfo.USER_PASS = util.isEmpty(newInfo.USER_PASS);
+		if(!newInfo.USER_PASS) return cb(null, ['新密码不能为空']);
 
-		newInfo.USER_PASS = USER_PASS;
-
+		// TODO
 		this.getById(newInfo.id, function (err, doc){
 			if(err) return cb(err);
 			if(!doc) return cb(null, ['修改密码失败']);
