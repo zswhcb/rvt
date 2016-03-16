@@ -58,13 +58,13 @@ var exports = module.exports;
 			
 			// TODO
 			if(1 !== doc.STATUS){
-				result.msg = ['禁止登陆'];
+				result.msg = ['禁止访问'];
 				return res.send(result);
 			}
 
 			// TODO
 			if(data.DEVICE_CODE !== doc.DEVICE_CODE){
-				result.msg = ['您的帐号暂时无法登陆，请联系管理员'];
+				result.msg = ['您的帐号暂时无法访问，请联系管理员'];
 				return res.send(result);
 			}
 
@@ -123,7 +123,7 @@ var exports = module.exports;
 					return run();
 				}
 				// TODO
-				result.msg = ['您的帐号暂时无法登陆，请联系管理员'];
+				result.msg = ['您的帐号暂时无法访问，请联系管理员'];
 				return res.send(result);
 			}
 
