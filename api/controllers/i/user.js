@@ -336,7 +336,7 @@ exports.login = function(req, res, next){
 exports.login_validate = function(req, res, next){
 	if(2 === req.session.lv) return next();
 	if(req.xhr) return res.send({ success: false, status: 408 });
-	res.redirect(conf.html.virtualPath +'i/login');
+	res.redirect(conf.html.virtualPath +'i/login?refererUrl='+ req.url);
 };
 
 /**
