@@ -22,6 +22,6 @@ module.exports = {
 	}, toHtml: function(s){
 		return velocity.render(s);
 	}, formatDate: function(time){
-		return util.format(time, 'YY-MM-dd hh:mm:ss');
+		return !time ? '' : util.format(time, 'YY-MM-dd hh:mm:ss');
 	}
 };

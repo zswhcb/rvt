@@ -33,6 +33,6 @@ module.exports = {
 			pass: ''
 		}
 	}, app: {
-		ver: 104
+		ver: 204
 	}
 };
