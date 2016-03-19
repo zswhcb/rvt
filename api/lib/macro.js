@@ -25,5 +25,9 @@ module.exports = {
 		return !time ? '' : util.format(time, 'YY-MM-dd hh:mm:ss');
 	}, isNull: function(val){
 		return val ? val : '';
+	}, mobileStar: function(mobile){
+		if(!mobile) return '';
+		if(11 !== mobile.length) return mobile;
+		return mobile.substring(0, 3) +'****'+ mobile.substring(8, 11);
 	}
 };

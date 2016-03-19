@@ -64,7 +64,7 @@
 								<td>#formatDate($!{doc.UPLOAD_TIME})</td>
 								<td>#formatDate($!{doc.TALK_TIME})</td>
 								<td>#isNull($!{doc.TALK_TIME_LEN})</td>
-								<td>$!{doc.USER_NAME}</td>
+								<td>#mobileStar($!{doc.USER_NAME})</td>
 								<td>#formatDate($!{doc.CREATE_TIME})</td>
 								<td>#m_status_task($!{doc.STATUS})</td>
 							</tr>#end
