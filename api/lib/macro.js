@@ -28,6 +28,6 @@ module.exports = {
 	}, mobileStar: function(mobile){
 		if(!mobile) return '';
 		if(11 !== mobile.length) return mobile;
-		return mobile.substring(0, 3) +'****'+ mobile.substring(8, 11);
+		return mobile.substring(0, 3) +'****'+ mobile.substring(7, 11);
 	}
 };
