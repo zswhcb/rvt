@@ -12,18 +12,30 @@ var util = require('speedt-utils'),
 
 var exports = module.exports;
 
+/**
+ * 获取用户最后一次的任务信息
+ *
+ * @params
+ * @return
+ */
 (function (exports){
-    var sql = 'SELECT d.PROJECT_NAME, d.TEL_NUM, c.*'+
-                  ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, b.TASK_INTRO, b.SMS_INTRO, b.TASK_SUM, b.TALK_TIMEOUT, b.TALK_TIME_MIN, b.START_TIME, b.END_TIME, a.*'+
-                  ' FROM (SELECT * FROM r_project_task_take WHERE id=?) a'+
-                  ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL) c'+
-                  ' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) WHERE d.id IS NOT NULL';
+    var _sql_start = 'SELECT d.PROJECT_NAME, d.TEL_NUM, c.*'+
+                ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, b.TASK_INTRO, b.SMS_INTRO, b.TASK_SUM, b.TALK_TIMEOUT, b.TALK_TIME_MIN, b.START_TIME, b.END_TIME, a.*'+
+                    ' FROM (';
+    var _sql_end = ') a'+
+                    ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL) c'+
+                    ' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) WHERE d.id IS NOT NULL';
+
     /**
      *
      * @params
      * @return
      */
     exports.getById = function(id, cb){
+        var sql = _sql_start;
+        sql += 'SELECT * FROM r_project_task_take WHERE id=?';
+        sql += _sql_end;
+
         mysql.query(sql, [id], function (err, docs){
             if(err) return cb(err);
             var doc = null;
@@ -38,22 +50,13 @@ var exports = module.exports;
             cb(null, doc);
         });
     };
-})(exports);
 
-/**
- * 获取用户最后一次的任务信息
- *
- * @params
- * @return
- */
-(function (exports){
-    var sql = 'SELECT d.PROJECT_NAME, d.TEL_NUM, c.*'+
-                ' FROM (SELECT b.TASK_NAME, b.PROJECT_ID, b.TASK_INTRO, b.SMS_INTRO, b.TASK_SUM, b.TALK_TIMEOUT, b.TALK_TIME_MIN, b.START_TIME, b.END_TIME, a.*'+
-                    ' FROM (SELECT * FROM r_project_task_take WHERE STATUS=0 AND USER_ID=?) a'+
-                    ' LEFT JOIN r_project_task b ON (a.TASK_ID=b.id) WHERE b.id IS NOT NULL) c'+
-                    ' LEFT JOIN r_project d ON (c.PROJECT_ID=d.id) WHERE d.id IS NOT NULL';
     // TODO
     exports.findLast = function(user_id, cb){
+        var sql = _sql_start;
+        sql += 'SELECT * FROM r_project_task_take WHERE STATUS=0 AND USER_ID=?';
+        sql += _sql_end;
+
         mysql.query(sql, [user_id], function (err, docs){
             if(err) return cb(err);
             var doc = null;
