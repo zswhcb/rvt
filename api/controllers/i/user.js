@@ -356,13 +356,22 @@ exports.logoutUI = function(req, res, next){
  * @return
  */
 exports.indexUI = function(req, res, next){
-	res.render('i/1.0.2/index', {
-		conf: conf,
-		description: '',
-		keywords: ',html5,nodejs',
-		data: {
+	// TODO
+	biz.task.findByTask(null, { CREATE_USER_ID: req.session.userId }, function (err, docs){
+		if(err) return next(err);
+
+		var data = {
+			showTask: (docs && (0 < docs.length)),
 			user: req.session.user
-		}
+		};
+
+		// TODO
+		res.render('i/1.0.2/index', {
+			conf: conf,
+			description: '',
+			keywords: ',html5,nodejs',
+			data: data
+		});
 	});
 };
 
