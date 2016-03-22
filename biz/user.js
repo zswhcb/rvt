@@ -188,7 +188,7 @@ exports.findBySecKey = function(SECKEY, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'INSERT INTO s_user (id, ROLE_ID, INVITE_USER_ID, USER_NAME, USER_PASS, EMAIL, MOBILE, APIKEY, SECKEY, REAL_NAME, ALIPAY_ACCOUNT, DEVICE_CODE, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		var sql = 'INSERT INTO s_user (id, ROLE_ID, INVITE_USER_ID, USER_NAME, USER_PASS, EMAIL, MOBILE, APIKEY, SECKEY, REAL_NAME, ALIPAY_ACCOUNT, DEVICE_CODE, WEIXIN, CREATE_TIME, STATUS) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		// TODO
 		exports.saveNew = function(newInfo, cb){
 			newInfo.USER_NAME = util.isEmpty(newInfo.USER_NAME);
@@ -220,6 +220,7 @@ exports.findBySecKey = function(SECKEY, cb){
 							newInfo.REAL_NAME || '',
 							newInfo.ALIPAY_ACCOUNT || '',
 							newInfo.DEVICE_CODE || '',
+							newInfo.WEIXIN || '',
 							new Date(),
 							newInfo.STATUS || 1
 						];
@@ -253,7 +254,7 @@ exports.findBySecKey = function(SECKEY, cb){
 	 * @return
 	 */
 	(function (exports){
-		var sql = 'UPDATE s_user set APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, DEVICE_CODE=?, STATUS=? WHERE id=?';
+		var sql = 'UPDATE s_user set WEIXIN=?, APIKEY=?, SECKEY=?, EMAIL=?, MOBILE=?, REAL_NAME=?, ALIPAY_ACCOUNT=?, DEVICE_CODE=?, STATUS=? WHERE id=?';
 		// TODO
 		exports.editInfo = function(newInfo, cb){
 			var that = this;
@@ -264,6 +265,7 @@ exports.findBySecKey = function(SECKEY, cb){
 				var ep = EventProxy.create('apiKey', 'secKey', function (apiKey, secKey){
 					// CREATE
 					var postData = [
+						newInfo.WEIXIN,
 						apiKey,
 						secKey,
 						newInfo.EMAIL,

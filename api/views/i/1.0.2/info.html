@@ -6,9 +6,23 @@
 <title>我的信息</title>
 <link rel='stylesheet' type='text/css' media='screen'
 	href='${conf.html.virtualPath}public/assets/css/iframe.css' />
+<style>
+.must {
+	color: red;
+}
+</style>
 </head>
 <body>
 	<div class='container'>
+		<div class='row'>
+			<div class='col-sm-12 col-md-12'>
+				<div id='info_alert' class='alert alert-danger'>
+					<button type='button' class='close' data-dismiss='alert'>&times;</button>
+					<strong>[<span style='color: #d43f3a'>置顶</span>]</strong>
+					支付宝和微信用于支付使用，请务必填写
+				</div>
+			</div>
+		</div>
 		<div class='row'>
 			<div class='col-sm-12 col-md-12'>
 				<ol class='breadcrumb'>
@@ -52,12 +66,21 @@
 								</div>
 							</div>
 							<div class='form-group'>
-								<label class='col-sm-2 hidden-xs control-label'
+								<label class='col-sm-2 hidden-xs control-label must'
 									for='editFrm_ALIPAY_ACCOUNT'>支付宝</label>
 								<div class='col-sm-4'>
 									<input type='text' class='form-control' name='ALIPAY_ACCOUNT'
 										id='editFrm_ALIPAY_ACCOUNT' placeholder='支付宝'
 										value='$!{data.user.ALIPAY_ACCOUNT}'>
+								</div>
+							</div>
+							<div class='form-group'>
+								<label class='col-sm-2 hidden-xs control-label must'
+									for='editFrm_WEIXIN'>微信</label>
+								<div class='col-sm-4'>
+									<input type='text' class='form-control' name='WEIXIN'
+										id='editFrm_WEIXIN' placeholder='微信'
+										value='$!{data.user.WEIXIN}'>
 								</div>
 							</div>
 							<div class='form-group'>

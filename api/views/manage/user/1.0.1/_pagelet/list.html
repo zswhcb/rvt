@@ -11,6 +11,7 @@
 			<th>真实姓名</th>
 			<th>手机号</th>
 			<th>支付宝</th>
+			<th>微信</th>
 			<th>创建时间</th>
 			<th>状态</th>
 		</tr>
@@ -24,6 +25,7 @@
 			<td>$!{doc.REAL_NAME}</td>
 			<td>$!{doc.MOBILE}</td>
 			<td>$!{doc.ALIPAY_ACCOUNT}</td>
+			<td>$!{doc.WEIXIN}</td>
 			<td>#formatDate($!{doc.CREATE_TIME})</td>
 			<td>#m_status($!{doc.STATUS})</td>
 		</tr>#end
