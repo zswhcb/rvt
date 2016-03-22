@@ -37,6 +37,7 @@ exports.info = function(req, res, next){
 		doc.REAL_NAME = data.REAL_NAME;
 		doc.MOBILE = data.MOBILE;
 		doc.ALIPAY_ACCOUNT = data.ALIPAY_ACCOUNT;
+		doc.WEIXIN = data.WEIXIN;
 
 		// TODO
 		biz.user.editInfo(doc, function (err, msg, status){
