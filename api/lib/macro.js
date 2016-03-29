@@ -24,7 +24,7 @@ module.exports = {
 	}, formatDate: function(time){
 		return !time ? '' : util.format(time, 'YY-MM-dd hh:mm:ss');
 	}, isNull: function(val){
-		return val ? val : '';
+		return val || '';
 	}, mobileStar: function(mobile){
 		if(!mobile) return '';
 		if(11 !== mobile.length) return mobile;
